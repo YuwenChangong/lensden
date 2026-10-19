@@ -1,0 +1,189 @@
+{
+  "task": "PUBLIC_BETA_MEDIA_RECOVERY_PROTECTION_V1",
+  "decision": "MEDIA_LOCAL_RECOVERY_ACCEPTANCE_PASS",
+  "sourceCommit": "3da5ad8bf177d95d029203c30cb3b594f396fb86",
+  "branch": "codex/public-beta-media-recovery-protection-20261019",
+  "scope": "SYNTHETIC_LOCAL_FILESYSTEM_ONLY_NOT_A_PRODUCTION_MEDIA_ADAPTER",
+  "sourcePins": [
+    {
+      "file": "src/components/forum/CreatePostForm.tsx",
+      "sha256": "31e55132c26d7b327fb1fd4d1cbc1e20f8b847272faabea89998e7b36b81ce6d"
+    },
+    {
+      "file": "src/lib/r2-server.ts",
+      "sha256": "9fb9dd16e28ea895ac084d95f1bbf9590d705b85c0caec7b0bf1fed398478a6c"
+    },
+    {
+      "file": "src/lib/storage-tus.ts",
+      "sha256": "87e16f9d64e3ef1cb03e731e087359ed6092aec4ad8098b783d79bf0942ac479"
+    },
+    {
+      "file": "src/pages/api/media/post/[mediaId].ts",
+      "sha256": "65bcb0c0f9d51fa1962545527ba4666096693a93243df880ad78d76ff126b991"
+    },
+    {
+      "file": "src/lib/server/media-cleanup.ts",
+      "sha256": "837ac1069a4d6158f89e66fe9928a0b949d236f5f870053f10dfbf4879a0df68"
+    },
+    {
+      "file": "src/lib/profile-media.ts",
+      "sha256": "736c351ad679b4c6516cc7ffb38510c29dde774835e463de5d48448e9311cdec"
+    },
+    {
+      "file": "src/lib/circle-cover.ts",
+      "sha256": "5bb3d7b82df236d9abd47012d498f0347784b7b4f18540a3c8cd52d99e40a852"
+    },
+    {
+      "file": "src/lib/news-media.ts",
+      "sha256": "478c3373dbce2d30f7a06a28ba30bd97e6e4211c3e682d7f22c8f02f262c6f85"
+    },
+    {
+      "file": "src/lib/news-content.ts",
+      "sha256": "c85b09cbc752597b628431843a5633aff735fccab3c5642d1653743f5b6a8965"
+    },
+    {
+      "file": "src/lib/product-public-safety.ts",
+      "sha256": "746d086ff3c3a5c68c2501d60f84cf883bf8598f2142677d4333a3076458c518"
+    },
+    {
+      "file": "src/lib/public-device-data.ts",
+      "sha256": "beabb8c9f6756fe29bf7954dfd671b2a9a7f6c66b1b7df432fa8dc1ec3cd29e4"
+    },
+    {
+      "file": "src/lib/server/device-admin.ts",
+      "sha256": "7098e45e44a4b4f5d2ce8b96b3e2d353412c47c921d825b447cbc6a68605585b"
+    },
+    {
+      "file": "src/lib/moderation/sensitive-lexicon-loader.server.ts",
+      "sha256": "21cab0c8e84a03dfb12fed72095834a921fc87658832a90a72ecf3912330ab11"
+    },
+    {
+      "file": "supabase/migrations/20260524_forum_phase3_post_media.sql",
+      "sha256": "c68d2ed8fd7f2bb1cf2be6d96e25fc8540486408ccb92b382ad3351d1f1d5f48"
+    },
+    {
+      "file": "supabase/migrations/20260525_forum_phase4_video_media.sql",
+      "sha256": "ee26a91b82d17302438d862638b92915b4d292cda1820c193500dc1eb254b90d"
+    },
+    {
+      "file": "supabase/migrations/20260612_news_media_storage_policy.sql",
+      "sha256": "f4cf5ad75cd07f70d51ac267963c17348d972f73de1160b9a56c02d5b84a7f5b"
+    }
+  ],
+  "implementation": {
+    "file": "scripts/qa/media-recovery-local.mjs",
+    "sha256": "16493f0053e07b94ff3c66a24ab649217f409c906a93ea44517f76b976f22ca0"
+  },
+  "tests": {
+    "file": "scripts/qa/media-recovery-local.test.mjs",
+    "sha256": "b37e930333ca52959639c307d075f66bd92582f0c3868b43f72d0394cb839c0b",
+    "command": "node --test scripts/qa/media-recovery-local.test.mjs",
+    "finalResult": "3/3_PASS",
+    "negativeCategories": 9,
+    "syntaxChecks": "2/2_PASS",
+    "history": [
+      "RED: 0/3 before implementation; missing exports; no fixture started",
+      "INTERMEDIATE: 2/3; receipt destination assertion mismatch after local acceptance; temporary resources cleaned",
+      "GREEN: 3/3 including receipt persistence and readback",
+      "FINAL_REVIEW_RED: multiline news reference rejected as NEWS_CONTENT_BOUND; single pure test reproduced",
+      "FINAL_GREEN: 3/3 after allowing bounded newline/tab news content while retaining control-character rejection"
+    ],
+    "applicationBuild": "NOT_RUN_TOOLING_AND_DOCS_ONLY_NO_APPLICATION_CODE_CHANGE"
+  },
+  "acceptanceEvidence": {
+    "path": "C:\\Temp\\ogh-media-recovery-local-20261019-final.safe.json",
+    "sha256": "dc8b9650b17e7c871f08c23859bb7baedebd9b1d26fb7fd84aecda04b44b1bb8",
+    "receipt": {
+      "task": "PUBLIC_BETA_MEDIA_RECOVERY_PROTECTION_V1",
+      "status": "MEDIA_LOCAL_RECOVERY_ACCEPTANCE_PASS",
+      "objectCount": 11,
+      "managedReferenceCount": 10,
+      "objectClasses": [
+        "r2-video",
+        "post-image",
+        "thumbnail",
+        "fallback-video",
+        "profile-avatar",
+        "profile-banner",
+        "circle-cover",
+        "news-cover",
+        "news-content",
+        "catalog-r2-image",
+        "unreferenced-object"
+      ],
+      "inventoryDigest": "66a6f3b5ed7f7e9e7d6672904fbc3a78e53e2ba2cfbb9d20e433759b1c48e9ea",
+      "videoBytes": 2018,
+      "videoEncoding": "H264_MP4_SYNTHETIC_LOCAL_MEDIABROWSER_ENCODER",
+      "sourceDeletedBeforeRestore": true,
+      "restoreProcess": "FRESH_NODE_PROCESS",
+      "acl": "CURRENT_USER_AND_SYSTEM_ONLY_VERIFIED",
+      "backupIntegrity": "AEAD_AND_SHA256_READBACK",
+      "negatives": [
+        "RESTORED_CORRUPTION",
+        "MISSING_OBJECT",
+        "METADATA_DRIFT",
+        "UNLISTED_OBJECT",
+        "OMITTED_INVENTORY_OBJECT",
+        "MISSING_REFERENCED_KEY",
+        "REFERENCE_SNAPSHOT_DRIFT",
+        "WRONG_RECOVERY_PASSPHRASE",
+        "CIPHERTEXT_CORRUPTION_BEFORE_TARGET_CREATION"
+      ],
+      "productionObjectsAccessed": 0,
+      "productionConnections": 0,
+      "productionWrites": 0,
+      "realMediaRecoverability": "NOT_VERIFIED",
+      "databaseBackupRecoverability": "NOT_VERIFIED",
+      "independentOffsiteRetention": "NOT_VERIFIED",
+      "privateProviderAccessControls": "NOT_TESTED_LOCAL_FILESYSTEM_ONLY",
+      "cleanup": "VERIFIED_TEMP_ROOT_ABSENT"
+    }
+  },
+  "encryptionDependency": {
+    "path": "C:/Temp/ogh-manual-backup-preparation-20261010-v5/backup-core.mjs",
+    "sha256": "fc81611f50dce53c15222cdbb7807a608b4cefd7ae8f95fb286c2ad0b04dd375",
+    "sourceUnmodified": true,
+    "purpose": "EXISTING_AES_256_GCM_SCRYPT_KEY_ENVELOPE_AUTHENTICATED_REPLAY"
+  },
+  "localProof": {
+    "bounds": {
+      "maxObjects": 64,
+      "maxObjectBytes": 65536,
+      "maxTotalBytes": 2097152,
+      "maxArchiveBytes": 4194304,
+      "maxReferences": 256
+    },
+    "inventoryCompleteness": "EXACT_FILESYSTEM_SET_WITH_ONE_UNREFERENCED_OBJECT",
+    "references": "SYNTHETIC_DB_SHAPED_PROJECTIONS_NOT_A_LIVE_DB_OR_FOREIGN_KEY_RESTORE",
+    "metadata": "KEY_PROVIDER_BUCKET_CONTENT_TYPE_CACHE_CONTROL_DISPOSITION_ENCODING_CUSTOM_AND_PUBLIC_READ_SCOPE",
+    "durability": "EXCLUSIVE_FILE_CREATION_FSYNC_READBACK_ONLY_NOT_OFFSITE_OR_TAMPER_PROOF",
+    "networkBoundary": "NO_PROVIDER_CLIENT_OR_PRODUCTION_TARGET; BROWSER_CONTEXT_OFFLINE_AND_REQUEST_ABORT; HOST_NETWORK_NOT_DISABLED",
+    "cleanup": "VERIFIED_TEMP_ROOT_ABSENT"
+  },
+  "remainingProductionEvidence": [
+    "Complete authorized bounded provider inventory including pagination and separately mapped R2 media/catalog origins",
+    "Independent encrypted byte capture with required provider metadata, ownership, bucket configuration and DB reference snapshot reconciliation",
+    "Quiescence or documented non-atomic snapshot handling and missing/orphan object classification",
+    "Separate isolated provider restore and access-policy validation; local publicRead flag is metadata only",
+    "Durable independently retained encrypted backup and separately retained recoverable key; no new paid resources",
+    "Independent authorization and applicable current no-additional-cost evidence before any Production object access"
+  ],
+  "boundaries": {
+    "productionObjectsAccessed": 0,
+    "productionConnections": 0,
+    "productionWrites": 0,
+    "remotePush": 0,
+    "deployments": 0,
+    "frozenRecoveryV23Modified": false,
+    "applicationRecoveryV1Modified": false,
+    "recoveryGateActivated": false,
+    "realMediaRecoverability": "NOT_VERIFIED",
+    "databaseBackupRecoverability": "NOT_VERIFIED",
+    "catalogHold": "ACTIVE",
+    "publicBetaGo": "NOT_AUTHORIZED"
+  },
+  "preservedEarlierAcceptanceEvidence": {
+    "path": "C:\\Temp\\ogh-media-recovery-local-20261019-acceptance.safe.json",
+    "sha256": "976b2a55c2dee73d7ebae255ba01467a4d4b342c0abdc38ddad28b2bdbe49233"
+  }
+}

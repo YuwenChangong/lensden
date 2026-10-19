@@ -1,5 +1,41 @@
 # Public Beta Current State
 
+## Media Recovery Protection (2026-10-19, Current Scoped Result)
+
+On independent branch `codex/public-beta-media-recovery-protection-20261019`,
+based on `3da5ad8bf177d95d029203c30cb3b594f396fb86`, the actual media paths were
+inspected without Production access: R2 post videos and permitted catalog image
+URLs; Supabase `post-media` images, thumbnails, fallback videos, avatars, banners,
+circle covers and news cover/content images. Repository assets and unmanaged URLs
+remain separate. Runtime bucket state and real object counts were not inferred.
+
+- Added a bounded synthetic-only local byte-backup/restore helper and focused tests,
+  reusing the unchanged hash-pinned existing encryption helper. No provider client,
+  cloud execution path, application code or migration was changed.
+- Targeted acceptance PASS: 3/3 tests, 11 objects, 10 managed reference projections,
+  one unreferenced object, independent encrypted backup, source deletion, fresh
+  process restore, exact byte/key/metadata hashes and nine negative categories.
+  Windows current-user/SYSTEM-only ACL verified; temporary synthetic resources
+  cleaned. No real user bytes, credentials, Production buckets or databases used.
+- This proves a local filesystem mechanism only. Real provider enumeration,
+  ownership/access restoration, DB/object consistency, independent durable/offsite
+  retention and durable separately held keys remain unverified. Metadata flags do
+  not prove cloud access controls. REAL_MEDIA_RECOVERABILITY=NOT_VERIFIED and
+  DATABASE_BACKUP_RECOVERABILITY=NOT_VERIFIED; no Production gate was activated.
+- Scope and exact evidence: `docs/ops/reconciliation/media-recovery-protection.md`
+  and `media-recovery-protection.safe.json` beside it. No completed GoTrue/Auth,
+  R2 upload/playback/delete, database/RLS or UI tests were repeated. The accepted
+  historical local GoTrue result remains scoped; cleanup-delta approval does not
+  approve the full recovery proposal. Original Application Recovery matrix and
+  frozen V2.3 are unchanged. No independent review approval is invented here.
+
+NEXT_SINGLE_ACTION: owner review of the report's bounded real-media inventory and
+independent-retention scope before separate Production access authorization.
+Root user changes, main and historical evidence remain untouched. Local commit
+only, no push or deployment. GROUP1_LOCAL_CASES=10/14; UI02=LOCAL_PARTIAL_PASS;
+UI03=BLOCKED; PRODUCTION_PARITY=UNKNOWN; CATALOG_HOLD=ACTIVE;
+PUBLIC_BETA_GO=NOT_AUTHORIZED. Previous scoped results below remain historical.
+
 ## Critical Path Sprint (2026-10-19, Current Scoped Result)
 
 The integration branch at `2dcb3bb5e808aada74dc498dd9622f5e52075cfa`
