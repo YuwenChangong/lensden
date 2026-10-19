@@ -1,5 +1,32 @@
 # Public Beta Current State
 
+## Real Media Inventory and Retention Gate (2026-10-19, Offline Preparation Only)
+
+Reused local media commit `2d64d0b243e44b1a219aa0fb417b19bf0196b747`; its 16 examined
+application pins, helper/test hashes and final acceptance receipt match. No tests,
+implementation, build or independent review were repeated. Added only the concise
+owner-action packet to the existing `docs/ops/reconciliation/media-recovery-protection.md`.
+
+Proposed scope: exact owner-bound Production R2 media/catalog buckets only (names
+still UNCONFIRMED), max40 ListObjectsV2 requests/two serial traversals; one scoped
+Supabase Storage catalog aggregate SELECT/connection in READ ONLY transaction.
+No user object downloads, business-table reads or metadata dumps. Complete scoped
+listing, RLS-limited accessibility and metadata-versus-byte coverage remain distinct.
+PRODUCTION_INVENTORY_STATUS=AWAITING_OWNER_AUTHORIZATION; counts and bytes UNKNOWN.
+
+Independent destination, retention/RPO, key custody, existing least-privilege access
+and current zero-incremental-cost evidence require owner decisions. Existing helper
+is synthetic-only, not a real-media exporter. No new framework, credential, account,
+backup, instance or recovery gate was created; frozen V2.3 and historical evidence
+remain untouched. Only public official docs were accessed, no project/provider API.
+
+NEXT_SINGLE_ACTION: owner completes the existing report's scoped authorization and
+retention decision, with exact resource allowlist and current access/cost evidence.
+PRODUCTION_CONNECTIONS=0;PRODUCTION_OBJECT_DOWNLOADS=0;PRODUCTION_WRITES=0;
+DEPLOYMENTS=0;REMOTE_PUSH=0;DATABASE_BACKUP_RECOVERABILITY=NOT_VERIFIED;
+REAL_MEDIA_RECOVERABILITY=NOT_VERIFIED;CATALOG_HOLD=ACTIVE;
+PUBLIC_BETA_GO=NOT_AUTHORIZED. Earlier scoped results remain historical below.
+
 ## Media Recovery Protection (2026-10-19, Current Scoped Result)
 
 On independent branch `codex/public-beta-media-recovery-protection-20261019`,
