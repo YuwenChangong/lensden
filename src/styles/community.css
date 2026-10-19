@@ -4081,11 +4081,23 @@ dialog.glass-confirm-backdrop::backdrop {
 .post-lightbox-backdrop {
   position: fixed;
   inset: 0;
+  margin: 0;
+  border: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  box-sizing: border-box;
+  color: inherit;
   z-index: 150;
   display: grid;
   place-items: center;
   padding: 1rem;
   background: rgba(0, 0, 0, 0.76);
+}
+
+.post-lightbox-backdrop::backdrop {
+  background: transparent;
 }
 
 .post-lightbox {

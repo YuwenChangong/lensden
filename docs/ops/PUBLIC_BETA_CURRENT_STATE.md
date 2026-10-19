@@ -1,5 +1,58 @@
 # Public Beta Current State
 
+## Critical Path Sprint (2026-10-19, Current Scoped Result)
+
+The integration branch at `2dcb3bb5e808aada74dc498dd9622f5e52075cfa`
+was already pushed by a previous, separately authorized task. It was not pushed,
+amended or merged here. This task uses an independent managed worktree and branch
+`codex/public-beta-ui02-media-focus-20261019`, based on that exact commit.
+
+- Stage A attempted exactly one NEW independent reviewer. Agent creation failed
+  with `agent thread limit reached` before any reviewer started. The original
+  quota-limited reviewer was not invoked. No independent approval was fabricated;
+  Application Recovery v1 remains a draft with Production activation prohibited.
+  Its 11 candidate pins, completion receipt and pending-review receipt still match.
+- The authorized fallback targeted the remaining UI-02 content/media focus and
+  accessibility requirements, not UIE2E-02 device-row identity correlation.
+  Real Chrome/Playwright reproduced missing named-modal semantics, missing initial
+  dialog focus and missing close-button focus restoration at1440/390/430px.
+- Minimal fix: PostMediaGallery now uses the native modal dialog pattern already
+  used by GlassConfirmDialog, with contained Tab/Shift+Tab, inert background,
+  scroll-lock restoration and focus returned to the opener. Existing dark media
+  styling, image selection and server/Auth/media permissions are preserved.
+- Targeted real-component browser evidence:27/27 LOCAL PASS, zero page errors,
+  zero external browser requests attempted after loopback WebSocket classification.
+  Six local development WebSocket attempts were blocked; this is not Production
+  traffic or an application defect. The fixture body reset matches CommunityLayout;
+  its earlier missing8px reset was a fixture defect, not a Production overflow bug.
+  RED/intermediate receipts are preserved, not rewritten as PASS.
+- `node scripts/test-post-media-gallery-accessibility.mjs` exercises the actual
+  component and existing community CSS with synthetic local images, using the
+  existing visual harness. Browser and Vite are closed in finally. No database,
+  Supabase identities, video upload, R2 or external services were used.
+- Canonical build entrypoint PASS with a loopback-only `--local-config` and
+  synthetic nonsecret keys. Existing markdown deprecation and unrelated CSS
+  `:global` warnings remain disclosed. Typecheck ratchet PASS:56 current legacy
+  errors, zero new errors, zero changed diagnostic source lines. This does not
+  claim a zero-error full Astro check. The initial fixture-only ImageMetadata
+  URL diagnostic was corrected without type suppression or gate changes.
+- Evidence: `docs/ops/reconciliation/ui02-media-focus-safe.json`. Only the image
+  modal slice is newly verified. Full UI-02 still needs original route/identity,
+  video/media-error and deployed-candidate acceptance. GROUP1_LOCAL_CASES=10/14;
+  UI02=LOCAL_PARTIAL_PASS; UI03=BLOCKED; Production parity remains UNKNOWN.
+
+Root user changes, the pushed integration checkout, main, frozen V2.3, Application
+Recovery v1 and every historical recovery receipt remain untouched. No recovery
+tests were repeated. No new recovery gate, instance, credentials or Production
+authorization was created. DATABASE_BACKUP_RECOVERABILITY=NOT_VERIFIED.
+
+NEXT_SINGLE_ACTION: free capacity for the ONE independent Application Recovery v1
+review without reusing the restricted reviewer; the scoped UI-02 fix is local only
+and requires separate integration/push authorization. Do not treat it as deployed.
+
+REMOTE_PUSH=0;PRODUCTION_CONNECTIONS=0;PRODUCTION_WRITES=0;DEPLOYMENTS=0;
+MAIN_MODIFIED=false;CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 Authoritative release/progress baseline. Updated 2026-10-19 by owner-approved
 parallel Public Beta work on a dedicated staged-integration feature branch.
 This task Production connections/writes/migrations/deployments0. Public official

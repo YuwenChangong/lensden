@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ResolvedPostMedia } from "../../lib/forum-media";
 import { resolveLocale, type LocaleContext } from "../../lib/i18n/locale";
 import { useLocale } from "../i18n/useLocale";
@@ -29,19 +29,34 @@ export default function PostMediaGallery({ media, postTitle, localeContext = res
   );
   const [activeIndex, setActiveIndex] = useState(() => getInitialIndex(orderedMedia));
   const [lightboxOpen, setLightboxOpen] = useState(false);
-
-  if (orderedMedia.length === 0) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const safeIndex = Math.min(activeIndex, orderedMedia.length - 1);
   const active = orderedMedia[safeIndex];
-  const isPortrait = (active.height ?? 0) > (active.width ?? 0);
+  const isPortrait = (active?.height ?? 0) > (active?.width ?? 0);
 
   useEffect(() => {
-    if (!lightboxOpen) return;
+    if (!lightboxOpen || orderedMedia.length === 0) return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
 
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setLightboxOpen(false);
+      if (event.key === "Tab") {
+        const controls = Array.from(dialog!.querySelectorAll<HTMLElement>("button:not(:disabled),a[href],video[controls],[tabindex]:not([tabindex='-1'])"))
+          .filter((control) => control.getClientRects().length > 0);
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (!first || event.shiftKey && document.activeElement === first || !event.shiftKey && document.activeElement === last
+            || document.activeElement === dialog) {
+          event.preventDefault();
+          (event.shiftKey ? last : first)?.focus();
+        }
       } else if (event.key === "ArrowRight") {
         setActiveIndex((current) => (current + 1) % orderedMedia.length);
       } else if (event.key === "ArrowLeft") {
@@ -50,8 +65,15 @@ export default function PostMediaGallery({ media, postTitle, localeContext = res
     }
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
+    };
   }, [lightboxOpen, orderedMedia.length]);
+
+  if (!active) return null;
 
   function openLightbox() {
     setLightboxOpen(true);
@@ -140,9 +162,10 @@ export default function PostMediaGallery({ media, postTitle, localeContext = res
       )}
 
       {lightboxOpen ? (
-        <div className="post-lightbox-backdrop" onClick={closeLightbox}>
+        <dialog ref={dialogRef} className="post-lightbox-backdrop" aria-label={postTitle} aria-modal="true" tabIndex={-1}
+          onClick={closeLightbox} onCancel={(event) => { event.preventDefault(); closeLightbox(); }}>
           <div className="post-lightbox" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="post-lightbox__close" onClick={closeLightbox} aria-label={text.closeMedia}>
+            <button ref={closeButtonRef} type="button" className="post-lightbox__close" onClick={closeLightbox} aria-label={text.closeMedia}>
               {text.close}
             </button>
             {orderedMedia.length > 1 ? (
@@ -171,7 +194,7 @@ export default function PostMediaGallery({ media, postTitle, localeContext = res
               )}
             </div>
           </div>
-        </div>
+        </dialog>
       ) : null}
     </section>
   );

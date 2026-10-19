@@ -10,5 +10,6 @@ supabase/.temp/
 Thumbs.db
 .tmp-*.log
 artifacts/qa/
+output/playwright/ui02-media-focus/
 artifacts/device-schema-v1/
 .local-e2e/
