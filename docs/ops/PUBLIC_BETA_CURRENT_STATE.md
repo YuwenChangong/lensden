@@ -1,5 +1,29 @@
 # Public Beta Current State
 
+## R2 Retention Independent Review: Schema Stop (2026-10-20)
+
+Review of base808525e3dd221ef667fa7aa2ae8a1be087f90a64 is CHANGES_REQUIRED.
+P1-A repeated copies are not durably excluded; the existing one-video-per-post
+unique index rejects duplicate rows only AFTER copies. The quota ledger has no
+source/post claim. P1-B browser rollback can delete possibly committed R2 and
+Supabase objects. P2 provenance RLS still permits direct authenticated tmp video
+binding at source level; current Production policy parity remains unverified.
+
+The owner's necessary-schema STOP condition was reached. No application code,
+formal migration or historical evidence changed; no tests/build were repeated.
+Added only two unexecuted SQL proposals (immutable one-claim-per-post; separate
+no-new-tmp CHECK) and precise source evidence in reconciliation/
+r2-retention-release-blocker-schema-stop-20261020.md. These proposals are untested,
+unapproved, outside the formal migration set and do not fix the active handlers.
+P1-A/P1-B remain OPEN; release gate BLOCKED. Failed/ambiguous attempts consuming
+the proposed post claim and legacy tmp UPDATE rejection need explicit decisions.
+
+NEXT_SINGLE_ACTION=OWNER_REVIEW_OF_MINIMAL_SCHEMA_DEPENDENCY_AND_FAIL_CLOSED_RETRY_TRADEOFF.
+PRODUCTION_CONNECTIONS=0;PRODUCTION_WRITES=0;MIGRATIONS_EXECUTED=0;DEPLOYMENTS=0;
+REMOTE_PUSH=0;UI03_ROOT_CAUSE=UNKNOWN;LEGACY_TMP_MEDIA=NOT_VERIFIED;
+DATABASE_BACKUP_RECOVERABILITY=NOT_VERIFIED;CATALOG_HOLD=ACTIVE;
+PUBLIC_BETA_GO=NOT_AUTHORIZED. Earlier implementation/test results remain historical.
+
 ## Critical Blocker Sprint (2026-10-20, Local Only)
 
 Isolated codex/public-beta-critical-blockers-20261020, base53ef39e7617eaf5f5c309a0b798be0cc4be85d9c.
