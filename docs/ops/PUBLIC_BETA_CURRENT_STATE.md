@@ -1,5 +1,36 @@
 # Public Beta Current State
 
+## R2 Retention Final Offline Integration (2026-10-20)
+
+Owner separately authorized the claim-table integration and browser rollback fix
+on basecde5f4f2ce2b91db8164a7c252c1ea5f03ab0d14. P1-A/P1-B implemented locally:
+one immutable DB-generated claim/key per post before any R2 copy; no automatic
+retry, claim reset or uncertain object deletion. Browser preserves both media
+backends and the original post after dispatch errors and blocks draft resubmit.
+Localized unresolved status replaces destructive rollback. TUS/images unchanged.
+
+Added one local migration20261020000000, no existing migration edits. Claim source
+keys are not stored. Deleted-account/post reconciliation can separately minimize
+to an irreversible post-id/timestamp tombstone; clients cannot update/delete it.
+P2 tmp direct-DB binding remains OPEN. The old NOT VALID CHECK stays an unapproved
+historical proposal, NOT a migration. No global retention enforcement claimed.
+
+58/58 application cases (50 retention/route/Worker SDK +8 browser),24/24 cleanup,
+22/22 real isolated PG17/PostgREST checks PASS; actual concurrent SQL/HTTP claims,
+RLS/INSERT/SELECT and minimized tombstones verified. Minimal local schema fixture
+only, not Production parity/full Supabase recovery. Disposable containers removed.
+Guarded loopback-only build PASS with existing warnings; JS syntax3/3 and migration
+version validation PASS. See reconciliation/r2-retention-final-offline-integration-20261020.md
+and its safe JSON/source hashes. No full-suite rerun or new broad review bundle.
+
+NEXT_SINGLE_ACTION=SCOPED_INDEPENDENT_DELTA_REVIEW_OF_CLAIM_MIGRATION_AND_BROWSER_CORRECTION.
+Production release remains BLOCKED pending review, separate migration/release
+authorization and existing unresolved gates. MIGRATIONS_EXECUTED_PRODUCTION=0;
+PRODUCTION_CONNECTIONS=0;PRODUCTION_WRITES=0;DEPLOYMENTS=0;REMOTE_PUSH=0;
+LEGACY_TMP_MEDIA=NOT_VERIFIED;UI03_ROOT_CAUSE=UNKNOWN;CATALOG_HOLD=ACTIVE;
+DATABASE_BACKUP_RECOVERABILITY=NOT_VERIFIED;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+Earlier schema-stop and implementation receipts remain historical below.
+
 ## R2 Retention Independent Review: Schema Stop (2026-10-20)
 
 Review of base808525e3dd221ef667fa7aa2ae8a1be087f90a64 is CHANGES_REQUIRED.

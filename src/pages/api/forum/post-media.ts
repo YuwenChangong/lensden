@@ -16,7 +16,7 @@ import { evaluateLocalSensitiveLexicon } from "../../../lib/moderation/local-sen
 import { assertUserCanWrite, getSafetyWriteBlockResponse } from "../../../lib/server/user-safety.server";
 import { requireAuthenticatedLegalConsent } from "../../../lib/server/legal-consent-mutation.server";
 import { createLegalConsentReadRepository } from "../../../lib/server/legal-consent-repository.server";
-import { retainTemporaryR2Video, discardUnboundR2Video } from "../../../lib/r2-server";
+import { retainTemporaryR2Video } from "../../../lib/r2-server";
 
 export const prerender = false;
 
@@ -328,14 +328,12 @@ export function validateMediaArray(postId: string, userId: string, media: MediaP
 }
 
 const productionDependencies = { createUserClient, assertUserCanWrite, requireAuthenticatedLegalConsent,
-  createLegalConsentReadRepository, retainTemporaryR2Video, discardUnboundR2Video };
+  createLegalConsentReadRepository, retainTemporaryR2Video, moderatePostMedia };
 
 export function createPostMediaPost(overrides: Partial<typeof productionDependencies> = {}): APIRoute {
   const { createUserClient, assertUserCanWrite, requireAuthenticatedLegalConsent,
-    createLegalConsentReadRepository, retainTemporaryR2Video, discardUnboundR2Video } = { ...productionDependencies, ...overrides };
+    createLegalConsentReadRepository, retainTemporaryR2Video, moderatePostMedia } = { ...productionDependencies, ...overrides };
   return async ({ request, locals }) => {
-  const retained: string[] = [];
-  let insertAttempted = false;
   try {
     const env = runtimeEnv;
     if (!env) {
@@ -388,20 +386,47 @@ export function createPostMediaPost(overrides: Partial<typeof productionDependen
     if (post.author_id !== authData.user.id) {
       return json({ error: "Cannot attach media to a post you do not own" }, 403);
     }
+    if (post.status !== "published" && post.status !== "pending") {
+      return json({ error: "Post cannot accept media" }, 409);
+    }
 
     const media = payload.media ?? [];
     const validationError = validateMediaArray(postId, authData.user.id, media);
     if (validationError) {
       return json({ error: validationError }, 400);
     }
+    if (media.filter((item) => item.kind === "video").length > 1) {
+      return json({ error: "Only one video is allowed per post" }, 400);
+    }
 
     for (const item of media) {
       if (item.kind !== "video" || !item.storage_path?.trim().startsWith("tmp/")) continue;
+      const { data: existingVideo, error: existingVideoError } = await userClient
+        .from("post_media").select("id").eq("post_id", postId).eq("kind", "video").maybeSingle();
+      if (existingVideoError) return json({ error: "Media state unavailable" }, 503);
+      if (existingVideo) return json({ error: "Post already has a video" }, 409);
+
+      // Only a confirmed NEW committed claim permits this invocation to copy.
+      // Conflicts and unknown responses never acquire permission by SELECT/retry.
+      const mimeType = item.mime_type!.trim().toLowerCase();
+      const { data: claim, error: claimError } = await userClient
+        .from("post_media_r2_copy_claims")
+        .insert({ post_id: postId, user_id: authData.user.id, mime_type: mimeType })
+        .select("post_id,user_id,claim_id,mime_type,retained_key")
+        .abortSignal(AbortSignal.timeout(8000)).single();
+      if (claimError || !claim) {
+        return json({ error: "Copy claim unavailable or already consumed", code: "MEDIA_COPY_CLAIM_UNCONFIRMED" }, 409);
+      }
+      const extension = ({ "video/mp4": "mp4", "video/webm": "webm", "video/quicktime": "mov" } as Record<string, string>)[mimeType];
+      const expectedKey = `${authData.user.id}/${postId}/r2-retained-${claim.claim_id}.${extension}`;
+      if (claim.post_id !== postId || claim.user_id !== authData.user.id || claim.mime_type !== mimeType ||
+        !uuidRegex.test(String(claim.claim_id)) || !extension || claim.retained_key !== expectedKey) {
+        return json({ error: "Copy claim identity mismatch" }, 503);
+      }
       item.storage_path = await retainTemporaryR2Video({
         env, userId: authData.user.id, postId, sourceKey: item.storage_path.trim(),
-        mimeType: item.mime_type!.trim().toLowerCase(), sizeBytes: normalizeNonNegativeNumber(item.size_bytes),
+        retainedKey: claim.retained_key, mimeType, sizeBytes: normalizeNonNegativeNumber(item.size_bytes),
       });
-      retained.push(item.storage_path);
     }
 
     const coverIndex = media.findIndex((item) => item.is_cover === true);
@@ -447,7 +472,6 @@ export function createPostMediaPost(overrides: Partial<typeof productionDependen
 
     // After dispatch, a lost response may hide a committed insert. Retain copies
     // rather than deleting an object that could already have a live DB reference.
-    insertAttempted = true;
     let { data: inserted, error: insertError } = await userClient
       .from("post_media")
       .insert(rows)
@@ -545,12 +569,6 @@ export function createPostMediaPost(overrides: Partial<typeof productionDependen
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,
     );
-  } finally {
-    if (!insertAttempted) {
-      for (const path of retained) {
-        if (!await discardUnboundR2Video(runtimeEnv, path)) console.warn("[post-media] unbound retention cleanup unconfirmed");
-      }
-    }
   }
 };
 }

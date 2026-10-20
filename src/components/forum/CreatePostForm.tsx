@@ -230,6 +230,9 @@ export default function CreatePostForm({
   const circlePickerRef = useRef<HTMLDivElement | null>(null);
   const circleButtonRef = useRef<HTMLButtonElement | null>(null);
   const mediaFilesRef = useRef<LocalMedia[]>([]);
+  const submitLockRef = useRef(false);
+  const unresolvedPostRef = useRef("");
+  const [unresolvedPostId, setUnresolvedPostId] = useState("");
   const [circleSlug, setCircleSlug] = useState("");
   const [type, setType] = useState("question");
   const [title, setTitle] = useState(initialTitle);
@@ -484,8 +487,9 @@ export default function CreatePostForm({
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (!supabase) return;
+    if (!supabase || submitLockRef.current || unresolvedPostRef.current) return;
 
+    submitLockRef.current = true;
     setSubmitting(true);
     setError("");
     setMessage("");
@@ -493,6 +497,7 @@ export default function CreatePostForm({
     const uploadedPaths: string[] = [];
     let createdPostId = "";
     let accessToken = "";
+    let mediaAttachDispatched = false;
 
     try {
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -662,20 +667,21 @@ export default function CreatePostForm({
       }
 
       if (mediaPayload.length > 0) {
+        // Finish serialization before crossing the conservative dispatch boundary.
+        const mediaBody = JSON.stringify({ post_id: createdPostId, media: mediaPayload });
+        mediaAttachDispatched = true;
         const mediaResponse = await fetch("/api/forum/post-media", {
           method: "POST",
           headers: {
             "content-type": "application/json",
             authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify({
-            post_id: createdPostId,
-            media: mediaPayload,
-          }),
+          body: mediaBody,
         });
 
         const mediaResult = (await mediaResponse.json().catch(() => null)) as
           | {
+              media?: unknown[];
               error?: string;
               message?: string;
               reason_code?: string | null;
@@ -686,6 +692,9 @@ export default function CreatePostForm({
           | null;
         if (!mediaResponse.ok) {
           throw new Error(mediaResult?.error ?? `${text.mediaWriteFailed} (${mediaResponse.status})`);
+        }
+        if (!Array.isArray(mediaResult?.media) || mediaResult.media.length !== mediaPayload.length) {
+          throw new Error(text.mediaWriteFailed);
         }
 
         if (mediaResult?.post?.status) {
@@ -721,6 +730,14 @@ export default function CreatePostForm({
       }
       setMessage(localizeCommunityStatus(createPayload.message, context.locale) || (createPayload.pending_review ? text.postReview : text.published));
     } catch (submitError) {
+      if (mediaAttachDispatched) {
+        // A lost response or later moderation failure can hide a committed row.
+        // Keep both storage backends and the post; never resubmit this draft.
+        unresolvedPostRef.current = createdPostId;
+        setUnresolvedPostId(createdPostId);
+        setError("");
+        return;
+      }
       if (uploadedPaths.length > 0) {
         await supabase.storage.from("post-media").remove(uploadedPaths).catch(() => undefined);
       }
@@ -731,6 +748,7 @@ export default function CreatePostForm({
       const rawMessage = submitError instanceof Error ? submitError.message : text.submitFailed;
       setError(mapAuthError(rawMessage, text));
     } finally {
+      submitLockRef.current = false;
       setSubmitting(false);
     }
   }
@@ -924,13 +942,19 @@ export default function CreatePostForm({
         </div>
 
         <div className="community-cta-row">
-          <button type="submit" className="community-button post-composer__submit" disabled={submitting || loadingCircles}>
+          <button type="submit" className="community-button post-composer__submit" disabled={submitting || loadingCircles || Boolean(unresolvedPostId)}>
             {submitting ? text.submitting : text.submitPost}
           </button>
         </div>
       </form>
 
       <div className="post-composer__feedback">
+        {unresolvedPostId ? (
+          <div className="auth-alert auth-alert--error" role="status">
+            {text.publicationUnresolved}{" "}
+            <a className="community-link" href={`/posts/${unresolvedPostId}/`}>{text.viewSubmittedPost}</a>
+          </div>
+        ) : null}
         {error ? <div className="auth-alert auth-alert--error">{error}</div> : null}
         {message ? <div className="auth-alert auth-alert--success">{message}</div> : null}
       </div>

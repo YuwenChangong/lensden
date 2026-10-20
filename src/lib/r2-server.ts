@@ -67,6 +67,7 @@ export async function retainTemporaryR2Video(params: {
   userId: string;
   postId: string;
   sourceKey: string;
+  retainedKey: string;
   mimeType: string;
   sizeBytes: number | null;
 }, client?: Pick<S3Client, "send">): Promise<string> {
@@ -79,16 +80,17 @@ export async function retainTemporaryR2Video(params: {
   if (!sourceKey.startsWith(prefix) || !/^[a-z0-9._-]{1,240}$/i.test(name) || [".", ".."].includes(name) || !extension) {
     throw new Error("MEDIA_RETENTION_INVALID_SOURCE");
   }
-  const target = `${owner}/${post}/r2-retained-${crypto.randomUUID()}.${extension}`;
+  const target = params.retainedKey;
+  if (!isRetainedR2VideoPath(target) || !target.startsWith(`${owner}/${post}/`) || !target.endsWith(`.${extension}`)) {
+    throw new Error("MEDIA_RETENTION_INVALID_DESTINATION");
+  }
   const storage = client ?? createR2Client(env);
   const bucket = getR2BucketName(env);
   const options = { abortSignal: AbortSignal.timeout(15000) };
-  let copyAttempted = false;
   try {
     const source = await storage.send(new HeadObjectCommand({ Bucket: bucket, Key: sourceKey }), options);
     if (!source.ETag || !Number.isSafeInteger(source.ContentLength) || !source.ContentLength || source.ContentLength <= 0 || source.ContentLength > 150 * 1024 * 1024 ||
       source.ContentType !== mimeType || (sizeBytes !== null && source.ContentLength !== sizeBytes)) throw new Error();
-    copyAttempted = true;
     const copied = await storage.send(new CopyObjectCommand({
       Bucket: bucket, Key: target,
       CopySource: [bucket, ...sourceKey.split("/")].map(encodeURIComponent).join("/"),
@@ -99,9 +101,8 @@ export async function retainTemporaryR2Video(params: {
       result.ContentLength !== source.ContentLength || result.ContentType !== source.ContentType) throw new Error();
     return target;
   } catch {
-    // No DB insert has started for this newly generated key. Never remove the source.
-    const cleaned = !copyAttempted || await discardUnboundR2Video(env, target, storage);
-    if (!cleaned || copyAttempted && options.abortSignal.aborted) console.warn("[post-media] unbound retention cleanup unconfirmed");
+    // A dispatched copy may finish after a lost reply/abort. Keep its claim and
+    // destination for reconciliation; neither retry nor deletion is safe here.
     throw new Error("MEDIA_RETENTION_FAILED");
   }
 }

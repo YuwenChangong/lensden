@@ -3,6 +3,8 @@ import { formatPostTime } from "../../format-time.ts";
 
 export const communityMessages = {
   "zh-CN": {
+    publicationUnresolved: "尚未确认媒体发布结果。为避免误删，未自动回滚帖子或文件；请先核实原帖，勿重复提交。",
+    viewSubmittedPost: "查看原帖",
     moderateDeleteComment: "审核删除",
     moderateDeleteCommentDetail: "以管理员或版主身份删除此评论。正文将隐藏，有权查看的回复仍会保留。",
     tabFeed: "动态", feed: "帖子动态", feedDescription: "OpenGlass Hub 论坛公开帖子动态，支持推荐、最新与热门排序。",
@@ -46,6 +48,8 @@ export const communityMessages = {
     types: { experience: "体验", question: "提问", review: "评测", dev: "开发", news: "资讯", feedback: "反馈" },
   },
   en: {
+    publicationUnresolved: "Media publication is unconfirmed. No automatic rollback was attempted. Check the original post before submitting again.",
+    viewSubmittedPost: "View original post",
     moderateDeleteComment: "Remove as moderator",
     moderateDeleteCommentDetail: "Remove this comment as an administrator or moderator. Its body will be hidden; permitted replies will remain.",
     tabFeed: "Feed", feed: "Post Feed", feedDescription: "Public OpenGlass Hub forum posts, sorted by recommended, latest or popular.",
