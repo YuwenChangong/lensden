@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
+import { isTrustedPgFactory, isTrustedPrivateSink } from './catalog-preflight-v1-native.mjs';
 
 export const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 export const SQL_FILE = 'docs/ops/reconciliation/storage-objects-catalog-preflight.v1.NOT_AUTHORIZED.sql';
@@ -141,7 +142,7 @@ function safeError(error) { return SAFE_ERRORS.has(error?.safeCode) ? error.safe
 
 async function execute(options, synthetic, clock) {
   const { plan, authorizationBytes, expectedAuthorizationSha256, reviewBytes, sink, transportFactory } = options;
-  const receipt = { schema: 'OGH_CATALOG_PREFLIGHT_RECEIPT_V1', mode: synthetic ? 'SYNTHETIC_ONLY' : 'OWNER_AUTHORIZED_CATALOG_ONLY', sqlSha256: SQL_SHA256, outcome: 'BLOCKED', firstFailure: null, failureStage: null, connectionAttempts: 0, authenticationAttempts: 0, metadataSelects: 0, retries: 0, cleanup: 'NOT_NEEDED', receiptPersistence: 'NOT_CONFIRMED', privilegeDecision: 'BLOCKED_PENDING_REVIEW', rlsDecision: 'BLOCKED_PENDING_REVIEW', managedSupport: 'UNKNOWN', productionWrites: 0, mediaInventory: 'NOT_EXECUTED' };
+  const receipt = { schema: 'OGH_CATALOG_PREFLIGHT_RECEIPT_V1', mode: synthetic ? 'SYNTHETIC_ONLY' : 'OWNER_AUTHORIZED_CATALOG_ONLY', sqlSha256: SQL_SHA256, outcome: 'BLOCKED', firstFailure: null, failureStage: null, connectionAttempts: 0, authenticationAttempts: 0, metadataSelects: 0, retries: 0, cleanup: 'NOT_NEEDED', fileClose: 'NOT_NEEDED', receiptPersistence: 'NOT_CONFIRMED', privilegeDecision: 'BLOCKED_PENDING_REVIEW', rlsDecision: 'BLOCKED_PENDING_REVIEW', managedSupport: 'UNKNOWN', productionWrites: 0, mediaInventory: 'NOT_EXECUTED' };
   const start = clock.now(), deadline = start + LIMITS.totalMs;
   let stage = 'ADMISSION', transport, selected, auth, transactionSent = false, rollbackSent = false;
   const remaining = () => deadline - clock.now();
@@ -149,16 +150,23 @@ async function execute(options, synthetic, clock) {
   const scoped = async (operation, ms, code) => {
     let active = true;
     const expires = Math.min(deadline, clock.now() + ms);
-    const budget = Object.freeze({ active: () => active && clock.now() < expires });
+    const budget = Object.freeze({ active: () => active && clock.now() < expires,
+      async cleanup(operation) {
+        const value = await bounded(operation, Math.min(LIMITS.cleanupMs, remaining()), clock, 'PRIVATE_PERSISTENCE_UNCERTAIN');
+        need(remaining() > 0, 'PRIVATE_PERSISTENCE_UNCERTAIN');
+        return value;
+      },
+    });
     try { return await bounded(() => operation(budget), ms, clock, code); }
     finally { active = false; }
   };
   const work = (operation, max = LIMITS.statementMs + 500) => scoped(operation, Math.min(max, remaining() - LIMITS.cleanupMs), 'OVERALL_DEADLINE');
   try {
     assertPlan(plan);
-    need(sink && typeof sink.directory === 'string' && transportFactory && (synthetic
+    need(sink && transportFactory && (synthetic
       ? sink.kind === 'SYNTHETIC' && transportFactory.kind === 'SYNTHETIC'
-      : sink.kind === 'WINDOWS_PRIVATE_FILES' && transportFactory.kind === 'NATIVE_EXACT_PG'), 'OFFLINE_TRANSPORT_REQUIRED');
+      : isTrustedPrivateSink(sink) && isTrustedPgFactory(transportFactory)), 'OFFLINE_TRANSPORT_REQUIRED');
+    need(typeof sink.directory === 'string', 'PRIVATE_SINK_UNAVAILABLE');
     auth = validateAuthorization(authorizationBytes, expectedAuthorizationSha256, reviewBytes, plan, sink.directory, clock.wall(), synthetic);
     stage = 'PRIVATE_SINK_ADMISSION';
     need(await work(budget => sink.verify(budget)) === true, 'PRIVATE_SINK_UNAVAILABLE');
@@ -214,6 +222,13 @@ async function execute(options, synthetic, clock) {
       receipt.cleanup = status.closed ? 'CONFIRMED_CLIENT_SIDE' : 'UNCONFIRMED';
       if (!status.closed) { transport.abort(); first(Object.assign(new Error(), { safeCode: 'CLEANUP_TIMEOUT' })); }
     }
+    const observeFileClose = () => {
+      if (!synthetic && selected) {
+        receipt.fileClose = sink.status().fileClose;
+        if (receipt.fileClose === 'UNCONFIRMED') first(Object.assign(new Error(), { safeCode: 'PRIVATE_PERSISTENCE_UNCERTAIN' }));
+      }
+    };
+    observeFileClose();
     if (selected && remaining() > 0) {
       stage = 'RECEIPT_PERSISTENCE';
       try {
@@ -222,6 +237,7 @@ async function execute(options, synthetic, clock) {
         receipt.receiptPersistence = 'CONFIRMED';
       } catch (error) { receipt.receiptPersistence = 'UNCONFIRMED'; first(error); }
     }
+    observeFileClose();
     receipt.elapsedMs = Math.max(0, Math.ceil(clock.now() - start));
     if (selected && receipt.receiptPersistence !== 'CONFIRMED') first(Object.assign(new Error(), { safeCode: 'PRIVATE_PERSISTENCE_UNCERTAIN' }));
     if (receipt.elapsedMs > LIMITS.totalMs) first(Object.assign(new Error(), { safeCode: 'OVERALL_DEADLINE' }));

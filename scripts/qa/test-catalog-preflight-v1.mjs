@@ -7,7 +7,7 @@ import { join, resolve, relative } from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { loadPlan, verifySql, SQL_SHA256, PACKET_SHA256, TARGET, LIMITS, CAPS, sha256, validateEvidence, runOfflineFixture, runAuthorizedProbe, bounded } from './catalog-preflight-v1.mjs';
-import { assertAcl, prepareTls, createExactPgFactory, createPrivateSink, createAttemptGuard } from './catalog-preflight-v1-native.mjs';
+import { assertAcl, prepareTls, createExactPgFactory, createPrivateSink, createAttemptGuard, isTrustedPgFactory, isTrustedPrivateSink, persistPrivateFile } from './catalog-preflight-v1-native.mjs';
 
 const plan = await loadPlan();
 const CANARY = 'SYNTHETIC_PRIVATE_POLICY_NOT_FOR_RECEIPTS';
@@ -86,13 +86,40 @@ test('the native attempt guard rejects second dispatches before socket or authen
 });
 test('missing Production authorization stops before transport preparation', async () => {
   const s = scenario();
-  const r = await runAuthorizedProbe({ plan, sink: { ...s.sink, kind: 'WINDOWS_PRIVATE_FILES' }, transportFactory: { ...s.transportFactory, kind: 'NATIVE_EXACT_PG' } });
+  const r = await runAuthorizedProbe({ plan, sink: createPrivateSink(join(tmpdir(), 'ogh-catalog-preflight-private-identity-only')), transportFactory: createExactPgFactory({}) });
   assert.equal(r.firstFailure, 'AUTHORIZATION_REQUIRED'); assert.equal(s.log.factoryCalls, 0); assert.equal(s.state.connections, 0);
 });
 test('synthetic authorization cannot be promoted to Production', async () => {
   const s = scenario(), args = s.argumentsFor(s.auth);
-  const r = await runAuthorizedProbe({ ...args, sink: { ...s.sink, kind: 'WINDOWS_PRIVATE_FILES' }, transportFactory: { ...s.transportFactory, kind: 'NATIVE_EXACT_PG' } });
+  const r = await runAuthorizedProbe({ ...args, sink: createPrivateSink(join(tmpdir(), 'ogh-catalog-preflight-private-identity-only')), transportFactory: createExactPgFactory({}) });
   assert.equal(r.firstFailure, 'AUTHORIZATION_SCOPE'); assert.equal(s.log.factoryCalls, 0);
+});
+for (const forged of ['factory', 'sink', 'both']) test('matching kind strings cannot forge Production ' + forged, async () => {
+  const s = scenario(), args = s.argumentsFor(s.auth);
+  let sinkCalls = 0;
+  const sink = forged === 'factory' ? createPrivateSink(join(tmpdir(), 'ogh-catalog-preflight-private-identity-only'))
+    : Object.freeze({ ...s.sink, kind: 'WINDOWS_PRIVATE_FILES', async verify() { sinkCalls++; return true; } });
+  const transportFactory = forged === 'sink' ? createExactPgFactory({}) : Object.freeze({ ...s.transportFactory, kind: 'NATIVE_EXACT_PG' });
+  const r = await runAuthorizedProbe({ ...args, sink, transportFactory });
+  assert.equal(r.firstFailure, 'OFFLINE_TRANSPORT_REQUIRED'); assert.equal(r.failureStage, 'ADMISSION');
+  assert.equal(sinkCalls, 0); assert.equal(s.log.consumed, false); assert.equal(s.log.factoryCalls, 0); assert.equal(r.connectionAttempts, 0);
+});
+test('private native instance identity cannot be copied, inherited, proxied or mutated', () => {
+  const factory = createExactPgFactory({}), sink = createPrivateSink(join(tmpdir(), 'ogh-catalog-preflight-private-identity-only'));
+  for (const [value, isTrusted] of [[factory, isTrustedPgFactory], [sink, isTrustedPrivateSink]]) {
+    assert.equal(isTrusted(value), true); assert.equal(Object.isFrozen(value), true);
+    for (const clone of [{ ...value }, Object.create(value), new Proxy(value, {})]) assert.equal(isTrusted(clone), false);
+    assert.throws(() => { value.kind = 'SYNTHETIC'; }, TypeError);
+  }
+  assert.equal(isTrustedPgFactory(sink), false); assert.equal(isTrustedPrivateSink(factory), false);
+});
+test('a locally computed digest is only an integrity check, not missing owner approval', async () => {
+  const s = scenario(), args = s.argumentsFor(s.auth);
+  delete args.expectedAuthorizationSha256;
+  const r = await s.run();
+  assert.equal(r.mode, 'SYNTHETIC_ONLY');
+  const blocked = await runAuthorizedProbe({ ...args, sink: createPrivateSink(join(tmpdir(), 'ogh-catalog-preflight-private-identity-only')), transportFactory: createExactPgFactory({}) });
+  assert.equal(blocked.firstFailure, 'AUTHORIZATION_REQUIRED'); assert.equal(blocked.connectionAttempts, 0);
 });
 for (const [name, mutate, expected] of [
   ['old authorization scope', a => { a.schema = 'RECOVERY_V2_3'; }, 'AUTHORIZATION_SCOPE'],
@@ -199,7 +226,7 @@ test('native Windows private sink persists only synthetic data with exclusive cr
     const script = `$ErrorActionPreference='Stop';$p='${literal}';$u=[Security.Principal.WindowsIdentity]::GetCurrent().User;$a=New-Object Security.AccessControl.DirectorySecurity;$a.SetOwner($u);$a.SetAccessRuleProtection($true,$false);foreach($sid in @($u,[Security.Principal.SecurityIdentifier]'S-1-5-18')){$r=New-Object Security.AccessControl.FileSystemAccessRule($sid,'FullControl','ContainerInherit,ObjectInherit','None','Allow');$a.AddAccessRule($r)};[IO.Directory]::SetAccessControl($p,$a)`;
     await promisify(execFile)('C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', ['-NoLogo', '-NoProfile', '-NonInteractive', '-EncodedCommand', Buffer.from(script, 'utf16le').toString('base64')], { windowsHide: true, timeout: 5000, maxBuffer: 8192 });
     const sink = createPrivateSink(root);
-    const budget = { active: () => true };
+    const budget = { active: () => true, cleanup: operation => bounded(operation, LIMITS.cleanupMs, { set: setTimeout, clear: clearTimeout }, 'PRIVATE_PERSISTENCE_UNCERTAIN') };
     await assert.rejects(sink.verify({ active: () => false }), { safeCode: 'PRIVATE_SINK_UNAVAILABLE' });
     assert.equal(await sink.verify(budget), true);
     assert.equal(await sink.consume({ scope: 'SYNTHETIC_TEST_ONLY_NOT_OWNER_AUTHORIZATION' }, budget), true);
@@ -208,6 +235,7 @@ test('native Windows private sink persists only synthetic data with exclusive cr
     assert.equal(await sink.writeEvidence(bytes, sha256(bytes), budget), sha256(bytes));
     assert.equal(sha256(await readFile(join(root, names[1]))), sha256(bytes));
     assert.equal(await sink.writeReceipt(encode({ scope: 'SYNTHETIC_ONLY', productionConnections: 0 }), budget), true);
+    assert.equal(sink.status().fileClose, 'CONFIRMED');
     assert.equal((await readdir(root)).sort().join('|'), [...names].sort().join('|'));
   } finally {
     for (const name of names) {
@@ -217,4 +245,71 @@ test('native Windows private sink persists only synthetic data with exclusive cr
     }
     await rmdir(root);
   }
+});
+
+function fileScenario({ writeFailure, syncFailure, readbackMismatch, closeFailure, hangingClose, remaining = 30000 } = {}) {
+  const clock = fakeClock(), bytes = Buffer.from('NONSECRET_SYNTHETIC_FILE');
+  const log = { closeCalls: 0, reads: 0, writes: 0, syncs: 0, opens: 0 };
+  const closeState = { attempted: 0, unconfirmed: 0 };
+  let resolveClose, rejectClose, enabled = true;
+  const handle = {
+    async stat() { return { isFile: () => true, nlink: 1 }; },
+    async writeFile() { log.writes++; if (writeFailure) throw writeFailure; },
+    async sync() { log.syncs++; if (syncFailure) throw new Error(CANARY); },
+    async close() { log.closeCalls++; if (hangingClose) return new Promise((resolve, reject) => { resolveClose = resolve; rejectClose = reject; }); if (closeFailure) throw new Error(CANARY); },
+  };
+  const sid = 'S-1-5-21-1-2-3-1001';
+  const io = { path: 'SYNTHETIC_NO_FILESYSTEM_ACCESS', closeState,
+    async verify(budget) { assert.equal(budget.active(), true); },
+    async open(path, mode, permissions) { log.opens++; assert.equal(mode, 'wx'); assert.equal(permissions, 0o600); return handle; },
+    async inspectAcl() { return { currentSid: sid, ownerSid: sid, protected: true, reparse: false, deniedAny: false, allows: [{ sid, fullControl: true }, { sid: 'S-1-5-18', fullControl: true }] }; },
+    async readFile() { log.reads++; return readbackMismatch ? Buffer.from('OTHER_SYNTHETIC_BYTES') : bytes; },
+  };
+  const budget = { active: () => enabled && clock.now() < remaining,
+    async cleanup(operation) {
+      const value = await bounded(operation, Math.min(LIMITS.cleanupMs, remaining - clock.now()), clock, 'PRIVATE_PERSISTENCE_UNCERTAIN');
+      if (clock.now() >= remaining) throw Object.assign(new Error(), { safeCode: 'PRIVATE_PERSISTENCE_UNCERTAIN' });
+      return value;
+    },
+  };
+  return { clock, log, closeState, digest: sha256(bytes),
+    run: (name = 'synthetic.private.json') => persistPrivateFile(io, name, bytes, sha256(bytes), budget),
+    async untilClose() { for (let i = 0; i < 40 && !log.closeCalls; i++) await Promise.resolve(); assert.equal(log.closeCalls, 1); },
+    resolveClose: () => resolveClose(), rejectClose: () => rejectClose(new Error(CANARY)), revoke: () => { enabled = false; },
+  };
+}
+test('native persistence helper retains exclusive creation, sync, close and hash readback', async () => {
+  const s = fileScenario(); assert.equal(await s.run(), s.digest);
+  assert.deepEqual(s.log, { opens: 1, writes: 1, syncs: 1, closeCalls: 1, reads: 1 }); assert.equal(s.closeState.unconfirmed, 0); assert.equal(s.clock.pending(), 0);
+});
+for (const remaining of [30000, 250]) test('file-close failure wait is bounded by shared remaining budget ' + remaining, async () => {
+  const s = fileScenario({ writeFailure: new Error(CANARY), hangingClose: true, remaining });
+  const pending = s.run(), rejected = assert.rejects(pending, { safeCode: 'PRIVATE_PERSISTENCE_UNCERTAIN' });
+  await s.untilClose(); s.clock.advance(Math.min(LIMITS.cleanupMs, remaining)); await rejected;
+  assert.equal(s.closeState.unconfirmed, 1); assert.equal(s.log.closeCalls, 1); assert.equal(s.log.reads, 0); assert.equal(s.clock.pending(), 0);
+});
+for (const completion of ['resolve', 'reject']) test('late close ' + completion + ' cannot confirm failed persistence', async () => {
+  const s = fileScenario({ hangingClose: true });
+  const pending = s.run(), rejected = assert.rejects(pending, { safeCode: 'PRIVATE_PERSISTENCE_UNCERTAIN' });
+  await s.untilClose(); s.clock.advance(LIMITS.cleanupMs); await rejected;
+  if (completion === 'resolve') s.resolveClose(); else s.rejectClose();
+  await Promise.resolve(); await Promise.resolve();
+  assert.equal(s.closeState.unconfirmed, 1); assert.equal(s.log.reads, 0); assert.equal(s.log.closeCalls, 1); assert.equal(s.clock.pending(), 0);
+});
+test('original exclusive-marker failure survives a file-close timeout', async () => {
+  const s = fileScenario({ writeFailure: Object.assign(new Error(CANARY), { code: 'EEXIST' }), hangingClose: true });
+  const pending = s.run('synthetic.authorization.used'), rejected = assert.rejects(pending, { safeCode: 'AUTHORIZATION_ALREADY_USED' });
+  await s.untilClose(); s.clock.advance(LIMITS.cleanupMs); await rejected;
+  assert.equal(s.closeState.unconfirmed, 1); assert.equal(s.clock.pending(), 0);
+});
+for (const [name, options] of [['sync failure', { syncFailure: true }], ['readback mismatch', { readbackMismatch: true }], ['close rejection', { closeFailure: true }]]) test('native persistence ' + name + ' never reports success', async () => {
+  const s = fileScenario(options); await assert.rejects(s.run(), { safeCode: 'PRIVATE_PERSISTENCE_UNCERTAIN' });
+  assert.equal(s.log.closeCalls, 1); assert.equal(s.clock.pending(), 0);
+  assert.equal(s.closeState.unconfirmed, options.closeFailure ? 1 : 0);
+});
+test('a confirmed close after work-budget revocation cannot start readback or confirm persistence', async () => {
+  const s = fileScenario({ hangingClose: true });
+  const pending = s.run(), rejected = assert.rejects(pending, { safeCode: 'PRIVATE_PERSISTENCE_UNCERTAIN' });
+  await s.untilClose(); s.revoke(); s.resolveClose(); await rejected;
+  assert.equal(s.closeState.unconfirmed, 0); assert.equal(s.log.reads, 0); assert.equal(s.clock.pending(), 0);
 });

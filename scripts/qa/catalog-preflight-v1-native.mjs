@@ -14,6 +14,10 @@ const need = (ok, code) => { if (!ok) fail(code); };
 const active = budget => need(budget?.active() === true, 'PRIVATE_PERSISTENCE_UNCERTAIN');
 const equalPath = (a, b) => resolve(a).toLowerCase() === resolve(b).toLowerCase();
 const inside = (root, path) => { const r = relative(root, path); return r === '' || !r.startsWith('..') && !isAbsolute(r); };
+// Only these constructors can register frozen implementations; callers cannot mint identities.
+const trustedFactories = new WeakSet(), trustedSinks = new WeakSet();
+export const isTrustedPgFactory = value => trustedFactories.has(value);
+export const isTrustedPrivateSink = value => trustedSinks.has(value);
 
 export function createAttemptGuard() {
   let connections = 0, authentications = 0;
@@ -38,11 +42,51 @@ async function inspectAcl(path) {
     return result;
   } catch (error) { throw Object.assign(new Error('PRIVATE_SINK_UNAVAILABLE'), { safeCode: 'PRIVATE_SINK_UNAVAILABLE', safeReason: error.safeReason ?? 'ACL_COMMAND_OR_JSON_FAILURE', safeCategory: error.safeCategory ?? 'UNKNOWN' }); }
 }
+// Injectable I/O tests this exact failure path without registering a Production sink.
+export async function persistPrivateFile(io, name, bytes, expected, budget) {
+  await io.verify(budget);
+  let handle;
+  const close = async () => {
+    const owned = handle; handle = null;
+    io.closeState.attempted++; io.closeState.unconfirmed++;
+    try {
+      await budget.cleanup(() => owned.close());
+      io.closeState.unconfirmed--;
+      return true;
+    } catch { return false; }
+  };
+  try {
+    active(budget);
+    handle = await io.open(io.path, 'wx', 0o600);
+    active(budget);
+    const s = await handle.stat();
+    active(budget);
+    need(s.isFile() && s.nlink === 1, 'PRIVATE_SINK_UNAVAILABLE');
+    assertAcl(await io.inspectAcl(io.path), false);
+    active(budget);
+    await handle.writeFile(bytes); active(budget);
+    await handle.sync(); active(budget);
+    need(await close(), 'PRIVATE_PERSISTENCE_UNCERTAIN');
+    active(budget);
+    await io.verify(budget);
+    assertAcl(await io.inspectAcl(io.path), false);
+    active(budget);
+    need(sha256(await io.readFile(io.path)) === expected, 'PRIVATE_PERSISTENCE_UNCERTAIN');
+    active(budget);
+    return expected;
+  } catch (error) {
+    if (handle) await close();
+    if (error?.code === 'EEXIST') fail(name.endsWith('.used') ? 'AUTHORIZATION_ALREADY_USED' : 'PRIVATE_PERSISTENCE_UNCERTAIN');
+    fail('PRIVATE_PERSISTENCE_UNCERTAIN');
+  }
+}
+
 export function createPrivateSink(directory) {
   need(process.platform === 'win32' && typeof directory === 'string' && /^[A-Za-z]:[\\/]/.test(directory), 'PRIVATE_SINK_UNAVAILABLE');
   const root = resolve(directory);
   need(/^ogh-catalog-preflight-private-[a-z0-9-]{8,80}$/.test(basename(root)) && !inside(ROOT, root) && !inside('D:\\OpenGlass Hub', root), 'PRIVATE_SINK_UNAVAILABLE');
   let identity;
+  const closeState = { attempted: 0, unconfirmed: 0 };
   async function verify(budget) {
     let phase = 'PATH';
     try {
@@ -70,37 +114,16 @@ export function createPrivateSink(directory) {
     } catch (error) { throw Object.assign(new Error('PRIVATE_SINK_UNAVAILABLE'), { safeCode: 'PRIVATE_SINK_UNAVAILABLE', safeStage: phase, safeReason: error.safeReason ?? 'CONTRACT_MISMATCH', safeCategory: error.safeCategory ?? 'UNKNOWN' }); }
   }
   async function persist(name, bytes, expected, budget) {
-    await verify(budget);
-    const path = join(root, name);
-    let handle;
-    try {
-      active(budget);
-      handle = await open(path, 'wx', 0o600);
-      active(budget);
-      const s = await handle.stat();
-      active(budget);
-      need(s.isFile() && s.nlink === 1, 'PRIVATE_SINK_UNAVAILABLE');
-      assertAcl(await inspectAcl(path), false);
-      active(budget);
-      await handle.writeFile(bytes); active(budget);
-      await handle.sync(); await handle.close(); handle = null;
-      await verify(budget);
-      assertAcl(await inspectAcl(path), false);
-      active(budget);
-      need(sha256(await readFile(path)) === expected, 'PRIVATE_PERSISTENCE_UNCERTAIN');
-      active(budget);
-      return expected;
-    } catch (error) {
-      if (handle) await handle.close().catch(() => {});
-      if (error?.code === 'EEXIST') fail(name.endsWith('.used') ? 'AUTHORIZATION_ALREADY_USED' : 'PRIVATE_PERSISTENCE_UNCERTAIN');
-      fail('PRIVATE_PERSISTENCE_UNCERTAIN');
-    }
+    return persistPrivateFile({ path: join(root, name), verify, open, inspectAcl, readFile, closeState }, name, bytes, expected, budget);
   }
-  return Object.freeze({ kind: 'WINDOWS_PRIVATE_FILES', directory: root, verify,
+  const sink = Object.freeze({ kind: 'WINDOWS_PRIVATE_FILES', directory: root, verify,
+    status: () => ({ fileClose: closeState.unconfirmed ? 'UNCONFIRMED' : closeState.attempted ? 'CONFIRMED' : 'NOT_NEEDED' }),
     async consume(record, budget) { const bytes = Buffer.from(JSON.stringify(record)); await persist('catalog-preflight-v1.authorization.used', bytes, sha256(bytes), budget); return true; },
     writeEvidence: (bytes, digest, budget) => persist('catalog-evidence.private.json', bytes, digest, budget),
     async writeReceipt(bytes, budget) { await persist('catalog-result.safe.json', bytes, sha256(bytes), budget); return true; },
   });
+  trustedSinks.add(sink);
+  return sink;
 }
 
 export function prepareTls(caPem) {
@@ -116,7 +139,7 @@ export function prepareTls(caPem) {
 
 // This is a dormant factory: construction/import does not read credentials or connect.
 export function createExactPgFactory({ password, caPem }) {
-  return Object.freeze({ kind: 'NATIVE_EXACT_PG', async create(plan, permit, budget) {
+  const factory = Object.freeze({ kind: 'NATIVE_EXACT_PG', async create(plan, permit, budget) {
     assertPlan(plan);
     claimNativePermit(permit, plan);
     active(budget);
@@ -206,4 +229,6 @@ export function createExactPgFactory({ password, caPem }) {
       status() { return { ...state, queryable: state.queryable && !fatal && !raw.destroyed, closed: endObserved && tcpClosed && (!tlsStream || tlsClosed) }; },
     });
   } });
+  trustedFactories.add(factory);
+  return factory;
 }
