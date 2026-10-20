@@ -1,5 +1,36 @@
 # Public Beta Current State
 
+## Critical Blocker Sprint (2026-10-20, Local Only)
+
+Isolated codex/public-beta-critical-blockers-20261020, base53ef39e7617eaf5f5c309a0b798be0cc4be85d9c.
+UI03 still BLOCKED: exact historical route GET /admin/reports/, local Miniflare
+service.fetch disconnect translated to500, downstream cause UNKNOWN. Existing
+receipts do not prove a Production500 or an application root cause. No guessed
+UI/Auth/permission fix,500-to403 mask or historical test rerun. Missing evidence:
+failed-request-correlated downstream exception/cause and actual serving identity.
+
+R2 tmp-reference risk is source-confirmed. New attach handler copies owned/post-bound
+temporary videos to verified permanent actor/post/r2-retained-UUID keys before DB
+insertion. Feed, public proxy and shared-reference-safe deletion recognize them;
+Supabase fallback/thumbnails preserved. No migration or R2 lifecycle change.
+Source ETag conditions + copied-result/destination HEAD verification are required.
+Pre-insert failures compensate only new unbound copies; uncertain INSERT outcomes
+retain copies for explicit reconciliation, not destructive cleanup. Original tmp
+sources remain subject to the unchanged expiry rule. Existing tmp references/loss
+and actual Production recoverability remain unverified, not automatically repaired.
+
+35/35 new targeted retention cases PASS,24/24 cleanup cases PASS, existing provenance
+and delivery regressions PASS,JS syntax3/3 PASS. Workerd fixtures exposed a new copy
+XML-parser DOMParser dependency; exact existing SDK parser mapping corrected and
+success/HTTP200-error cases PASS, no new packages. Guarded loopback-only build PASS;
+generated R2 chunk has no DOMParser. No claim of Production acceptance/typecheck GO.
+Evidence: docs/ops/reconciliation/public-beta-critical-blockers-20261020.md.
+
+NEXT_SINGLE_ACTION=INDEPENDENT_DELTA_REVIEW_OF_R2_RETENTION_CORRECTION.
+Existing dirty checkouts and frozen artifacts preserved. PRODUCTION_CONNECTIONS=0;
+PRODUCTION_WRITES=0;DEPLOYMENTS=0;REMOTE_PUSH=0;CATALOG_HOLD=ACTIVE;
+DATABASE_BACKUP_RECOVERABILITY=NOT_VERIFIED;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Real Media Inventory and Retention Gate (2026-10-19, Offline Preparation Only)
 
 Reused local media commit `2d64d0b243e44b1a219aa0fb417b19bf0196b747`; its 16 examined

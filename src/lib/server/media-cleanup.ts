@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { deleteR2Object } from "../r2-server";
+import { isRetainedR2VideoPath } from "../r2-media-path";
 import type { RuntimeEnv } from "./admin-auth";
 
 export type PostMediaLike = {
@@ -48,7 +49,7 @@ function normalizeR2ObjectKey(
 
   const stripLeading = (input: string) => input.replace(/^\/+/, "");
   const isLikelyKey = (input: string) =>
-    input.startsWith("tmp/") || input.startsWith("posts/");
+    input.startsWith("tmp/") || input.startsWith("posts/") || isRetainedR2VideoPath(input);
 
   const direct = stripLeading(raw);
   if (isLikelyKey(direct)) return direct;

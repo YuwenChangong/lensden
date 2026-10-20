@@ -16,6 +16,7 @@ import { evaluateLocalSensitiveLexicon } from "../../../lib/moderation/local-sen
 import { assertUserCanWrite, getSafetyWriteBlockResponse } from "../../../lib/server/user-safety.server";
 import { requireAuthenticatedLegalConsent } from "../../../lib/server/legal-consent-mutation.server";
 import { createLegalConsentReadRepository } from "../../../lib/server/legal-consent-repository.server";
+import { retainTemporaryR2Video, discardUnboundR2Video } from "../../../lib/r2-server";
 
 export const prerender = false;
 
@@ -326,7 +327,15 @@ export function validateMediaArray(postId: string, userId: string, media: MediaP
   return null;
 }
 
-export const POST: APIRoute = async ({ request, locals }) => {
+const productionDependencies = { createUserClient, assertUserCanWrite, requireAuthenticatedLegalConsent,
+  createLegalConsentReadRepository, retainTemporaryR2Video, discardUnboundR2Video };
+
+export function createPostMediaPost(overrides: Partial<typeof productionDependencies> = {}): APIRoute {
+  const { createUserClient, assertUserCanWrite, requireAuthenticatedLegalConsent,
+    createLegalConsentReadRepository, retainTemporaryR2Video, discardUnboundR2Video } = { ...productionDependencies, ...overrides };
+  return async ({ request, locals }) => {
+  const retained: string[] = [];
+  let insertAttempted = false;
   try {
     const env = runtimeEnv;
     if (!env) {
@@ -386,6 +395,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
       return json({ error: validationError }, 400);
     }
 
+    for (const item of media) {
+      if (item.kind !== "video" || !item.storage_path?.trim().startsWith("tmp/")) continue;
+      item.storage_path = await retainTemporaryR2Video({
+        env, userId: authData.user.id, postId, sourceKey: item.storage_path.trim(),
+        mimeType: item.mime_type!.trim().toLowerCase(), sizeBytes: normalizeNonNegativeNumber(item.size_bytes),
+      });
+      retained.push(item.storage_path);
+    }
+
     const coverIndex = media.findIndex((item) => item.is_cover === true);
     const { error: resetCoverError } = await userClient
       .from("post_media")
@@ -427,6 +445,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
       media,
     });
 
+    // After dispatch, a lost response may hide a committed insert. Retain copies
+    // rather than deleting an object that could already have a live DB reference.
+    insertAttempted = true;
     let { data: inserted, error: insertError } = await userClient
       .from("post_media")
       .insert(rows)
@@ -524,7 +545,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,
     );
+  } finally {
+    if (!insertAttempted) {
+      for (const path of retained) {
+        if (!await discardUnboundR2Video(runtimeEnv, path)) console.warn("[post-media] unbound retention cleanup unconfirmed");
+      }
+    }
   }
 };
+}
+
+export const POST: APIRoute = createPostMediaPost();
 
 export const ALL: APIRoute = () => json({ error: "Method not allowed" }, 405);

@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { isR2VideoPath } from "./r2-media-path";
 
 export type PostMediaKind = "image" | "video" | "video_link";
 
@@ -74,8 +75,8 @@ export async function resolveSignedPostMedia(
   options?: { publicProxy?: boolean },
 ): Promise<ResolvedPostMedia[]> {
   const sortedRows = sortMediaRows(mediaRows);
-  const isR2TempMedia = (item: PostMediaRow) =>
-    Boolean(item.storage_path && item.storage_path.startsWith("tmp/"));
+  const isR2Media = (item: PostMediaRow) =>
+    Boolean(item.kind === "video" && item.storage_path && isR2VideoPath(item.storage_path));
   const cache = getSignedMediaCache(supabase);
   const storagePaths = options?.publicProxy
     ? []
@@ -83,7 +84,7 @@ export async function resolveSignedPostMedia(
         sortedRows
           .flatMap((item) => {
             const values: string[] = [];
-            if ((item.kind === "image" || item.kind === "video") && item.storage_path && !isR2TempMedia(item)) {
+            if ((item.kind === "image" || item.kind === "video") && item.storage_path && !isR2Media(item)) {
               values.push(item.storage_path);
             }
             if (item.thumbnail_url && !/^https?:\/\//i.test(item.thumbnail_url) && !item.thumbnail_url.startsWith("tmp/")) {
@@ -106,16 +107,16 @@ export async function resolveSignedPostMedia(
     const normalizedPath = String(path ?? "").trim();
     if (!normalizedPath) return Promise.resolve("");
     if (/^https?:\/\//i.test(normalizedPath)) return Promise.resolve(normalizedPath);
-    if (normalizedPath.startsWith("tmp/")) {
+    if (isR2VideoPath(normalizedPath)) {
       return Promise.resolve(r2PublicBaseUrl ? buildPublicR2Url(r2PublicBaseUrl, normalizedPath) : "");
     }
     return cache.get(`${expiresIn}:${normalizedPath}`) ?? Promise.resolve("");
   };
 
   return Promise.all(sortedRows.map(async (item) => {
-    const isTempR2 = isR2TempMedia(item);
+    const isR2 = isR2Media(item);
     const fallbackExternalUrl =
-      r2PublicBaseUrl && item.storage_path && isTempR2
+      r2PublicBaseUrl && item.storage_path && isR2
         ? buildPublicR2Url(r2PublicBaseUrl, item.storage_path)
         : "";
     const publicDisplayUrl =
@@ -126,10 +127,10 @@ export async function resolveSignedPostMedia(
       options?.publicProxy && item.id && item.thumbnail_url
         ? buildPublicPostMediaProxyUrl(item.id, "thumb")
         : "";
-    const signedUrl = isTempR2
-      ? fallbackExternalUrl || item.url?.trim() || ""
-      : publicDisplayUrl
-        ? publicDisplayUrl
+    const signedUrl = publicDisplayUrl
+      ? publicDisplayUrl
+      : isR2
+        ? fallbackExternalUrl || item.url?.trim() || ""
       : item.storage_path && (item.kind === "image" || item.kind === "video")
         ? (await resolvePath(item.storage_path)) || fallbackExternalUrl || item.url?.trim() || ""
         : item.url?.trim() ?? "";

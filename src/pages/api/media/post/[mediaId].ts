@@ -3,6 +3,7 @@ import { env as runtimeEnv } from "cloudflare:workers";
 import { createSSRClient, type CloudflareEnv } from "../../../../lib/supabase-server";
 import { streamStorageObjectViaSignedUrl, streamTrustedMediaUrl } from "../../../../lib/media-proxy";
 import { isPublicVisibleCircle } from "../../../../lib/site-navigation";
+import { isR2VideoPath } from "../../../../lib/r2-media-path";
 
 export const prerender = false;
 
@@ -95,7 +96,7 @@ export async function resolvePublicPostMediaTarget(
   if (thumbnailPath && !isCanonicalPostMediaObjectPath(thumbnailPath, media.user_id, media.post_id, false)) return null;
 
   const path = variant === "thumb" && thumbnailPath ? thumbnailPath : storagePath;
-  return { path, delivery: path.startsWith("tmp/") ? "r2" : "supabase" };
+  return { path, delivery: media.kind === "video" && path === storagePath && isR2VideoPath(path) ? "r2" : "supabase" };
 }
 
 function buildTrustedR2ObjectUrl(baseUrl: string | undefined, objectPath: string): string | null {
