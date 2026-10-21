@@ -1,5 +1,35 @@
 # Public Beta Current State
 
+## R2 P2 Database Boundary (2026-10-21, Local Only)
+
+Implemented on f62dbf16a2163dd7eb63c941d1ccc381dc4e0a2f without changing
+the independently approved P1-A/P1-B source or previous evidence. New migration
+20261021062350_post_media_tmp_video_boundary.sql installs an invoker trigger:
+new tmp/ video bindings are rejected; historical tmp video id/post/user/kind/path
+are immutable, while existing RLS-authorized metadata updates, reads and deletes
+remain available. Historical path repair requires separate reconciliation; no
+legacy row rewrite, CHECK validation, RLS/grant change or lifecycle change.
+
+38/38 targeted checks PASS on the known-working network-none PG17/PostgREST
+fixture using repository post_media schema, constraints and policies. Auth,
+Storage and later visibility-column dependencies remain scoped local fixtures,
+not complete project parity. Direct SQL and actual authenticated HTTP insert,
+update, reassignment, cover, delete, retained-key and fallback cases verified.
+RLS/policy/grant snapshots identical; P1 source hashes unchanged; owned containers
+removed. Initial setup missed a comment_reactions dependency (42P01); adding its
+existing migration fixed only test assembly. No historical suites rerun.
+JS syntax and migration-version validation PASS (59 files, exact old duplicate
+baseline). SQL/test hashes and case evidence: reconciliation/r2-p2-database-guard.safe.json.
+
+P2_DATABASE_GUARD=IMPLEMENTED_PASS_LOCAL_PENDING_REVIEW; not deployed or globally
+enforced in Production. FULL_SCHEMA_ACCEPTANCE=STILL_UNVERIFIED; bootstrap and
+connection-path failures remain unresolved, with no further investigation here.
+Production backup, legacy media and UI03 gates remain unchanged.
+NEXT_SINGLE_ACTION=SCOPED_INDEPENDENT_REVIEW_OF_P2_TRIGGER_AND_TARGETED_TESTS.
+PRODUCTION_CONNECTIONS=0;PRODUCTION_MIGRATIONS=0;PRODUCTION_WRITES=0;
+REAL_R2_REQUESTS=0;DEPLOYMENTS=0;REMOTE_PUSH=0;CATALOG_HOLD=ACTIVE;
+PUBLIC_BETA_GO=NOT_AUTHORIZED. Earlier sections below are historical evidence.
+
 ## R2 Retention Final Offline Integration (2026-10-20)
 
 Owner separately authorized the claim-table integration and browser rollback fix
