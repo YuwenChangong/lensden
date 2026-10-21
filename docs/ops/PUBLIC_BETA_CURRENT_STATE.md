@@ -1,5 +1,67 @@
 # Public Beta Current State
 
+## Coherent Public Beta Release Candidate (2026-10-21, Offline Only)
+
+Branch: codex/public-beta-release-candidate-20261021. Clean isolated worktree
+C:/Users/1/.codex/worktrees/public-beta-release-candidate-20261021/OpenGlass Hub.
+Source base de5a86e46c612d2d8dac51ef4c106cb8e537b660 already contains these
+ancestors; no duplicate cherry-pick, conflict resolution or application edit:
+
+- Staged release integration: 2dcb3bb5e808aada74dc498dd9622f5e52075cfa.
+- R2 P1-A/P1-B: f62dbf16a2163dd7eb63c941d1ccc381dc4e0a2f.
+- R2 P2: de5a86e46c612d2d8dac51ef4c106cb8e537b660.
+- UI02 media accessibility: 3da5ad8bf177d95d029203c30cb3b594f396fb86.
+
+Owner reports the R2 reviews complete within their stated offline scope. No new
+independent approval or Production authority is inferred. Exact committed source
+checks PASS: 56 original migration blobs preserved, five frozen staged inputs
+unchanged, eight P1 inputs and two P2 inputs unchanged, five UI02 source/test inputs
+identical. Working inputs match committed source modulo Git checkout line endings.
+UI02 was already integrated, so no additional UI02 or browser suite was run.
+
+Migration inventory: exact staged 57 plus the following two files =59,38 distinct
+version prefixes; documented historical duplicate groups unchanged. New R2 SQL
+SHA256 values below identify exact committed bytes, not arbitrary checkout EOLs:
+
+- 20261020000000_post_media_r2_copy_claims.sql:
+  a6667a573d396d49c00e4282f3fff67f650ed455ad8007a33a5a9af437e06043.
+- 20261021062350_post_media_tmp_video_boundary.sql:
+  f13abf17095df974c6ee706faf999b9f1b97d4db6b007b4a3ff2d9991d770a0b.
+
+Reviewed Production ordering remains explicit, NOT timestamp sorting:
+Phase0 alignment20261016090712 -> Phase1 grants20261015072723 -> Phase2 deleted
+placeholders20261015074931 -> Phase3 existing quota adoption20261016061618.
+All four canonical SQL and executed-body hashes match the staged review receipt.
+Only after those phases: R2 claim20261020000000 -> P2 guard20261021062350 ->
+schema/API acceptance -> new R2 application activation. The guard depends on the
+existing post_media schema; claim-dependent application code must not activate
+before the claim table and permissions are accepted. No existing quota RPC is
+overwritten. The old four-phase executor is byte-identical and correctly rejects
+the59-file inventory with RELEASE_UNREVIEWED_MIGRATION_INVENTORY. No new executor,
+scope extension, authorization or Production execution was created; a separately
+approved migration scope is required before any Production execution.
+
+Current RC verification: source/ancestry/inventory/hash checks PASS; migration
+version validator PASS; guarded Worker build PASS with existing Markdown/CSS
+warnings. Existing Astro/TypeScript ratchet PASS:177 baseline errors,56 current,
+121 removed,0 new,0 changed diagnostic source lines,0 unparsed changed paths.
+This is not a zero-error typecheck. Build used existing loopback/synthetic config
+and an allowlisted credential-free environment; generated dist is a local-only
+verification artifact, NOT a Production release artifact. No package installation.
+Historical58/58 application,24/24 cleanup,22/22 PG/PostgREST and38/38 P2 evidence
+remain source-applicable and were reused, not rerun. No full Supabase bootstrap,
+new Docker diagnostic, real R2 operation or UI03 experiment was started.
+
+Other worktrees, their uncommitted changes, old packets and receipts remain
+untouched. RC source changes from de5a86e4 are limited to this progress record;
+the local RC commit is the authoritative candidate identity, not Production GO.
+FULL_SCHEMA_RUNTIME_PARITY=NOT_VERIFIED;UI03=BLOCKED_WAITING_ON_MANAGEMENT_ACCESS;
+DATABASE_BACKUP_RECOVERABILITY=NOT_VERIFIED;LEGACY_TMP_MEDIA=NOT_VERIFIED;
+PRODUCTION_MIGRATIONS=0;PRODUCTION_WRITES=0;PRODUCTION_DEPLOYMENTS=0;REMOTE_PUSH=0;
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+NEXT_SINGLE_ACTION=FINAL_RELEASE_GATE_REVIEW_OF_THIS_LOCAL_RC_NO_PRODUCTION_EXECUTION.
+Earlier sections below preserve historical states and evidence.
+
 ## R2 P2 Database Boundary (2026-10-21, Local Only)
 
 Implemented on f62dbf16a2163dd7eb63c941d1ccc381dc4e0a2f without changing
