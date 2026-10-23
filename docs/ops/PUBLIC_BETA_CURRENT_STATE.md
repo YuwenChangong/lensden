@@ -1,5 +1,63 @@
 # Public Beta Current State
 
+## CAPTCHA-Compatible Core Packet Prepared, No Live Authority (2026-10-24 NZDT)
+
+Inspected frozen RC login Astro, AuthPanel, AuthTurnstile, browser Supabase client,
+safe redirects and callback. Login SSR takes AUTH_CAPTCHA_MODE and the dedicated
+PUBLIC_AUTH_TURNSTILE_SITE_KEY from runtime; required mode blocks submission
+without proof. Real widget callback supplies one consumed proof to the site's
+Supabase SDK options.captchaToken; session persistence and callback routing remain
+the existing application path. No proven application defect or frozen RC change.
+Previous direct Auth operator omitted CAPTCHA and is excluded from the new flow.
+Live widget/configuration/provider and ordinary-user login remain NOT_VERIFIED.
+
+New focused offline test used actual headful Microsoft Edge and frozen React
+components in the existing local visual harness.8/8 checks PASS: three separate
+browser storage contexts; required missing/expired proof blocks; proof forwarding
+and safe next; widget callback/reset; structured error blocks success navigation;
+callback with/without session. Proofs/identity markers were synthetic fixtures,
+not real CAPTCHA solving, real Auth or Production session acceptance. Provider
+and Production requests0; no screenshots/traces; browser and local server closed.
+One initial Windows file-URL import error was repaired in the local test only.
+No historical full suites, migrations, deployment, backup or RC build repeated.
+
+Existing saved A alias is already consumed by the banned new A. Owner explicitly
+approved generating two NEW private Gmail plus aliases from the same confirmed
+controlled primary, without re-entry or mail. Both new aliases are distinct from
+the old pair, stored in mailboxes.captcha-v1.private.json in the same current-user
+private mailbox directory; old configs, accounts and envelopes unchanged. Delivery
+is owner-attested for the same mailbox, not independently tested by sending mail.
+
+One complete private review packet:
+CORE_ACCEPTANCE.captcha-v1.NOT_AUTHORIZED.json, under the existing
+mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302 directory.
+SHA256=98c14a34d52d6186f4a23cc9ddb8de13dae9e3b4a4135e09acf785369ae059cf.
+Complete pending approval: CORE_ACCEPTANCE.captcha-v1.OWNER_APPROVAL.txt.
+31 packet/source/identity/cap checks PASS; current-user-only private ACL checked.
+No window starts during preparation. A matching new approval after owner readiness
+starts one120minute window, no extension; initial admission10min, new fixtures75,
+business writes90, legacy admission105, all requests/cleanup stop120. Owner
+CAPTCHA wait up to300sec per actor, then one submit/30sec observation; no retry.
+
+New A2 must pass actual browser login, exact Auth UUID and real profile user gate
+before B2. Separate new ordinary-user Edge contexts never share the administrator
+profile. Site owns CAPTCHA/token submission; no extraction/replay, fabricated
+session, direct login fallback or global Auth changes. Both prior A identities
+are excluded. Auth20 retains6 independently authorized exact containment requests;
+failed business gate does not revoke that branch, but window/identity gates still
+apply. Worker80/REST64/Storage24/R2ops12/management4/browser10-assets300 and separate
+legacy one read-only DB/up-to64HEAD limits preserved. CAPTCHA traffic is bounded
+within browser300; no provider calls during preparation. Public self-service
+signup remains UNVERIFIED, not implied by admin-created test accounts.
+
+At2026-10-23T12:10:09.183Z local Wrangler expiry12:30:02.854Z left1193sec,
+below2700sec admission. One owner interactive login is needed before the next
+approval; no automatic refresh or live permission claim. New Production requests,
+accounts, credentials, email, DB connections, migrations, deployments and push0.
+NEXT_SINGLE_ACTION=OWNER_COMPLETES_ONE_WRANGLER_LOGIN_AND_SUBMITS_PRIVATE_EXACT_APPROVAL_WHEN_READY_FOR_REAL_CAPTCHA.
+Destructive jobs remain paused; legacy material risk NOT_VERIFIED;
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Core V2r1 Stopped: CAPTCHA Failure, New A Contained (2026-10-24 NZDT)
 
 Owner explicitly approved binding
