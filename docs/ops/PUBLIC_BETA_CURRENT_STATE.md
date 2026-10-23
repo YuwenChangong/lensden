@@ -1,5 +1,34 @@
 # Public Beta Current State
 
+## Synthetic A Containment Time Evidence v2 (2026-10-23, Offline Only)
+
+This isolated tooling revision does not rebuild or change the frozen Production
+RC, SQL or old execution artifacts. Preserved external final release receipts
+record six migrations, RC deployment and fence removal; no such operation was
+repeated here. The historical sections below retain their original scope.
+
+Synthetic A remains NOT_DISABLED: the last approved exact Auth read matched UUID,
+email and namespace but failed a timestamp predicate with no retained created_at
+diagnostics. Its actual failure cause is UNKNOWN. No new Production request,
+login, ban, account creation, migration or deployment occurred in this revision.
+
+New v2 tooling persists seven value-blind creation-time fields before admission,
+uses the hash-bound successful create request/response interval
+2026-10-23T06:15:20.698Z..06:15:21.572Z and a predefined 10000ms tolerance,
+strictly normalizes explicit timezone timestamps, and never fits clock skew.
+Missing/invalid fields or unreliable receipt boundaries remain UNKNOWN; an
+out-of-window timestamp fails. Identity matching alone cannot authorize a ban.
+Current provider Date metadata is diagnostic, not historical clock proof.
+
+Targeted creation-time fixtures:15/15 PASS; fresh-owner guard rejects with zero
+requests. Ban plus independent readback is separate from historical Auth log
+recovery: unavailable diagnosis does not negate a verified ban. DPAPI cleanup
+retains its exact prerequisites; otherwise encrypted files remain protected.
+Tests here are offline evidence, not Production containment or core acceptance.
+
+NEXT_SINGLE_ACTION=OWNER_APPROVES_NEW_EXACT_V2_A_CONTAINMENT_PACKET_ONLY.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED;REMOTE_PUSH=0.
+
 ## Coherent Public Beta Release Candidate (2026-10-21, Offline Only)
 
 Branch: codex/public-beta-release-candidate-20261021. Clean isolated worktree
