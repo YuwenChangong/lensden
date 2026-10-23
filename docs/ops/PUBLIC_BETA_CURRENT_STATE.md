@@ -1,5 +1,57 @@
 # Public Beta Current State
 
+## Core Auth Admission Correction (2026-10-23, Offline Only)
+
+Historical A stays VERIFIED banned; its protected envelopes remain retained.
+Completed deployment, six migrations, fence removal, backup and recovery evidence
+were not repeated. Historical login400 root cause remains UNKNOWN. Official Auth
+error-code documentation identifies email_address_invalid for example/test
+domains, making the old hard-coded example.invalid fixture a plausible cause,
+not a recovered historical error code:
+https://supabase.com/docs/guides/auth/debugging/error-codes
+
+New offline-only scripts/qa/core-auth-admission-v2.mjs preserves structured Auth
+codes, status and allowlisted correlation IDs without messages, bodies or tokens.
+It rejects reserved/test mailbox domains, requires exact mailbox approval and
+ownership before packet binding, checks actual email_confirmed_at and exact
+provider UUID/email/namespace, and does not compare local/server creation times.
+An ownership assertion is not provider acceptance or Production authority.
+The old create/login code uses the same generated in-memory password variable;
+no credential source mismatch was proven. Old executors and packets are unchanged.
+
+Focused offline fixtures17/17 PASS; syntax2/2 PASS. Source SHA256:
+d63cf4030b399329634bd41e2a82f2c77a5ac0ef42316f56d31ccbef75f0104f.
+Test SHA256:51d82c4e9f469a0f736190141983a62ce36789b0a56ac7f1bd88e83aa4a88b40.
+These are admission/receipt helpers, not a live executor or approved containment.
+Tests prove failure stops second-account/business admission; exact independently
+approved containment is separate, failed/ambiguous cleanup stays UNKNOWN and
+cannot mask the original failure. Actual profiles.role=user remains a live gate.
+
+Scoped nonsecret source/receipt inspection did not establish currently authorized
+project-controlled addresses. The historical Gmail alias example explicitly
+requires fresh ownership/permission confirmation; it is not an approved mailbox.
+No ambiguous existing QA credential or real-user address was adopted or exposed.
+Only blocker requiring owner input: privately identify/authorize a controlled
+mailbox and two fresh valid aliases. No new exact packet, window or GO is created
+with unknown email identities. Live integration and final exact binding remain
+pending; no ready-to-execute core workflow is claimed.
+
+The single future scope must cover first actor create/confirmed response/exact
+identity/login/ordinary role before actor2 or business writes; then the existing
+bounded core cases and namespace-only cleanup. Reserve separate exact identity
+precheck/ban/independent readback allowances for BOTH actors even after failed or
+uncertain login, without retry/enumeration or requiring a new cleanup approval.
+Recompute Auth caps for these reads rather than reusing the historical16 budget.
+Explicit short-lived public synthetic exposure is required (no private circles).
+Existing DPAPI helpers and media fixtures can be reused; old A credentials cannot.
+Legacy tmp media impact remains UNVERIFIED, separate from Auth. No fresh metadata
+permission is granted. Do not retry the historical log401 or seek more privilege.
+
+Production requests/accounts/logins/writes/credential decryptions/DB connections/
+migrations/deployments/push=0 for this task. Destructive jobs stay paused.
+NEXT_SINGLE_ACTION=OWNER_PRIVATELY_IDENTIFIES_AND_AUTHORIZES_CONTROLLED_TEST_MAILBOX_ALIASES.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Synthetic A V3 Containment Executed (2026-10-23)
 
 Owner explicitly approved binding
