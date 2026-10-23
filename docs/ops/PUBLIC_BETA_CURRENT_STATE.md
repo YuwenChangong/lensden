@@ -1,5 +1,38 @@
 # Public Beta Current State
 
+## Core V2 Window Expired Before Auth Provisioning (2026-10-24 NZDT)
+
+Owner explicitly allowed readmission within the original window without extra
+quota after interactive Wrangler login. Local readmission passed at
+2026-10-23T08:35:03.616Z with3491seconds remaining (required2700); no refresh.
+Exactly3 authorized Cloudflare management reads passed at08:35:44.510Z:
+bound deployment/version/100percent traffic and nonsecret settings matched;
+paid forum policy classifier was disabled. These are historical management-plane
+observations, not current evidence or request-level version proof.
+
+Existing Auth key project/role checks, fresh private execution ACL and nonsecret
+DPAPI probe passed locally. No account credentials were generated. A tool-context
+module restriction was handled locally without an Auth dispatch. The separate
+bound Auth operator command was syntax-checked but NEVER EXECUTED. Its one-use
+marker is absent and the prepared private execution directory remains empty.
+Do not claim Auth or ordinary-user acceptance from this local preparation.
+
+On continuation at2026-10-23T11:17:22Z the original10:29:26.741Z execution window
+and09:44:26.741Z fixture admission were already expired. No new Production request
+was sent. Local CORE_V2_EXPIRED.safe.json at11:19:02.211Z records the exact stop.
+Original binding remains bef382f3d3c8c06620d0cf8f872f16d77b540b6156d310160f461787e721930a;
+it is not renewable or replayable. Local management-only operator memory was reset.
+
+Total consumed under this binding: management reads3; Auth/REST/Worker/Storage/R2/
+browser requests0; new accounts/business writes/database connections/migrations/
+deployments/retries0. Current-turn Production requests0. No new actor requires
+containment. Historical A and its two envelopes remain unchanged and protected.
+Mailbox input and completed RC/recovery/migration evidence can be reused under a
+fresh exact authorization; old GO and unused quotas cannot become a new window.
+
+NEXT_SINGLE_ACTION=FRESH_EXACT_TIME_BINDING_AND_OWNER_APPROVAL_BEFORE_ANY_PRODUCTION_RESUMPTION.
+Destructive jobs stay paused. CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Core Acceptance V2 Approved, Local Credential Admission Stopped (2026-10-23)
 
 Owner explicitly submitted the complete approval for binding
