@@ -1,5 +1,50 @@
 # Public Beta Current State
 
+## Core V2r1 Stopped: CAPTCHA Failure, New A Contained (2026-10-24 NZDT)
+
+Owner explicitly approved binding
+33dec18588856b1752eb4fabd6bbde19f3e1b202c0f79417e19aeb2d0ee2ee3d.
+Exact packet, source pins, private mailbox and fixed-window admission matched.
+Three fresh management reads passed: full Worker version
+d53e3c67-f8ee-4dee-bd18-a57f16e3d91d, deployment
+e85f8082-675c-4315-a145-42bda81a36bc, single-version100percent traffic and
+bound nonsecret settings. Paid forum classifier disabled; no token refresh.
+
+New synthetic A dce0109d-93ef-4cc7-a91f-4085855410c9 was created and independently
+identity-checked; provider email confirmation was true. Its only password login
+at2026-10-23T11:42:10.927Z returned HTTP400 with structured code captcha_failed.
+The bound direct API login supplied email/password, not a CAPTCHA token. This
+proves CAPTCHA verification failed, not the precise provider/configuration cause
+or a password/mailbox defect. Historical first A's unrelated HTTP400 remains
+UNKNOWN. No login retry, CAPTCHA bypass or global Auth configuration change.
+
+Business execution stopped immediately before B or profile REST. Independently
+authorized containment used exact identity precheck GET, one ban PUT876000h and
+one independent GET readback. New A ban VERIFIED; banned_until is
+2126-09-29T11:41:33.125019Z. Actual profiles.role remains NOT_VERIFIED. No successful
+login session was obtained; logout NOT_DONE. Ban is not proof of JWT revocation.
+Both new DPAPI envelopes remain hash-verified and current-user/SYSTEM-only ACL
+protected; no unlink/decryption in follow-up verification. This is verified
+account containment, NOT full credential/session cleanup PASS. Historical A and
+its separate retained envelopes were not touched.
+
+Actual counters: management3; Auth6 (create1, identity GET1, login1, containment
+GET/PUT/GET3); Auth administrative writes2 (create and ban); login retries0.
+B NOT_CREATED. Worker business API/REST/Storage/R2/browser/business writes0;
+database connections/migrations/deployments/push0. Legacy inspection NOT_EXECUTED
+after the critical stop. Unused allowances do not authorize further requests.
+Local operator exited; first failure and single-use marker preserved. Frozen RC,
+SQL, executor, existing release/recovery evidence unchanged; no historical suites.
+
+Private final receipt: existing mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302
+directory, CORE_V2R1_EXECUTION.safe.json.
+SHA256=9e0ad1258b4a1008a4d7e5c3fddb8a3a7f32198591c28e8a51207231109dbbb6.
+DECISION=STOPPED_CAPTCHA_AUTH_FAILURE_NEW_ACTOR_CONTAINED; core acceptance NO_GO.
+NEXT_SINGLE_ACTION=FRESH_EXACT_AUTHORIZATION_FOR_EXISTING_BROWSER_CAPTCHA_LOGIN_WITH_A_FRESH_SYNTHETIC_IDENTITY_BEFORE_RESUMING_CORE_CASES.
+No retry/unban/reuse of the contained A or consumed login allowance. Destructive
+jobs remain paused; legacy media risk NOT_VERIFIED. CATALOG_HOLD=ACTIVE;
+PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Fresh Core V2r1 Exact Packet Ready After Owner Readiness (2026-10-24 NZDT)
 
 Owner completed interactive login and explicitly confirmed immediate signing
