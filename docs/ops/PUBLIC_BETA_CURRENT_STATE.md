@@ -1,5 +1,37 @@
 # Public Beta Current State
 
+## Core Acceptance V2 Approved, Local Credential Admission Stopped (2026-10-23)
+
+Owner explicitly submitted the complete approval for binding
+bef382f3d3c8c06620d0cf8f872f16d77b540b6156d310160f461787e721930a.
+Exact packet hash, all approval fields, private mailbox hash, fixed target and
+all local source pins matched. Matching actual owner-message verification was
+recorded exclusively at2026-10-23T08:29:26.741Z; this starts the original120minute
+window, ending10:29:26.741Z. Latest new fixture admission09:44:26.741Z; latest new
+business write09:59:26.741Z. The window cannot be recreated or extended on resume.
+
+First local credential gate STOPPED_BEFORE_ACCOUNT_CREATION:
+WRANGLER_CREDENTIAL_ADMISSION_INSUFFICIENT. Existing credential expiry was
+2026-10-23T07:05:32.750Z; remaining=-5035seconds at08:29:26.755Z, required2700.
+This is local expiry evidence, not an actual remote permission rejection. No
+Cloudflare request/automatic refresh was attempted; later live gates remain
+NOT_REACHED, not PASS. Owner's current cost/pause assertions were recorded but
+do not override this credential gate. No A/B password was generated or decrypted,
+no new account or business fixture was created; independent containment has no
+new identity to act on. Historical A and its retained envelopes are untouched.
+
+Private receipts under the existing mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302
+directory: CORE_V2_OWNER_VERIFIED.safe.json,
+CORE_V2_LOCAL_CREDENTIAL_ADMISSION.safe.json, CORE_V2_EXECUTION_STOPPED.safe.json.
+Production/management/Auth requests, logins, account creations, business writes,
+database connections, migrations, deployments and retries=0. No historical tests,
+backup, release acceptance or RC work repeated. Executor exited with safe stop.
+
+NEXT_SINGLE_ACTION=OWNER_COMPLETES_INTERACTIVE_WRANGLER_LOGIN_AND_EXPLICITLY_REQUESTS_READMISSION_ONLY_WITHIN_ORIGINAL_VALID_WINDOW_AND_UNCHANGED_QUOTAS.
+No automatic retry or approval reactivation; if the original admission/window
+becomes insufficient, stop rather than silently extending it. Destructive jobs
+remain paused. CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Private Mailbox Setup Repaired and Core Packet v2 Prepared (2026-10-23)
 
 Actual GUI startup probe reproduced BLOCKED_LOCAL_MAILBOX_SETUP at PRIVATE_ACL:
