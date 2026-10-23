@@ -1,5 +1,39 @@
 # Public Beta Current State
 
+## Fast Resume Offline Reuse Check (2026-10-24 NZDT)
+
+Fresh offline check at2026-10-23T11:23:56.615Z matched the existing private mailbox
+hash, both distinct aliases, current-user-only ACL and all unchanged Auth/helper
+source pins. No mailbox input/config regeneration or historical test repetition.
+Frozen RC HEAD remains0b6d94ffbfaf4cb388fe217b9f1609e3090b60e5; no rebuild/deploy.
+Prepared new-actor journal remains empty. Old A and its envelopes stay excluded.
+
+Existing Wrangler4.125.0 is installed in the frozen RC dependency tree. Its local
+credential expiry09:33:15.181Z is past; remaining=-6642seconds, required2700.
+Interactive owner login is needed once. No remote permission check, token refresh
+or Production request was attempted. Actual management authorization remains
+UNVERIFIED until fresh authorized reads; old3 reads at08:35:44.510Z cannot replace
+new admission evidence or supply unused old allowances.
+
+Owner explicitly requires readiness BEFORE a fresh time binding is generated.
+No new packet/hash, execution activation or window was created. After login and
+owner readiness, prepare one exact independently approved scope reusing the two
+aliases and core caps: Auth20 (including6 reserved containment reads/writes),
+Worker80 with existing per-endpoint limits, REST64, Storage24, syntheticR2 ops12,
+management4, browser navigations10/read-only asset-API300, zero executor retries
+and zero additional cost. No quota is added to the expired authorization.
+The newly requested legacy read-only assessment can reuse the ORIGINAL prepared
+SQL hashcf4cbed2d694c106c93a488b727eb768832c4e00516ecb8276b8c68fd5c2b0b7
+and its separately defined1 read-only DB connection/up-to64 exact HEAD ceilings;
+these must be explicitly included in the NEW authorization, never inferred from
+the expired V2 which authorized0 legacy reads. No real bytes or keys in receipts.
+First actor login/actual profile user before B/business; same independent exact
+precheck/ban876000h/readback allowance on failures; no historical actor reuse.
+
+Production requests/emails/writes/new accounts/migrations/deployments/push=0.
+NEXT_SINGLE_ACTION=OWNER_COMPLETES_ONE_INTERACTIVE_WRANGLER_LOGIN_AND_CONFIRMS_READY_TO_SIGN_IMMEDIATELY.
+Destructive jobs stay paused. CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Core V2 Window Expired Before Auth Provisioning (2026-10-24 NZDT)
 
 Owner explicitly allowed readmission within the original window without extra
