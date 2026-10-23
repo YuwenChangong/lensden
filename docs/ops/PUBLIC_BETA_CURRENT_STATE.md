@@ -1,5 +1,45 @@
 # Public Beta Current State
 
+## Fresh Core V2r1 Exact Packet Ready After Owner Readiness (2026-10-24 NZDT)
+
+Owner completed interactive login and explicitly confirmed immediate signing
+readiness before this preparation. Existing OAuth local expiry is
+2026-10-23T12:30:02.854Z; remaining3524seconds at11:31:16Z exceeds2700 admission.
+This is local credential evidence, not live permission proof. No remote call.
+
+One fresh private packet reuses exact mailbox/aliases/namespace, unchanged Auth
+helpers, fixture bytes, frozen RC, migrations and backup evidence. Old GO and
+all old request allowances are excluded. Binding:
+33dec18588856b1752eb4fabd6bbde19f3e1b202c0f79417e19aeb2d0ee2ee3d.
+Packet and complete approval text are under the existing current-user-only
+mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302 directory, named
+CORE_ACCEPTANCE.v2r1.NOT_AUTHORIZED.json and CORE_ACCEPTANCE.v2r1.OWNER_APPROVAL.txt.
+
+Fixed UTC window11:35:28.146Z..12:28:02.854Z on2026-10-23; initial admission by
+11:45:02.854Z (preserves2700sec credential margin); new fixtures by11:50:28.146Z;
+new business writes end12:08:02.854Z; legacy inspection admission by12:13:02.854Z.
+All cleanup/requests stop at12:28:02.854Z, before credential expiry. No automatic
+renewal or refresh. These are PENDING terms, not a current execution permission.
+
+Fresh caps preserve Auth20 including6 independent containment requests, Worker80
+and endpoint sublimits, REST64, Storage24, syntheticR2 ops12, management4 and
+browser10/read-only assets300. The requested separate original legacy scope is
+explicitly restored as one fresh read-only connection/up-to64 HEADs, requiring
+new owner GO and local hidden password. Existing SQL and CA DER identities match.
+No real media bytes/keys in public receipts; no migrations/deployments/Catalog GO.
+
+Auth operator snapshot is mechanically rebound in6 exact identity/time locations
+only, preserving old source and business behavior. New operator SHA256:
+b425df86f61c3ea247134551204f87fc74e7ee08be2224302ecc1fbd7d413983.
+It is source-pinned in the fresh packet and rejects missing binding before any
+credential/marker/network activity. Syntax PASS;15 fresh packet/identity/budget/
+source checks PASS; private ACL PASS. Historical17 Auth cases and release/full
+suites were NOT repeated. No new mailbox config, account password or actor.
+
+NEXT_SINGLE_ACTION=OWNER_SUBMITS_COMPLETE_APPROVAL_FOR_FRESH_33dec185_BINDING_BEFORE_INITIAL_ADMISSION.
+Production requests/emails/writes/migrations/deployments/push=0 in preparation.
+Destructive jobs stay paused. CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Fast Resume Offline Reuse Check (2026-10-24 NZDT)
 
 Fresh offline check at2026-10-23T11:23:56.615Z matched the existing private mailbox
