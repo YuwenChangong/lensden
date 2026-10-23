@@ -1,5 +1,33 @@
 # Public Beta Current State
 
+## Synthetic A V3 Containment Executed (2026-10-23)
+
+Owner explicitly approved binding
+c20bddfef637697868aad90d8bfb98f7add0c3d56564561df666ac533a9be99b.
+Executor source commit6b867ee4927e799f523715ce3c0d0614fe132519 is unchanged.
+Exact identity, eight receipt pins and the separately approved UTC-millisecond
+timestamp exception passed. The original -37539ms diagnostic remains preserved;
+raw/submillisecond equality was not claimed. Precheck/ban/readback HTTP200/200/200.
+
+SYNTHETIC_A_DISABLE_STATUS=VERIFIED by independent exact Auth readback;
+banned_until=2126-09-29T07:34:43.166238Z. This is not existing-JWT revocation proof.
+Auth reads2; approved ban update1; limited historical log read1 returned401;
+login attempts/retries/account creation/business writes/DB connections/new
+migrations/deployments/push=0. Historical Auth400 cause remains UNKNOWN.
+
+Both hash-bound DPAPI ciphertext files remain protected and intact. Neither Auth
+read explicitly established last_sign_in_at=null, so the cleanup prerequisites
+were not met; no decryption or unlink occurred and cleanup is not PASS.
+Current-user/SYSTEM-only ACL was verified. Owned executor exited successfully.
+
+Authoritative private execution receipt:
+C:/Users/1/AppData/Local/OpenGlassHub/core-acceptance-20261023-20a58bce/AUTH_A_CONTAINMENT.v3.EXECUTION.safe.json
+SHA256=9913c3a0ba985f0e142f77d371f7a07791114675e9ac286112d79e74888aca2d.
+Further historical diagnosis requires valid existing management read access and
+a new exact log-read allowance; no retry or core acceptance resumption is granted.
+Destructive cleanup jobs remain paused. CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+Sections below preserve earlier preparation states, not current disable status.
+
 ## Exact Synthetic A Timestamp Exception v3 (2026-10-23, Offline Only)
 
 V2 Production evidence now preserves A's valid normalized created_at
