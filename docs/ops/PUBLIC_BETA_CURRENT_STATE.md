@@ -1,5 +1,35 @@
 # Public Beta Current State
 
+## Exact Synthetic A Timestamp Exception v3 (2026-10-23, Offline Only)
+
+V2 Production evidence now preserves A's valid normalized created_at
+2026-10-23T06:14:43.159Z and signed distance -37539ms from the successful local
+create request interval. UUID/email/namespace matched. The HTTP Date difference
+is current evidence only, not proof of historical clock synchronization. V2
+stopped without ban, log read or login; A is NOT_DISABLED and credentials remain
+protected. Original V2 source, approval packet and historical receipts are intact.
+
+New isolated V3 tooling permits only an explicitly owner-approved exception for
+that exact project/UUID/email/namespace/timestamp and eight fixed receipt hashes.
+UTC-millisecond comparison precision from the V2 receipt is separately explicit
+in the pending contract; valid full-precision input and whether finer precision
+also matches are retained, never silently claimed identical. No global tolerance
+changes or other account exception. Original time-window FAIL/-37539ms diagnostics
+remain separate from a successful unique-account exception admission.
+
+Fresh approval will start one 60-minute window once, latest admission at minute45;
+no window is started during preparation and expired approval cannot self-refresh.
+Existing exact ban/readback, independent optional historical diagnosis and strict
+conditional ciphertext cleanup stay narrowly scoped. No core test resumption.
+
+V3 focused offline fixtures:18/18 PASS; syntax3/3 PASS; fresh-owner guard rejects
+before any request. Production requests/writes/logins/migrations/deployments=0
+for this preparation; no credential decryption or push. No Production approval
+is inferred from this commit or the new packet hash.
+
+NEXT_SINGLE_ACTION=OWNER_SIGNS_UNIQUE_V3_EXACT_A_CONTAINMENT_BINDING.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Synthetic A Containment Time Evidence v2 (2026-10-23, Offline Only)
 
 This isolated tooling revision does not rebuild or change the frozen Production
