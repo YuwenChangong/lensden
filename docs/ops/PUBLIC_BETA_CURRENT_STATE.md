@@ -1,5 +1,60 @@
 # Public Beta Current State
 
+## Private Mailbox Setup Repaired and Core Packet v2 Prepared (2026-10-23)
+
+Actual GUI startup probe reproduced BLOCKED_LOCAL_MAILBOX_SETUP at PRIVATE_ACL:
+CommandNotFoundException/CouldNotAutoloadMatchingModule. It stopped before email
+input; no real mailbox value was recovered or guessed from the failed process.
+The input child now uses Windows PowerShell's built-in module directory only;
+this is process-local, not a persistent environment or browser-policy change.
+DACL-only .NET access-control writes avoid the earlier Set-Acl audit-privilege
+request. Real GUI private write/ACL/readback probe PASS after repair, without
+privilege escalation. Read-Host email input is hidden; no email values in output.
+
+Actual owner input completed at2026-10-23T08:20:17.9214876Z. Two distinct addresses,
+format/reserved-domain validation and current-user-only file ACLs passed.
+Owner receivability attestation is true; deliveryVerified=false. No mail was sent.
+Private config SHA256:
+70496365eabbd9b044f25dc2b3d93b2d23f6b3aef89ca2588551743edeb6c4ae.
+The mailbox owner may be an administrator; this does NOT authorize adopting or
+changing that account. New A/B must have distinct new provider UUIDs and actual
+profiles.role=user before business tests. Historical A stays banned and both
+historical DPAPI envelopes remain protected and excluded.
+
+Mailbox/alias local checks12/12 PASS; syntax/parse2/2 PASS; fresh private packet
+checks11/11 PASS; current-user-only ACL checked on all7 resulting private files.
+An attempted piped SecureString fixture cannot supply interactive secure console
+input; the owned fixture child was terminated, not reported as a passing test.
+Actual hidden interactive input subsequently produced the verified local receipt.
+No historical Auth/R2/release/full suites, backup, migration or deployment repeated.
+
+One exact pending packet is stored only in the current-user private directory:
+C:/Users/1/AppData/Local/OpenGlassHub/mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302/CORE_ACCEPTANCE.v2.NOT_AUTHORIZED.json
+SHA256=bef382f3d3c8c06620d0cf8f872f16d77b540b6156d310160f461787e721930a.
+Full ready-to-review approval text is the sibling
+CORE_ACCEPTANCE.v2.OWNER_APPROVAL.txt; no mailbox addresses are copied to Git.
+Preparing the packet starts NO execution window or Production authority. A fresh
+matching approval recorded once activates120minutes; new fixtures end at minute75,
+new business writes at minute90, all cleanup at minute120; no automatic extension.
+
+Scope reuses deployed RC and bounded core cases/media fixtures, adds actual email
+confirmation and structured Auth diagnostics from unchanged e8d086f2 helpers,
+and requires A login/ordinary profile before B or other resources. Auth cap20
+includes6 reserved exact identity-precheck/ban876000h/independent readback requests
+for A/B, usable independently after failed/uncertain test admission. They are not
+additional retries or historical-account permissions. Unknown creation without
+bound UUID cannot be resolved by account enumeration or a second create. Normal
+and failure containment share the same per-actor quota. Ban does not prove issued
+JWT revocation; credential cleanup remains conditional, otherwise protected retain.
+Short-lived public synthetic exposure, zero-cost/current access and paused jobs
+require fresh owner approval. No legacy database/HEAD access or Auth log query is
+included; material legacy media risk remains NOT_VERIFIED and blocks Public Beta.
+
+Production requests/emails/accounts/logins/business writes/DB connections/
+migrations/deployments/remote push=0 for this task. Destructive jobs stay paused.
+NEXT_SINGLE_ACTION=OWNER_REVIEWS_AND_APPROVES_ONE_EXACT_CORE_ACCEPTANCE_V2_PACKET.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Core Auth Admission Correction (2026-10-23, Offline Only)
 
 Historical A stays VERIFIED banned; its protected envelopes remain retained.
