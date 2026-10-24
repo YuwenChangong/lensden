@@ -1,5 +1,54 @@
 # Public Beta Current State
 
+## Approved CAPTCHA Origin Diagnosis Executed Once (2026-10-24 NZDT)
+
+Owner explicitly approved exact e68bb7ae binding in the current conversation.
+Packet and ten source/evidence pins matched; owner receipt and single-use runtime
+directory were absent before admission. Approval recorded once at
+2026-10-24T00:37:32.514Z; the 15-minute window ends00:52:32.514Z. This navigation
+allowance is now CONSUMED regardless of remaining time. No renewal or live retry.
+
+One empty-session Edge navigation: fixed login document200 at00:37:34.238Z,
+standard provider child document200 at00:37:34.536Z. At00:37:34.986Z the controller
+rejected a fetch from that provider child frame to a provider subdomain at its
+exact ORIGIN_MATCH gate. Exact normalized origin/frame metadata is retained only
+in the private execution receipt. No enforced application-CSP signal or numeric
+provider error was captured before stopping. The first controller denial is
+proven; causality for the historical visible widget failure remains UNPROVEN.
+This intentionally tighter diagnostic is not equivalent to the prior operator.
+
+Cloudflare official changelog identifies the observed subdomain as a normal
+verification dependency. Its troubleshooting page also states certain challenge
+subdomain network failures are expected/nonfatal; do not promote this denial to
+proof of site misconfiguration or definitive CAPTCHA failure. References:
+https://developers.cloudflare.com/turnstile/changelog/
+https://developers.cloudflare.com/cloudflare-challenges/troubleshooting/challenge-solve-issues/
+
+31 requests permitted /32 attempted; rejected dependency aborted before dispatch.
+Browser close CONFIRMED; no cleanup timeout. Empty email/password fields, correct
+final target; no form submits/Auth dispatches/accounts/business writes/database
+connections/deployments/retries. No sensitive body retention/screenshots/traces.
+Early stop is diagnostic-only BLOCKED, not a complete30-second widget observation,
+CAPTCHA success, login success, or core acceptance. Prior banned actors unchanged.
+
+Private receipt: CAPTCHA_ORIGIN_DIAG_EXECUTION.private.json in the bound
+captcha-origin-diag-57970f5b-af7d-4b62-83f8-4603a58c102b directory.
+SHA256=95ef9207f4c24608a9dbad3f77b9c9ece966c5c3dedb0c33a9a2524a0350552b.
+No source/allowlist/configuration change and no new tests in this execution turn.
+Previously17/17 offline checks remain historical, not repeated.
+
+Minimum followup PROPOSAL ONLY: permit the exact observed HTTPS subdomain fetch
+only from the canonical provider child frame beneath the fixed login top frame;
+retain exact top navigation, deny other document/navigation origins and arbitrary
+wildcards, preserve method/traffic bounds. Captured receipt did not retain the
+request method/path; do not invent those facts or claim sufficiency. Any rule
+revision needs separate explicit approval, focused offline checks, new pinned
+source/packet, and a separately approved one-navigation Production retest. No
+account creation/login scope is needed for that diagnostic followup.
+
+NEXT_SINGLE_ACTION=OWNER_AUTHORIZES_SEPARATE_EXACT_FRAME_SCOPED_LOCAL_RULE_REVISION_AND_SUBSEQUENT_BOUNDED_READONLY_RETEST_SCOPE.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Account-Free CAPTCHA Origin Diagnosis Prepared (2026-10-24 NZDT)
 
 Read the actual archived28db930f operator and prior e5832206 execution receipt.
