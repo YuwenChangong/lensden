@@ -1,5 +1,110 @@
 # Public Beta Current State
 
+## Authentication Minimum Closure: Local Candidate Only
+
+2026-10-24 nonsecret Dashboard read, existing authenticated owner session, fixed
+project xcbnxzjlsvtgzixurcof. Auth /providers Confirm email switch was true at
+03:02:22.456Z. Auth /protection Enable Captcha protection switch was true at
+03:02:31.111Z; selected provider text was Turnstile by Cloudflare. Only these DOM
+controls were read. No secret inputs, full configuration response, user rows,
+emails or credentials were inspected/exported; no Save or setting mutation.
+This supersedes the UNKNOWN *configuration* finding below, not the outstanding
+real normal-user signup/login acceptance. Existing Turnstile tests were not rerun.
+
+Local branch codex/admin-sensitive-mfa-minimum-20261024 adds /admin/security/:
+explicit TOTP enrollment, challenge/verify and a server-confirmed AAL2 status.
+Only GET /api/admin/forum/me remains accessible to verified staff at AAL1 for
+initial setup. All other callers of requireModerator/requireAdmin require
+signature-verified getClaims(token).aal=aal2, with sub equal to getUser(token).id
+and the original protected profile role still required. This covers report
+actions, user warning/suspension/ban/unban, moderation approve/hide/reject, admin
+media/post/circle/news writes, catalog APIs and trusted-runtime probes. The
+public forum post/comment staff mutation branches and circle-management helper
+also enforce step-up. Normal user/ordinary circle-owner permissions are unchanged.
+Provider unavailability is not authorization; no user_metadata/decoded-token
+authorization shortcut. MFA errors link to the security page without disguising
+a provider/server error as successful access. No Production deployment/enrollment.
+
+Recovery is a separately protected second verified TOTP factor: removal of a
+verified factor requires a fresh successful challenge of a different verified
+backup and server-confirmed AAL2. Initial enrollment requires no AAL2; adding a
+replacement after enrollment does. Abandoned unverified factors can be removed
+without removing the last verified factor. Secrets/QR/code stay in component
+memory, never logs or application storage. These UI/helper restrictions are not
+claimed as extra Supabase Auth API policies. If all factors are lost, sensitive
+work stops; owner independently verifies identity and separately authorizes an
+exact-user Auth-admin factor reset and session revocation, then reenrollment.
+Password recovery alone is not an MFA bypass. No automatic recovery endpoint or
+factor reset was added. Before any enforcement deployment, separately confirm
+TOTP availability/factor capacity, owner recovery custody and an available
+independently verified recovery operator; do not strand the sole administrator.
+
+Remaining boundary, NOT CLOSED by an API patch: public.is_moderator_or_admin()
+and is_catalog_admin() in repository SQL check roles, not AAL. Direct authenticated
+RLS staff branches include user_safety_states/events (ban/warn/suspend),
+reports/report_events/moderation_actions, posts/comments/circles/post_media,
+news_articles and Storage object staff policies. Source: phase1 schema,
+20260616_community_moderation_mvp, 20260626_user_safety_states_and_bans,
+20260627_reports_optimization_mvp, media/cover/profile/news Storage migrations.
+Their effective current Production reachability was not reprobed in this task.
+The source therefore does not establish a non-bypassable database AAL2 boundary.
+Do not solve this by replacing every RLS policy or globally changing read/owner
+permissions. Minimum separate DB review must add AAL2 to the actual privileged
+staff branches while preserving ordinary-owner/public reads and required trigger
+paths, and check permissive-policy OR interactions/effective grants first.
+
+Purge RPCs admin_circle_purge_preview_v1/admin_purge_circle_v1 explicitly revoke
+PUBLIC/anon/authenticated and grant service_role in the reviewed migration;
+HTTP authorizes before creating the elevated client. QA role grant/revoke RPCs
+are likewise service-role-only in source. Catalog save_catalog_spec/group are
+authenticated, role-gated invoker RPCs if present in the target schema, not AAL2
+gated. Catalog Hold and the owner's paused destructive jobs are operational
+restrictions, not proof that these APIs/RLS/RPC capabilities are technically
+disabled. Do not label the residual privileged AAL1 access fixed or optional on
+the basis of those pauses. No ordinary-user privilege escalation was demonstrated.
+
+Verification: scripts/test-admin-mfa.mjs 20/20, including real SDK signed JWT and
+tampered/expired signature checks with offline-only fetch, AAL1 denial before
+privileged adapter creation, ordinary-owner preservation and factor recovery.
+Existing affected admin-circle-lifecycle 14/14 and trusted-server-admin-runtime
+12/12 passed offline. Guarded local-only build passed using the existing
+C:/Temp/ogh-critical-blockers-local-build-20261020.toml; output is this candidate's
+dist, not the frozen 359-file RC. Astro check ratchet PASS: 0 new diagnostics,
+56 remaining existing diagnostics. No database connections, account creation,
+MFA enrollment, Production settings changes, writes, deployment or remote push.
+
+Next: review the local candidate and scoped DB staff-policy boundary, then obtain
+separate exact Production enablement/deployment/permission authorization. Existing
+minimum core acceptance preparation continues independently; nothing here starts
+its pending window or consumes its request quotas. Frozen SQL/executors/RC and
+backup evidence unchanged. Destructive cleanup stays paused.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
+## Minimal Authentication Safety Source Check
+
+Read-only code/evidence inspection, no Production request or tests. Deployed RC
+AuthPanel passes options.captchaToken for both signup and password login; required
+mode blocks missing token locally. Saved Worker config says required; actual
+2026-10-23T11:42:10.927Z Auth response was400/captcha_failed for no-token login.
+This is historical login enforcement evidence, not fresh config or signup proof.
+Interaction-only widget may be invisible without a failure; not a security defect.
+
+Email confirmation UI/error handling exists but actual enforcement is a Supabase
+setting. No saved authoritative current confirmation-setting snapshot or actual
+unconfirmed-user refusal found; admin-created email_confirm=true fixtures do not
+prove this gate. Classification NOT_VERIFIED, not confirmed disabled or broken.
+
+Confirmed application gap: no MFA enroll/challenge/verify or aal2 enforcement in
+inspected src/migrations. Admin auth verifies getUser and protected profile role;
+report ban/suspend and circle purge callers add no AAL2 guard. This is absent
+admin step-up protection, not proof of an ordinary-user privilege escalation.
+Minimal next evidence is separately authorized nonsecret Confirm-email/CAPTCHA
+configuration read, not new accounts/login retries. If mandatory admin MFA is
+adopted, require genuine challenge plus server-verified aal2 on sensitive writes
+and non-bypassable relevant DB/RPC paths; frontend CAPTCHA is not MFA. Ordinary
+user MFA remains optional. No code/config change or new authorization here.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Minimum Remaining Acceptance: One Pending Joint Approval
 
 Owner accepted evidence-reuse conclusions and requested only irreducible gaps.

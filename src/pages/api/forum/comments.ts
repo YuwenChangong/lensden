@@ -19,6 +19,7 @@ import {
   moderateContent,
 } from "../../../lib/moderation/moderate-content.server";
 import { isModeratorRole } from "../../../lib/server/admin-auth";
+import { assertStaffWriteAssurance } from "../../../lib/server/admin-assurance";
 import { requireAuthenticatedLegalConsent } from "../../../lib/server/legal-consent-mutation.server";
 import { createLegalConsentReadRepository } from "../../../lib/server/legal-consent-repository.server";
 import { enforceUserRateLimit, hashRateLimitIp } from "../../../lib/server/rate-limit";
@@ -751,6 +752,8 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
 
     const isStaff = isModeratorRole((profile as { role: string }).role);
 
+    await assertStaffWriteAssurance(request, userClient, token, authData.user.id, profile.role);
+
     // Fetch the comment
     const { data: comment, error: commentError } = await userClient
       .from("comments")
@@ -789,6 +792,7 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
 
     return json({ ok: true, comment_id: commentId, status: "deleted" });
   } catch (err) {
+    if (err instanceof Response) return err;
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,

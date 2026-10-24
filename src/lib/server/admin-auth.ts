@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { assertAdminAssurance, requiresAdminAssurance } from "./admin-assurance";
 
 export type RuntimeEnv = Record<string, string | undefined>;
 
@@ -87,6 +88,10 @@ export async function requireModerator(request: Request, env: RuntimeEnv): Promi
 
   if (!isModeratorRole(profile.role)) {
     throw jsonResponse({ error: "Forbidden", details: "profile role not found or not moderator/admin" }, 403);
+  }
+
+  if (requiresAdminAssurance(request)) {
+    await assertAdminAssurance(client, token, authData.user.id);
   }
 
   return {
