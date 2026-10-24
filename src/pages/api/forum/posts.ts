@@ -21,7 +21,6 @@ import {
   moderateContent,
 } from "../../../lib/moderation/moderate-content.server";
 import { isModeratorRole } from "../../../lib/server/admin-auth";
-import { assertStaffWriteAssurance } from "../../../lib/server/admin-assurance";
 import { requireAuthenticatedLegalConsent } from "../../../lib/server/legal-consent-mutation.server";
 import { createLegalConsentReadRepository } from "../../../lib/server/legal-consent-repository.server";
 import { enforceUserRateLimit, hashRateLimitIp } from "../../../lib/server/rate-limit";
@@ -456,8 +455,6 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
     const viewerRole = await loadViewerRole(userClient, authData.user.id);
     const isStaff = isModeratorRole(viewerRole);
 
-    await assertStaffWriteAssurance(request, userClient, token, authData.user.id, viewerRole);
-
     const url = new URL(request.url);
     const postId = String(url.searchParams.get("id") ?? url.searchParams.get("post_id") ?? "").trim();
     if (!UUID_REGEX.test(postId)) {
@@ -522,7 +519,6 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
       message: cleanup.ok ? "已删除并清理媒体" : "已删除，部分媒体清理需要后续重试",
     });
   } catch (err) {
-    if (err instanceof Response) return err;
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,
@@ -580,8 +576,6 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
       return json({ error: "Forbidden" }, 403);
     }
 
-    await assertStaffWriteAssurance(request, userClient, token, authData.user.id, viewerRole);
-
     const { data: updated, error: updateError } = await userClient
       .from("posts")
       .update({ status: "hidden" })
@@ -594,7 +588,6 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
 
     return json({ post: updated });
   } catch (err) {
-    if (err instanceof Response) return err;
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,

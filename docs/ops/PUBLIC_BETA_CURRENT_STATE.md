@@ -1,5 +1,38 @@
 # Public Beta Current State
 
+## MFA Activation Packaging: Enrollment Before Enforcement
+
+No Production request or authority is created by this preparation. The saved
+deployment remains the old RC; fresh identity/configuration checks require new
+approval. Original 20 and incremental 22 checks are reused, not rerun.
+
+The enrollment-only branch is a bounded packaging variant of 8b0882f0, not a
+runtime bypass flag: public forum staff guards match the deployed 0b6d94ff RC;
+existing admin guards keep their old role checks until phase two. Only the new
+GET /api/admin/mfa assurance readback already requires signature-verified AAL2,
+so enrollment cannot falsely report success at AAL1. TOTP/recovery code and the
+new SQL are unchanged. Five dedicated offline assembly checks PASS, including
+actual signed AAL2/AAL1 status and missing/ordinary identity refusal, with every
+SDK request intercepted locally; these do not replace Production acceptance.
+
+One pending activation packet binds two separate immutable artifacts. First
+deploy enrollment-only, verify primary and independently held backup TOTP,
+fresh sign-in, refresh, backup step-up and server-confirmed AAL2. Only afterward
+deploy exact 8b0882f0 enforcement and conditionally apply only the new staff-AAL2
+migration, after exact live catalog preconditions. No historical migration replay.
+The temporary enrollment interval retains old role-only sensitive access and
+must be explicitly accepted; destructive automation stays paused throughout.
+
+Failure stops progression. Before enforcement, retain the MFA-capable enrollment
+artifact and verified factors; this is not permission to activate enforcement.
+After enforcement/DDL, retain the enforced application and database boundary;
+no automatic application downgrade to the enrollment variant, old RC or broad
+DB grants. Unknown commits remain unknown. If both factors are lost, sensitive
+access stays denied pending separately authorized, independently verified owner
+recovery; no factor reset, role change or password-only bypass is authorized here.
+Ordinary-user core acceptance remains independent and not newly claimed PASS.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Admin MFA Closure Delta: Ready Locally, Not Activated
 
 Follow-up to 0e4a08c1, no Production operation or core-test quota consumed.
