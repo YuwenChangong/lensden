@@ -1,5 +1,46 @@
 # Public Beta Current State
 
+## Ordinary Edge Comparison Prepared, Not Authorized (2026-10-24 NZDT)
+
+Read only the clean frozen0b6d94ff RC login route, AuthPanel, AuthTurnstile and
+response/redirect helpers; no source/config/allowlist changes. The route is
+/login/ in default login mode; widget loads canonical Cloudflare api.js with
+execution render, appearance interaction-only and response-field false. Its
+success callback is internal and no guaranteed public success indicator exists.
+Therefore absent/hidden widget and absent error are NOT verification PASS.
+
+Prepared one OWNER-MANUAL ordinary empty Edge InPrivate comparison, preferably
+same device/network, with no CDP/Playwright/Puppeteer/control extension/injection,
+proxy, custom interception, token access or solver. New exact target is
+https://openglasshub.ogh.workers.dev/login/ once. No account/email/password input,
+login/signup/reset submit, manual challenge, account creation or prior actor use.
+Native page dependencies and provider automatic protocol including dynamic
+challenge/DNS-test dependencies are explicitly disclosed, not a controller
+allowlist expansion. No arbitrary manual URL/link or unexpected top navigation.
+
+Exact private packet CAPTCHA_ORDINARY_COMPARISON.v1.NOT_AUTHORIZED.json in the
+existing mailbox directory, SHA256:
+9cd02a0eb7b6a91c151524eced1c72e68ee0948e59073266803065bb1191413b.
+Five frozen source hashes and prior V2 receipt bound; full approval text in the
+matching OWNER_APPROVAL.txt. No new approval receipt/result/window exists.
+New approval starts15minutes; initial admission5minutes/minimum65sec remaining.
+Owner observes30sec within45sec total and closes comparison tab/window within5sec.
+No retry/reload/reset. This manual contract cannot enforce/count all asset traffic
+or prove zero intermediate redirects; final URL must be exact. Close is an owner
+report, not independently verified OS-process shutdown. Evidence is only visible
+booleans/enums/time, no screenshots/DOM/credentials/headers/HAR/private content.
+
+Page, visible widget/success/failure and600010-if-actually-visible are separate.
+No visible numeric code means NOT_OBSERVABLE, not inferred600010. Success would
+suggest possible controller-environment impact, not prove unique causality. Same
+failure or UNKNOWN does not prove site configuration fault. No core/login PASS,
+new actors or login scope until separate authorization. No new code, tests,
+browser-controller work, backup, RC build, migration or deployment performed.
+Production requests0. Prior diagnostic allowance remains consumed.
+
+NEXT_SINGLE_ACTION=OWNER_REVIEWS_AND_APPROVES_9cd02a0e_ORDINARY_EDGE_ONE_NAVIGATION_COMPARISON_WITH_CURRENT_ZERO_COST_CONFIRMATION.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## V2 Production Diagnostic Completed And Stopped (2026-10-24 NZDT)
 
 Owner explicitly approved exact523c8cb3 binding and personally confirmed current
