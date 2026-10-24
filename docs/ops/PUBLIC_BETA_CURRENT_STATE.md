@@ -1,5 +1,69 @@
 # Public Beta Current State
 
+## Account-Free CAPTCHA Origin Diagnosis Prepared (2026-10-24 NZDT)
+
+Read the actual archived28db930f operator and prior e5832206 execution receipt.
+The old URL.origin exact-match list ALREADY included
+https://challenges.cloudflare.com for scripts and frame documents. Its first
+failure remains controller BROWSER_ORIGIN_OUT_OF_SCOPE; the actual denied origin,
+resource/frame and provider error code were not retained and cannot be recovered
+from these saved receipts. No evidence proves a missing trusted-frame allow rule,
+application CSP defect, invalid sitekey/domain, or browser-environment root cause.
+Cloudflare's official Turnstile CSP reference lists that same origin in both
+script-src and frame-src. No new origin or Production policy is added.
+
+Prepared one bounded diagnostic, NOT an Auth/release runner: a fresh empty headful
+Edge context opens exactly the fixed public login URL once, with no administrator
+session/cookie/storage copy, no account or credential handling, no login submit,
+no manual CAPTCHA action, no service/database/storage/API access. Only normal
+same-origin GET/HEAD assets and existing challenges.cloudflare.com Turnstile
+protocol dependencies are permitted. Provider internal automatic GET/HEAD/POST/
+OPTIONS traffic is explicitly disclosed for owner approval; no secret/siteverify
+call, CAPTCHA callback/token interception, bypass, mock or stealth in Production.
+Unknown origins, app API/writes, WebSockets and any second top navigation or
+redirect continuation are blocked before dispatch and recorded, not auto-allowed.
+This intentionally tighter diagnostic policy is identified separately; a new
+denial is not automatically proof of the original widget failure's cause.
+
+Private evidence records normalized origins, resource/frame and parent origin,
+UTC, phase, HTTP status, enforced/report-only CSP signals, and only a six-digit
+Turnstile console code from the provider script source when actually available.
+No full URLs/query/userinfo, raw policies/nonces, console text, headers, bodies,
+cookies, tokens, HAR, screenshots or private page records are exported/retained.
+Controller, application CSP, provider-frame CSP, network and provider error
+signals remain distinct. Any incomplete/ambiguous outcome remains BLOCKED; even a
+captured controller denial is not asserted to cause the visible widget error.
+
+17/17 new targeted offline checks PASS, including actual local Edge fixtures for
+controller blocking, enforced CSP, simulated provider error, WebSocket denial and
+second top navigation. These are loopback-only, NOT real Turnstile proof. One
+intermediate local close failure was reported UNKNOWN/failed, never PASS; the
+final complete run confirmed closure. Unauthorized CLI check stopped with
+NEW_EXACT_APPROVAL_REQUIRED before browser launch. No historical full tests or
+Production requests, actors, login submits, writes, migrations or deploys.
+
+One CURRENT private packet: CAPTCHA_ORIGIN_DIAG.v1.NOT_AUTHORIZED.json, under the
+existing mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302 directory.
+SHA256=e68bb7ae4c593c835a627270c29299b3242218729244bf9b36e5456394d074ec.
+Full pending text: CAPTCHA_ORIGIN_DIAG.v1.OWNER_APPROVAL.txt.
+Earlier pre-delivery draft b386ebff was preserved as withdrawn, never approved
+or executed; it is NOT a second current authorization. Source pins include the
+reused security helper and its hash/PowerShell dependencies. Final source/receipt
+hashes and three current-user-only artifact ACLs verified. Prior evidence intact.
+
+No approval receipt, live diagnostic directory or execution window exists yet.
+Matching new explicit approval starts15minutes once; first admission5minutes and
+at least65seconds remaining. One top navigation,100 HTTP attempt ceiling,
+64 events/32KiB evidence,30sec observation, shared45sec browser protocol budget,
+5sec close budget. Timeout/close uncertainty is UNKNOWN/BLOCKED, not a guarantee
+against uninterruptible OS I/O. No operator retry or automatic extension. No
+Wrangler/admin login or owner CAPTCHA handoff is needed for this account-free
+passive observation. Any rule change AND any later Production retest require
+separate explicit approval. Both banned A accounts and all envelopes untouched.
+
+NEXT_SINGLE_ACTION=OWNER_REVIEWS_AND_EXPLICITLY_APPROVES_CURRENT_e68bb7ae_READONLY_PACKET_WITH_CURRENT_ZERO_COST_CONFIRMATION.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Browser CAPTCHA Attempt Stopped, A2 Contained (2026-10-24 NZDT)
 
 Owner explicitly approved the full98c14a34 binding, after clarification that the
