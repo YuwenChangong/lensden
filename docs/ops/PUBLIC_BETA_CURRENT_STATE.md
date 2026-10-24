@@ -1,5 +1,25 @@
 # Public Beta Current State
 
+## Agent UI Request: Exact Method Amendment Pending, No Factor Write
+
+Owner requested agent-driven MFA with only indispensable secret/device handoff.
+At2026-10-24T23:21Z existing CUA local inventory/browser capability discovery
+worked: same Edge3/profile/tab797715290 exists. This is NOT actual page control
+PASS; no failed control command was repeated and no page navigation occurred.
+Current scope explicitly says owner-operated normal Edge NO_CONTROLLER. Existing
+documented CUA surface has UI/read-only DOM, not authenticated HTTP response API.
+Do not bypass this via hidden SDK/evaluate/DevTools/token export, or mark a DOM
+message as independent server proof. Zero-factor/server-AAL2 gates remain open.
+Prepared only MFA_AGENT_UI_AMENDMENT.v1.NOT_AUTHORIZED.json in existing Temp home,
+SHA256bf006b4aca7c344704bac1cd3e00ee93db56224673c0e3c0fc59637929700546.
+It permits a fresh owner-approved bounded existing UI check/assistance only,
+no extra operations/window or server-proof waiver; authentication credential
+entry/confirmation/submission remains owner-only, with no secret observation.
+No claim that this resolves missing automatic network evidence. If safe server
+evidence cannot be obtained, STOP before factors/enforcement/DB, not a new tool
+project. New Production requests/factors/deploy/DB0. Original new scope expiry
+2026-10-25T02:07:13.9120310Z unchanged, Catalog ACTIVE, Beta NOT_AUTHORIZED.
+
 ## Remaining MFA Same Moderator Verified; Owner Factor Enrollment Pending
 
 At2026-10-24T23:13:00.641Z..23:13:01.648Z approved initial owner snapshot PASS:
