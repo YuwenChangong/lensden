@@ -1,5 +1,32 @@
 # Public Beta Current State
 
+## Legal Operator Gate: Exact Read-Only Diagnosis Resolved
+
+Separately authorized one fixed Worker settings GET at 2026-10-24T08:07:24.492Z,
+HTTP 200, no retries. Only PUBLIC_LEGAL_OPERATOR_NAME inspected: binding ABSENT,
+not a type/value mismatch. No earlier field-level baseline proves a production
+configuration change. No actual operator value, raw settings or secrets retained.
+
+Existing legal pages render PUBLIC_LEGAL_CONTACTS.operator from checked-in static
+code, not this runtime variable. The source and actual sealed legal-policy chunk
+are identical in old deployed RC and both MFA artifacts; Wrangler source config
+also unchanged. Thus the old blanket runtime-variable requirement was an overly
+strict MFA gate, not proof of a target-identity, legal-rendering or MFA defect.
+This is not a new overall legal-compliance acceptance claim.
+
+Local exact-field guard now permits absence only after pinned static source,
+canonical operator and sealed compiled parity proof. Present wrong values/types,
+duplicate/unknown metadata and source drift remain blocked; no other variable
+gets an exception. Six focused offline checks and syntax check PASS; previous
+22 checks/builds not rerun. No application/frozen SQL/artifact modification.
+Helper: C:/Temp/ogh-admin-mfa-activation-20261024/legal-operator-setting-guard.mjs
+SHA256 ebfca08c3e21be9b5c5bb07174bacbf4427f3e1c49eb837aa6f8561cf69013f4.
+Private diagnostic/closure receipts remain under the stopped resume binding.
+No deployment/database operation performed or authorized by this diagnosis;
+remaining MFA admission gates are unreached, not PASS. Fresh explicit production
+authorization is required to resume using the corrected gate.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## MFA Resume Attempt: Configuration Evidence Stop
 
 Fresh explicit approval for 3f9556c34e980a43211dfa170a06700a3e227214942761edf36e01c9db6a2251
