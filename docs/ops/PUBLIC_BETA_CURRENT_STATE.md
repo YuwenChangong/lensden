@@ -1,5 +1,35 @@
 # Public Beta Current State
 
+## Bounded Actual-Control Recovery Failed; Manual Identity Evidence Needs Amendment
+
+Owner authorized bounded local control repair and fallback evaluation. Same Edge
+profile/user tab/provider ID remains discoverable. Reset ONLY local cua REPL
+bindings, not Edge cookies/session/page, then reclaimed the existing user tab.
+One minimal post-repair read-only origin/path command still timed out BEFORE
+dispatch. Stop this path; do not repeat the same command, develop a controller or
+switch accounts. Metadata/Connected display remains distinct from actual control.
+No page refresh, navigation, screenshot, session/token/cookie extraction or write.
+
+Existing source confirms same-session Auth getUser and Worker me perform real
+server identity/profile checks, but current rendered UI does not independently
+expose the complete UUID comparison and exposed controller has no authenticated
+request API. DOM-only evaluate must not be used for hidden credentials/network.
+Original contract permits normal owner browser participation, not silent
+substitution of owner assertions/DOM text or a new private evidence handoff.
+Minimal proposed amendment: owner-operated reviewed one-shot in-page read-only
+identity check using existing client/session, independently getUser plus Worker
+me/protected-role, UUID equality retained privately, no credential or full-response
+export; same original request caps/window. NOT executed or approved by this note.
+
+At 2026-10-24T11:24:48.035Z original window still ends14:10:17.2244604Z but bound
+Wrangler has44minutes remaining, below45 enrollment threshold. Before deployment
+owner must again establish valid pinned access; no automatic refresh/renewal.
+Management3 reused; new Production requests/deployments/factors/DB/writes0.
+CONTROL_RECOVERY_AND_FALLBACK.safe.json privately persisted/fsynced/read back.
+Independent ordinary-user Production core work has no fresh execution permission;
+do not inherit consumed GO or reopen DONE tasks. CATALOG_HOLD=ACTIVE;
+PUBLIC_BETA_GO=NOT_AUTHORIZED. No new packet/window or broadened authority created.
+
 ## Owner-Authorized Browser Resumption: Control Still Unavailable Before Dispatch
 
 Owner explicitly restored connection and authorized original-window admission
