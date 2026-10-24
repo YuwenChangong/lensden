@@ -1,5 +1,43 @@
 # Public Beta Current State
 
+## Exact Unavailable-Policy Closure: Runtime Branch Evidence Missing
+
+Offline-only follow-up; previous 12 default comparisons reused, not rerun.
+Verified pinned source and actual resolver/moderation chunk bytes are identical
+in the old RC and both MFA artifacts. Fifteen focused checks of the extracted
+pure compiled functions PASS; syntax PASS. No bundle imports/provider calls.
+
+Explicit nonempty MODERATION_PROVIDER_UNAVAILABLE_POLICY takes precedence.
+When absent, empty/main/master CF_PAGES_BRANCH resolves review_all; any other
+branch resolves local_only_safe. Normal successful provider results are not
+changed by this policy. For 429/5xx/timeout/network/circuit-unavailable errors,
+local allow + review_all stays review, but local_only_safe can allow. Local
+review/reject stays restrictive; other provider errors use fail-mode handling.
+Saved matching OPENAI_MODERATION_ENABLED is enabled: this is not a dormant path.
+
+All sealed configs omit branch and policy, and keep_vars=true preserves remote
+variables. Static absence therefore cannot prove remote branch absence. Existing
+bounded settings projections retained neither CF_PAGES_BRANCH presence nor its
+value/classification. Current equivalence to expected review_all is NOT_PROVEN;
+actual deployed behavioral difference is also NOT_PROVEN. Unchanged MFA code
+does not resolve this distinction. No validator/configuration waiver applied.
+
+Remaining gate inventory: all 35 source fields classified (13 saved exact,
+9 proved static, 13 known runtime absences). Three sealed configurations match
+the existing auth/target vars, R2/KV/Images resources and compatibility settings.
+No additional same-kind static issue found; unreached live checks remain required.
+Only missing fact is trustworthy CF_PAGES_BRANCH classification. Minimal future
+scope can record ABSENT/EMPTY/MAIN/MASTER/OTHER from the next already-budgeted
+settings read; OTHER/unknown must stop, never default to a safe classification.
+This read or contract amendment is NOT authorized by the current offline task.
+
+Protected unavailable-policy.offline-closure.safe.json persisted/read back in
+the stopped 29f2d82b binding sink. No new recovery authorization was generated
+while that prerequisite remains unproved. No credentials inspected, execution
+window started, gate rule changed, app/SQL/artifact edited or build/MFA suite
+rerun. Production requests/writes/deployments/database connections=0 this task.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## MFA V4: Execution Stopped at Non-Public Runtime Configuration
 
 Owner completed the pinned interactive login and confirmed continued readiness.
