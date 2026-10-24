@@ -12,3 +12,4 @@ supabase/migrations/20260713_comment_read_circle_visibility_authorization.sql te
 supabase/migrations/20260713_forum_posts_circle_authorization.sql text eol=lf
 supabase/migrations/20260713_forum_report_target_authorization.sql text eol=lf
 supabase/migrations/20260713_post_bound_media_provenance.sql text eol=lf
+supabase/migrations/20261024103015_staff_user_safety_target_boundary.sql text eol=lf

@@ -1,5 +1,95 @@
 # Public Beta Current State
 
+## Moderator MFA Alignment and Safety Target Boundary: Local Candidate Complete
+
+New candidate migration 20261024103015_staff_user_safety_target_boundary.sql
+(SHA256 4a1302520ca90ee8f66380ead98ecbe69319c4ac93a8e0faf8f53f3ab7f403b3)
+closes the source-confirmed staff direct-write hierarchy gap. Existing moderation
+and report actions use the caller's authenticated Supabase client for state
+INSERT/UPDATE and event INSERT; revoking those writes would break legitimate
+APIs or require an unnecessary service-role/RPC redesign. Preserve those grants
+and existing RLS/read paths; revoke unused public/anon/service writes, state
+DELETE/TRUNCATE and event UPDATE/DELETE/TRUNCATE. Verify effective inherited and
+column privileges, and reject dangerous authenticated/anon role membership.
+
+One non-public-executable SECURITY DEFINER trigger function, with fixed
+pg_catalog search path and qualified tables, guards both tables even through
+definer RPCs or additional permissive RLS policies. It requires the real JWT sub,
+authenticated/AAL2 claims and protected profiles roles, not metadata; locks actor
+and target profiles against concurrent role changes; permits moderator->user
+and admin->user/moderator only, never self/admin targets. State target UUID and
+creation time are immutable, actor attribution must match, audit is append-only.
+No service_role/current_user=postgres bypass is introduced. Consequently future
+account-hard-delete cascades affecting these rows also fail closed; there is no
+such legitimate application endpoint in the inspected source. Any future data
+maintenance needs its own reviewed mechanism, not a bypass in this guard.
+Source RPC scan found no existing safety-table SECURITY DEFINER write routine;
+new tests deliberately add a local-only definer writer to exercise that threat.
+Production exploitability/grants remain NOT_VERIFIED; no live request made.
+
+Targeted new script scripts/test-user-safety-target-boundary.mjs: 23/23 PASS on
+the same owned local PG17 + repository schema/Auth facade used by prior closure
+tests. Covers hierarchy INSERT/UPDATE/UPSERT/audit, attribution/identity tampering,
+AAL1 rejection, role metadata, effective ACLs, service-role/definer/permissive-policy
+bypasses, normal reads and actual admin-only handler denial for moderator.
+LOCAL_DATABASE_CLEANUP=CONFIRMED. This is not full Supabase or Production parity.
+Old MFA suites not rerun, no build needed (no application/artifact source changed).
+
+Offline-only moderator-owner-contract.v1.mjs binds the original enrollment
+534c693b and enforcement 8b0882f0 manifests plus both SQL hashes. It replaces
+admin-only OWNER eligibility with server getUser/Worker-me/protected-profile UUID
+equality, fixed moderator role throughout, and admin-only probes expected 403
+before service-role access. It is a pending contract amendment, NOT active
+authority or a replacement for authenticated server observations. Main/independent
+backup factors, refreshed AAL2, recovery and all admin-exclusive boundaries stay.
+Old signed packets/tools/receipts are untouched and cannot execute this amendment.
+
+Minimal proposed activation: fresh exact authorization with the moderator
+identity amendment and these pins; deploy unchanged enrollment, verify both
+factors/refreshed AAL2, deploy unchanged enforcement, then ONE reviewed atomic
+transaction applying unchanged staff-AAL2 SQL followed by this new boundary and
+both exact ledger entries; read back helper/trigger/ACL/identity state. Real PG
+tests proved successful combination and failure rollback of BOTH changes. This
+is a local integration result, not independent delta approval or permission to
+execute; do not replay the old six migrations or expand the old one-migration GO.
+
+Enrollment/enforcement manifest hashes still match 11f7fe85... and ba9ea679...;
+original staff SQL still d43eef59... . Production requests/connections/writes,
+deployments/migrations/role changes=0; no window started or credential read.
+Next: review this exact small delta and approve a newly bound two-stage scope;
+only then independently verify the existing moderator and activate. Existing
+destructive jobs remain paused. CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
+## Offline Staff Role Scope Review: Moderator Already Supported by MFA
+
+Owner cannot confirm any separate controlled admin identity. Offline comparison
+of Production RC 0b6d94ff, enrollment 534c693b and enforcement 8b0882f0 confirms
+both moderator/admin may enroll own TOTP factors. Enforcement checks signed AAL2
+for both staff roles on guarded APIs (except self-identity bootstrap), including
+alternative forum staff write paths. The unexecuted staff capability migration
+adds AAL2 to both roles through is_moderator_or_admin; catalog remains admin-only
+plus AAL2, and service-only purge/QA RPC access must remain unavailable to users.
+These are candidate properties, NOT claims that Production MFA is activated.
+
+Both roles can moderate content/reports/news, manage circles and delete media.
+Safety API permits moderator actions against ordinary users only; admin may also
+act against moderators, never self or another admin. Admin-only API guards also
+cover circle listing/purge, device editing and trusted-runtime capability probe.
+New source-confirmed limitation: user_safety_states INSERT/UPDATE policies check
+staff capability only, without the API target-role/self-action restrictions.
+The candidate AAL2 helper does not close that distinct direct-write hierarchy
+gap. Live exploitability is not newly tested or asserted. A minimal separately
+reviewed target-authorization DB guard would preserve the existing API hierarchy;
+do not broaden staff grants or describe API-only hierarchy as end-to-end proof.
+
+Minimum identity-contract revision proposed only: bind the existing owner's exact
+server-verified UUID and protected moderator role, preserve that role throughout
+both MFA stages, and do not require admin-only capability probes to pass for a
+moderator. Keep admin-only operations denied and all destructive jobs paused.
+No identity/role change, new packet/window, app/SQL edit, test rerun, Production
+request, deployment or DB operation in this review. Only this baseline updated.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Deployment Attempt Stopped; Existing Admin Session Not Found
 
 Owner explicitly stopped the deployment attempt and allowed only existing Edge
