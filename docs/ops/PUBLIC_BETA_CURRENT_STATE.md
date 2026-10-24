@@ -11,7 +11,9 @@ runtime bypass flag: public forum staff guards match the deployed 0b6d94ff RC;
 existing admin guards keep their old role checks until phase two. Only the new
 GET /api/admin/mfa assurance readback already requires signature-verified AAL2,
 so enrollment cannot falsely report success at AAL1. TOTP/recovery code and the
-new SQL are unchanged. Five dedicated offline assembly checks PASS, including
+new SQL are unchanged except the enrollment variant explicitly refreshes the
+session after factor verification, before the server AAL2 readback. Eight
+dedicated offline assembly checks PASS, including failed/missing refresh,
 actual signed AAL2/AAL1 status and missing/ordinary identity refusal, with every
 SDK request intercepted locally; these do not replace Production acceptance.
 

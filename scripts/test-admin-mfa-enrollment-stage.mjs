@@ -15,7 +15,7 @@ await test("only enrollment stage guards differ; public forum behavior matches d
     assert.equal(canonical(await readFile(new URL(file, root))), canonical(execFileSync("git", ["show", `${production}:${file}`])));
   }
   const changed = execFileSync("git", ["diff", "--name-only", enforcement, "--", "src", "supabase/migrations", "wrangler.toml", "package.json", "package-lock.json"], { encoding: "utf8" }).trim().split(/\r?\n/).sort();
-  assert.deepEqual(changed, ["src/lib/server/admin-auth.ts", "src/lib/server/circle-management.ts", "src/pages/api/forum/comments.ts", "src/pages/api/forum/posts.ts"]);
+  assert.deepEqual(changed, ["src/lib/admin-totp.ts", "src/lib/server/admin-auth.ts", "src/lib/server/circle-management.ts", "src/pages/api/forum/comments.ts", "src/pages/api/forum/posts.ts"]);
 });
 
 const id = "00000000-0000-4000-8000-000000000001";
@@ -78,6 +78,38 @@ try {
     calls = 0;
     await assert.rejects(() => requireModerator(new Request("http://127.0.0.1/api/admin/forum/me"), env), error => error instanceof Response && error.status === 401);
     assert.equal(calls, 0);
+  });
+  const totp = await vite.ssrLoadModule("/src/lib/admin-totp.ts");
+  let refreshError = false;
+  let missingSession = false;
+  let sequence = [];
+  const client = { auth: {
+    getSession: async () => ({ data: { session: { access_token: "nonsecret-fixture", user: { id } } }, error: null }),
+    refreshSession: async () => { sequence.push("refresh"); return { data: { session: missingSession ? null : {} }, error: refreshError ? {} : null }; },
+    mfa: {
+      listFactors: async () => ({ data: { all: [{ id: "fixture", factor_type: "totp", status: "verified" }] }, error: null }),
+      challenge: async () => { sequence.push("challenge"); return { data: { id: "fixture-challenge" }, error: null }; },
+      verify: async () => { sequence.push("verify"); return { error: null }; },
+    },
+  } };
+  globalThis.fetch = async input => {
+    assert(["/api/admin/forum/me", "/api/admin/mfa"].includes(input));
+    if (input.endsWith("/mfa")) sequence.push("server-aal2");
+    return new Response(JSON.stringify(input.endsWith("/me") ? { user_id: id, role: "admin", allowed: true } : { aal: "aal2" }), { headers: { "content-type": "application/json" } });
+  };
+  await test("enrollment verification refreshes before server-confirmed AAL2", async () => {
+    await totp.verifyAdminTotp(client, "fixture", "123456");
+    assert.deepEqual(sequence, ["challenge", "verify", "refresh", "server-aal2"]);
+  });
+  await test("refresh error is not reported as enrollment acceptance", async () => {
+    sequence = []; refreshError = true;
+    await assert.rejects(() => totp.verifyAdminTotp(client, "fixture", "123456"), /MFA_SESSION_REFRESH_UNCONFIRMED/);
+    assert.deepEqual(sequence, ["challenge", "verify", "refresh"]);
+  });
+  await test("missing refreshed session remains unconfirmed without retry", async () => {
+    sequence = []; refreshError = false; missingSession = true;
+    await assert.rejects(() => totp.verifyAdminTotp(client, "fixture", "123456"), /MFA_SESSION_REFRESH_UNCONFIRMED/);
+    assert.deepEqual(sequence, ["challenge", "verify", "refresh"]);
   });
   console.log(JSON.stringify({ targetedChecks: passed, productionRequests: 0, databaseConnections: 0, scope: "ENROLLMENT_ARTIFACT_ASSEMBLY_ONLY_NOT_PRODUCTION_ACCEPTANCE" }));
 } finally {
