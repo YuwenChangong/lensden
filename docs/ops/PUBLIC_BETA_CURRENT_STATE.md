@@ -1,5 +1,55 @@
 # Public Beta Current State
 
+## Exact Turnstile Subframe Exception V2 Prepared (2026-10-24 NZDT)
+
+Owner authorized only local repair and preparation of a separately approved
+read-only retest. V1 and its executed evidence remain unchanged. New V2 imports
+V1 decisions/classification and adds only the exact observed provider subdomain,
+GET/HEAD fetch, from an attached actual canonical Turnstile direct child of the
+actual main frame at the exact fixed login URL. Page identity, direct ancestry,
+document path/origin, detach state and pre-dispatch recheck are mandatory. No
+top/document navigation, forged frame metadata, intermediate untrusted frame,
+other resource/method, second provider subdomain, wildcard or URL userinfo allowed.
+
+New focused regression first failed against V1 as expected. Final33/33 PASS,
+including six actual loopback Edge cases: trusted fetch, top fetch rejection,
+nested-frame rejection, redirect rejection and cross-process equivalents of
+trusted/redirect cases. Redirect destination received zero requests. Both new
+scripts pass syntax checks; no-approval CLI blocks before browser launch. Earlier
+experimental redirect guards and local cleanup timeouts were failures/UNKNOWN,
+not historical or current Production PASS. No historical full suites repeated.
+
+Necessary narrow transport correction: ordinary Playwright routing does not
+re-intercept automatic redirects. A scoped readiness wrapper waits for the
+existing Edge CDP request/response guard BEFORE exact native fetch starts, then
+passes its original input/options through unchanged. No CAPTCHA API/callback,
+token, request/response body or credential value inspection. Only this exact
+destination is response-intercepted; its3xx is aborted before follow. This is not
+a new all-asset redirect guarantee or uninstrumented-browser verification proof.
+Guard detach/context/browser shutdown share5seconds; unknown cleanup blocks.
+
+One current private packet: CAPTCHA_ORIGIN_DIAG.v2.NOT_AUTHORIZED.json in the
+existing private mailbox directory; SHA256:
+523c8cb33758b3a29860c27bb260485e250b6a63efd2fad3907681713f64f562.
+Its source pins include V2, its test, imported V1/helper and private-sink modules.
+Offline evidence SHA256:
+a5415c936bb676ab7a84a577077a7f7749603ced34d64a575582383073d12d47.
+One earlier undelivered draft is withdrawn/preserved, never approved/executed.
+
+No new owner-verification receipt/runtime directory/window exists. Explicit new
+approval starts15minutes, first admission5minutes/minimum65seconds remaining.
+One new fixed empty-session login navigation,100 HTTP attempts,30sec observation,
+45sec browser budget and shared5sec cleanup. No accounts/A3/B3/login submit,
+manual CAPTCHA interaction, secrets, database, management requests, configuration
+change, migration, deployment, backup or push. Current Production requests0.
+Report controller permission, visible widget surface and verification separately;
+permission is not CAPTCHA success, widget surface is not verification. Without
+token/server verification observation, verification remains NOT_TESTED unless a
+real error is captured. New block/unknown stops; no automatic domain expansion.
+
+NEXT_SINGLE_ACTION=OWNER_REVIEWS_AND_EXPLICITLY_APPROVES_CURRENT_523c8cb3_READONLY_V2_PACKET_AND_CURRENT_ZERO_COST_CONDITION.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Approved CAPTCHA Origin Diagnosis Executed Once (2026-10-24 NZDT)
 
 Owner explicitly approved exact e68bb7ae binding in the current conversation.
