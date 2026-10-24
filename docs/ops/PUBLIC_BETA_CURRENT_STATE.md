@@ -1,5 +1,50 @@
 # Public Beta Current State
 
+## V2 Production Diagnostic Completed And Stopped (2026-10-24 NZDT)
+
+Owner explicitly approved exact523c8cb3 binding and personally confirmed current
+zero additional cost. No management/billing requests were added. Packet and12
+source/evidence pins matched; approved source commitd6248f7a, clean worktree and
+private ACL verified. New approval recorded once at2026-10-24T00:58:55.617Z,
+window ending01:13:55.617Z; single navigation is now CONSUMED, not reusable.
+
+One empty-session fixed login navigation. Top HTTP200 at00:58:57.047Z; canonical
+provider child document200 at00:58:57.377Z. Verified direct Turnstile child GET
+to exact approved subdomain was permitted at00:58:57.975Z and responded204 at
+00:58:58.020Z. One permit/dispatch/response; controller allowance PASS from actual
+dispatch/readback, not configuration. No controller-denial event or new blocked
+origin. An ERR_ABORTED network signal followed the204; this is not by itself
+proof of failure cause, denied scope, redirect or loss.
+
+At00:59:01.716Z a canonical provider console event reported600010 and the app's
+verification-unavailable boolean was true. Stop/close followed immediately under
+contract, without waiting for a fresh observation or retry. Provider code is in
+the documented600* generic challenge-failure family, not proof of sitekey/domain,
+application CSP or unique browser/environment fault. Three child-provider CSP
+connect-src signals had unparseable blocked origins; these do NOT prove an
+application CSP defect or identify an additional origin to allow. Reference:
+https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/error-codes/
+
+CONTROLLER_ORIGIN_ALLOWANCE=PASS;TURNSTILE_WIDGET_RENDER=UNKNOWN;
+TURNSTILE_VERIFICATION=FAIL;TURNSTILE_ERROR_CODE=600010;
+NEW_BLOCKED_ORIGIN=NONE_OBSERVED;SITE_CAPTCHA_CONFIGURATION_FAULT=NOT_PROVEN.
+Child HTTP200 is not proof of visible widget render: no complete visible-surface
+evidence was obtained before stop. No token/server verification, Auth or core
+acceptance success is claimed. Current browser is instrumented, not proof of
+ordinary uninstrumented-browser behavior. No additional origin/rule was added.
+
+35 attempts/35 permits, one top navigation; browser context closed and CDP guard
+cleanup PASS. Receipt at00:59:01.934Z; private current-user/SYSTEM-only ACL and hash
+readback verified. No form submit/Auth dispatch/accounts/password login/business
+write/database connection/migration/deployment/retry; no sensitive body retention,
+screenshots or traces. Previously banned accounts and ciphertexts untouched.
+Private runtime directory captcha-origin-diag-v2-1d88941a-36c6-4563-81b5-0d3f5d8c3d64,
+CAPTCHA_ORIGIN_DIAG_EXECUTION.private.json SHA256:
+a7dd063006861cfece71a6a50c78025bc75d00a0ad29cff664bdba6bb1e07297.
+
+NEXT_SINGLE_ACTION=SEPARATE_EXPLICIT_APPROVAL_FOR_ONE_ACCOUNT_FREE_ORDINARY_BROWSER_READONLY_CONTROL_TO_DISTINGUISH_600010_ENVIRONMENT_EFFECTS_NO_REUSE_OR_DOMAIN_EXPANSION.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Exact Turnstile Subframe Exception V2 Prepared (2026-10-24 NZDT)
 
 Owner authorized only local repair and preparation of a separately approved
