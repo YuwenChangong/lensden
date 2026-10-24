@@ -1,5 +1,25 @@
 # Public Beta Current State
 
+## MFA Approved Attempt: Stopped Before Production Admission
+
+Owner explicitly approved binding c649c2e704fd530f4e84da5358c7c917c18e764a735d9af6422765c3472edcc7.
+The exclusive protected approval receipt records 2026-10-24T05:34:08.7693668Z;
+initial admission ended at 05:49:08.7693668Z, total window ends 08:34:08.7693668Z.
+At resumed UTC 07:44:52Z, initial admission had expired. Existing local Wrangler
+credential expiration was 03:08:23.021Z; no refresh or provider request attempted.
+The first local receipt check failed because PowerShell ConvertFrom-Json coerced
+the timestamp into DateTime before a string comparison. Original receipt is
+intact; independent string readback PASS, DateKind String fix and three focused
+offline checks PASS. This is not a new approval, start time or production retry.
+
+EXECUTION_STOPPED.safe.json is exclusively persisted and read back under
+%LOCALAPPDATA%/OpenGlassHub/admin-mfa-activation/<exact-binding>/, current user
+and SYSTEM only. Management reads, browser navigations, factor changes, database
+connections, migrations and deployments all zero. No frozen artifact or SQL
+changed; do not resume this attempt or silently renew its window. Fresh explicit
+authorization and valid access admission are required for another attempt.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## MFA Activation Packaging: Enrollment Before Enforcement
 
 No Production request or authority is created by this preparation. The saved
