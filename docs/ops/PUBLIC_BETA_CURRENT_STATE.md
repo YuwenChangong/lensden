@@ -1,5 +1,37 @@
 # Public Beta Current State
 
+## Branch Source Confirmed; Conditional MFA Recovery Prepared
+
+Frozen source and compiled code read env.CF_PAGES_BRANCH on the object imported
+from cloudflare:workers, passed directly into moderateContent. No process.env,
+import.meta.env or build-time substitution supplies this moderation branch.
+Cloudflare documents CF_PAGES_BRANCH as a Pages build variable; this is not
+evidence of automatic Worker runtime injection. A manually configured Worker
+binding could still supply it. Sealed configs omit it but keep_vars preserves
+remote bindings. Historical settings receipts retain checks/partial projections,
+not a complete binding-name inventory; they cannot prove runtime absence.
+
+Current effective moderation policy therefore remains UNKNOWN, not PASS. New
+versioned admission wrapper reuses the fixed 12-default proof and static-field
+guard, and classifies only CF_PAGES_BRANCH from the COMPLETE fresh authorized
+settings bindings array. No new endpoint or diagnostic call is introduced.
+ABSENT/EMPTY/MAIN/MASTER may prove review_all; OTHER, duplicate, wrong type,
+missing value or unknown metadata stops. Present policy/config mismatches stay
+blocking. No actual branch string is retained; only presence/type/classification.
+CAPTCHA, R2, resources, required secret names and compatibility checks remain.
+
+Fourteen new classification/integration checks and syntax checks PASS. Prior
+12-default, 35-field and 15-policy evidence reused, not rerun; no MFA suites or
+builds. Existing app artifacts, SQL and historical tools/receipts unchanged.
+The only pending replacement is ADMIN_MFA_ACTIVATION.RESUME.v5.NOT_AUTHORIZED.json
+and full OWNER_APPROVAL.txt in C:/Temp/ogh-admin-mfa-activation-20261024/.
+It adds the branch projection to existing settings reads within the same quotas,
+and conditionally continues the original two-stage MFA only after review_all is
+proved by fresh evidence and every other gate passes. Fresh exact owner approval
+and actual readiness are required; no old GO or consumed quota is reused. No
+Wrangler credential inspected, window started or Production request/write made.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Exact Unavailable-Policy Closure: Runtime Branch Evidence Missing
 
 Offline-only follow-up; previous 12 default comparisons reused, not rerun.
