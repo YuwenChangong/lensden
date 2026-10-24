@@ -1,5 +1,40 @@
 # Public Beta Current State
 
+## Minimal Manual Identity Amendment Prepared; Await Exact Approval
+
+Owner requested only a reviewed manual identity-admission substitution, no more
+controller recovery. Prepared one same-session owner-run snippet with two fixed
+server reads: existing Supabase singleton Auth getUser plus Worker me/protected
+profile role. No Production action during preparation. No page refresh, login,
+new controller/framework/listener service, account/role/config or artifact change.
+Code only arms a one-use trusted-click listener; after amendment approval owner
+chooses the existing exact private evidence directory. Missing post-approval
+marker, wrong folder/origin/time or used marker prevents request dispatch. Only
+minimized own UUID/equality/role/status/UTC metadata is persisted privately;
+no credentials/full responses/console identity/Downloads/clipboard/HAR/screenshot.
+No existing evidence is overwritten. File-picker permission is owner-operated
+and must be explicitly approved for the exact restricted directory. Readback is
+owner-run real-server evidence, not remote cryptographic attestation.
+
+New method alone verified with9/9 local VM fixtures (no Production), syntax2 PASS;
+historical MFA/SQL/config/build tests not repeated. Browser file-picker usability
+in the actual session remains NOT_EXECUTED, not falsely claimed proved. Native
+directory picker needs a trusted click; failure stops without network retry.
+
+Exact amendment C:/Temp/ogh-admin-mfa-activation-20261024/MANUAL_IDENTITY_ADMISSION.v1.NOT_AUTHORIZED.json
+SHA256 ec7375c3ec9bda62e27c10091717c6cbbca8ba375ca1e1c7edd11197f1ba58b2;
+same-directory MANUAL_IDENTITY_ADMISSION.v1.OWNER_APPROVAL.txt contains full minimal
+approval and exact owner steps. Browser source SHA256
+04193ca964aa269568c0a6420bc5b67ef128c5dac8b6f92e58d772caebebcfff.
+Original4e447058 parent window still ends2026-10-24T14:10:17.2244604Z;
+no new window, added requests or inherited expired quota. Auth getUser1/me1
+deducted from original96/64. No approval/dispatch/result marker created in the
+private sink by preparation. After exact owner approval create private marker;
+after manual successful identity readback, pinned owner Wrangler login must
+restore >=45min deployment validity before continuing original two-stage scope.
+New Production requests/deployments/factors/DB/writes0. Management3 retained.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Bounded Actual-Control Recovery Failed; Manual Identity Evidence Needs Amendment
 
 Owner authorized bounded local control repair and fallback evaluation. Same Edge

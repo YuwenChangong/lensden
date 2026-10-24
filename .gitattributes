@@ -16,3 +16,5 @@ supabase/migrations/20261024103015_staff_user_safety_target_boundary.sql text eo
 scripts/qa/admin-mfa-activation/prepare-moderator-authorization.LOCAL_ONLY.mjs text eol=lf
 scripts/qa/admin-mfa-activation/initial-moderator-admission.v1.mjs text eol=lf
 scripts/qa/admin-mfa-activation/record-moderator-approval.v1.ps1 text eol=lf
+scripts/qa/admin-mfa-activation/manual-identity.browser.js text eol=lf
+scripts/qa/admin-mfa-activation/test-manual-identity.LOCAL_ONLY.mjs text eol=lf
