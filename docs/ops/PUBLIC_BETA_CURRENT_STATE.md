@@ -1,5 +1,42 @@
 # Public Beta Current State
 
+## Edge Directory Denial: V1 Consumed, Minimal Download V2 Awaiting Approval
+
+Owner ran reviewed v1 once and stopped when Edge refused the AppData system
+directory. Do not bypass that protection/select another folder/rerun v1. Local
+dispatch/result markers absent; source places network after successful directory
+admission, but no independent browser request telemetry is claimed. Preserved
+MANUAL_IDENTITY_V1_DIRECTORY_BLOCK.safe.json; identity NOT_VERIFIED, MFA deploy0.
+
+Minimal v2 changes local output only: same existing client/real Auth getUser and
+me/protected-role predicates, same original window and request caps, new one-use
+owner execution requiring fresh amendment approval. Replaces File System Access
+with standard Blob download of ONLY own UUID/minimized metadata; no credentials,
+full responses, HAR, console identity or third-party destination. Downloads is
+temporary staging under its existing permissions, an EXPLICIT privacy amendment,
+not silently described as private-only custody. Exact local importer validates
+filename/nonce/schema/time, private directory/output ACL and SHA copy/readback,
+then unlinks ONLY that generated download if explicitly approved. No overwrite,
+generic file search/network/privilege change. Import failure safely stops with
+sanitized errors; no re-execution of Production identity probe.
+
+New delta checks7/7 PASS (six VM cases plus actual disposable Windows ACL/copy/
+readback/unlink), syntax3 PASS, fixture cleanup CONFIRMED. No historical suites,
+config checks/builds or Production requests repeated. Real Edge download NOT_YET
+EXECUTED, persistence never inferred merely from anchor click/alert.
+
+Pending exact supplement:
+C:/Temp/ogh-admin-mfa-activation-20261024/MANUAL_IDENTITY_ADMISSION.v2.NOT_AUTHORIZED.json
+SHA256 ef5c88b0cfa5ea9f2f42c69df4616d69bad3658e16d9ac4363968ffc3861b1d3.
+Browser source 9d08805863b5517daa4de5883aa1275a05b4aa04a950d9f8336ce2003e539c7a;
+local importer d7f71ecacc4dd6ce9385faac155f5ad431207051f393e23dc00fcedd6b83f01b.
+No v2 approval marker/execution permission/reservation created. Owner reviews
+these two files and must explicitly approve exact supplement, one FRESH UI
+execution and temporary Downloads metadata/precise local-copy cleanup scope.
+Original parent ends2026-10-24T14:10:17.2244604Z; not extended or re-created.
+Management3 retained, no new Production request/writes/deploy/DB/factor operation.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Manual Identity Amendment Approved: Private Marker Ready, Owner Action Pending
 
 Owner submitted all exact approval fields for amendment
