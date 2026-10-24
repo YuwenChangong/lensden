@@ -1,5 +1,37 @@
 # Public Beta Current State
 
+## Four Public Email Gates: One-Pass Local Closure
+
+One separately authorized settings GET at 2026-10-24T08:38:10.189Z returned
+HTTP 200. SUPPORT/ABUSE/PRIVACY/IP public email bindings are all ABSENT, not
+present wrong-type/value bindings. No actual addresses or raw settings retained.
+No earlier field-level baseline proves a Production configuration change.
+All four legal contacts use checked-in static constants; expected config,
+rendering source and sealed legal chunk parity PASS across old RC and both MFA
+artifacts. Runtime email absence is therefore a validator false positive.
+
+Offline review also found the same source-vars/runtime-vars conflation for
+PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, PUBLIC_TURNSTILE_SITE_KEY and
+SITE_ORIGIN. Their unchanged readers and exact compiled literals are verified
+against all three pinned artifacts, without exporting values. New finite guard
+permits absence only for these four build fields and five static legal fields
+after full pinned proof; present mismatches, duplicates and unknown shapes fail.
+PUBLIC_AUTH_TURNSTILE_SITE_KEY and PUBLIC_R2_PUBLIC_BASE_URL are genuinely read
+at runtime: no exception. Other runtime variables, resource bindings, secret
+names, compatibility and fixed-target checks remain mandatory, not newly PASS.
+
+Versioned QA guard/caller/recorder preserve all prior frozen source identities.
+12 new focused checks and JS/PowerShell syntax PASS; old MFA tests/builds reused.
+Protected diagnosis and closure receipts are under the stopped da219891 binding.
+One pending replacement packet only:
+C:/Temp/ogh-admin-mfa-activation-20261024/ADMIN_MFA_ACTIVATION.RESUME.v4.NOT_AUTHORIZED.json
+Full signing text: same directory, ADMIN_MFA_ACTIVATION.RESUME.v4.OWNER_APPROVAL.txt.
+Fresh exact owner approval after login/readiness is required; preparation starts
+no window and resumes no stopped execution. Same artifacts, factor sequence,
+SQL, budgets and non-destructive stop rules. Task settings GETs=1, retries=0,
+Production writes/deployments/database connections=0. CATALOG_HOLD=ACTIVE;
+PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## MFA V3 Attempt: Stopped at Support-Email Runtime Match
 
 Fresh explicit owner approval for da219891b1f2c1c4836cea1e11218377324d78d2148079a2914e9b5ceb9bf79d
