@@ -1,5 +1,26 @@
 # Public Beta Current State
 
+## Owner-Authorized Browser Resumption: Control Still Unavailable Before Dispatch
+
+Owner explicitly restored connection and authorized original-window admission
+continuation only. At 2026-10-24T11:13:39.192Z packet/tool hashes PASS, original
+window remaining176minutes and pinned credential55minutes meet enrollment gates.
+No approval/window reset or management repetition: prior3 management reads reused.
+One owner-authorized scoped DOM control resumption again failed BEFORE dispatch.
+Safe tab metadata shows the same user tab and provider ID still present, so no
+stale-tab identity change justifies an automatic alternative action. Metadata
+availability is not page control or independent authenticated identity proof.
+Stopped; no further control attempt, navigation, reload or alternate mechanism.
+Two total control attempts across the explicit owner continuation, automatic
+retries0; browser commands reported dispatched0. Moderator server identity and
+UUID binding remain NOT_VERIFIED. Production new requests/deployments/factors/
+DB connections/migrations/writes0. User tab left open unchanged, created tabs0.
+BROWSER_RESUME_STOPPED.safe.json persisted exclusively, fsynced/read back; original
+stop receipt preserved. Actual blocker is target-page control, not a proven app
+or moderator-role failure. Owner must restore control of the actual Worker tab,
+not merely inventory connectivity; no automatic new window, packet or fallback.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Moderator Activation: Management PASS, Browser Control Stopped Before Dispatch
 
 Owner completed pinned Wrangler interactive login and confirmed continued
