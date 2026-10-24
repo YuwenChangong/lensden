@@ -1,5 +1,63 @@
 # Public Beta Current State
 
+## Ordinary Owner Login Joint Core Acceptance Prepared, No Authority
+
+One private ordinary-v1 joint packet is finalized, not approved or executed:
+`C:/Users/1/AppData/Local/OpenGlassHub/mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302/CORE_ACCEPTANCE.ordinary-v1.NOT_AUTHORIZED.json`.
+SHA256 33be3253c6fea33004e2430fe582cf6fde029e9cf4e0b5d1ecca4f44efdc76ce.
+Its matching OWNER_APPROVAL.txt contains the complete scope. No owner-verification
+receipt, active execution window, new Auth account or Production request exists.
+Undelivered drafts825848ae/ba7e7321 and their evidence/approval text are preserved WITHDRAWN,
+not authorized historical evidence. Fresh private A3/B3 aliases are unchanged;
+all three prior banned UUIDs and their protected envelopes remain excluded.
+
+The prior tools checkout disappeared locally while its committed branch and
+private draft survived. Restored the existing branch at its original path without
+changing other checkouts. Three missing uncommitted helpers were recreated with
+NEW exact hashes, not claimed identical to the lost source. The committed Auth
+diagnostic helper has only a Git autocrlf checkout difference, LF-normalized hash
+matches; the new packet pins its actual bytes and records this distinction.
+
+New post-login helper does not open a browser, submit login, access/export tokens
+or control CAPTCHA. Owner performs normal Edge site login and any human challenge
+in two distinct ordinary profiles. Only after login, source-bound owner-run SDK
+batches verify getUser UUID, actual profiles.role=user and refresh/readback;
+real RLS owned-update/foreign-denial/readback and global logout use those same
+sessions. Agent browser evaluate remains read-only DOM, not a secret/session API.
+No disabling self-XSS/paste protections. Downloaded batch results contain only
+bounded synthetic IDs, booleans, counts and sanitized error classification.
+
+Current focused offline22/22 PASS, including generated snippet execution,
+single-use guard, actual8s timeout/late completion and denied401-not-RLS behavior.
+Private credential GUI payload checks5/5 PASS with nonsecret fixtures; no real
+credential window was shown. Two JS syntax checks and PowerShell parser PASS;
+offline finalizer syntax checked separately. These are not Production Auth/RLS or
+GUI visibility proof. No historical full suite/CAPTCHA test/build was repeated.
+
+One circle, four posts, two comments, one report and small synthetic image/R2/
+Storage media remain bounded. Auth24, Worker80(endpoint subcaps73), REST64,
+Storage24, R2operations12, management4, navigation30 are explicit action/batch
+limits; ordinary UI/server background requests are not a measured global wire
+ceiling. Native browser traffic is time-bound and this limitation is explicit.
+No direct consent-table access; owner personally reviews current legal terms.
+Unavailable UI/media-byte/claims evidence stays UNVERIFIED and stops, not PASS.
+Independent exact new-account containment uses reserved GET/ban876000h/GET only
+within the approved window even after business failure. No guessed IDs/retries.
+
+After owner readiness plus matching fresh approval, record UTC once and start
+120min; initial admission10min, fixtures30min, business75min or earlier credential
+expiry-derived stop, legacy105min and cleanup120min. No short window starts now.
+Local Wrangler credential exists but lacks45min remaining, remote access unknown;
+owner must interactively log in once before approval. Both ordinary profile UI
+channels must be identifiable before creating any account. Current zero-cost,
+paused destructive jobs and owner real-session readiness require fresh attestation.
+
+Frozen0b6d94ff RC clean and preserved release receipt, SDK asset, legacy SQL and
+media fixture hashes verified locally. No migration/deployment/protection change,
+backup repeat, push, real media access, mail or new Production operation.
+NEXT_SINGLE_ACTION=OWNER_PREPARES_TWO_ORDINARY_EDGE_PROFILES_AND_WRANGLER_LOGIN_THEN_REVIEWS_AND_SIGNS_EXACT_33be3253_JOINT_PACKET_WHEN_READY.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Ordinary Edge Owner Comparison Reported, CAPTCHA Unknown
 
 Exact9cd02a0e owner approval and all fields verified; six source/receipt pins
