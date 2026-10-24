@@ -1,5 +1,48 @@
 # Public Beta Current State
 
+## Evidence Reuse: Minimum Remaining Launch Work
+
+Latest owner request supersedes further smoke-packet/tool preparation with a
+bounded offline evidence-reuse check. No new Production authority or window.
+Final release receipt20b12f96, backup/offsite source linkage and isolated restore
+receipt hashes match. DONE: six migrations/ledger, selected deployed database
+security/Schema/RLS/grants, RC359/version, fence removal and final HTTP/home/Feed/
+admin browser acceptance. Preserve their dates/scope; no live recheck or test rerun.
+
+Actual historical receipts inspected: comments19, selected business23, report
+submission/reporter isolation/admin checks, selected local RLS16 and real isolated
+R2 upload/playback/delete12. Comments/circles/notifications/report/Auth sources
+checked against482e7f86 are unchanged in frozen0b6d94ff. Posts differences are the
+later thumbnail/deleted-post cleanup correction already covered by its own
+22-unit/17-Chrome evidence. R2 P1 code, claim SQL and related tests match f62dbf16
+exactly in Git; reuse58 application/24 cleanup/22 PG and38 P2 cases, not reruns.
+These selected tests are DONE locally, not blanket Production end-to-end proof.
+
+NOT_VERIFIED: ordinary Production self-service registration/confirmed login and
+sequential user-session switch; actual A/B denial on current deployment; one
+current real publish-to-retained-R2 integration. Existing local implementation is
+IMPLEMENTED/tested, not a newly confirmed failure. Minimal combined live flow can
+use one synthetic post/video and one foreign-update denial, not repeat every
+comment/reply/reaction/circle/report/image/Storage/notification/device suite.
+No confirmed current Production P0/P1 established by this review. Historical local
+workerd500 and instrumented CAPTCHA600010 do not prove current ordinary-site P1.
+
+Legacy tmp risk UNKNOWN: no legacy execution receipt in the three actual core
+runs, all stopped before business/legacy checks. Paused application jobs do not
+prove the provider tmp-expiry lifecycle is paused; existing guard protects new
+bindings, not historical bytes. First missing evidence is one bounded read-only
+aggregate, no real object downloads. Nonzero/unknown needs risk containment or an
+explicit restricted-Beta decision, never automatic SAFE or full Public Beta GO.
+
+No new framework/packet/test/Production request after the latest instruction.
+Earlier unapproved ordinary/SMOKE drafts are not executable authority; prior
+local helper edits are preserved but not a new launch gate. Cancel mandatory two
+profiles, per-stage approvals, old ciphertext cleanup and historical full retests.
+P2/noncritical extras are OPTIONAL backlog. One future exact joint approval only
+for indispensable live gaps plus exact fixture/actor cleanup, after owner ready.
+NEXT_SINGLE_ACTION=ONE_BOUNDED_COMBINED_AUTH_USER_SWITCH_POST_R2_DENIAL_SMOKE_AND_LEGACY_AGGREGATE_IF_OWNER_AUTHORIZES_NO_RELEASE_REPLAY.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Ordinary Owner Login Joint Core Acceptance Prepared, No Authority
 
 One private ordinary-v1 joint packet is finalized, not approved or executed:
