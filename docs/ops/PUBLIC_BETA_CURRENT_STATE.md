@@ -1,5 +1,28 @@
 # Public Beta Current State
 
+## Manual Identity Amendment Approved: Private Marker Ready, Owner Action Pending
+
+Owner submitted all exact approval fields for amendment
+ec7375c3ec9bda62e27c10091717c6cbbca8ba375ca1e1c7edd11197f1ba58b2
+and original4e447058 parent. At2026-10-24T11:41:08.249Z rehashed exact amendment,
+parent, reviewed browser/test source and all parent local-tool pins: PASS.
+Original recorded window end14:10:17.2244604Z unchanged with >45min reserve.
+Verified private directory current-owner/SYSTEM-only ACL, disabled inheritance
+and no reparse ancestors. Prior3 management PASS retained; no repeat. Original
+identity Auth/Worker allowances unused; deployments/factors/DB still0.
+
+Exclusively created/fsynced/read back MANUAL_IDENTITY_APPROVAL.safe.json in the
+original private sink, with explicit human consent, nonce, both bindings, source
+hash and unchanged window. No browser snippet run, dispatch/result marker or
+Production request. Owner now runs the exact reviewed local snippet ONCE in
+same existing Edge /admin/reports/ session, clicks a blank page area once, selects
+only exact private sink directory and permits the approved local read/write.
+Do not refresh/switch accounts/bypass DevTools security or rerun. Codex will
+read exact private result; owner need not export UUID/credentials/JSON to chat.
+After actual identity PASS only, owner restores pinned Wrangler >=45min validity;
+all original stage reserves and MFA gates remain. No new/extended window.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Minimal Manual Identity Amendment Prepared; Await Exact Approval
 
 Owner requested only a reviewed manual identity-admission substitution, no more
