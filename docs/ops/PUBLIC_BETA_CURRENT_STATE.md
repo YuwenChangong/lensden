@@ -1,5 +1,41 @@
 # Public Beta Current State
 
+## MFA Resume Attempt: Configuration Evidence Stop
+
+Fresh explicit approval for 3f9556c34e980a43211dfa170a06700a3e227214942761edf36e01c9db6a2251
+was privately recorded 2026-10-24T07:58:48.0736993Z; end 10:58:48.0736993Z.
+Wrangler expiry 08:53:40.926Z and required scopes passed local initial readiness;
+726 selected artifact files and bound SQL/transport/CLI identities rehashed PASS.
+Two fixed Worker management GETs dispatched, zero retries. Actual serving UUID
+d53e3c67-f8ee-4dee-bd18-a57f16e3d91d, deployment
+e85f8082-675c-4315-a145-42bda81a36bc, one version/100 percent matched history.
+Settings returned 200, but source-variable matching failed at
+PUBLIC_LEGAL_OPERATOR_NAME. No raw settings/secret values retained; missing,
+type or value mismatch cannot be distinguished from this receipt. This does
+not prove a website fault or that Production configuration changed. Candidate
+source-config hashes still equal the old RC's source-config hash.
+
+Attempt STOPPED, not automatically resumed. Exact safe receipts are under
+%LOCALAPPDATA%/OpenGlassHub/admin-mfa-activation/<new-binding>/ with verified
+current-user/SYSTEM ACL. Browser navigations, app requests, factor writes,
+deployments, database connections and migrations zero. No frozen assets changed.
+Only a separately authorized bounded nonsecret setting diagnosis can clarify
+the mismatch; do not retry the closed admission or silently relax its gate.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
+## MFA Minimal Resume Authorization: Pending Owner Readiness
+
+Replacement packet: C:/Temp/ogh-admin-mfa-activation-20261024/ADMIN_MFA_ACTIVATION.RESUME.v2.NOT_AUTHORIZED.json
+SHA256 3f9556c34e980a43211dfa170a06700a3e227214942761edf36e01c9db6a2251.
+Same source/artifacts, SQL, quotas and recovery rules; no rebuild or tests rerun.
+No separate 15-minute initial cutoff. One 180-minute window starts only after
+new matching approval plus completed owner Wrangler login/immediate readiness.
+Completion reserves are 45/30/15 minutes for enrollment/enforcement/database.
+Wrangler validity gates are stage-scoped (45/20 minutes before the two deploys),
+not full-window validity; expired/unknown access stops without automatic refresh.
+Old GO/window/quota never reused. Preparation Production operations zero; no
+window started. CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## MFA Approved Attempt: Stopped Before Production Admission
 
 Owner explicitly approved binding c649c2e704fd530f4e84da5358c7c917c18e764a735d9af6422765c3472edcc7.
