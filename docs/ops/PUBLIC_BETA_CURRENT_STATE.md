@@ -1,5 +1,38 @@
 # Public Beta Current State
 
+## Final Incremental Review: Moderator Activation Contract Prepared
+
+Reviewed cd4bc2f2 delta and necessary API/RLS/grant/RPC/trigger dependencies only.
+No new material finding. Reuse prior 23/23 local PG17/contract tests, original
+MFA/closure/assembly tests and atomic success/failure rollback evidence; no rerun.
+Application/build inputs are unchanged since selected enrollment 534c693b;
+enforcement remains exact 8b0882f0. New permission behavior is separately bound
+SQL, not missing Worker code. No candidate rebuild, new test framework or live
+configuration audit. New identity/scope serializer and approval/admission entry
+points are local-only packaging; latter two differ from prior reviewed entry
+points only by fixed packet path. Syntax/path-only parity is checked offline.
+
+prepare-moderator-authorization.LOCAL_ONLY.mjs verifies all 726 sealed artifact
+files, manifests/source trees, SQL/transport pins and no packaged-source drift
+before exclusively creating MODERATOR_MFA_ACTIVATION.v1.NOT_AUTHORIZED.json and
+its complete OWNER_APPROVAL.txt in the existing C:/Temp activation directory.
+It must run only after this scoped source is committed; any mismatch stops
+without Production operations. Prior packets/receipts are never overwritten.
+Approval is pending and no execution window is started by this preparation.
+
+New contract requires independently verified exact existing moderator UUID and
+unchanged protected role before any deployment and throughout factor/session
+cycles; admin-only GET /api/admin/trusted-runtime/capability must return 403.
+Primary/independent backup, signed refreshed AAL2, stage reserves, cost0 and
+all configuration gates retained. One strict-TLS DB connection, one atomic
+transaction dispatching original staff-AAL2 then new safety SQL and both exact
+ledger entries; explicit own-role/safety catalog pre/postcommit readback with
+17 planned native queries under existing20 maximum. This is local source review,
+not external independent approval or Production verification. New Production
+authority requires complete matching owner approval plus actual readiness.
+Production requests/writes/connections/deployments/migrations=0. Destructive jobs
+remain paused; CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Moderator MFA Alignment and Safety Target Boundary: Local Candidate Complete
 
 New candidate migration 20261024103015_staff_user_safety_target_boundary.sql
