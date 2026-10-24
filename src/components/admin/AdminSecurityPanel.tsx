@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAdminSession } from "./useAdminSession";
 import { enrollAdminTotp, loadAdminFactors, removeAdminTotp, verifyAdminTotp } from "../../lib/admin-totp";
 import "./admin-security.css";
@@ -17,6 +17,9 @@ export default function AdminSecurityPanel() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const actor = state.status === "ready" ? state.me.user_id : null;
+  const currentActor = useRef(actor);
+  currentActor.current = actor;
+  const operationActive = useRef(false);
 
   useEffect(() => {
     setPending(null); setCode(""); setBackupCode(""); setFactors([]); setSelected(""); setBackup("");
@@ -29,15 +32,21 @@ export default function AdminSecurityPanel() {
     return () => { active = false; };
   }, [actor, supabase]);
 
-  async function run(action: () => Promise<void>) {
-    if (busy || !supabase || !actor) return;
+  async function run(action: () => Promise<() => void>) {
+    if (operationActive.current || !supabase || !actor) return;
+    operationActive.current = true;
+    const startedFor = actor;
     setBusy(true); setMessage("");
     try {
-      await action();
-      setFactors(await loadAdminFactors(supabase));
+      const apply = await action();
+      const result = await loadAdminFactors(supabase);
+      if (currentActor.current !== startedFor) return;
+      apply();
+      setFactors(result);
     } catch {
-      setMessage("Operation not confirmed. Check your authenticator and session; no automatic retry was made.");
+      if (currentActor.current === startedFor) setMessage("Operation not confirmed. Check your authenticator and session; no automatic retry was made.");
     } finally {
+      operationActive.current = false;
       setCode(""); setBackupCode(""); setBusy(false);
     }
   }
@@ -64,8 +73,8 @@ export default function AdminSecurityPanel() {
         </select>
       </label>
       <button className="community-button" type="button" disabled={!!pending} onClick={() => void run(async () => {
-        setPending(await enrollAdminTotp(supabase));
-        setMessage("Scan the QR code with your authenticator, then verify its code.");
+        const enrollment = await enrollAdminTotp(supabase);
+        return () => { setPending(enrollment); setMessage("Scan the QR code with your authenticator, then verify its code."); };
       })}>Add authenticator</button>
       {pending && <div className="admin-security-enrollment">
         {qr && <img src={qr} width="220" height="220" alt="Private authenticator enrollment QR code" referrerPolicy="no-referrer" />}
@@ -73,7 +82,7 @@ export default function AdminSecurityPanel() {
       </div>}
       <form onSubmit={event => { event.preventDefault(); void run(async () => {
         await verifyAdminTotp(supabase, verifyId, code);
-        setPending(null); setMessage("Server-verified AAL2 session active.");
+        return () => { setPending(null); setMessage("Server-verified AAL2 session active."); };
       }); }}>
         <label>Authenticator code
           <input type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={event => setCode(event.target.value)} required />
@@ -93,8 +102,10 @@ export default function AdminSecurityPanel() {
       </label>}
       <form onSubmit={event => { event.preventDefault(); void run(async () => {
         await removeAdminTotp(supabase, selected, backup, backupCode);
-        if (pending?.id === selected) setPending(null);
-        setSelected(""); setBackup(""); setMessage("Authenticator removal confirmed.");
+        return () => {
+          if (pending?.id === selected) setPending(null);
+          setSelected(""); setBackup(""); setMessage("Authenticator removal confirmed.");
+        };
       }); }}>
         {target?.status === "verified" && <label>Backup authenticator code
           <input type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={backupCode} onChange={event => setBackupCode(event.target.value)} required />

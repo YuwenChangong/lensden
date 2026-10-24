@@ -1,5 +1,84 @@
 # Public Beta Current State
 
+## Admin MFA Closure Delta: Ready Locally, Not Activated
+
+Follow-up to 0e4a08c1, no Production operation or core-test quota consumed.
+The API signature/getUser/sub/profile-role guards and elevated client creation
+order are unchanged; reuse their previous 20 tests and related regressions.
+New review found two local recovery/UI omissions: factor deletion did not refresh
+the JWT or independently read back removal/backup, and late enrollment completion
+could display its private setup key after an account switch. Both are corrected;
+an immediate in-flight latch also prevents double enrollment dispatch. Unknown
+refresh/persistence stays unconfirmed, no automatic retry or factor-reset endpoint.
+
+New local migration 20261024043314_admin_staff_aal2_capabilities.sql changes only
+the existing is_moderator_or_admin() capability to protected role AND signed JWT
+AAL2, and the existing is_catalog_admin() capability if already present. It does
+not change current_user_role(), the role enum, owner/public RLS branches, policies,
+function identities/owners/ACLs or Storage managed schema. No blanket AAL2 policy
+on ordinary users; staff retain ordinary ownership rights at AAL1, but not the
+privileged staff branch. Missing/unknown AAL is denied. Held Catalog is not created
+or activated; a future Catalog schema installation needs its own AAL2 review.
+Migration working-file SHA256 d43eef59dfd51580a66a03a684969e07316218b46146237479e022e38cc569bf.
+Exact old function-body preconditions reject drift/replay; run only in an approved
+transaction. This file is NOT authorized for Production by its presence here.
+
+22 incremental checks passed with a real disposable local PG17 cluster and actual
+repository forum/media/safety/report/purge/role-lock SQL. Auth/Storage facades,
+superset local grants and the extracted held-Catalog capability are explicit
+fixtures, not full-schema/current-live parity. Reproduced AAL1 direct staff ban
+before the patch; afterward AAL1 admin/moderator cannot perform privileged
+moderation, ban, report, media/object or circle mutations; AAL2 can. Ordinary
+AAL1 owner/public reads/writes, cross-user rejection and role-column lockdown
+remain. All policy rows and helper OIDs/owners/ACLs compare unchanged; inherited
+PUBLIC RPC execute drift is refused before changes. Authenticated
+cannot call service-only purge or QA role RPCs at either AAL; genuine local
+service_role still can. The React component race is exercised with real ReactDOM
+and nonsecret JSDOM fixtures. Native cluster shutdown/removal CONFIRMED.
+Guarded local-only build PASS; Astro ratchet PASS with no new diagnostics
+(56 existing). Original full test suites, backups and frozen RC not replayed.
+
+Production activation, one separately approved bounded change:
+1. Confirm actual TOTP enrollment/verification availability and capacity for two
+   factors, project-owner recovery access independent of the application session,
+   zero cost and continued destructive-job pause. Prepare an explicitly reviewed
+   MFA-capable rollback artifact before deployment. No current Production factor
+   or recovery-custodian verification is claimed by offline tests.
+2. Deploy the MFA-capable application only under explicit deployment approval;
+   /admin/security/ and GET /api/admin/forum/me must stay reachable at AAL1.
+   Sensitive APIs are unavailable until step-up, not bypassed during setup.
+   Owner enrolls/verifies a primary and separately held backup, demonstrates a
+   fresh normal sign-in then AAL2, and confirms identity/profile. Do not start the
+   DB enforcement transaction until these succeed. A short sensitive-admin
+   interruption during onboarding must be explicitly accepted; ordinary-user
+   acceptance preparation remains independent.
+3. With separately approved exact catalog-only precheck, verify helper bodies,
+   owners/ACLs and applicable policy/RPC definitions still match; unknown live
+   grants or alternate role-only staff branches STOP. Apply the exact migration
+   transaction once, read back both applicable helpers/ACLs/policies, then verify
+   AAL1 refusal and AAL2 admission without mutating real user targets. No existing
+   migration executor or frozen migration is changed/replayed by this delta.
+4. Roll back only the application to a verified MFA-capable artifact if needed;
+   retain the database AAL2 boundary and verified factors. Never silently restore
+   role-only helper bodies or the old no-MFA RC, remove factors, reset passwords,
+   resume destructive jobs, or reverse committed DDL. Drift/uncertain commit stops.
+
+If both authenticators are lost, keep sensitive actions denied. Project owner
+independently verifies the operator; separately authorize exact-user factor
+recovery and session revocation, never password-only public recovery. A valid
+already-issued JWT is not claimed to be instantly revoked by SDK sign-out/refresh
+revocation. Before restoring recovered staff authority, isolate that authority
+through an explicitly authorized role/access withdrawal or wait out all recorded
+old JWT expiries, then reenroll and verify; no automatic role change was added.
+service_role/postgres are trusted operational identities, not MFA-bearing user
+sessions: their existing source-restricted RPCs and paused jobs are not claimed
+protected by this JWT predicate. Do not expose their keys or resume automation.
+
+LOCAL_CLOSURE=PASS_WITHIN_TESTED_SCOPE;PRODUCTION_MFA_CLOSURE=NOT_ACTIVATED.
+Pending Production facts/approval are not a proven ordinary-user security breach.
+No Production request, connection, mutation, migration, deployment or push here.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Authentication Minimum Closure: Local Candidate Only
 
 2026-10-24 nonsecret Dashboard read, existing authenticated owner session, fixed

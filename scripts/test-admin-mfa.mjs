@@ -117,12 +117,13 @@ try {
   const client = {
     auth: {
       getSession: async () => ({ data: { session: { access_token: "nonsecret-fixture", user: { id: userId } } }, error: null }),
+      refreshSession: async () => ({ data: { session: { access_token: "nonsecret-refreshed-fixture", user: { id: userId } } }, error: null }),
       mfa: {
         listFactors: async () => ({ data: { all: factors }, error: null }),
         enroll: async () => { operations.push("enroll"); return { data: { id: "new", type: "totp", totp: { qr_code: "fixture", secret: "nonsecret-fixture" } }, error: null }; },
         challenge: async ({ factorId }) => { operations.push(`challenge:${factorId}`); return { data: { id: "challenge" }, error: null }; },
         verify: async ({ factorId, challengeId, code }) => { assert.equal(challengeId, "challenge"); assert.equal(code, "123456"); operations.push(`verify:${factorId}`); return { error: failVerify ? { message: "not exported" } : null }; },
-        unenroll: async ({ factorId }) => { operations.push(`remove:${factorId}`); return { error: null }; },
+        unenroll: async ({ factorId }) => { operations.push(`remove:${factorId}`); factors = factors.filter(factor => factor.id !== factorId); return { error: null }; },
       },
     },
   };

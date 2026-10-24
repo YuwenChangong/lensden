@@ -61,4 +61,12 @@ export async function removeAdminTotp(client: SupabaseClient, factorId: string, 
   }
   const { error } = await client.auth.mfa.unenroll({ factorId });
   if (error) throw new Error("MFA_REMOVE_FAILED");
+  // Auth removal does not update the browser's saved JWT on its own.
+  const refreshed = await client.auth.refreshSession();
+  if (refreshed.error || !refreshed.data.session) throw new Error("MFA_SESSION_REFRESH_UNCONFIRMED");
+  const remaining = await loadAdminFactors(client);
+  if (remaining.some(factor => factor.id === factorId)
+      || (target.status === "verified" && !remaining.some(factor => factor.id === backupId && factor.status === "verified"))) {
+    throw new Error("MFA_REMOVE_UNCONFIRMED");
+  }
 }
