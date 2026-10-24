@@ -1,5 +1,22 @@
 # Public Beta Current State
 
+## Remaining MFA Same Moderator Verified; Owner Factor Enrollment Pending
+
+At2026-10-24T23:13:00.641Z..23:13:01.648Z approved initial owner snapshot PASS:
+real Auth getUser/Worker protected me equal the EXACT old private moderator UUID.
+Importer executed once, private SHA/ACL readback and exact Downloads unlink PASS;
+no UUID/credentials exported. Private result hash
+5ed61c4bea754f762678f9aac278c07305436920d706784010de4c86caf79fcb.
+New scope explicit Auth1/Worker1, management3; no new deployment/factor/DB call
+by Codex. Own existing TOTP count remains NOT_VERIFIED, not assumed zero.
+Next owner normal /admin/security/ navigation: locally inspect successful own
+Auth /auth/v1/user factor read (installed listFactors uses getUser), require zero
+TOTP or stop. Only then approved primary and independently held backup enroll/
+verify once each, with actual refreshed GET /api/admin/mfa200 aal2 and distinct
+verified factor readbacks. No secret/QR/code exports, remove/reset/retry. New
+signins/enforcement/DB remain unexecuted. Window ends2026-10-25T02:07:13.9120310Z;
+Catalog ACTIVE, Public Beta NOT_AUTHORIZED, destructive jobs paused.
+
 ## Remaining MFA Fresh Management Pass; Identity Readback Pending
 
 Owner completed pinned Wrangler login; at2026-10-24T23:09Z local expiry/scopes
