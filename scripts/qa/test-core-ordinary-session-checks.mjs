@@ -22,7 +22,7 @@ function fixture(p, options = {}) {
     comments: [{ id: comment, author_id: b, post_id: post, body: `${namespace} comment` }],
     post_media: [{ id: media, user_id: a, post_id: post, storage_path: `${a}/${namespace}-image.png` }],
   };
-  const user = { id: options.wrongId ? b : p.actorId, email_confirmed_at: '2026-10-23T01:00:00Z' };
+  const user = { id: options.wrongId ? b : p.actorId, email: `fixture+ogh-${p.actor.toLowerCase()}-0123456789abcdef@gmail.com`, email_confirmed_at: '2026-10-23T01:00:00Z' };
   let authCalls = 0;
   const authResult = async () => { authCalls++; return options.authError
     ? { error: { status: 400, code: 'invalid_credentials', message: 'PRIVATE_ERROR_NOT_EXPORTED' } }
@@ -122,4 +122,25 @@ test('generated owner snippet executes actual check with private-free download',
 test('no credential export, direct login, or controller dependency', async () => {
   const source = await readFile(new URL('./core-ordinary-session-checks.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(source, /signInWithPassword|access_token|refresh_token|document\.cookie|localStorage|playwright|puppeteer|process\.env/);
+});
+test('smoke amendment exact private alias matches authenticated user', async () => {
+  const p = { ...plan(), expectedEmail: 'fixture+ogh-a3-0123456789abcdef@gmail.com' };
+  const r = await runSessionChecks(fixture(p).client, p);
+  assert.equal(r.status, 'PASS'); assert.ok(!JSON.stringify(r).includes('@gmail.com'));
+});
+test('smoke amendment private alias mismatch blocks before profile', async () => {
+  const p = { ...plan(), expectedEmail: 'other+ogh-a3-0123456789abcdef@gmail.com' };
+  const r = await runSessionChecks(fixture(p).client, p);
+  assert.equal(r.reason, 'SESSION_IDENTITY_MISMATCH'); assert.equal(r.counts.rest, 0);
+});
+test('smoke amendment malformed private alias blocks', () => {
+  assert.throws(() => checkPlan({ ...plan(), expectedEmail: 'invalid' }), /PRIVATE_EMAIL_BINDING_INVALID/);
+});
+test('smoke amendment only foreign post update and ordinary profile checked', async () => {
+  const p = { ...plan('rls-b'), stage: 'smoke-rls-b' };
+  delete p.fixtures.commentB; delete p.fixtures.imageMediaA;
+  const r = await runSessionChecks(fixture(p).client, p);
+  assert.equal(r.status, 'PASS'); assert.deepEqual(r.counts, { auth: 1, rest: 4 });
+  assert.equal(r.checks.foreignPostDeniedUnchanged, true);
+  assert.equal(r.checks.foreignMediaDeniedUnchanged, undefined);
 });

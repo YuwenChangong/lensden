@@ -10,13 +10,16 @@ export function checkPlan(p, now = Date.now()) {
   require(p && /^[a-f0-9]{64}$/.test(p.binding), 'BINDING_INVALID');
   require(/^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(p.namespace), 'NAMESPACE_INVALID');
   require(p.journalVerified === true && uuid.test(p.actorId), 'CREATE_JOURNAL_REQUIRED');
+  if (p.expectedEmail !== undefined) require(typeof p.expectedEmail === 'string'
+    && /^[^\s@]+\+ogh-(a3|b3)-[a-f0-9]{16}@gmail\.com$/.test(p.expectedEmail), 'PRIVATE_EMAIL_BINDING_INVALID');
   require(['A3', 'B3'].includes(p.actor), 'ACTOR_INVALID');
-  require(['auth', 'rls-a', 'rls-b', 'logout'].includes(p.stage), 'STAGE_INVALID');
+  require(['auth', 'rls-a', 'rls-b', 'smoke-rls-b', 'logout'].includes(p.stage), 'STAGE_INVALID');
   require(typeof p.deadlineUTC === 'string' && Number.isFinite(Date.parse(p.deadlineUTC))
     && now < Date.parse(p.deadlineUTC), 'DEADLINE_INVALID');
-  if (p.stage.startsWith('rls')) {
+  if (p.stage.includes('rls')) {
     const f = p.fixtures;
-    require(f && ['actorA', 'actorB', 'postA', 'commentB', 'imageMediaA'].every(k => uuid.test(f[k])), 'FIXTURE_INVALID');
+    const keys = p.stage === 'smoke-rls-b' ? ['actorA', 'actorB', 'postA'] : ['actorA', 'actorB', 'postA', 'commentB', 'imageMediaA'];
+    require(f && keys.every(k => uuid.test(f[k])), 'FIXTURE_INVALID');
     require(f.actorA !== f.actorB && p.actorId === (p.stage === 'rls-a' ? f.actorA : f.actorB)
       && p.actor === (p.stage === 'rls-a' ? 'A3' : 'B3'), 'FIXTURE_ACTOR_MISMATCH');
   }
@@ -67,6 +70,7 @@ export async function runSessionChecks(client, p) {
   try {
     const user = success(await call('auth', () => client.auth.getUser()))?.user;
     insist(user?.id === p.actorId, 'SESSION_IDENTITY_MISMATCH');
+    insist(p.expectedEmail === undefined || user?.email === p.expectedEmail, 'SESSION_IDENTITY_MISMATCH');
     checks.exactAuthenticatedUser = true;
     if (p.stage === 'auth') {
       insist(Number.isFinite(Date.parse(user.email_confirmed_at)), 'EMAIL_CONFIRMATION_UNKNOWN');
@@ -97,6 +101,11 @@ export async function runSessionChecks(client, p) {
       } else {
         await denied(() => client.from('posts').update({ body: `${p.namespace} forbidden` }).eq('id', f.postA).eq('author_id', f.actorA).select('id'));
         insist(one(await read('posts', 'id,body', f.postA)).body === post.body, 'FOREIGN_POST_CHANGED');
+        checks.foreignPostDeniedUnchanged = true;
+        if (p.stage === 'smoke-rls-b') {
+          insist(one(await read('profiles', 'id,role', p.actorId)).role === 'user', 'ROLE_PRECHECK');
+          checks.ordinaryProfile = true;
+        } else {
         const media = one(await read('post_media', 'id,post_id,user_id,storage_path', f.imageMediaA));
         insist(media.user_id === f.actorA && typeof media.storage_path === 'string' && media.storage_path.includes(p.namespace), 'MEDIA_BINDING_MISMATCH');
         await denied(() => client.from('post_media').delete().eq('id', f.imageMediaA).eq('user_id', f.actorA).select('id'));
@@ -106,6 +115,7 @@ export async function runSessionChecks(client, p) {
         await denied(() => client.from('profiles').update({ role: 'admin' }).eq('id', p.actorId).select('id'));
         insist(one(await read('profiles', 'id,role', p.actorId)).role === 'user', 'ROLE_ESCALATION');
         checks.foreignPostDeniedUnchanged = checks.foreignMediaDeniedUnchanged = checks.roleEscalationDeniedUnchanged = true;
+        }
       }
     }
     return { status: 'PASS', actor: p.actor, stage: p.stage, actorId: p.actorId, binding: p.binding,
@@ -120,7 +130,7 @@ export async function runSessionChecks(client, p) {
 
 export function buildOwnerSnippet(plan) {
   checkPlan(plan);
-  const safePlan = Object.fromEntries(['binding', 'namespace', 'journalVerified', 'actorId', 'actor', 'stage', 'deadlineUTC', 'fixtures'].filter(k => plan[k] !== undefined).map(k => [k, plan[k]]));
+  const safePlan = Object.fromEntries(['binding', 'namespace', 'journalVerified', 'actorId', 'actor', 'stage', 'deadlineUTC', 'fixtures', 'expectedEmail'].filter(k => plan[k] !== undefined).map(k => [k, plan[k]]));
   // Uses the already deployed singleton in the same real user context; no token export.
   return `(async()=>{const p=${JSON.stringify(safePlan)};if(location.origin!==${JSON.stringify(origin)})throw Error('ORIGIN');const checkPlan=${checkPlan.toString()};const uuid=${uuid};checkPlan(p);const key='ogh-once:'+p.binding+':'+p.actor+':'+p.stage;if(sessionStorage.getItem(key))throw Error('CONSUMED');sessionStorage.setItem(key,'started');const authEvidence=${authEvidence.toString()};const CODES=new Set(${JSON.stringify(['email_not_confirmed','invalid_credentials','captcha_failed','user_banned','request_timeout','session_not_found','unexpected_failure'])});const UUID=${uuid};const m=await import(${JSON.stringify(asset)});const r=await (${runSessionChecks.toString()})(m.n(),p);const blob=new Blob([JSON.stringify(r)],{type:'application/json'});const a=document.createElement('a');const u=URL.createObjectURL(blob);a.href=u;a.download='ogh-core-'+p.actor+'-'+p.stage+'-'+p.binding.slice(0,16)+'.safe.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return {status:r.status,stage:p.stage};})()`;
 }

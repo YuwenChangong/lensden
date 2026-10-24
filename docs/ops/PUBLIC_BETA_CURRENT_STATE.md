@@ -1,5 +1,38 @@
 # Public Beta Current State
 
+## Minimum Remaining Acceptance: One Pending Joint Approval
+
+Owner accepted evidence-reuse conclusions and requested only irreducible gaps.
+One private packet MINIMUM_ACCEPTANCE.v1.NOT_AUTHORIZED.md in the existing mailbox
+directory; SHA25650e350e5e9435a5f40086bbe9e4fb6111201de36640a05611f2489f4ae494c93.
+Supersedes UNEXECUTED ordinary/SMOKE drafts, without deleting old artifacts or
+inheriting authority. No current owner approval, clock, signup or live request.
+
+Only two hash-bound fresh aliases in ONE sequential ordinary Edge session, real
+website signup/confirmation/login, identity/profile/exit/switch, ONE post/video,
+one foreign-update denial and ordinary admin-entry denial. Optional one exact
+A-owned circle exists solely because post creation requires a circle. No comments,
+replies/reactions/reports/notifications/device/image/TUS comprehensive retest.
+Cleanup and independent exact ban876000h/readback are reserved in the same scope.
+
+New read scope: two fixed management GETs(settings and exact bucket lifecycle),
+initial readonly database alias-absence plus aggregate tmp-reference counts, and
+conditional second read-only connection only for failed-signup UUID recovery.
+No real keys/bytes/HEAD/object list, lifecycle edit, migration/deploy/fence change.
+Official lifecycle endpoint and admin-ban semantics checked using public docs only.
+Current local Wrangler credential has2min remaining coverage, NOT remote access
+proof. Aliases normalized/distinct and private ACL verified; no owner secrets
+requested now. Owner must be ready before actual approval starts120min, reserve
+last30min for cleanup. No artificial10min preparation/two-profile/full-suite gate.
+
+Existing post-login smoke helper amendments were already4/4 checked locally;
+no additional tool development or historical test rerun in this task. Exact current
+helper bytes pinned, only auth/expectedEmail/smoke-rls-b/logout scope. No CAPTCHA
+controller/token export/new executor. The old broad helper stages grant no live
+permission. Receipt evidence stays PASS/FAIL/UNKNOWN, not NOT_VERIFIED-as-P0/P1.
+NEXT_SINGLE_ACTION=OWNER_CONFIRMS_READINESS_AND_SIGNS_EXACT_50e350e5_MINIMUM_JOINT_SCOPE_THEN_CONTINUOUS_BOUNDED_EXECUTION.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Evidence Reuse: Minimum Remaining Launch Work
 
 Latest owner request supersedes further smoke-packet/tool preparation with a
