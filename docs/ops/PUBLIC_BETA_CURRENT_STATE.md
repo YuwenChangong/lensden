@@ -1,5 +1,44 @@
 # Public Beta Current State
 
+## Enrollment Deployed; Remaining MFA Scope Awaits Fresh Approval
+
+Actual parent4e447058 execution: download-v2 identity PASS at2026-10-24T12:15:31Z,
+real getUser/me UUID equality and protected moderator role bound in an exclusive
+private result. Private ACL/hash transfer PASS; only exact Downloads staging file
+unlinked, no forensic erasure claim. UUID/credentials were not exported.
+Enrollment534c693b deployed ONCE, exit0; at12:20:47.095Z management readback PASS:
+version9e1d478b-a801-482f-b551-17fcb536d915, deployment
+24949872-3ad4-4368-afd9-0a8a2d46fa47, single100%, exact configuration gate PASS.
+Original management reads6, explicit identity Auth1/Worker1, deployment1. Factors,
+fresh factor signins, enforcement deployment and database operations remain0 in
+recorded execution. These are historical receipts, not a fresh no-drift claim.
+
+Parent window ended2026-10-24T14:10:17.2244604Z. Owner later approved the precise
+five-verification/five-refresh correction34758a7d; expiry gate stopped execution
+before any new Production request. Approval does not extend the old window.
+Preserved MFA_REFRESH_COUNT_AMENDMENT_EXPIRED_WINDOW.safe.json; no retries.
+
+Owner now confirms readiness for remaining steps. Prepared ONLY
+C:/Temp/ogh-admin-mfa-activation-20261024/MODERATOR_MFA_REMAINING.v1.NOT_AUTHORIZED.json
+SHA256555322e235068fd665b7b31d90341b0b41bdeb6d4c05827e8e5367e12ff1cd11.
+Parent/history/identity/template hashes and remaining-scope arithmetic checked
+locally. Enrollment redeploy allowance0; enforcement deploy1, DB connection1,
+same atomic two-SQL transaction, factors2/challenges5/verifies5/refreshes5,
+Auth95/Worker63 and management10 remaining ceilings. No old quota reset.
+Existing code/artifacts/SQL/config proof unchanged; no tests/builds repeated.
+Fresh exact owner approval starts one180-minute window, not preparation. Within
+new scope first verify actual enrollment deployment/config no drift and fresh
+getUser/me exact old moderator UUID/role plus zero existing factors. Then owner
+primary/independent backup and both fresh-signin AAL2 gates, enforcement, signed
+AAL1 denial/AAL2 acceptance, exact DB atomic closure and readback. Unknown or drift
+stops; no role elevation, automatic retry, downgrade, DDL rollback or extension.
+Normal owner browser and reviewed minimized-download evidence only; no controller
+recovery. Current cost/pause/recovery conditions require owner confirmation.
+
+This preparation: Production requests0, deployments0, factors0, DB0, new window0.
+Next single action: owner reviews and formally approves the one remaining packet.
+Destructive jobs remain paused, CATALOG_HOLD=ACTIVE, PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Edge Directory Denial: V1 Consumed, Minimal Download V2 Awaiting Approval
 
 Owner ran reviewed v1 once and stopped when Edge refused the AppData system
