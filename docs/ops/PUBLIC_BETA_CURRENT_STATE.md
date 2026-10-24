@@ -1,5 +1,48 @@
 # Public Beta Current State
 
+## MFA V4: Execution Stopped at Non-Public Runtime Configuration
+
+Owner completed the pinned interactive login and confirmed continued readiness.
+Local check 2026-10-24T08:57:15.102Z: credential expiry 09:56:57.993Z, 59 minutes
+remaining and required scopes PASS. Exact approval recorded at 08:57:22.4346131Z,
+window end 11:57:22.4346131Z, binding 29f2d82b600e362be017b7f7e6aadb968c8cd4d178b6b9568e2f75ba714b4bb3.
+Two management reads confirmed d53e3c67-f8ee-4dee-bd18-a57f16e3d91d / deployment
+e85f8082-675c-4315-a145-42bda81a36bc, one version and 100 percent traffic.
+Nine finite static exceptions passed actual pinned proof. The next mandatory
+runtime match failed at MODERATION_PROVIDER. This time safe field diagnostics
+are retained: 13 non-public runtime variables are ABSENT, not wrong type/value.
+
+Local existing-resolver comparison only: 12 missing fields resolve to expected
+defaults; MODERATION_PROVIDER_UNAVAILABLE_POLICY additionally depends on
+CF_PAGES_BRANCH and is not equivalent for a preview branch. Actual context and
+sealed-runtime behavioral parity are not proved by this source-only comparison.
+Missing explicit bindings do not alone prove historical configuration drift or
+an application defect. The signed packet explicitly retains these runtime gates;
+no default-equivalence exception was applied and no extra provider read made.
+
+STOPPED_NO_AUTOMATIC_RESUME. Protected initial-management-admission.safe.json and
+EXECUTION_STOPPED.safe.json persisted/read back in this binding's private sink.
+Management reads=2; browser/factor/deployment/database/migration/writes=0;
+retries=0. No frozen assets or Production configuration changed. A next change
+must explicitly bind any proved default equivalence and the required runtime
+context; no replay of this stopped attempt or renewed window is implied.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
+## MFA V4: Owner Approved, Local Credential Admission Blocked
+
+Owner explicitly approved 29f2d82b600e362be017b7f7e6aadb968c8cd4d178b6b9568e2f75ba714b4bb3.
+At 2026-10-24T08:54:49.252Z, exact packet/tool pins, 726 selected artifact files
+and SQL/CLI pins PASS. Existing Wrangler credential still expires 09:24:53.515Z:
+only 30 minutes remain, below the required 45. Scopes match. No provider request,
+deployment, database connection or factor operation dispatched; retries zero.
+Activation prerequisites not satisfied, so no approval-activated execution window
+was started, renewed or extended. Safe local gate receipt is retained under the
+prior protected diagnostic directory as v4-prewindow-credential-gate.safe.json.
+Owner must complete the pinned Wrangler interactive login; no agent login,
+credential refresh/fallback or lower validity threshold is permitted. Recheck
+actual local expiry before any stage, without changing binding/scope/quotas.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Four Public Email Gates: One-Pass Local Closure
 
 One separately authorized settings GET at 2026-10-24T08:38:10.189Z returned
