@@ -1,5 +1,25 @@
 # Public Beta Current State
 
+## Owner Requires Existing Admin: Server Identity Remains Unverified
+
+Owner clarified exact target is the existing contract admin, never moderator;
+no role change authorized. Local contract/source review confirms independent
+proof requires authenticated Worker /api/admin/forum/me, Auth getUser UUID
+equality and protected profiles.role=admin, not UI text or anonymous 401.
+No authenticated independent readback has been obtained. No credentials exported,
+session switched, account enumerated, password login or role modification made.
+The three planned password logins are same-owner MFA acceptance cycles; an extra
+predeployment login to a different account is not explicit in this packet. An
+already-existing authorized admin session has not yet been located/established.
+
+At 2026-10-24T10:06:39.667Z the original 12:41:28Z window is still valid, but
+Wrangler expiry 10:41:01.584Z leaves 34 minutes, below enrollment's 45-minute
+credential gate. Thus no deployment may proceed even if UI access recovers.
+ADMIN_IDENTITY_SCOPE_REVIEW.safe.json persisted/read back in protected sink.
+New Production requests=0, management total=3, factor/deployment/DB/writes=0.
+Stop remains in force; no authority, window, quota or assurance threshold widened.
+CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Owner-Authorized Browser Continuation: Expected Admin Identity Unproved
 
 Owner restored connection and explicitly allowed continuation inside the original
