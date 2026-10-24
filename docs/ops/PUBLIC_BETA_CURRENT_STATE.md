@@ -1,5 +1,65 @@
 # Public Beta Current State
 
+## Browser CAPTCHA Attempt Stopped, A2 Contained (2026-10-24 NZDT)
+
+Owner explicitly approved the full98c14a34 binding, after clarification that the
+earlier pasted pending-review template was not consent. Exact packet, mailbox,
+frozen/source pins and single-use state matched. Actual approval verification at
+2026-10-23T23:50:39.922Z started the one120minute window ending
+2026-10-24T01:50:39.922Z; no extension or old-quota reuse. Existing local Wrangler
+credential had3461sec remaining, exceeding2700. Three fresh authorized management
+reads passed at23:51:47.920Z..23:51:48.641Z: fixed Worker/full version/deployment,
+single-version100percent traffic, required CAPTCHA, present dedicated Auth site
+key distinct from upload, and paid forum classifier disabled. Management metadata
+is not request-level version proof. No automatic credential refresh.
+
+Created only A2, UUID6dab7393-d551-4690-9964-841cfe0c19a4, and independently checked
+exact new identity and provider email confirmation. Real separate headful Edge
+opened the site's login page; no fabricated session or CAPTCHA token extraction.
+Owner supplied a screenshot showing verification failure/unavailable. The local
+operator's first failure is BROWSER_ORIGIN_OUT_OF_SCOPE. Its executed guard did
+not retain the blocked origin, so the exact rejected dependency is UNKNOWN and
+its causal relationship to the widget failure is unproven. Do NOT diagnose a
+Production CAPTCHA configuration defect or password failure from this evidence.
+The fixed browser SDK bundle targets the bound Supabase project, inspected offline.
+
+No login form submit marker or browser Auth dispatch exists: password login0,
+Auth login HTTP status NOT_DISPATCHED, provider error code UNKNOWN. B2 not created;
+actual profile role, core cases, RLS, media and legacy inspection NOT_VERIFIED or
+NOT_EXECUTED, never PASS. Business writes0. The bound operator stdin was closed;
+attempted local control delivery failed without a second process launch or remote
+retry. Closed only the proven owned Edge parent, not the administrator browser.
+The original300second handler then entered independent authorized containment.
+
+Exact A2 GET identity precheck, single ban PUT876000h and independent GET readback
+completed: ban VERIFIED, banned_until2126-09-30T00:01:04.55308Z. No login session
+observed; logout NOT_DONE, JWT revocation not claimed. Two new ciphertext envelopes
+are hash-verified and current-user/SYSTEM-only ACL protected, retained without
+unlink. Earlier A accounts and all old envelopes untouched. Local operator exited
+code1; owned browser processes remaining0. Not a full credential/session cleanup
+PASS and not an application defect root-cause PASS.
+
+Actual counters: management3; Auth5 (create, initial identity, containment3);
+Auth admin writes2; one browser navigation and76 browser asset/API requests;
+password login0, executor retries0, REST/business writes/DB connections/migrations/
+deployments/push0. No request after critical stop except the independent exact
+account containment branch. No historical release tests, backup or RC work.
+Private CORE_CAPTCHA_EXECUTION.safe.json in the existing mailbox directory has
+SHA256=e58322069a42a00f7d13cba67048ef5f120c41cd51a128e51c5a91416f655b98.
+
+Preserved executed operator source as its hash-identified archive, SHA256
+28db930fc9a0c0c317febbbde4af1169f705c1b740343f382159605366460dc1.
+Unexecuted local revision now checks an interactive terminal before account
+creation and records a blocked origin/resource type privately without path/query/
+userinfo. Pure diagnostic helper5/5 offline cases PASS; syntax PASS. No allowed
+origin was added, no actual blocked origin/provider code recovered, no Production
+probe or revision execution after this fix. Historical raw receipts unchanged.
+
+NEXT_SINGLE_ACTION=NEW_EXPLICIT_ACCOUNT_FREE_READONLY_BROWSER_DIAGNOSTIC_AUTHORIZATION_TO_IDENTIFY_BLOCKED_ORIGIN_AND_REAL_WIDGET_ERROR_BEFORE_ANY_NEW_ACCOUNT_OR_LOGIN.
+Do not reuse consumed navigation or either banned alias, unban actors, broaden
+origins blindly, solve CAPTCHA, retry this binding or infer website fault.
+Destructive jobs stay paused. CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## CAPTCHA-Compatible Core Packet Prepared, No Live Authority (2026-10-24 NZDT)
 
 Inspected frozen RC login Astro, AuthPanel, AuthTurnstile, browser Supabase client,
