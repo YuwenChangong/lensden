@@ -1,5 +1,18 @@
 # Public Beta Current State
 
+## MFA V5 Approved: Local Credential Validity Blocks Window Admission
+
+Owner explicitly approved 6dcfb04c68b83739a6f6098aec73444d88591fa116543b5420c0ad9a8c058c85.
+At 2026-10-24T09:37:13.462Z, exact packet/tool pins, all 726 selected artifact
+files and SQL/CLI pins PASS. Existing local Wrangler expiry remains
+09:56:57.993Z (19 minutes); scopes PASS, but the required 45-minute minimum fails.
+No provider request, deploy, factor operation or database connection dispatched;
+retries zero. No approval-activated window started or prior window extended.
+Safe v5-prewindow-credential-gate.safe.json is retained in the existing protected
+29f2d82b diagnostic sink. Owner must complete the pinned interactive login and
+confirm continued readiness; no agent login/refresh or lower threshold allowed.
+No code/artifact/SQL change. CATALOG_HOLD=ACTIVE; PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Branch Source Confirmed; Conditional MFA Recovery Prepared
 
 Frozen source and compiled code read env.CF_PAGES_BRANCH on the object imported
