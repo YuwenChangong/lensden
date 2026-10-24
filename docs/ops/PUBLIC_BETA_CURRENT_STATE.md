@@ -1,5 +1,30 @@
 # Public Beta Current State
 
+## Ordinary Edge Owner Comparison Reported, CAPTCHA Unknown
+
+Exact9cd02a0e owner approval and all fields verified; six source/receipt pins
+and private ACL matched. Approval recorded once at2026-10-24T01:06:17.022Z;
+initial navigation deadline01:11:17.022Z, window end01:21:17.022Z. Owner subsequently
+reported correct final URL, complete login form, no visible CAPTCHA, no explicit
+success, no verification-failure text, no observable error code/other error and
+comparison window closed. Page PASS is OWNER VISUAL evidence, not HTTP200 or
+independent browser-control proof. CAPTCHA verification UNKNOWN; no visible
+widget/error does not prove success with interaction-only appearance. Controller
+environment impact UNKNOWN; site-configuration failure NOT_PROVEN. No retest.
+
+Report received2026-10-24T01:12:33.845Z; actual navigation UTC and observation
+duration were not provided/independently verified. Do not backdate the navigation
+or mark first-admission timing PASS from report arrival. Quota now consumed based
+on owner-reported comparison, not available for another navigation. Close is
+OWNER_REPORTED, not independently verified browser-process shutdown. Agent
+Production requests/browser-control connections/accounts/login/writes/deploys0.
+
+Private CAPTCHA_ORDINARY_COMPARISON.v1.OWNER_OBSERVATION.safe.json preserved in the
+bound mailbox directory with exact nonsecret owner report and timing limitation.
+No credentials/content/screenshots captured; no historical tests or app changes.
+NEXT_SINGLE_ACTION=SEPARATE_EXPLICIT_SCOPE_FOR_REAL_ORDINARY_BROWSER_CORE_LOGIN_AND_REQUIRED_OWNER_HUMAN_CHALLENGE_NO_AUTOMATIC_RETEST_OR_ACCOUNT_CREATION.
+CATALOG_HOLD=ACTIVE;PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## Ordinary Edge Comparison Prepared, Not Authorized (2026-10-24 NZDT)
 
 Read only the clean frozen0b6d94ff RC login route, AuthPanel, AuthTurnstile and
