@@ -1,5 +1,21 @@
 # Public Beta Current State
 
+## MFA Marker Readback Repaired Offline; New Authorization Required
+
+Helper commit5f82576c69f1f4ade5f7e3579e5bb82b2e6862fb changes only four extension
+files. Independent network-blocked Edge using the same executable/extension ID
+reproduced identical marker values with reordered keys; old JSON.stringify
+comparison rejected them. Exact recursive value/key-set comparison now handles
+marker and result readback, preserving types, every field and array order.
+Version0.2.3/build0.2.3-mfa-marker-v1, permissions/hosts unchanged. New fixture
+groups15/15 and isolated real-storage/mock-transport group1/1 PASS; syntax4 PASS.
+No old suites, owner browser interaction, Production request, factor, deploy or
+DB operation. Isolated process/profile cleanup verified. Prior failure bytes,
+old runtime permit, consumed stage and stop markers unchanged. Prior request
+count/cleanup remain UNKNOWN. No new authorization/window generated or activated.
+Exact hashes/evidence in existing Temp MFA_SNAPSHOT_MARKER_REPAIR.LOCAL.safe.json.
+Stop after local repair; any next Production use needs new exact independent GO.
+
 ## Approved Pre Snapshot Failed Locally; All Factor Operations Stopped
 
 Owner reported one click. Exact automatic failure file at00:23:55.667Z has
