@@ -1,5 +1,25 @@
 # Public Beta Current State
 
+## Readonly Legacy Risk Subset Approved; Existing Access Expired
+
+Owner explicitly approved ONLY readonlyRisk under v2 bda88a8c and incorporated
+v1 50e350e5. Both packet hashes and the mailbox/aggregate/classifier pins match.
+Actual approval record09:38:21.660Z on2026-10-25 starts one120-minute window,
+ending11:38:21.660Z; no renewal or extension. Protected receipt in the existing
+private mailbox/readonly-risk-v2 directory SHA256
+ea21c3283c664178734efca4c7857153aed9b5698f9478adda86521cbc1b3511.
+Directory ACL permits current owner only. Approval allows lifecycle GET1,
+readonly database connection1, bounded SQL24 and necessary rollback/close only;
+no settings/deployments read, ordinary fixture, ban, business write or MFA.
+
+Local value-blind existing Wrangler config check: token present but expired.
+No refresh/login attempted, no provider request dispatched or quota consumed.
+Production requests0, database attempts0; no password requested yet. No tests,
+build, deployment, factor or database mutation. Owner must perform one specified
+Wrangler interactive login before lifecycle dispatch, within the same window.
+Existing MFA and UNKNOWN prior states remain frozen. Snippet exception not
+approved, ordinary stage BLOCKED; Catalog ACTIVE/Public Beta NOT_AUTHORIZED.
+
 ## Critical Path Resumed Offline; MFA Frozen
 
 Owner ended MFA diagnosis. Retain two verified factors and deployed enforcement;
