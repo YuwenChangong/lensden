@@ -1,5 +1,22 @@
 # Public Beta Current State
 
+## Approved Pre Snapshot Failed Locally; All Factor Operations Stopped
+
+Owner reported one click. Exact automatic failure file at00:23:55.667Z has
+method8a21a8bb/parent555322e2/pre nonceff464b8a matching, statusFAIL and
+MFA_MARKER_READBACK. Its actualDispatchesUNKNOWN and cleanupUNCONFIRMED remain
+unchanged; not converted to zero/PASS. Source places the marker check before tab
+lookup and scripting dispatch, but the failure artifact does not retain actual
+marker differences. Do not infer a browser/storage root cause from this enum.
+No real identity, zero-factor or server-AAL result was obtained. Stage consumed;
+no retry, later snapshots, factor writes, enforcement deployment or DB action.
+Whitelisted bounded artifact imported into parent private sink as
+mfa-snapshot-pre.failure.private.json with current-user/SYSTEM-only ACL, fsync
+and identical SHA256941d64204ad523d0ce51b3c8a7649e9fe7cfabf2fbafd8a1326367e2d7f1328f.
+Only exact source download unlinked after private verification; not forensic
+erasure or browser/remote cleanup proof. Original window unchanged. Need offline
+marker-validation diagnosis before any separately approved new Production attempt.
+
 ## Snapshot Method Approved; Pre Capture Awaiting One Owner Click
 
 Owner formally approved exact8a21a8bb method scope in current message. Recorded
