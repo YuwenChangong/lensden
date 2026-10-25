@@ -1,5 +1,27 @@
 # Public Beta Current State
 
+## Primary and Backup Phase Prepared: New Owner Approval Required
+
+Real zero-factor/moderator pre PASS reused, not rerun. Existing website UI already
+does challenge/verify plus refresh and server AAL check for each Verify session.
+Only local extension phase binding adapted: helper966a5b9 / version0.2.5,
+same permissions/hosts, signed primary/backup stages and persisted-primary chain.
+New offline binding groups13/13 and syntax2 PASS; no historical suite or build.
+Primary/backup source pins sealed; old active consumed permit/markers unchanged.
+Exact new MFA_PRIMARY_BACKUP.v1.NOT_AUTHORIZED.json in existing Temp MFA home
+SHA256 2e622789f695519156fb91b81ecc60315787c31dd194f31417dd97738362af56;
+same-name OWNER_APPROVAL.txt contains full scope/signature text. New independent
+executionbbcdecbb; no approval record, signature, runtime or window activated.
+Owner UI maxima: enroll2/challenge2/verify2 and the two handler refresh calls;
+two extension snapshots total Auth2/Worker4. UI's native reads/SDK traffic are
+separately action/time bounded, not claimed globally measured wire counts.
+Primary PASS/private persistence precedes backup. Backup is final refreshed
+AAL2/two-distinct-verified-factor acceptance; independent physical custody is
+owner attestation, separate from server proof. Any failure retains actual partial
+factor state without removal/reset/retry. No pre rerun or factor authority from
+old GO; enforcement deploy/DB SQL require later approval. Preparation Production
+requests/factor writes/deploy/DB0. Catalog ACTIVE; Public Beta NOT_AUTHORIZED.
+
 ## New Pre Snapshot PASS: Actual Moderator, Zero TOTP, Not Yet AAL2
 
 Owner reported one click. Exact9465de43 execution71a8532a / prefbd33d90 result
