@@ -1,5 +1,181 @@
 # Public Beta Current State
 
+## Critical Path Resumed Offline; MFA Frozen
+
+Owner ended MFA diagnosis. Retain two verified factors and deployed enforcement;
+AAL1 denial PASS, step-up BLOCKED, challenge/verify UNKNOWN, database AAL2
+NOT_ACTIVATED. No login/TOTP/snapshot/deploy/MFA SQL or further forensics.
+Consumed allowances and old UNKNOWN request/cleanup states are unchanged.
+
+Reused the existing private aliases,2018-byte video, deployed enforcement receipt,
+backup/release evidence and minimum ordinary scope without reading mailbox values,
+rebuilding assets or rerunning historical suites. The old minimum draft pins the
+base RC rather than active enforcement and is NOT executable approval.
+
+Only existing ordinary-session helper extended: after real normal-browser login,
+bind-auth uses one getUser and one exact Profile read to bind the actual new UUID
+to the private alias/confirmed ordinary role. It requires the prior verified exact
+alias-absence receipt, never adopts a privileged identity and never logs in or
+exports a credential. Five new fixtures PASS; one directly affected existing
+Auth/Profile/refresh regression PASS. This is offline evidence, not live Auth/RLS.
+
+Legacy preparation is one transport-free lifecycle classifier and one aggregate
+SELECT, not a framework or migration. Complete fixed-bucket lifecycle prefixes
+remain memory-only SQL parameters; only totals and numeric prefix-match counts
+can leave the database. Literal prefix equality prevents wildcard matching.
+Thirteen targeted checks PASS, including the new SQL in READ ONLY on an owned
+loopback PG17 fixture. Local fixture stopped and removed; no remaining owned PG
+process. Initial local fixture pipe-lifecycle timeout was fixed in the test
+runner before the successful run; it did not contact Production.
+Enabled completed-object expiry covering live tmp references means BLOCKED;
+multipart abort is distinct. No matching deletion does not prove all media safe.
+Zero references covers only the current bounded tmp-video scope, not past bytes.
+
+One compact private MINIMUM_ACCEPTANCE.v2.NOT_AUTHORIZED.json incorporates the
+hash-bound existing minimum draft with explicit current historical Worker pins,
+new helper/SQL hashes and two independent permission stages: ordinary/R2 and
+readonly legacy risk. Three new management reads replace the old two-read budget;
+all business caps remain unchanged. No approval, permit or window created.
+Important remaining method constraint: existing SDK evidence uses an owner-run
+reviewed Snippet, not working agent browser control. Owner previously rejected
+DevTools handoff, so ordinary fixtures remain blocked unless a fresh approval
+explicitly accepts that method. Do not silently substitute it or develop another
+controller. Readonly legacy risk is independent and needs no browser method.
+
+No new confirmed ordinary-user P0/P1. Real signup/password login, cross-user
+denial/readback and current R2 publish/playback remain NOT_VERIFIED, not FAIL.
+Legacy live counts/lifecycle remain UNKNOWN; paused jobs do not pause lifecycle.
+Next owner decision: one fresh exact scope approval, including the evidence-method
+choice; start no window until actually ready. No Production request, connection,
+write, factor action, deployment or push this run. Catalog Hold ACTIVE;
+destructive cleanup paused; Public Beta NOT_AUTHORIZED.
+
+## Bounded Auth Log Forensics Closed: Zero Matches, Cause UNKNOWN
+
+Owner separately authorized one fixed-project/actor management-log query only.
+Executed exactly once through existing authenticated query_logs: project
+xcbnxzjlsvtgzixurcof, UTC07:23:16.489..07:34:12.102, source auth_logs,
+POST factor challenge/verify only, exact user_id SHA256 predicate. Four allowed
+columns only(stage/UTC/HTTP status/allowlisted error code), LIMIT20; no UUID,
+email, IP, body, headers or full log projection. Query SQL SHA256
+8cfd9922eccbc180f33e975e32471e9c122174ec624cdc421d917ccf34e41146.
+
+Provider result contained0 matching rows. This does NOT prove either request
+was absent, log completeness or identity-field coverage; challenge/verify,
+error code and root cause remain UNKNOWN, without browser/provider attribution.
+One-time query allowance consumed; no retry, widened scan or second query.
+Structured tool wrapper was parsed locally; parsing did not cause new queries.
+Private minimized receipt auth-log-forensics.safe.json hash
+be060847f7f16a77c813d438c1c8030c52e38fc5a00ce2522f8f1ed108dc3d4e,
+fsync/hash/current-user-SYSTEM ACL verified. Forensics ended immediately.
+Production Auth requests0, factor operations0, new deployments0, PostgreSQL
+connections0, mutations0. Retain consumed snapshots and UNKNOWN old attempts.
+MFA remains stopped, database AAL2 NOT_ACTIVATED. Independent ordinary/R2/legacy
+offline minimum preparation remains reusable but has no fresh Production GO.
+Catalog Hold ACTIVE; Public Beta NOT_AUTHORIZED.
+
+## Targeted Offline Step-Up Diagnosis: No Proven Production Root Cause
+
+No new Production call, factor operation, browser navigation, deploy or database
+connection. Bound source8b0882f0, compiled panel525c1c00 and actual sealed SDK
+aa677f1e inspected; frozen SDK bytes exactly equal successful enrollment SDK.
+Installed dependency lock differs from the sealed candidate, so the diagnostic
+uses the frozen compiled Auth class, not the installed SDK as parity evidence.
+The only handler difference relevant here is enrollment's explicit post-verify
+refresh. Both use actual challenge/verify followed by protected MFA confirmation.
+
+Six new offline fixtures PASS, without sockets: frozen verify persists AAL2 and
+the unchanged real signature/subject/AAL guard accepts the new session with no
+refresh; challenge rejection, verify rejection, invalid code, factor mismatch
+stop correctly; deliberately discarded session persistence leads to AAL1/403.
+These are distinct simulated outcomes, not retrospective Production proof.
+Two initial diagnostic runs failed due to the fixture passing an Auth client
+instead of SupabaseClient.auth; correcting that test shape produced6/6. Earlier
+local receipts retained; no Production or executor retry occurred.
+Final offline receipt SHA256 fd0a44d64473b180345f75cc65c3ad96cc5fea6f01b1f8889209a9c64726c046.
+No speculative refresh/app/security change, no candidate build or new GO packet.
+Production challenge/verify and historic post-verify session remain UNKNOWN.
+Current NOT_AAL2 is the prior actual snapshot, not a new observation.
+
+Missing evidence: original UI submit/JS state and actual challenge/verify HTTP
+outcomes. Smallest proposed new read is one separately approved exact-moderator
+Auth-log query07:23:16.489Z..07:34:12.102Z, at most20 minimized records; no request
+headers/bodies/credentials. Missing logs cannot establish no dispatch or fix.
+Independent ordinary/R2/legacy minimum draft reused offline; its old Worker pin
+is not current or executable authorization, no new accounts/writes/inspection.
+Keep all consumed/UNKNOWN state, enforcement, factors and job pauses intact.
+Catalog Hold ACTIVE; Public Beta NOT_AUTHORIZED.
+
+## AAL2 Readonly Result: Not AAL2, Stopped Without Database
+
+Owner explicitly authorized one remaining AAL2 readonly snapshot despite the
+earlier unconfirmed UI step-up, without renewing the original10:16:27.828Z end.
+New actual result07:34:12.102Z..07:34:13.445Z FAIL/MFA_STAGE_ASSERTION_FAILED:
+same protected moderator identity, both pinned TOTP factors verified, Auth/me200,
+MFA403/NOT_AAL2. Exactly Auth1/Worker2 dispatched; the reader stopped before the
+remaining protected/admin-only/anonymous/community calls. This stage is consumed;
+unused request capacity is not a retry allowance. No new factor write, deploy,
+management request or database connection in this follow-up. Stage A is NOT PASS.
+Private raw SHA2567501af93e35d4b5d3fe19789c435cc22d74249d61aadfd4520e327bf485ba048;
+projector/hash/ACL/readback and exact Downloads source unlink PASS, local script
+cleanup PASS. Prior challenge/verify dispatch/result and older unknown state
+remain UNKNOWN. This proves current service did not accept AAL2; it does not
+identify the prior button/request failure or prove either challenge never sent.
+Retain deployed enforcement and existing factors. No TOTP retry, refresh,
+factor reset, next snapshot or database execution. Catalog ACTIVE/Beta NOT_AUTHORIZED.
+
+## Owner Step-Up Unconfirmed: Production Execution Stopped
+
+Actual AAL1 snapshot07:23:15.225Z..07:23:16.489Z PASS: same moderator,
+two distinct verified factor pins, Auth/me200, MFA/protected reports403.
+Private raw SHA25689086a94ef731345e1ddb59fda7a4b59b1e9c55e4d50dc9d1046c54f2ec20cb3;
+exact Downloads source imported/hash/ACL verified and unlinked. Auth1/Worker3.
+Owner then reported selecting an existing factor and clicking Verify session
+once without visible success/error. Further Production execution is STOPPED.
+Challenge dispatch, verify dispatch/result and current AAL remain UNKNOWN;
+do not reuse the attempted write allowance, retry, refresh or submit again.
+
+Offline only: exact deployed compiled panel hash525c1c009958a80568cd516380403ee3a3b939fb3b2c0a27e1051845a90ae380
+contains the expected submit handler; all six-digit regexes accept ASCII fixture.
+Success feedback occurs only after challenge/verify, real assurance confirmation
+and subsequent factor readback. No persisted telemetry identifies this attempt's
+event/request/JS-error stage; code presence is not evidence of actual dispatch.
+No AAL2/final download or stage permit exists. Root cause UNKNOWN, no speculative
+fix. Additive owner-stepup-unconfirmed.safe.json records the conservative stop.
+This diagnosis sent0 Production requests; database connections0, no further
+deployments/factor actions. Retain deployed enforcement and existing factors.
+Catalog Hold ACTIVE; Public Beta NOT_AUTHORIZED.
+
+## Enforcement Deployed; Fresh AAL1 Acceptance Pending
+
+Owner formally approved exact ede45d5e remaining scope. Approval recorded once
+2026-10-25T07:16:27.828Z; fixed end2026-10-25T10:16:27.828Z. Protected record
+SHA256 acb864049e972813417aab1d16ac97b43923154dc85c85a08f643f196bd51561.
+All363 artifact files, two SQL hashes/batch, existing helper/extension/factor
+receipt pins and strict CA validity passed local identity checks; no test/build.
+Initial management3 PASS: original enrollment9e1d478b, deployment24949872,
+single100 and35-field guards/effective review_all. A local startup assertion
+initially misclassified the matching CLOUDFLARE_ACCOUNT_ID as a credential;
+corrected to exact fixed-account equality, retaining rejection of credential
+overrides. No deployment marker or provider dispatch occurred at that assertion.
+
+One approved enforcement deployment succeeded07:18:38.262Z..07:18:51.221Z.
+Actual full Worker version b81e3c25-2b12-45ac-97eb-47e42e7fd310; actual deployment
+60ee5c24-68fe-4673-b6e1-2a2206f11e66. Post management3 PASS at07:18:59.564Z:
+single100, same configuration fingerprint ae1ba82b4fa8281cf6553772e3e3dc6f2c586f942b1d0f50fc56edceaeea97ea.
+New execution receipts are in the private enforcement-remaining-v1 execution
+0a47c9d0-d4aa-48dc-b22a-41019c602c62 directory. Management6/10, deploy1/1,
+database0/1, snapshots0/3; no retries, factor reenrollment or enrollment redeploy.
+
+Next necessary owner action: reload bound extension0.2.6 if not yet done, perform
+one normal logout and same moderator password/CAPTCHA login, return security
+page WITHOUT TOTP step-up or snapshot yet. Only after owner readiness record may
+the new AAL1 permit be signed/installed and clicked once. AAL1/AAL2 API outcome
+acceptance remains NOT_VERIFIED, not inferred from successful deployment.
+Database AAL2/safety transaction remains NOT_ACTIVATED. No new factors, role
+change or business writes. Old UNKNOWN counts/cleanup remain UNKNOWN.
+Catalog Hold ACTIVE; Public Beta NOT_AUTHORIZED.
+
 ## Final Enforcement and Atomic Database Release Prepared Offline
 
 Two-factor/refreshed AAL2 phase is DONE and reused by exact7ff6b714 final receipt.

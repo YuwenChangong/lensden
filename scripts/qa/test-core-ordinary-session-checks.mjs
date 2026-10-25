@@ -144,3 +144,36 @@ test('smoke amendment only foreign post update and ordinary profile checked', as
   assert.equal(r.checks.foreignPostDeniedUnchanged, true);
   assert.equal(r.checks.foreignMediaDeniedUnchanged, undefined);
 });
+
+function freshBindingPlan() {
+  const p={...plan(),stage:'bind-auth',expectedEmail:'fixture+ogh-a3-0123456789abcdef@gmail.com',priorAliasAbsenceSha256:'f'.repeat(64)};
+  delete p.actorId;return p;
+}
+test('fresh binding resolves actual UUID with one Auth read and ordinary Profile read',async()=>{
+  const p=freshBindingPlan(),f=fixture({...p,actorId:a}),r=await runSessionChecks(f.client,p);
+  assert.equal(r.status,'PASS');assert.equal(r.actorId,a);assert.deepEqual(r.counts,{auth:1,rest:1});
+  assert.equal(r.checks.freshIdentityBound,true);assert.equal(r.checks.refreshedIdentity,undefined);
+  assert(!JSON.stringify(r).includes('@gmail.com'));
+});
+test('fresh binding requires exact private alias and an absence receipt before dispatch',async()=>{
+  for(const key of ['expectedEmail','priorAliasAbsenceSha256']){
+    const p=freshBindingPlan();delete p[key];const f=fixture({...p,actorId:a});
+    await assert.rejects(()=>runSessionChecks(f.client,p));assert.equal(f.authCalls(),0);
+  }
+});
+test('fresh binding rejects wrong mailbox without reading Profile',async()=>{
+  const p=freshBindingPlan(),f=fixture({...p,actorId:a});p.expectedEmail='other+ogh-a3-0123456789abcdef@gmail.com';
+  const r=await runSessionChecks(f.client,p);assert.equal(r.reason,'SESSION_IDENTITY_MISMATCH');assert.equal(r.counts.rest,0);
+});
+test('fresh binding does not adopt privileged identity or invalid UUID',async()=>{
+  const p=freshBindingPlan();
+  assert.equal((await runSessionChecks(fixture({...p,actorId:a},{role:'moderator'}).client,p)).reason,'ORDINARY_PROFILE_NOT_PROVEN');
+  const r=await runSessionChecks(fixture({...p,actorId:'invalid'}).client,p);assert.equal(r.reason,'SESSION_IDENTITY_MISMATCH');assert.equal(r.counts.rest,0);
+});
+test('fresh binding snippet carries the exact absence proof and is single use',async()=>{
+  const p=freshBindingPlan(),f=fixture({...p,actorId:a});let saved;const storage=new Map();
+  const context=vm.createContext({location:{origin:'https://openglasshub.ogh.workers.dev'},sessionStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},Blob:class{constructor(parts){saved=JSON.parse(parts[0]);}},document:{createElement:()=>({click(){}})},URL:{createObjectURL:()=>'blob:fixture',revokeObjectURL(){}},setTimeout,clearTimeout,client:f.client});
+  const snippet=buildOwnerSnippet(p).replace(/await import\("[^\"]+"\)/,'({n:()=>client})');
+  assert.equal((await vm.runInContext(snippet,context)).status,'PASS');assert.equal(saved.actorId,a);
+  await assert.rejects(vm.runInContext(snippet,context),/CONSUMED/);
+});

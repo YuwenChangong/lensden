@@ -9,11 +9,15 @@ export function checkPlan(p, now = Date.now()) {
   const require = (ok, reason) => { if (!ok) throw new Error(reason); };
   require(p && /^[a-f0-9]{64}$/.test(p.binding), 'BINDING_INVALID');
   require(/^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(p.namespace), 'NAMESPACE_INVALID');
-  require(p.journalVerified === true && uuid.test(p.actorId), 'CREATE_JOURNAL_REQUIRED');
+  const freshBinding = p.stage === 'bind-auth';
+  require(p.journalVerified === true && (freshBinding
+    ? p.actorId === undefined && /^[a-f0-9]{64}$/.test(p.priorAliasAbsenceSha256 ?? '')
+    : uuid.test(p.actorId)), 'CREATE_JOURNAL_REQUIRED');
+  if (freshBinding) require(typeof p.expectedEmail === 'string', 'PRIVATE_EMAIL_BINDING_INVALID');
   if (p.expectedEmail !== undefined) require(typeof p.expectedEmail === 'string'
     && /^[^\s@]+\+ogh-(a3|b3)-[a-f0-9]{16}@gmail\.com$/.test(p.expectedEmail), 'PRIVATE_EMAIL_BINDING_INVALID');
   require(['A3', 'B3'].includes(p.actor), 'ACTOR_INVALID');
-  require(['auth', 'rls-a', 'rls-b', 'smoke-rls-b', 'logout'].includes(p.stage), 'STAGE_INVALID');
+  require(['bind-auth', 'auth', 'rls-a', 'rls-b', 'smoke-rls-b', 'logout'].includes(p.stage), 'STAGE_INVALID');
   require(typeof p.deadlineUTC === 'string' && Number.isFinite(Date.parse(p.deadlineUTC))
     && now < Date.parse(p.deadlineUTC), 'DEADLINE_INVALID');
   if (p.stage.includes('rls')) {
@@ -31,6 +35,7 @@ export async function runSessionChecks(client, p) {
   const counts = { auth: 0, rest: 0 };
   const checks = {};
   let failure = null;
+  let resolvedActorId = p.actorId;
   const insist = (ok, reason) => { if (!ok) throw new Error(reason); };
   async function call(type, operation) {
     insist(Date.now() < Date.parse(p.deadlineUTC), 'DEADLINE_EXPIRED');
@@ -69,18 +74,23 @@ export async function runSessionChecks(client, p) {
   }
   try {
     const user = success(await call('auth', () => client.auth.getUser()))?.user;
-    insist(user?.id === p.actorId, 'SESSION_IDENTITY_MISMATCH');
+    insist(p.stage === 'bind-auth' ? uuid.test(user?.id ?? '') : user?.id === p.actorId, 'SESSION_IDENTITY_MISMATCH');
     insist(p.expectedEmail === undefined || user?.email === p.expectedEmail, 'SESSION_IDENTITY_MISMATCH');
+    resolvedActorId = user.id;
     checks.exactAuthenticatedUser = true;
-    if (p.stage === 'auth') {
+    if (p.stage === 'auth' || p.stage === 'bind-auth') {
       insist(Number.isFinite(Date.parse(user.email_confirmed_at)), 'EMAIL_CONFIRMATION_UNKNOWN');
-      const row = one(await read('profiles', 'id,role', p.actorId));
-      insist(row.id === p.actorId && row.role === 'user', 'ORDINARY_PROFILE_NOT_PROVEN');
-      const refreshed = success(await call('auth', () => client.auth.refreshSession()));
-      insist(refreshed?.user?.id === p.actorId, 'REFRESH_IDENTITY_MISMATCH');
-      const again = success(await call('auth', () => client.auth.getUser()));
-      insist(again?.user?.id === p.actorId, 'REFRESH_READBACK_MISMATCH');
-      checks.ordinaryProfile = checks.confirmedEmail = checks.refreshedIdentity = true;
+      const row = one(await read('profiles', 'id,role', resolvedActorId));
+      insist(row.id === resolvedActorId && row.role === 'user', 'ORDINARY_PROFILE_NOT_PROVEN');
+      checks.ordinaryProfile = checks.confirmedEmail = true;
+      if (p.stage === 'bind-auth') checks.freshIdentityBound = true;
+      else {
+        const refreshed = success(await call('auth', () => client.auth.refreshSession()));
+        insist(refreshed?.user?.id === p.actorId, 'REFRESH_IDENTITY_MISMATCH');
+        const again = success(await call('auth', () => client.auth.getUser()));
+        insist(again?.user?.id === p.actorId, 'REFRESH_READBACK_MISMATCH');
+        checks.refreshedIdentity = true;
+      }
     } else if (p.stage === 'logout') {
       success(await call('auth', () => client.auth.signOut({ scope: 'global' })));
       checks.logoutAcknowledged = true;
@@ -118,7 +128,7 @@ export async function runSessionChecks(client, p) {
         }
       }
     }
-    return { status: 'PASS', actor: p.actor, stage: p.stage, actorId: p.actorId, binding: p.binding,
+    return { status: 'PASS', actor: p.actor, stage: p.stage, actorId: resolvedActorId, binding: p.binding,
       utc: new Date().toISOString(), counts, checks, sensitiveValuesExported: false };
   } catch (e) {
     const reasons = new Set(['REQUEST_COMPLETION_UNKNOWN', 'SDK_ERROR', 'DEADLINE_EXPIRED', 'BATCH_BUDGET', 'SESSION_IDENTITY_MISMATCH', 'EMAIL_CONFIRMATION_UNKNOWN', 'ORDINARY_PROFILE_NOT_PROVEN', 'REFRESH_IDENTITY_MISMATCH', 'REFRESH_READBACK_MISMATCH', 'EXACT_ROW_NOT_VISIBLE', 'AUTH_FAILURE_NOT_RLS_PROOF', 'UNEXPECTED_WRITE_SUCCESS', 'DENIAL_UNCONFIRMED', 'POST_BINDING_MISMATCH', 'OWN_UPDATE_UNCONFIRMED', 'OWN_UPDATE_READBACK', 'COMMENT_BINDING_MISMATCH', 'FOREIGN_COMMENT_CHANGED', 'FOREIGN_POST_CHANGED', 'MEDIA_BINDING_MISMATCH', 'FOREIGN_MEDIA_CHANGED', 'ROLE_PRECHECK', 'ROLE_ESCALATION']);
@@ -130,7 +140,7 @@ export async function runSessionChecks(client, p) {
 
 export function buildOwnerSnippet(plan) {
   checkPlan(plan);
-  const safePlan = Object.fromEntries(['binding', 'namespace', 'journalVerified', 'actorId', 'actor', 'stage', 'deadlineUTC', 'fixtures', 'expectedEmail'].filter(k => plan[k] !== undefined).map(k => [k, plan[k]]));
+  const safePlan = Object.fromEntries(['binding', 'namespace', 'journalVerified', 'priorAliasAbsenceSha256', 'actorId', 'actor', 'stage', 'deadlineUTC', 'fixtures', 'expectedEmail'].filter(k => plan[k] !== undefined).map(k => [k, plan[k]]));
   // Uses the already deployed singleton in the same real user context; no token export.
   return `(async()=>{const p=${JSON.stringify(safePlan)};if(location.origin!==${JSON.stringify(origin)})throw Error('ORIGIN');const checkPlan=${checkPlan.toString()};const uuid=${uuid};checkPlan(p);const key='ogh-once:'+p.binding+':'+p.actor+':'+p.stage;if(sessionStorage.getItem(key))throw Error('CONSUMED');sessionStorage.setItem(key,'started');const authEvidence=${authEvidence.toString()};const CODES=new Set(${JSON.stringify(['email_not_confirmed','invalid_credentials','captcha_failed','user_banned','request_timeout','session_not_found','unexpected_failure'])});const UUID=${uuid};const m=await import(${JSON.stringify(asset)});const r=await (${runSessionChecks.toString()})(m.n(),p);const blob=new Blob([JSON.stringify(r)],{type:'application/json'});const a=document.createElement('a');const u=URL.createObjectURL(blob);a.href=u;a.download='ogh-core-'+p.actor+'-'+p.stage+'-'+p.binding.slice(0,16)+'.safe.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return {status:r.status,stage:p.stage};})()`;
 }
