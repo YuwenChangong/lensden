@@ -1,5 +1,24 @@
 # Public Beta Current State
 
+## Session Recovery GO Active; Corrected Local UTC Gate, Awaiting Snapshot
+
+Owner approved exact9465de43 packet; once-recorded actual approval UTC
+2026-10-25T05:46:35.635Z ends06:46:35.635Z unchanged. Owner reported recovery ready.
+Initial local install falsely rejected expiry: PowerShell converted JSON UTC to
+DateTime, then implicit string conversion dropped zone before DateTimeOffset
+Parse assumed local+13. Stopped before replacement; preserved failure receipt.
+Owner explicitly approved only UTC correction/original-scope continuation.
+DateKind String plus exact invariant UTC parsing passes six new local boundary
+checks. Existing signed permit reused, not reissued; seven source pins unchanged.
+Atomic install/hash/protected current-user+SYSTEM ACL readback PASS; prior consumed
+runtime archived unchanged. Active runtime SHA256
+8370f9ae51d3da25d1672365c4a61b3fe192c13b06086ae19176006008f2d518.
+Execution71a8532a / prefbd33d90 allows one owner extension click, Auth1/Worker2,
+zero retries/factors/deploy/DB. No old Chrome markers reset. Current real identity,
+TOTP count and server AAL still PENDING, not inferred from owner readiness or UI.
+No Production dispatch by local installation. Old UNKNOWN count/cleanup unchanged.
+Catalog ACTIVE; Public Beta NOT_AUTHORIZED. No factor authority follows pre PASS.
+
 ## Release Continuity Ledger: Offline Reuse and Remaining Scope
 
 This entry supersedes older pending-action instructions below. Historical
