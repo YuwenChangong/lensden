@@ -1,5 +1,26 @@
 # Public Beta Current State
 
+## V2 Pre Snapshot Consumed: No Eligible Local Session, No HTTP Dispatch
+
+Owner reported one click. Bound0.2.4 result at2026-10-25T03:58:24.562Z is FAIL /
+MFA_EXISTING_UNEXPIRED_SESSION_REQUIRED. Exact packet/execution/nonce/time/source
+and result whitelist validated. Counters Auth0/Worker0 and HTTP null; no real
+getUser/me/MFA result. Identity/role/TOTP count NOT_VERIFIED and server AAL UNKNOWN;
+default empty factor array is NOT zero-factor evidence. Local script cleanup
+PASS only, no remote-session proof. Missing token/user, invalid expiry or short
+validity are not distinguished in retained result; do not assert logged-out,
+expired-token, website, provider or CAPTCHA root cause. No retry/refresh/login,
+factor, deploy or DB action. This allowance consumed despite zero HTTP dispatch.
+Exact private result and verified safe receipt under execution d7eb61fa; hash
+f66edcc1f03914c7d067eab6b5e0b0530d9cb4f5a2048c692d7c02be3009b193.
+WX/fsync/hash/effective current-user/SYSTEM ACL proved before exact source
+download unlink. Old failure hash unchanged; old count/cleanup stay UNKNOWN.
+Offline source inspection found standard persistSession/autoRefresh client, not
+actual saved-state values or a proven storage defect. Stop; no factor authority
+or automatic new packet. Need narrowly authorized session diagnosis/restoration
+and a new snapshot allowance before any next live attempt. Catalog ACTIVE;
+Public Beta NOT_AUTHORIZED; enrollment-only MFA/DB AAL2 not activated.
+
 ## New Pre Snapshot GO Recorded; Runtime Installed, Awaiting One Click
 
 Owner explicitly submitted full24ee3c1e approval/current-condition confirmations.
