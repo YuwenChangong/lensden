@@ -1,5 +1,24 @@
 # Public Beta Current State
 
+## New Pre Snapshot GO Recorded; Runtime Installed, Awaiting One Click
+
+Owner explicitly submitted full24ee3c1e approval/current-condition confirmations.
+Recorded once UTC2026-10-25T03:53:43.674Z; ends04:53:43.674Z, no renewal.
+Exact packet/seven source pins/local key ACL and actual signature/WebCrypto
+verification PASS. New v2 permit atomically installed; private runtime hash
+2aa441fc97db37d61985842e6a00e37d7b1067c1c7562a1bd950f2267404cd10.
+Old v1 bytes preserved in two exact-hash private copies; no old Chrome key reset.
+Atomic replacement completed. A subsequent redundant ACL write was denied with
+SeSecurityPrivilege error; not retried/escalated. Independent readonly actual
+active ACL verified protected current-user/SYSTEM FullControl only, and new/old
+hashes correct. This is local installation proof, NOT snapshot/remote cleanup.
+Private execution d7eb61fa-8494-43c7-9342-29c7a25bcc2e has actual approval,
+prepared/ready receipts. No Production dispatch/factor/deploy/DB by activation.
+New pre nonce165f4bc7-f2ee-4d04-bf27-11c9c685940b has no result/failure file yet.
+Owner already confirms extension0.2.4 reloaded; click Capture Approved MFA
+Snapshot Once exactly once on same moderator tab. Codex reads automatic result.
+No registration/factor operation permitted; old count/cleanup remain UNKNOWN.
+
 ## Independent Pre Snapshot Binding Prepared Offline; No Production GO
 
 Owner approved offline binding adaptation only. Helper commit
