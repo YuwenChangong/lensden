@@ -1,5 +1,33 @@
 # Public Beta Current State
 
+## Primary and Backup Factor Phase DONE: Real Two-Factor AAL2 PASS
+
+Owner completed each existing UI enrollment/verification once and reported the
+independent backup. Primary snapshot at2026-10-25T06:20:25.103Z..06:20:27.207Z
+proves one verified TOTP and real Auth/me/MFA200, same fixed moderator, aal2.
+Backup/final snapshot at06:26:17.262Z..06:26:18.795Z proves exactly two distinct
+verified TOTP factors including that primary, same moderator and real MFA200/aal2.
+Independent physical custody is owner attestation, not automated server proof.
+Both UI handlers include normal refresh; no raw refresh transaction was retained.
+New scope consumed exactly extension Auth2/Worker4; snapshots remaining0, retries0.
+Owner UI network internals are not claimed as globally measured wire counts.
+Both exact Downloads results privately copied with exclusive creation/fsync,
+hash/effective current-user+SYSTEM ACL readback, then exact source unlinks.
+Local script cleanup PASS only; browser session retained, no remote close claim.
+Final private PRIMARY_BACKUP_FINAL.safe.json under factor executionbbcdecbb
+SHA256 7ff6b714c49e56391adb99094edbea008b078dfaaad058ece628d2d3d391d98b.
+Primary result SHA256 122d9f2d6498c06bc213fa27859724b2d42e83a2bc3c94ce837cb675100181db;
+backup result SHA256 b38aa0281c1b59cdb3de5130c0b4f241804c6e493e480f49ec6b59adc4feab23.
+No factor export/removal/reset, deployment, database connection or SQL by this
+phase. Old UNKNOWN counters/cleanup and consumed marks unchanged. Enrollment
+deployment remains reused; general sensitive-route enforcement and database AAL2
+are NOT_ACTIVATED. The original remaining contract still requires fresh same-owner
+primary/backup sign-ins and a post-enforcement AAL1 denial/AAL2 acceptance; those
+are not silently satisfied by enrollment snapshots or covered by the completed
+factor-only GO. A new remaining-scope approval must retain or explicitly amend
+them and bind exact existing artifact/atomic SQL, without repeating enrollment.
+Catalog Hold ACTIVE; destructive jobs remain paused; Public Beta NOT_AUTHORIZED.
+
 ## Primary and Backup Phase Prepared: New Owner Approval Required
 
 Real zero-factor/moderator pre PASS reused, not rerun. Existing website UI already
