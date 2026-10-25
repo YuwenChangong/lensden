@@ -1,5 +1,48 @@
 # Public Beta Current State
 
+## Readonly MFA Snapshot Implemented Offline; Method Approval Pending
+
+Owner explicitly authorized only local implementation/tests/evidence. Existing
+extension helper repo branch codex/mfa-readonly-snapshot-20261025 now has commits
+6ad0d60ef880abcaec2ff46b25aa001119fc62b7 and final
+9ba68d8a2d1e0fbd08d467fb6d25e304e2a2a7e7. Eight scoped files only: one readonly
+module, small MFA popup/script and focused test; existing bridge operation,
+download helper export, manifest version/default popup and ignored runtime permit.
+Permissions/host permissions unchanged. MFA entry does not start Native Messaging,
+debugger/CDP/READY or a controller. Website/SQL/artifacts are untouched.
+
+Final32/32 NEW offline tests PASS, syntax6 PASS. Exact serialized MAIN function
+and actual bridge callback/storage/download fixture chain tested, including all
+seven phases, privacy, strict result enums, redirects, expired/changed session,
+late dispatch, unknown cleanup, durable replay/concurrency and failed persistence.
+Historical suites/builds not rerun. Real Edge snapshot NOT_EXECUTED, NOT claimed
+PASS. Production/local network requests0, factors/deploy/DB0, push0. Historical
+untracked helper receipts preserved; helper tracked worktree matches final commit.
+
+Method packet C:/Temp/ogh-admin-mfa-activation-20261024/MFA_SNAPSHOT.METHOD.v1.NOT_AUTHORIZED.json
+SHA2568a21a8bb1fcb07f291ea49657c1d02fcfef0336d3f4bdad93103c7311d78bb11;
+same-home MFA_SNAPSHOT.LOCAL.safe.json and .METHOD.v1.OWNER_APPROVAL.txt.
+Active extension/mfa-snapshot-approval.local.json is ABSENT; preparation grants
+no Production authority. Parent555322e2 window remains2026-10-25T02:07:13.9120310Z.
+Proposed seven new stage snapshots each Auth GET user1/Worker me1/MFA1, deducted
+from existing unused94/62, replace unperformed manual snapshot scheduling only.
+No new global quota/factor/deploy/DB/window allowance. Actual public anon key is
+never output; exact compiled source/anon hash and fixed own UUID hash are bound.
+Session bearer stays inside existing page only; no SDK refresh or factor writes.
+Own/factor IDs export only SHA pseudonyms, plus fixed enums/UTC/HTTP/counters.
+Pre requires real zero TOTP, not AAL2; later phases require actual verified factor
+chain and protected server AAL2. Precise403 code is NOT_AAL2, not invented AAL1.
+Caller uses one explicit extension click per bound stage, standard automatic
+download then exact private ACL/hash import. No DevTools/JSON handoff. Main12s
+deadline starts after click; delayed dispatch cannot escape it. Fail/unknown
+stops, no new nonce/retry/late PASS. Owner alone binds devices and submits codes.
+
+Next sole action: owner reloads existing extension0.2.2, reviews and explicitly
+approves this exact METHOD packet; only then create private local permit and run
+pre once to prove real capture/zero factors before ANY factor write. No controller
+retry, registration redeploy, new framework or fresh window. Destructive jobs
+paused, CATALOG_HOLD=ACTIVE, PUBLIC_BETA_GO=NOT_AUTHORIZED.
+
 ## One Approved UI Control Check Stopped; No Factor Writes
 
 Owner formally approved exact bf006b4a UI amendment. At2026-10-24T23:29:56Z
