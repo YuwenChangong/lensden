@@ -1,5 +1,67 @@
 # Public Beta Current State
 
+## Release Continuity Ledger: Offline Reuse and Remaining Scope
+
+This entry supersedes older pending-action instructions below. Historical
+completion is not a new live Production observation. No live request, browser
+navigation, credential read, factor operation, deployment or DB operation was
+performed for this reconciliation. No old test suite or build was rerun.
+
+| Scope | Status | Evidence boundary / next gap |
+| --- | --- | --- |
+| Six migrations, database security, base RC, final HTTP/browser acceptance, fence removal | DONE_VERIFIED | Final release receipt SHA256 20b12f9633f2ff212fdb89095a296a4c79a0cbb28a276b95133e8f3cf6d312b9 rehashed; historical completion only. Local driver close confirmed, remote-session closure not independently verified. |
+| Encrypted backup, independent restore and offsite retention | DONE_VERIFIED | Existing three receipt hashes rechecked; fixed Oct22 recovery point, not current state or external media bytes. No recapture/readback repeated. |
+| MFA enrollment deployment | DONE_VERIFIED | Deploy/readback receipt hashes rechecked; historical Worker 9e1d478b-a801-482f-b551-17fcb536d915, deployment 24949872-3ad4-4368-afd9-0a8a2d46fa47. Do not redeploy enrollment. |
+| Local staff MFA, safety permissions and selected forum/R2 tests | DONE_VERIFIED | Accepted existing local evidence remains scoped to its tested candidate/environment; not real ordinary-user Production acceptance. No new code or test run. |
+| Confirm Email / Turnstile enabled | DONE_REPORTED | Historical Oct24 nonsecret settings evidence; not a fresh settings read or real signup proof. |
+| Current moderator pre-snapshot eligibility | BLOCKED | Consumed V2 returned the coalesced local session error before Auth/Worker HTTP; precise subcause UNKNOWN. Historical identity PASS is not current session proof. |
+| Primary/backup factor verification, enforcement deploy, database AAL2 | NOT_STARTED | Enrollment-only state. Prior expired release authority is not revived by a pre-snapshot PASS. |
+| Real ordinary-user signup/confirmation/login/logout/switch, cross-user denial, one retained R2 publish/read | NOT_STARTED | Independent minimum draft already exists and is reused; no new fixture/account/authorization activated. Missing live coverage is not a confirmed functional failure. |
+| Legacy tmp references versus R2 lifecycle | BLOCKED | Current material risk UNKNOWN. Paused application cleanup does not suspend bucket lifecycle. No newly proven data-loss P0. |
+| Combined normal session recovery and one fresh pre snapshot | IN_PROGRESS | One unchanged-code draft ready for owner review; no approval record, signed permit or execution window created. |
+
+Final release evidence is under the existing final-acceptance-20261023T052700Z
+private sink. Backup/restore/offsite hashes and receipt linkage remain in the
+existing ship packets. The earlier SHIP_RECEIPT preparation snapshot is not the
+later final release result and must not undo completed migration/deploy status.
+Independent minimum core draft SHA256 remains
+50e350e5e9435a5f40086bbe9e4fb6111201de36640a05611f2489f4ae494c93.
+Do not regenerate its forum, media or cleanup plan or reuse expired GO.
+
+### Offline Session Finding and One Pending Owner Action
+
+Snapshot code does not call SDK getSession. It reads the fixed page-local
+sb-xcbnxzjlsvtgzixurcof-auth-token record and rejects a non-string access_token,
+missing user.id, nonfinite expires_at, or expiry that cannot cover the shared
+read deadline (at most twelve seconds after click). Retained evidence merges
+these conditions. Invalid JSON/storage exceptions use MFA_READ_UNKNOWN instead.
+The actual site uses persistSession/autoRefreshToken; snapshot intentionally
+does not refresh. No saved credential values were inspected and no expired
+session, wrong profile, website defect or corrective code change is proven.
+
+One combined draft, unchanged extension0.2.4/helper0ee08d47, is prepared at
+C:/Temp/ogh-admin-mfa-activation-20261024/MFA_SESSION_RECOVERY_PRE.v1.NOT_AUTHORIZED.json
+SHA256 9465de43ccc02866576470253a093e768b0636b304dc88eb82ea0945a789879b.
+Same-name OWNER_APPROVAL.txt contains the complete approval and bounded actions.
+Seven source pins match; old active consumed runtime hash2aa441fc and old receipt
+hashes remain unchanged. New approval/sink/downloads are absent. No new signer
+ticket or execution permit was issued; preparation starts no window.
+
+After explicit matching owner GO only: one60-minute approval-activated window,
+same existing moderator/tab, normal site session recovery with at most three
+owner top navigations/ten minutes and at most one password/CAPTCHA submission
+if required. Normal site SDK renewal is expressly separated from snapshot HTTP
+caps. Any identity uncertainty, login error, unexpected origin or existing MFA
+challenge stops. Owner readiness precedes signed permit installation using the
+original approval/end time. One new snapshot has Auth1/Worker2, no retry, real
+identity/role/zero-TOTP/server-AAL proof; AAL2 is not a pre-enrollment condition.
+No factor, deployment, DB or core-test authority is included. No Wrangler login
+needed for this phase. Older UNKNOWN request/cleanup counts remain UNKNOWN.
+Owner action: review and explicitly approve this single combined phase when
+ready. Catalog Hold ACTIVE; destructive jobs remain paused under owner condition;
+Public Beta NOT_AUTHORIZED. No newly confirmed ordinary-user P0/P1 from missing
+coverage. Staff MFA activation and the independent core/media gaps still block GO.
+
 ## V2 Pre Snapshot Consumed: No Eligible Local Session, No HTTP Dispatch
 
 Owner reported one click. Bound0.2.4 result at2026-10-25T03:58:24.562Z is FAIL /
