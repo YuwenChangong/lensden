@@ -1,5 +1,22 @@
 # Public Beta Current State
 
+## Snapshot Method Approved; Pre Capture Awaiting One Owner Click
+
+Owner formally approved exact8a21a8bb method scope in current message. Recorded
+verification UTC2026-10-25T00:16:41.128Z in the existing private parent555322e2
+sink. Parent window still ends2026-10-25T02:07:13.9120310Z; no extension. Method,
+parent, fixed identity receipt and seven source hashes rechecked. Pre nonce
+ff464b8a-ff11-4a4e-a80e-3bbbdff05623 has no existing result or failure download.
+Ignored local pre permit created only after approval; current-user/SYSTEM-only
+ACL and local validator readback PASS, public anon value never output. Permit
+SHA256e8c57986bc11d86b8f17fc9025d8ca4b7ca7bea2875b67e1710eeb04b969286e.
+No Production request, factor write, deployment or database operation performed
+by this preparation. Actual Edge method and zero-factor gate remain NOT_VERIFIED.
+Next: owner uses same existing moderator tab, extension0.2.2 MFA popup, and clicks
+Capture Approved MFA Snapshot Once exactly once. Codex imports exact automatic
+download privately before any factor operation. No DevTools/controller retry,
+factor write, old stage redeploy or request-budget reset.
+
 ## Readonly MFA Snapshot Implemented Offline; Method Approval Pending
 
 Owner explicitly authorized only local implementation/tests/evidence. Existing
