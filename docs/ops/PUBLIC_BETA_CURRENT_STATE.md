@@ -1,5 +1,75 @@
 # Public Beta Current State
 
+## Final Sprint Offline Delta Complete; One Joint Approval Pending
+
+One existing ledger, no new release system. Actual HEAD at entry c1fdf429; no
+Production authority from the new sprint instruction. Independent streams:
+- A ordinary Auth/isolation: IN_PROGRESS offline; live acceptance NOT_STARTED.
+- B single post/R2 publication/playback: IN_PROGRESS offline, depends on A actor.
+- C legacy risk: BLOCKED evidence; old HTTP200 consumed, exact cause UNKNOWN.
+- D MFA: BLOCKED live step-up; two factors/AAL1 denial DONE_VERIFIED, database
+  NOT_STARTED. Historical enrollment AAL2 does not prove current enforcement AAL2.
+Base cutover/six migrations/backup/restore/enrollment/enforcement/configuration
+and applicable historical product checks DONE_VERIFIED for their unchanged scope;
+not redeployed, retested or represented as current evidence for missing cases.
+
+New actual work only:
+1. Proved lifecycle error filtering discards multi-line AssertionError categories.
+   Added bounded first-line/code/phase and shape-only diagnostics to the SAME
+   classifier, without changing accepted-rule/risk semantics. Raw old response is
+   absent; no retrospective rule classification, root attribution or GET repeat.
+2. Normal signup does not set qa_namespace. Added a SEPARATE exact normal-signup
+   identity guard: verified alias absence, single-owner-submit journal, exact new
+   provider UUID/email/created_at, current binding and excluded actor rejection.
+   Existing metadata-based admin-create guard unchanged. bind-auth now retains
+   provider time privately and stops on missing time; not local-clock equality.
+3. Existing ordinary helper adds signed-in post/video/claim readback and explicit
+   foreign post UPDATE/DELETE plus video DELETE denial/unchanged readbacks. No
+   service-role RLS assertion. Claim retained path checked from exact actor/post/
+   claim IDs, not assumed to contain a test namespace. No live PASS claimed.
+4. Standalone passive MFA sidecar forwards the actual owner's SDK methods once,
+   records trusted submit and only safe completion/error/status; no arguments or
+   response data read.120s ready idle,12s after trusted submit, exact detach and
+   UNKNOWN on late/pending/cleanup failure. New same-page readback evaluator
+   requires observed SDK outcomes, SDK aal2, actual matching moderator/getUser,
+   two pinned factors, protected200/admin-only403/anonymous401/feed200 and fresh
+   bound counts/time. Final readback reuses the one step-up, never submits again.
+
+Targeted final run39/39 PASS: lifecycle diagnostics6, new signup identity3,
+ordinary helper12 (7 new cases plus5 directly affected bind regressions), MFA
+observer13 and new readback5.34 new cases total. Syntax4 and diff-check PASS.
+No full suite/build, provider request, browser control, account/factor action,
+Production DB connection, mutation, deployment or push. Two independent local
+sidecars completed; no live tooling retried. Sealed SDK/panel and exact pending
+SQL pins checked only as necessary source bindings, no artifact rebuild.
+
+One private PUBLIC_BETA_FINAL_SPRINT.v1.NOT_AUTHORIZED.json and corresponding
+OWNER_APPROVAL.txt in the existing mailbox folder. Packet SHA256
+2cb8bbc8b18382ddbd4ffc513c4ed84674f83e19be5b6a078d4d5943a9ab8e3d.
+Standalone new scope/no inherited GO; source/SQL/SDK pins and fresh stage nonces
+verified. No window, live permit or marker installed.180min begins only after
+matching owner approval AND readiness,135min business stop. Independent A/B,C,D
+caps, exact containment and stop boundaries, no cross-stage budget borrowing.
+Corrected undersized Worker/post budgets and made the necessary synthetic own
+circle explicit. Frozen UI fallback is explicitly distinguished, never R2 PASS.
+
+Important unresolved METHOD gate, not a fabricated product defect: ordinary
+evidence still needs owner-reviewed same-session Snippets. New D would also use
+reviewed owner same-page observation + frozen reader/new evaluator, not the old
+extension wrapper that demands a fresh aal1 chain. No forged marker/signature/
+tab proof; new exception must be expressly approved. Actual page delivery and
+descriptor checks must succeed BEFORE owner factor action; otherwise D stays
+blocked and C can continue. No claim of a fully wired agent browser or database
+executor readiness; any unavailable required atomic assertion stops before SQL.
+
+Remaining launch gates are real ordinary Auth/RLS and R2 proof, unknown legacy
+expiry risk, actual MFA step-up and conditional DB closure. These are required
+acceptance gaps, not proof of a new ordinary-user exploit/P0/P1. No unrestricted
+Beta GO until resolved or specifically evidenced/mitigated risk accepted. Next
+owner action: review/sign the ONE exact joint packet and method exceptions when
+ready; all current Production authority remains absent. Catalog Hold ACTIVE;
+destructive jobs paused; Public Beta NOT_AUTHORIZED.
+
 ## Readonly Lifecycle Attempt HTTP200; Local Result Unverified, Stopped
 
 Owner completed specified Wrangler login; local value-blind credential validity

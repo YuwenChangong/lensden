@@ -3,6 +3,29 @@
 const shape=(v,keys)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).every(k=>keys.includes(k));
 const count=v=>{const n=typeof v==='string'&&/^\d+$/.test(v)?Number(v):v;return Number.isSafeInteger(n)&&n>=0?n:null;};
 const plans=new WeakSet();
+const lifecyclePhases=new Set(['DISPATCH','HEADERS','BODY','JSON','VALIDATE','RECEIPT']);
+const lifecycleCodes=new Set(['LIFECYCLE_HTTP_NOT_200','LIFECYCLE_RESPONSE_TOO_LARGE','LIFECYCLE_JSON_INVALID',
+  'LIFECYCLE_RULE_SHAPE_UNPROVEN','PRIVATE_RECEIPT_READBACK','ABORT_ERR','ECONNRESET','ETIMEDOUT','ENOTFOUND','EAI_AGAIN']);
+export function lifecycleFailureEvidence(error,phase) {
+  // AssertionError.message appends a value diff; only an exact known first line is safe.
+  const first=typeof error?.message==='string'?error.message.split(/\r?\n/,1)[0]:'';
+  const code=[first,error?.code,error?.cause?.code].find(v=>lifecycleCodes.has(v));
+  return {phase:lifecyclePhases.has(phase)?phase:'UNKNOWN',code:code??'READONLY_STAGE_FAILED_UNCLASSIFIED',rootCause:'UNKNOWN'};
+}
+export function lifecycleResponseShape(envelope) {
+  const type=v=>v===undefined?'missing':v===null?'null':Array.isArray(v)?'array':typeof v;
+  const rules=envelope?.result?.rules;
+  const known=['id','enabled','conditions','deleteObjectsTransition','abortMultipartUploadsTransition','storageClassTransitions'];
+  return {successConfirmed:envelope?.success===true,resultType:type(envelope?.result),rulesType:type(rules),
+    ruleCount:Array.isArray(rules)&&rules.length<=128?rules.length:null,ruleCountOverLimit:Array.isArray(rules)&&rules.length>128,
+    rules:!Array.isArray(rules)||rules.length>128?[]:rules.map(r=>({
+      ruleType:type(r),unknownRuleFields:r&&typeof r==='object'?Object.keys(r).some(k=>!known.includes(k)):false,
+      idType:type(r?.id),enabledType:type(r?.enabled),conditionsType:type(r?.conditions),prefixType:type(r?.conditions?.prefix),
+      deleteType:type(r?.deleteObjectsTransition),deleteConditionType:type(r?.deleteObjectsTransition?.condition),
+      deleteKind:['Age','Date'].includes(r?.deleteObjectsTransition?.condition?.type)?r.deleteObjectsTransition.condition.type:'OTHER_OR_MISSING',
+      abortType:type(r?.abortMultipartUploadsTransition),storageTransitionsType:type(r?.storageClassTransitions)
+    }))};
+}
 function validCondition(v,dateAllowed=true) {
   if(!shape(v,['type','maxAge','date']))return false;
   if(v.type==='Age')return Object.keys(v).length===2&&Number.isFinite(v.maxAge)&&v.maxAge>=0;

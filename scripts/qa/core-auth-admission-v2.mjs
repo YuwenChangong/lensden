@@ -61,6 +61,27 @@ function validConfirmation(value) {
   return Number.isFinite(Date.parse(value)) && Number.isFinite(parsedDate.getTime()) && parsedDate.toISOString().slice(0, 10) === localDate;
 }
 
+// Normal signup has no QA metadata: require independently verified absence and
+// a single owner signup journal, then exact provider identity/time readback.
+export function ordinarySignupIdentityEvidence({user,expected,journal,absence,sourceProject,excludedIds=[]}={}) {
+  const hash=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
+  const identityVerified=sourceProject===PROJECT&&expected?.project===PROJECT
+    &&hash(expected.binding)&&typeof expected.namespace==='string'&&expected.namespace.startsWith('ogh-core-ordinary-')
+    &&typeof expected.email==='string'&&UUID.test(expected.id??'')&&validConfirmation(expected.createdAt)
+    &&!['23c3c903-0687-4c6d-840c-f7f8a0d442db','dce0109d-93ef-4cc7-a91f-4085855410c9','6dab7393-d551-4690-9964-841cfe0c19a4'].includes(expected.id)
+    &&Array.isArray(excludedIds)&&!excludedIds.includes(expected.id)
+    &&absence?.verified===true&&hash(absence.sha256)&&absence.binding===expected.binding
+    &&absence.project===PROJECT&&absence.email===expected.email&&absence.matches===0
+    &&journal?.verified===true&&hash(journal.sha256)&&journal.binding===expected.binding
+    &&journal.namespace===expected.namespace&&journal.project===PROJECT&&journal.email===expected.email
+    &&journal.actorId===expected.id&&journal.createdAt===expected.createdAt&&journal.submitCount===1
+    &&journal.method==='NORMAL_OWNER_WEBSITE_SIGNUP'
+    &&user?.id===expected.id&&user?.email===expected.email&&validConfirmation(user?.created_at)
+    &&user.created_at===expected.createdAt;
+  return {identityVerified,mayContainExactCreatedActor:identityVerified,productionAuthority:false,
+    failure:identityVerified?null:'EXACT_NORMAL_SIGNUP_IDENTITY_UNPROVEN',timestampSource:'PROVIDER_READBACK_NOT_LOCAL_CLOCK'};
+}
+
 export function createdActorEvidence({user, expected, sourceProject, successfulCreate} = {}) {
   const identityVerified = successfulCreate === true && sourceProject === PROJECT && expected?.project === PROJECT
     && typeof user?.id === 'string' && UUID.test(user.id)

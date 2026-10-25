@@ -18,11 +18,12 @@ function plan(stage = 'auth') {
 function fixture(p, options = {}) {
   const rows = {
     profiles: [{ id: a, role: options.role || 'user' }, { id: b, role: options.role || 'user' }],
-    posts: [{ id: post, author_id: a, body: `${namespace} text` }],
+    posts: [{ id: post, author_id: a, body: `${namespace} text`,status:'published',moderation_status:'published' }],
     comments: [{ id: comment, author_id: b, post_id: post, body: `${namespace} comment` }],
-    post_media: [{ id: media, user_id: a, post_id: post, storage_path: `${a}/${namespace}-image.png` }],
+    post_media: [{ id: media, user_id: a, post_id: post, kind:'video',storage_path: p.fixtures?.videoPath ?? `${a}/${namespace}-image.png` }],
+    post_media_r2_copy_claims:[{post_id:post,user_id:a,claim_id:media,mime_type:'video/mp4',retained_key:`${a}/${post}/r2-retained-${media}.mp4`}],
   };
-  const user = { id: options.wrongId ? b : p.actorId, email: `fixture+ogh-${p.actor.toLowerCase()}-0123456789abcdef@gmail.com`, email_confirmed_at: '2026-10-23T01:00:00Z' };
+  const user = { id: options.wrongId ? b : p.actorId, email: `fixture+ogh-${p.actor.toLowerCase()}-0123456789abcdef@gmail.com`, email_confirmed_at: '2026-10-23T01:00:00Z', created_at: options.missingCreatedAt ? undefined : '2026-10-23T00:59:00.123Z' };
   let authCalls = 0;
   const authResult = async () => { authCalls++; return options.authError
     ? { error: { status: 400, code: 'invalid_credentials', message: 'PRIVATE_ERROR_NOT_EXPORTED' } }
@@ -154,6 +155,11 @@ test('fresh binding resolves actual UUID with one Auth read and ordinary Profile
   assert.equal(r.status,'PASS');assert.equal(r.actorId,a);assert.deepEqual(r.counts,{auth:1,rest:1});
   assert.equal(r.checks.freshIdentityBound,true);assert.equal(r.checks.refreshedIdentity,undefined);
   assert(!JSON.stringify(r).includes('@gmail.com'));
+  assert.equal(r.providerCreatedAtUTC,'2026-10-23T00:59:00.123Z');
+});
+test('fresh binding retains no identity success when provider creation time is absent',async()=>{
+  const p=freshBindingPlan(),r=await runSessionChecks(fixture({...p,actorId:a},{missingCreatedAt:true}).client,p);
+  assert.equal(r.reason,'PROVIDER_CREATION_TIME_UNKNOWN');assert.equal(r.providerCreatedAtUTC,undefined);
 });
 test('fresh binding requires exact private alias and an absence receipt before dispatch',async()=>{
   for(const key of ['expectedEmail','priorAliasAbsenceSha256']){
@@ -176,4 +182,35 @@ test('fresh binding snippet carries the exact absence proof and is single use',a
   const snippet=buildOwnerSnippet(p).replace(/await import\("[^\"]+"\)/,'({n:()=>client})');
   assert.equal((await vm.runInContext(snippet,context)).status,'PASS');assert.equal(saved.actorId,a);
   await assert.rejects(vm.runInContext(snippet,context),/CONSUMED/);
+});
+
+function mediaSmokePlan() {
+  return {...plan('rls-b'),stage:'smoke-media-rls-b',fixtures:{actorA:a,actorB:b,postA:post,videoMediaA:media,videoPath:`${a}/${post}/retained.mp4`}};
+}
+test('video smoke denies foreign post update and delete plus exact retained video delete',async()=>{
+  const p=mediaSmokePlan(),r=await runSessionChecks(fixture(p).client,p);
+  assert.equal(r.status,'PASS');assert.deepEqual(r.counts,{auth:1,rest:9});
+  assert.equal(r.checks.foreignPostDeleteDeniedUnchanged,true);assert.equal(r.checks.foreignMediaDeniedUnchanged,true);
+  assert(!JSON.stringify(r).includes('retained.mp4'));
+});
+test('video smoke refuses unbound media and tmp destination before requests',()=>{
+  for(const videoPath of [`tmp/${a}/${post}/retained.mp4`,`${b}/${post}/retained.mp4`,`${a}/${post}/../other.mp4`])
+    assert.throws(()=>checkPlan({...mediaSmokePlan(),fixtures:{...mediaSmokePlan().fixtures,videoPath}}),/MEDIA_BINDING/);
+});
+test('video smoke stops at unauthorized write success without cleanup or subsequent delete',async()=>{
+  const p=mediaSmokePlan(),r=await runSessionChecks(fixture(p,{allowForbidden:true}).client,p);
+  assert.equal(r.reason,'UNEXPECTED_WRITE_SUCCESS');assert.equal(r.counts.rest,2);assert.equal(r.checks.foreignMediaDeniedUnchanged,undefined);
+});
+test('video smoke 401 cannot be mistaken for RLS denial',async()=>{
+  const p=mediaSmokePlan(),r=await runSessionChecks(fixture(p,{unauthorized:true}).client,p);
+  assert.equal(r.reason,'AUTH_FAILURE_NOT_RLS_PROOF');assert.equal(r.counts.rest,2);
+});
+test('media readback correlates ordinary post media and actual consumed claim without exporting paths',async()=>{
+ const p={...plan(),stage:'media-readback-a',fixtures:{actorA:a,postA:post,videoMediaA:media,videoPath:`${a}/${post}/r2-retained-${media}.mp4`}};
+ const r=await runSessionChecks(fixture(p).client,p);assert.equal(r.status,'PASS');assert.deepEqual(r.counts,{auth:1,rest:3});
+ assert.equal(r.checks.retainedVideoAndClaimConsistent,true);assert(!JSON.stringify(r).includes('r2-retained'));
+});
+test('media readback rejects a tmp or mismatched reference rather than accepting HTTP status',async()=>{
+ const p={...plan(),stage:'media-readback-a',fixtures:{actorA:a,postA:post,videoMediaA:media,videoPath:'tmp/not-retained.mp4'}};
+ assert.equal((await runSessionChecks(fixture(p).client,p)).reason,'MEDIA_BINDING_MISMATCH');
 });
