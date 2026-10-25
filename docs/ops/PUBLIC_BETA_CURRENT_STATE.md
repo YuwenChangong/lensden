@@ -1,5 +1,47 @@
 # Public Beta Current State
 
+## Final Enforcement and Atomic Database Release Prepared Offline
+
+Two-factor/refreshed AAL2 phase is DONE and reused by exact7ff6b714 final receipt.
+Sealed enforcement8b0882f0 manifest ba9ea679 / artifact63cef614 has363 matching
+files; SQL d43eef59 then4a130252 batch058f7d6a and20 existing helper pins match.
+No artifact/source rebuild, old suite, backup, deployment or Production read.
+Current workspace enrollment guard is not confused with the separately sealed
+enforcement candidate. Static source AND compiled verify-function AST confirm
+enforcement challenge/verify has no explicit refresh; reuse the prior actual
+refresh proof, never budget or claim an extra handler refresh that does not exist.
+
+Only existing local extension adapted for three remaining ordered readonly
+stages: aal1, aal2, final. Helper aeacef77 / version0.2.6, same permissions/hosts;
+new groups8/8 and syntax3 PASS. Tests cover real serialized GET reader/header-only
+body cancellation, phase order, signed identity/factor pins, denial expectations,
+counter expansion and retained UNKNOWN/old markers. No historic MFA suite rerun.
+
+Unique pending MFA_ENFORCEMENT_REMAINING.v1.NOT_AUTHORIZED.json in existing Temp
+MFA home SHA256 ede45d5e3abbfcade4a7082ed8016879282255ebc2e8f9219be8d097dffc3047;
+same-name OWNER_APPROVAL.txt holds complete signing text and exact login command.
+No new owner record, window, real signature or active permit created. Existing
+consumed factor runtime2e3ab915 unchanged. Local expiry/scope-only Wrangler check
+found required scopes but insufficient45-minute reserve; owner interactive login
+is required BEFORE readiness/signature. Never refresh credentials automatically.
+
+New approval activates180 minutes only when recorded once. One enforcement
+deployment,10 allocated management reads, one postdeploy fresh same-moderator
+login/CAPTCHA and one existing-factor step-up; no enroll/remove/reset. Real AAL1
+must deny protected API; AAL2 must allow it and deny admin-only. Only Stage A
+PASS permits one original strict-TLS/hidden-password DB connection, one atomic
+two-SQL/two-ledger transaction and same-connection postcommit metadata/cleanup.
+Three extension snapshots total Auth3/Worker13, no retries; sensitive queue and
+capability bodies cancelled/unread. Final snapshot only after known DB PASS.
+The new contract explicitly replaces two unused predeploy login cycles with
+completed actual factor/refresh evidence, not fake fresh-signin PASS. Anonymous
+denial, ordinary-role DB catalog/RLS proof and real ordinary signed-session/core
+tests remain distinct. No real user DML canary. No auto downgrade or committed
+DDL reversal. Keep verified factors/recovery and restrictions on failure.
+Ordinary-user/R2/legacy minimum draft remains independent and unchanged.
+Catalog Hold ACTIVE; Public Beta NOT_AUTHORIZED; server enforcement and database
+AAL2 remain NOT_ACTIVATED until the new scope is approved and actually completes.
+
 ## Primary and Backup Factor Phase DONE: Real Two-Factor AAL2 PASS
 
 Owner completed each existing UI enrollment/verification once and reported the
