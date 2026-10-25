@@ -1,5 +1,30 @@
 # Public Beta Current State
 
+## Independent Pre Snapshot Binding Prepared Offline; No Production GO
+
+Owner approved offline binding adaptation only. Helper commit
+0ee08d47f1150bfdac6c9fa49351a9bfede8cf13 / extension0.2.4-mfa-binding-v2 replaces
+the old fixed-date dependency with a signed exact approval-activated60-minute
+pre-only execution. Pinned local approval key, packet hash, execution ID, nonce,
+phase, actual once-recorded approval UTC/end and target are verified before any
+reservation. Config cannot extend signed time; v1 is rejected. Independent v2
+use/stop keys never read, clear or overwrite old markers; nonce alone cannot
+authorize. Real user/role/factor/AAL logic and 5f82576 equality retained. No new
+permissions/hosts. New binding fixtures13/13 and syntax4 PASS; no old suites.
+Only ephemeral fixture signatures; actual local signer has issued no ticket.
+Old permit/failure receipt hashes unchanged, request count/cleanup remain UNKNOWN.
+No browser reload/control, Production request, factor, deploy or DB operation.
+Unique draft existing Temp home MFA_SNAPSHOT_PRE.v2.NOT_AUTHORIZED.json SHA256
+24ee3c1e909fd1d2d6db2e5287bd125d9809d2ad3e334d7de6b1c34dcbb999b7;
+same-name OWNER_APPROVAL.txt contains one complete approval. Source binding
+1d829e8eefa5025975c939ca763d63664ae630aca505f2e7bc134d5d4c3249b4.
+Only one new AuthGET and two WorkerGETs after new owner GO; factor/deploy/DB0.
+No window or valid runtime permit created during preparation. Owner reloads only
+existing extension, confirms conditions and signs before Codex activates permit
+and asks one click. No DevTools/READY/native/controller/JSON handoff. Pre PASS
+cannot revive expired MFA release GO or authorize factor writes. Catalog ACTIVE;
+Public Beta NOT_AUTHORIZED. Local proof MFA_SNAPSHOT_BINDING_V2.LOCAL.safe.json.
+
 ## MFA Marker Readback Repaired Offline; New Authorization Required
 
 Helper commit5f82576c69f1f4ade5f7e3579e5bb82b2e6862fb changes only four extension
