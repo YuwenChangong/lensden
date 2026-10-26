@@ -1,5 +1,6 @@
 // Offline-only classification of the documented R2 lifecycle shape. No transport,
 // credentials, database connection, mutation or execution authority lives here.
+import {createHash} from 'node:crypto';
 const shape=(v,keys)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).every(k=>keys.includes(k));
 const count=v=>{const n=typeof v==='string'&&/^\d+$/.test(v)?Number(v):v;return Number.isSafeInteger(n)&&n>=0?n:null;};
 const plans=new WeakSet();
@@ -81,4 +82,59 @@ export function evaluateTmpLifecycleRisk(plan,evidence) {
   return {...base,total,published,orphan,risk:deletionMatches?'BLOCKED':total===0?'SAFE':'UNKNOWN',
     lifecycleDeletionRisk:deletionMatches?'REFERENCED_TMP_CAN_EXPIRE':'NO_MATCHED_DELETION',
     reason:deletionMatches?'ENABLED_DELETION_MATCHES_REFERENCES':total===0?'NO_CURRENT_TMP_REFERENCES':'TMP_REFERENCES_REMAIN_NOT_GLOBALLY_SAFE'};
+}
+
+// These are private baseline values, not transport, approval or a protection plan.
+// Retain every result field and array order; never project just the matched rules.
+export function sealBucketRuleBaseline(raw,source) {
+  const fail=()=>{throw Error('PRIVATE_RULE_BASELINE_UNPROVEN');};
+  if(!Buffer.isBuffer(raw)||raw.length>262144||!raw.length||source?.complete!==true
+    ||source.status!==200||source.redirected!==false||source.targetVerified!==true
+    ||source.account!=='dcb374166b39234a499985145c075f50'
+    ||source.bucket!=='openglasshub-media'||source.jurisdiction!=='default'
+    ||!['lifecycle','lock'].includes(source.kind))fail();
+  const endpoint=`https://api.cloudflare.com/client/v4/accounts/${source.account}/r2/buckets/${source.bucket}/${source.kind}`;
+  if(source.endpoint!==endpoint)fail();
+  let response;
+  try {response=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));}catch{fail();}
+  const rules=response?.result?.rules;
+  if(response?.success!==true||!Array.isArray(rules)||rules.length>(source.kind==='lock'?1000:128))fail();
+  const ids=new Set();
+  for(const r of rules) {
+    if(!r||typeof r!=='object'||Array.isArray(r)||typeof r.id!=='string'||!r.id
+      ||ids.has(r.id)||typeof r.enabled!=='boolean')fail();
+    ids.add(r.id);
+  }
+  // A sorted entry serializer also preserves own keys such as __proto__ and
+  // numeric-looking keys; ordinary assignment/JSON.stringify can reorder them.
+  const canonical=v=>Array.isArray(v)?`[${v.map(canonical).join(',')}]`
+    :v&&typeof v==='object'?`{${Object.keys(v).sort().map(k=>`${JSON.stringify(k)}:${canonical(v[k])}`).join(',')}}`
+    :JSON.stringify(v);
+  const sha=v=>createHash('sha256').update(v).digest('hex');
+  return {configuration:response.result,rawResponseSha256:sha(raw),
+    configurationSha256:sha(canonical(response.result)),ruleCount:rules.length,
+    kind:source.kind,productionAuthority:false,writeReady:false};
+}
+
+export function admitExactTmpReferences(rows) {
+  const fail=()=>{throw Error('PRIVATE_TMP_TARGET_SCOPE_UNPROVEN');};
+  // Check count first: the third row is overflow detection, never a target.
+  if(!Array.isArray(rows)||rows.length!==2)fail();
+  const uuid=/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
+  const columns=['media_id','post_id','storage_path','size_bytes','post_status','moderation_status'];
+  const ids=new Set(),keys=new Set();
+  for(const r of rows) {
+    if(!r||Object.keys(r).length!==columns.length||!Object.keys(r).every(k=>columns.includes(k))
+      ||!uuid.test(r.media_id)||!uuid.test(r.post_id)||ids.has(r.media_id.toLowerCase())
+      ||typeof r.storage_path!=='string'||!r.storage_path.startsWith('tmp/')
+      ||Buffer.byteLength(r.storage_path)>1024||!/^tmp\/[a-zA-Z0-9._/-]+$/.test(r.storage_path)
+      ||r.storage_path.split('/').some(p=>!p||p==='.'||p==='..')||keys.has(r.storage_path)
+      ||count(r.size_bytes)===null||typeof r.post_status!=='string'||!r.post_status
+      ||typeof r.moderation_status!=='string'||!r.moderation_status)fail();
+    const parts=r.storage_path.split('/');
+    if(parts.length!==4||!uuid.test(parts[1])||parts[2]!==r.post_id.toLowerCase())fail();
+    ids.add(r.media_id.toLowerCase());keys.add(r.storage_path);
+  }
+  return {privateTargets:rows.map(r=>Object.fromEntries(columns.map(k=>[k,r[k]]))),
+    safeSummary:{admittedReferences:2,objectExistence:'UNKNOWN',protection:'NOT_APPLIED',productionAuthority:false}};
 }

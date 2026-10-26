@@ -1,5 +1,105 @@
 # Public Beta Current State
 
+## Autonomous Fast Track: Offline Preparation Only
+
+2026-10-26, baseline e20fc6e05154a7e76a0c2e0214e0b19912e68542,
+codex/moderator-mfa-safety-boundary-20261024. Latest attached fast-track request
+grants local preparation, not discovery or protection authority. Existing packet
+SHA50eb5f6f1ed41e061da5a85dda8d9419cd76b21680fba51bb5f460faec3fbd5f
+and SQL SHA836cf97fcd313159e2fccb22beefd5047ea86604a9fc3ead54504b2449cccacc
+are unchanged; fixed targets, independent caps, 60minute readiness activation,
+zero mutation/cost/retry limits and approval-text binding checked offline.
+Referenced existing risk receipts and hidden-input helper hashes match.
+No matching discovery approval, activated window or used execution file exists.
+No old counter, UNKNOWN, consumed marker or historical authorization was reset.
+
+Actual local readiness: existing Wrangler credential does NOT have120seconds
+remaining. No login/refresh was attempted; a prewindow interactive login needs
+explicit permission, since this packet does not include it. Trusted existing
+R2 signing environment configuration is unavailable: optional HEAD must remain
+NOT_EXECUTED/existence UNKNOWN, not block the allowed baseline reads or trigger
+a speculative public/management HEAD. Hidden input helper remains pinned; no
+real password was requested, read or held during preparation.
+
+Private discovery directory and its three prepared files had current-user-only
+effective access but inherited ACLs. Inheritance is now disabled on those exact
+four paths, CurrentUser+SYSTEM full control explicitly set and read back4/4.
+No broader directory or historical receipt ACL was changed. Packet/SQL bytes
+unchanged. This fixes persistence readiness, not remote media deletion risk.
+
+Only local baseline handling added to existing legacy-tmp-lifecycle-safety.mjs:
+complete fixed-target configuration capture with raw-response and recursively
+key-sorted configuration SHA; preserves rule array order and unrelated fields;
+no permission, transport or write plan. Two canonical distinct tmp targets only,
+linked post IDs, approved column projection; LIMIT3 overflow/underflow blocks
+before accepting targets. Returned exact values are PRIVATE only; safe summary
+keeps existence UNKNOWN/protection NOT_APPLIED. Configuration sealing is not
+semantic approval of lock rules or authority to issue a PUT. New offline tests
+11/11 PASS in test-media-protection-baselines.mjs, using fictitious values only;
+no old test suite, build, browser or provider execution. No new runner/framework.
+The old autonomous run-readonly-once.mjs cannot be replayed: it includes spent
+alias/aggregate scope. Future discovery uses the existing pinned native adapter,
+exact identification SQL and these preparation functions, never that old run.
+Native SQL allowance is sufficient without account/aggregate reads: timeout
+initialization3 + BEGIN/search_path1 + target/read-only readback1 + exact SELECT1
++ ROLLBACK1 =7 native / at most10 normal statements, within packet8/12 caps.
+
+Independent ordinary/R2 preparation completed by reusing existing definitions:
+- core-ordinary-session-checks.mjs already defines foreign post UPDATE/DELETE
+  and media DELETE with exact readbacks, rejecting401 as RLS evidence; its
+  A3/B3 identity and Storage-path contracts are frozen old scope, NOT a reusable
+  authorization for a new actor or R2 path. No blanket alias/identity relaxation.
+- Minimum future signed sequence: exact Auth/Profile + refresh/getUser (Auth3,
+  REST1); exact public post/media baseline (REST2); each of three negative
+  operations followed by exact unchanged row/owner/path/body readback (REST6);
+  ordinary staff/admin-only denial (Worker2). These are proposed independent
+  operator caps, not granted quota or a native SDK wire ceiling. New identity,
+  bound fixture, publication and cleanup must all be explicitly approved first.
+  Normal login/logout and identity-switch evidence remains separate from those
+  assertion-call caps; logout acknowledgment is not global JWT revocation proof.
+  Public visibility must be positively proven before a zero-row denial counts;
+  A3 pending_review is not that proof. Unexpected write stops without repair.
+- Existing local-real-r2-cases.mjs is restricted to its isolated test bucket,
+  loopback Supabase and historical scope: do not run it against Production or
+  remove its target guard. Reuse its upload/decode/playback assertions only.
+  Production proof requires retained non-tmp R2 object, same-owner post/media,
+  consumed claim/retained_key consistency, publication/visibility and actual
+  browser dimensions/currentTime progression. Storage fallback is NOT R2 PASS.
+  Range is separate: prior application200/full body did not prove206/seek.
+  No new fixture, denied write, playback or cleanup was executed this run.
+
+Release decision matrix: base cutover/six migrations/backup/MFA factors/
+Enforcement/database AAL2 remain DONE on applicable historical receipts. Reuse
+October26 handoff E02-E09; no repeated queries, factor steps, build or full
+363file artifact hash sweep. Production reference remains Worker version
+b81e3c25-2b12-45ac-97eb-47e42e7fd310/deployment60ee5c24-68fe-4673-b6e1-2a2206f11e66,
+last observed09:21:15.221Z, not a fresh management query. Source HEAD retains
+enrollment-only admin-auth; protected frozen Enforcement source8b0882f0 and
+artifactBinding63cef6143d59d40e8d776218ee587f1b6fe7748e436033e283ce796f1bb2595f
+must be preserved. No future build/deploy from this HEAD as equivalent release.
+Current package has build/QA scripts but no sanctioned deployment shortcut.
+No Pages/R6 resurrection, dependencies/UI changes or Catalog work. P2 deferred.
+
+Remaining: referenced tmp automatic deletion BLOCKED (not proven byte loss),
+exact objects UNKNOWN/protection NOT_APPLIED, signed Production foreign-row RLS
+and actual R2 playback NOT_VERIFIED. CAPTCHA cause UNKNOWN; no narrower cause
+supported by existing minimized callbacks/receipts. No newly proven exploit or
+universal login outage. Independent local preparation is complete for this scope.
+Next owner action is the EXISTING discovery OWNER_APPROVAL.txt plus permission
+for one necessary prewindow Wrangler login; no new packet/window is generated.
+After approval/readiness, only exact read scope proceeds; protection needs a
+separate exact write approval after baseline acquisition. Unrelated rule sets
+must be preserved; full-Key prefix is not exact-object equality. No automatic
+lock selection, retention extension, config rollback or media reconstruction.
+Production requests/mutations0, external cost0; public documentation only read.
+Local exact-path commit only; no push (external CI/deploy/cost effects unproven).
+Catalog ACTIVE, destructive jobs paused, Public Beta NO-GO/NOT_AUTHORIZED.
+Local preparation source SHA256: legacy-tmp-lifecycle-safety.mjs
+09b361aac6509e268910a5a9611309c0244c20344db89e0075eb4460ee0e90a3;
+test-media-protection-baselines.mjs
+95f2a9cf203e93229d853f4343d8cdfd5e93e69ea235e01db3516df422a45297.
+These identify offline code, not a Production approval or execution permit.
+
 ## Emergency Protection Selection; Exact Baselines Missing
 
 2026-10-26 offline-only follow-up to2183337d: existing lifecycle/aggregate
