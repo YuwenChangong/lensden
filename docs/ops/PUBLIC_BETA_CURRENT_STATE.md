@@ -1,5 +1,76 @@
 # Public Beta Current State
 
+## Remaining Closure Approved; R And D Safely Stopped With Exact Local Causes
+
+Owner explicitly approved the full e80ae54f packet and current conditions.
+Initial local Wrangler credential was expired; one permitted interactive login
+completed, local expiry04:25:23.331Z/margin59min verified, no automatic refresh.
+Fresh approval/readiness activation2026-10-26T03:26:50.374Z; business cutoff
+05:41:50.374Z, final cutoff06:26:50.374Z. No extension. New private execution
+94ef2e4d-f0ea-4245-8c4a-25a420369e28, owner-only ACL. Approval SHA256
+f7447494fc334b8bd76575bdf309f08f929f90dd3739235ae063c6acd19cf8d5.
+
+Actual R lifecycle GET1 HTTP200/complete350bytes, updated classifier PASS:
+2 rules/1 relevant deletion-prefix parameter. Raw prefixes stayed memory-only.
+Fresh strict-TLS readonly connection1 opened; timeout setup PASS. The local
+result-byte guard failed on the BEGIN/SET batch's pg Result[] shape BEFORE
+target preflight/aggregate/synthetic-media/alias SELECTs. One rollback completed,
+observed local close CONFIRMED in2170ms; remote closure not independently proved.
+Actual native SQL5/statements8 = timeout initialization3/5, BEGIN+SET1/2,
+ROLLBACK1/1. All four later SELECTs0; no data writes/retries, password disposed.
+Receipt c40df7b129079105f0cbe78507d1ca83780186050580db553ce7082189fc13e8.
+Safe failure classifier says ERR_INVALID_ARG_TYPE/DRIVER_CONFIGURATION; more
+precise local cause is proven by exact bound-source order and offline reproduction:
+JSON.stringify(batch.rows) returns undefined, then Buffer.byteLength throws.
+Do not report a remote connection/auth failure or pretend target/aggregate PASS.
+Consumed R attempt/source/markers preserved; no reconnect or extra live query.
+Current tmp risk/backend/B3 absence remain UNKNOWN/NOT_VERIFIED; prior A3
+reconciliation is unchanged historical evidence, not repeated by R.
+
+Independent D continued under its own approval. New initial fixed deployments
+GET1 HTTP200 PASS at03:31:10.532Z: original60ee5c24 deployment/b81e3c25 version,
+single100%; receipt360012b85b19ebf2a91817f2347b8d7fbb97078ddf9bc78ccacb19db2973b935.
+No settings/config review. Original final deployments allowance remains unused.
+Reviewed fresh same-page observer snippet ba25f64c prepared and owner ran once.
+Result at03:34:38.236Z BLOCKED/START/FIXED_PAGE: topLevel=true, originMatches=true,
+securityPathMatches=true, hasSearch=true, hasHash=false. Actual query NOT read or
+exported. This identifies the strict page admission failure, NOT an Auth/CAPTCHA
+or historical step-up cause. Script Auth precheck0/Worker precheck0/SDK-assurance0;
+observer not installed, no TOTP requested or submitted by this method. Native
+page traffic is not claimed zero. No role/factor/session mutation, DB or deploy.
+Receipt8aec8c3ddd60472350170923ed990fd69ae48c1db176ff815c03dd3034c8783d
+privately imported with hash/ACL proof; exact download unlinked, own matching
+clipboard cleared. Do not rerun D or ask for TOTP from that failed execution.
+B remains blocked by missing R/D gates; B3 still uncreated, no post approval/hide.
+No A3 login/unban, new post/video/upload, deletion, factor, migration or deployment.
+
+Local R candidate only, NOT_AUTHORIZED/hard-stop before execution, preserves
+all row payload bounds and returns original pg result unchanged, handling each
+batch result.rows. Six exact new offline cases PASS plus syntax PASS; no old
+suite/PG/runtime test. Used source b852b32a unchanged. Candidate SHA256
+4f99a6719f40f8dab81cb078a32164a59bff88d84ccbac4e8cf892e7b4ce174b;
+test7ebbb684b6c30235ca877db1c1133e8cf1e280644aebf6400f7b3c3a492be24a.
+Diagnosis de723f9506cb2c0df4c400391795c6ac0c406392ac0a83f26c8549e9a54da254.
+No MFA/app/SQL/factor patch. Do not widen allowed page queries; one canonical
+no-query navigation is the minimum next method change, not guessed query safety.
+
+One pending private failure-delta-v1 JSON/OWNER_APPROVAL, SHA256
+6b1137a97d066ef7e74ca0e3d05ddf95b805821f2c44ff68fb3fca22c570c10b.
+Requires fresh explicit approval before any recovery: NEW fixed lifecycle GET1
+to restore intentionally released transient prefix parameters, NEW readonly
+connection1/max10native/15statements/40sec with fixed guard and original undispatched
+SELECT caps. Never borrow unused final management allowance or pretend old R is
+unused. Parent total management cap3 becomes4 only by that explicit extra GET.
+One same-moderator canonical navigation/new D nonce; no extra D Auth/Worker/
+challenge/verify/atomic-DB cap. Reuse initial deployment PASS. Optional extra
+OWNER Wrangler login1 only if actually expired, no automatic token refresh.
+Original activation/business/end remain exactly unchanged. Pending delta domain
+0566dcff has no permit; no new window or action started. Old consumed/UNKNOWN
+states stay intact. Next sole owner action: sign the exact minimal delta, not
+the whole release again. Independent stages retain their own unused allowances.
+Catalog ACTIVE, destructive jobs paused, Public Beta NOT_AUTHORIZED; historical
+A3 ordinary authentication PASS reused, R2/dual-user/legacy/MFA closure not PASS.
+
 ## Remaining Gaps Reduced Offline; Abort-Only Classifier Fix Verified
 
 No Production request, browser/session action, database connection, account,
