@@ -1,5 +1,36 @@
 # Public Beta Current State
 
+## Business Cutoff Passed; Owner Reports Publish Click, Safety Readback Pending
+
+Original business cutoff02:28:53.524Z is past. Native JSON/UTC check at
+02:28:56.057Z confirmed expiration; no extension. Owner subsequently reported
+publish clicked. Actual click UTC and whether before cutoff UNKNOWN; actual
+Worker/upload/copy/attach dispatches and outcome UNKNOWN, never zeroed. One
+owner-reported click consumes the reserved submission; no retry, B3, new post,
+upload, playback test or continuation of business acceptance. User told to keep
+page and report outcome/time without refresh or deletion. Do not infer a defect.
+
+Original full authorization/45-minute cleanup reserve remains to03:13:53.524Z
+(16:13:53 Auckland), checked valid at02:30:47.774Z. Prepared ONLY exact pending
+submission metadata safety readback under that existing cleanup scope, not new
+business permission: Auth1 plus REST at most3. Exact A3 identity, exact own circle,
+title/body filters/LIMIT2; then only that returned post's own video and claim.
+No object bytes/HEAD/list, new fixture, deletion, role change or MFA operation.
+No visible row means commit UNKNOWN, not absence. Retained key/claim metadata
+does not prove bytes/playback or historical-media safety. Provider created_at
+must not be used to fabricate the owner's local submission timestamp.
+
+Reviewed minimal same-session SDK script privately sealed SHA256
+312e2da12dee6d3592f5e615322746d519f210442e2cbe9cc0e7db0f1409acac;
+syntax PASS, separate one-use safety-readback reservation, actual reads
+NOT_YET_REPORTED. Its full-window cutoff is only for already-authorized safety
+readback/cleanup, not a business cutoff change. Next sole owner action: run this
+clipboard snippet once in SAME A3 context; minimal result downloads automatically.
+Cleanup/ban/logout NOT_STARTED; A3, exact circle and uncertain post/media remain
+obligations. Unknown attach/copy forbids speculative deletion. Original precise
+independent account containment remains conditional and single-use in-window.
+MFA stopped, legacy UNKNOWN, Catalog ACTIVE/Public Beta NOT_AUTHORIZED.
+
 ## Exact A3 Circle Readback PASS; One Post And Video Submission Reserved
 
 Imported circle readback completed2026-10-26T02:20:51Z within original cutoff:
