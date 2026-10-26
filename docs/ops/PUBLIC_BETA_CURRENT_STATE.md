@@ -1,5 +1,49 @@
 # Public Beta Current State
 
+## Exact A3 Readonly Reconciliation Completed; Post Pending Review
+
+Fresh explicit owner approval for b5d0338d14f5d059fd0db0def67be59782638be2190c4657a11637d9948629ca
+recorded once at2026-10-26T02:54:56.340Z, independent60min window ending
+03:54:56.340Z; no old authority/quota inherited. Approval receipt
+8299fb624d10793667f5cdb51e9765386daa526c93aa5b3d19a5ed5146d3acaf.
+Existing owner-only hidden input and pinned strict-TLS observed adapter used;
+no old password/URL/envelope read. Fresh exclusive execution/database markers
+remain consumed. Execution-local dispatcher SHA256
+42317610136a67dca705e258d131facf29fc7c79aa29f6700295c261996a6c81;
+source/pins/window-only preflight and syntax check PASS, no historical tests.
+
+At2026-10-26T02:58:20Z, actual once-only fixed-project READ ONLY reconciliation
+completed PASS: database attempts1, native dispatches7, SQL statements10,
+exact pinned metadata SELECT1, mutations0, retries0, database elapsed2467ms.
+Actual target/readonly/timeouts verified, transaction ended with ROLLBACK and
+local close CONFIRMED. Remote closure NOT_INDEPENDENTLY_VERIFIED; no remote
+cleanup claim. Password disposed; minimized private result hash and owner-only
+ACL verified. Receipt SHA256
+64c53e5dc8b1c2ceb111ec5bf4635a3f880876f77e545936ee6c1600a617ddd2.
+
+Current exact circle has1 post,1 A3-owned post,1 exact title/body match,
+0 exact-content other authors,0 other-owner media on A3 posts,1 A3-owned video
+metadata row and0 A3 claims. Own post status pending / moderation pending_review.
+Video owner path binding true; exact retained R2 claim reference false. Own IDs
+only in private result; no raw keys, object bytes, other-user identities/content
+or full responses exported. No other-author participation observed in scope.
+This proves current bound database metadata, not absence of earlier requests,
+the frontend event/UTC, public visibility, R2 byte availability, upload backend,
+playback, orphan-object absence, ordinary-user RLS or legacy-media safety.
+Pending review is not by itself a proven application failure. Do not claim
+R2 publish/playback PASS or infer a specific fallback from absent claims.
+
+A3 remains independently verified banned; no account/Auth/browser/Worker/R2
+request, unban, business resumption, cleanup, factor, deployment or migration
+performed under this read scope. Existing exact circle/post/video metadata are
+retained obligations; no speculative deletion. Old failed-attempt request count
+and cleanup remain UNKNOWN; this successful local close does not rewrite them.
+B3 uncreated; cross-user isolation/playback not verified, legacy risk UNKNOWN.
+MFA stopped, database AAL2 NOT_ACTIVATED; Catalog ACTIVE/Beta NOT_AUTHORIZED.
+Readonly stage complete and stopped. No immediate owner action or repeat click
+needed; further business/media/cleanup operations require their own explicit
+remaining-scope authority, not this consumed read allowance.
+
 ## Submission Readback Identity Mismatch; A3 Independently Banned And Verified
 
 Imported owner-run outcome at2026-10-26T02:41:56.609Z: BLOCKED /
