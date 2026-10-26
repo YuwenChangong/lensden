@@ -1,5 +1,54 @@
 # Public Beta Current State
 
+## Emergency Protection Selection; Exact Baselines Missing
+
+2026-10-26 offline-only follow-up to2183337d: existing lifecycle/aggregate
+receipts and previous minimized shape receipt contain no real Keys, rule IDs,
+raw prefixes or full configuration hash. Two references/delete matching remain
+proven; exact object existence/post states and live configuration baselines are
+not. No repeated aggregate or new Production request was sent. Do not substitute
+the safe receipt hash for the current lifecycle configuration hash.
+
+Official current Cloudflare documentation/API schema reviewed: Bucket Lock
+rules match prefixes, including existing/future objects, and take precedence
+over lifecycle deletion. A full Key as prefix is narrower than disabling a
+whole tmp deletion rule, but is not exact-Key equality: suffix collisions may
+also be locked. Prefer a bounded absolute Date lock candidate, at most24hours,
+preserving every unrelated lock/lifecycle rule, only after real target/baseline
+hashes and owner acceptance of prefix effects/cost. No permanent lock or
+automatic expiry extension. A dated lock's expiry re-exposes eligible objects;
+it is temporary protection, not completed data-loss remediation.
+
+Disabling the matching lifecycle rule would retain all objects under its prefix
+and may affect other transitions in the same rule; scope/bytes/cost are unknown.
+Neither option is authorized or applied. Existing R2 environment credential
+names checked presence-only: absent. Management API spec exposes object GET, not
+a documented HEAD; do not guess a management HEAD, GET real bytes, export Worker
+secrets or use a cached public HEAD as authoritative object existence.
+
+Only necessary next authority prepared in existing private mailbox directory
+emergency-media-protection-v1: MEDIA_PROTECTION_DISCOVERY.v1.NOT_AUTHORIZED.json
+SHA50eb5f6f1ed41e061da5a85dda8d9419cd76b21680fba51bb5f460faec3fbd5f.
+This is READ ONLY, not emergency write approval: lifecycleGET1/lockGET1, one
+strict readonly connection, one pinned tmp-reference identification SELECT
+LIMIT3 (admit exactly2, overflow stops), optional trusted authenticated HEAD2.
+No aggregate repeat/list/body/auth/Worker read, config write or cost increase.
+Exact minimal target Keys/IDs/states and complete rule baselines may be retained
+only after this explicit new evidence allowance is approved. If no trusted HEAD
+credential source exists, skip HEAD and retain UNKNOWN; do not expand access.
+Approval alone starts no window; matching approval plus actual readiness grants
+one60minute window. Only after real baseline hashes exist can the single exact
+independent protection write approval be constructed. No guessed hash or dynamic
+unlimited write GO. JSON/SQL boundary checks passed; no old test suite rerun.
+
+Independent evidence reused: A3 ordinary signup/auth PASS; signed foreign-row RLS
+still NOT_VERIFIED, existing video Storage not R2, MFA/database AAL2 remain DONE.
+Current AuthTurnstile maps multiple callbacks to one unavailable flag and does
+not preserve the provider error code in this receipt. CAPTCHA cause remains
+UNKNOWN; no new diagnosis/login/account or speculative app fix. B4 ban remains
+VERIFIED. Public Beta NO-GO, Catalog ACTIVE, destructive jobs remain paused.
+This follow-up Production requests/changes0; no window, deployment or DB operation.
+
 ## Autonomous Minimum Run Stopped; Legacy Deletion Risk Confirmed
 
 2026-10-26 exact owner approval d619cf25 verified against unchanged packet and
