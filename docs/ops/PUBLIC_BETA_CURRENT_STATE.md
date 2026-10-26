@@ -1,5 +1,34 @@
 # Public Beta Current State
 
+## Expired Sprint Preserved; Login Ready, Minimal Resume Approval Pending
+
+Owner completed specified interactive Wrangler login and confirmed readiness.
+Local-only check at2026-10-26T00:10:52.041Z: token present, expiry
+2026-10-26T01:07:45.512Z,56 whole minutes left; initial45-minute gate PASS at
+that observation only. No remote account/permission proof claimed. Parent packet
+2cb8bbc8 integrity PASS and10 existing helper/browser/hidden-input pins unchanged;
+no tests or builds repeated. Old sprint expired2026-10-25T13:56:25.095Z,
+no used markers or Production dispatches recorded; preserve it and all older
+consumed/UNKNOWN state. Earlier entry's instruction to continue its window is
+superseded: expired authority must never be used.
+
+Prepared only PUBLIC_BETA_FINAL_SPRINT.resume-v1.NOT_AUTHORIZED.json in the
+existing private mailbox directory, SHA256
+a327732b0fe997b6da24313c8e747c724c35ae04bdae629cdfa8390f0a7b29ea.
+Scope incorporates unchanged parent pins, identities, method exceptions and
+independent caps; new pending execution domain18c15e12-1f32-43e0-8b1e-483cfdfa520f.
+No permit or window activated. Fresh formal approval plus readiness starts one
+180-minute window/business stop135; no automatic credential refresh or extension.
+Existing local execution artifacts remain unexecuted with expired bindings;
+adapt only their execution binding after fresh approval, never replay them.
+
+Production requests0, database0, account/factor operations0, deployment0 this
+resume preparation. Next single owner action: sign exact minimal resume approval
+and reconfirm its current conditions. Then recheck time/credential margin before
+using only the fixed approved management reads to prove target identity. No
+configuration review, full suite, deployment, backup or push repeated.
+Catalog Hold ACTIVE, destructive jobs paused, Public Beta NOT_AUTHORIZED.
+
 ## Final Sprint Explicit Joint Approval Recorded; Waiting Specified Login
 
 Owner submitted formal complete joint GO2cb8bbc8 despite the pasted template
