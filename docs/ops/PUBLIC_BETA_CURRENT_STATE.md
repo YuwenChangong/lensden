@@ -1,5 +1,67 @@
 # Public Beta Current State
 
+## Blocker Recovery Approved; Local Launch And Observation Safely Stopped
+
+Owner formally approved2163f899 exact scope and all current conditions. One
+permitted interactive Wrangler login completed; local remaining lifetime59min,
+at-least45min PASS, no speculative account/settings request. New approval SHA
+5c8428fffb3fb6af8f04d2e0388ec548f45a549b8d857a38a60b286b67c22b70,
+executiona53c2744-abd8-46c0-9d28-b067112c99d0 in existing private mailbox domain
+blocker-recovery-v1. Actual activation2026-10-26T05:40:31.622Z, business stop
+07:55:31.622Z, final08:40:31.622Z; no renewal. New exclusive markers only.
+
+Approved mechanical R/D/initial-management bindings locally checked, no full
+tests/build/config audit. Actual R lifecycle GET1 PASS, then input READY not
+published within8s; stopped with LOCAL_INPUT_NOT_READY before receiver/DB.
+DB0/SQL0, no aggregate/backend/alias read, risk UNKNOWN. Receipt
+1e3855a1ded2a3ef1ff371016ec095803e7ded40658dd7c5baf035e09ee0f2ef.
+New concrete local launch defect: Start-Process ArgumentList joined the new
+space-containing helper path without CLI quotes. Two new isolated real-Windows
+fixtures prove the unquoted child receives a truncated script path and no READY;
+quoting all fixed arguments produces a successful fictitious CurrentUser pipe.
+2/2 PASS, no real input/DB. Original child stderr was discarded, not invented.
+No matching prompt process remained at inspection (excluding the reader itself).
+Atomic READY helper stays unchanged. New guarded candidate SHA
+1f4c7f4c7b853ab4b20cfb90de56166df5e196dff812d26bc9ac76eb8469da59
+hard-stops before Production; failed executable/markers are immutable, no retry.
+
+Independent initial deployments GET1 PASS05:41:50.043Z, original60ee5c24/b81e3c25
+single100; receipt2952eb628b5571e14e103cc3790ca4846a90272c4b2d5cc5589c0d2c916bff9d.
+D owner ran new reviewed script once. Real READY05:43:21.198Z: same Auth/me
+moderator and both verified factors PASS, observer active/connected; input invalid,
+button disabled, fieldset enabled. SHA
+cadb0faca1d762b031c38c4305872d953eb3b801a557e1f6e52a1f3ff2e3ba53.
+Observer deadline05:45:21.220Z: NOT_SUBMITTED scoped to bound form only, trusted
+click0/invalid-eventfalse/submitUNKNOWN/wrapped challenge0/verify0, same boolean
+control state, SDK assurance0/server readback not reached. Cleanup PASS/restored.
+Result664f7dece5c7c51504695e091d23847b5e6018108e19a7bd7771176eaddd0468.
+Owner reports submission, always-clickable button, later resubmission; exact time
+and global challenge/verify remain UNKNOWN. New exact local download absent on
+subsequent authorized local-only inspection. Do not infer no requests, claim SDK
+success, retroactively authorize extra submits or ask for another code. User was
+told observation ended and not to continue. Private hash/ACL import+exact source
+unlink PASS; matching owned clipboard cleared. No new snapshot/login/refresh.
+
+Known target reads: lifecycle1 + deployments1 + Auth precheck1 + Worker me1;
+owner/native Auth challenge/verify actual UNKNOWN. DB connections/writes0,
+accounts/posts/uploads/factor enrollments/deployments0, executor retries0.
+B3 is blocked by missing new absence proof, not by invented authentication FAIL;
+R2/backend/legacy still unverified. A3 remains banned and fixtures retained.
+No production code/SQL, old marker or historical UNKNOWN was modified.
+
+One pending minimum failure-delta JSON/TXT in same private mailbox, SHA
+869947dd1c3ec9350e633999269e2ddf52b34fb081f688267de53d6c80aa1778.
+Proposes explicitly new R mapping/readonly allowances with quoted launch, and
+fresh current-server AAL2 admission rather than another TOTP/observer cycle.
+Requires new owner acceptance of that evidence-method change: all independent
+identity/factors/role/AAL2/exact status gates remain, historical SDK result UNKNOWN.
+Only actual StageA PASS permits resuming unused exact atomic SQL/final readback;
+B3/R2 original caps unchanged. Original absolute cutoffs unchanged, no new window.
+This delta is NOT AUTHORIZED; no new request/SQL can run from its preparation.
+Owner action: review/sign that minimum delta, do not resubmit codes or scripts.
+Catalog ACTIVE, destructive jobs paused, Public Beta NOT_AUTHORIZED. No push:
+Production/paid-CI safety still not established under repository policy.
+
 ## Offline Blocker Recovery; Fresh Scope Prepared, No Production Authority
 
 2026-10-26: only local code/evidence work, no Production request, real credential
