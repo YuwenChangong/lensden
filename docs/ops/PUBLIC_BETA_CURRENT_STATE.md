@@ -1,5 +1,42 @@
 # Public Beta Current State
 
+## B3 Ordinary Identity Pass; Refresh Readback Pending
+
+Owner reports B3 normal signup, email confirmation and password login complete.
+One reviewed same-session bind-auth snippet ran in B3 InPrivate: actual Auth
+identity, confirmed email, profiles.role=user, new provider created_at and UUID
+different from A3/all excluded actors PASS. Auth1/REST1. Private result SHA
+9087b8f7a8971e9e6c82dfc03f37775f5dfe412a86f2ae5badd472775a29ecb1;
+hash/ACL checked and exact Downloads source unlinked. Exact private creation
+identity/journal sealed from this real response plus prior alias absence and
+owner single-signup report; no guessed UUID or local/server clock equality.
+
+One independent exact Auth admin GET20007:38:28.847Z verifies this run's B3
+against the unchanged ordinarySignupIdentityEvidence helper, exact private alias,
+provider time, project, namespace/journal and fresh absence. No listing/reset/
+role change or old account adoption. It consumes initial1 of the four approved
+containment Auth operations; exact pre-ban GET/one876000h PUT/readback remain.
+No ban has been dispatched by agent. Source uses service key only for exact
+identity/containment, never signed ordinary RLS tests, and stores no raw user body.
+
+Original pinned B3 auth/refresh snippet generated, source SHA
+213cf42ddc5b548258d3a1b5de1bec449052a876eee4db99d9dfd387ad60e0a1.
+Auth3/REST1 maximum reserved and owner asked to run once in the same B3 context;
+expected minimized download not yet received on07:43:27Z local inspection.
+Do not infer request count0 or retry from absent download. No public approval,
+foreign RLS mutation, new post/video or upload has started. Original new-business
+cutoff remains20:55:31 Auckland, final containment/readback21:40:31, no extension.
+
+MFA remains DONE; no repeated factor/identity/config/SQL/deployment work. Existing
+A3 post remains pending and its known video is Storage routing, not R2 proof.
+Local source confirms frozen UI tries external-video upload first and falls back
+to Storage on selected initialization/network errors; this does NOT prove the
+historical fallback cause. No speculative application fix or test re-upload.
+Legacy risk UNKNOWN; destructive jobs paused, Catalog ACTIVE, Beta NOT_AUTHORIZED.
+Owner action: run the already provided B3 refresh snippet once; if already run,
+report the existing outcome without rerunning. All later B3 business waits for
+this required result; independent exact containment remains within original caps.
+
 ## MFA Production Done; Original B3 Stage Admitted
 
 Owner formally approved c8492e4d local-input resumption; actual receipt and fresh
