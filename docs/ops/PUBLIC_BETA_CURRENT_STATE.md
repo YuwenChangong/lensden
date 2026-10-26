@@ -1,5 +1,61 @@
 # Public Beta Current State
 
+## MFA Production Done; Original B3 Stage Admitted
+
+Owner formally approved c8492e4d local-input resumption; actual receipt and fresh
+R/D child domains sealed under existing6c0cd66b/input-resume-c8492e4d. Original
+business cutoff07:55:31.622Z/final08:40:31.622Z unchanged. Private shortcut
+target/arguments/ACL verified before owner invitation. Owner launched the pinned
+helper via Win+R and supplied both passwords locally; no secret in chat/file/log,
+no old URL/password/envelope read. Existing helper/120second input/receiver and
+all frozen SQL unchanged. Old failed states/markers retained, parent-domain
+exclusive reservations prevent allowance reuse. Shortcuts removed after use.
+
+R: one strict-TLS READ ONLY connection,9 native dispatches/12 normal statements,
+local close CONFIRMED, writes0/retries0, no lifecycle GET repeated. New receipt
+e7c9f83989a361022ed019c3c0e95c095fac1c07369b2c6fc4c73aa7edea1c5d:
+legacy tmp total2/published0/orphan0; exact B3 alias absent; existing synthetic
+video SUPABASE_STORAGE_ROUTING, post pending/pending_review. Raw lifecycle
+prefix mapping unavailable, so legacy risk remains UNKNOWN, not SAFE. Existing
+Storage object/playback is not R2 proof. No real object/bytes read or lifecycle
+edit, no A3 unban/repost/upload/deletion.
+
+D: one exact connection/one atomic two-SQL body,17 native dispatches, two exact
+ledger rows; COMMIT CONFIRMED07:15:34.941Z and persisted readback PASS. Receipt
+f32a8aa0da3de454fa20f8effb4671261ac58ee4d93490ee707b3f1cb8748abe.
+Exact reviewed staff-AAL2 and user-safety hierarchy/append-only audit delta,
+unchanged role/schema/RLS outside this delta, own moderator unchanged; capability
+predicate AAL1=false/AAL2=true/unknown=false/admin-only=false. No real-user DML
+canary. Local driver close CONFIRMED; remote closure not independently proven.
+No rollback, retry, Worker deployment or factor/login/refresh operation.
+
+Owner ran the remaining exact final reader once after COMMIT. Auth1/Worker4,
+Auth200/me200/mfa200/protected200/admin-only403, same moderator/two verified
+factors/actual server aal2, cleanup PASS. Final private result SHA
+20b3c28155cd189ab276c541f414ad69c5eb1f58e24a4eee02e5e749cd8ccd0e;
+independent final validator PASS. Hash/ACL/readback verified, exact Downloads
+source unlinked. Historical challenge/verify remains UNKNOWN; current-server
+approval explicitly replaces invented historical SDK success. Final allowance
+consumed; do not request another TOTP/snapshot. MFA_PRODUCTION=DONE,
+SERVER_AAL2_ENFORCEMENT=PASS, DATABASE_AAL2_ENFORCEMENT=PASS. No new MFA project.
+
+Existing2163f899 B3 authority independently verified (owner receipt5c8428ff),
+original same window/caps and R fresh alias absence reused. Existing fixed-project
+Auth admin credential presence/project/service role/expiry adequate for exact
+failure containment verified locally, no Auth request. Pinned original ordinary
+SDK helpers/mailbox config reused, no new framework. First B3 signup allowance
+exclusively reserved under a53c2744/B3, private alias copied without output.
+Owner asked for ONE normal signup/CAPTCHA/confirmation/password login in a clean
+ordinary InPrivate context, moderator separate; no A3 reuse, upload or post yet.
+Signup/login outcome not yet reported; do not infer creation or success. Stop new
+business at20:55:31 Auckland. Independent precise B3 containment remains capped.
+
+Remaining Beta gaps: B3 real identity/refresh/isolation and exact foreign-row
+RLS, conditional one B3-owned R2 fixture/object/playback, historical deletion-rule
+mapping/risk decision. NOT_VERIFIED is not a confirmed P0/P1. Catalog ACTIVE,
+Public Beta NOT_AUTHORIZED; all destructive media/circle/external jobs paused.
+No push: Production/paid-CI trigger safety still not established.
+
 ## Current Server AAL2 Pass; Local Input Resumption Requires Approval
 
 Owner approved869947dd exact failure delta. Original activation05:40:31.622Z,
