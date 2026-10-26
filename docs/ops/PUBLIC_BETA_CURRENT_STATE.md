@@ -1,5 +1,61 @@
 # Public Beta Current State
 
+## Current Server AAL2 Pass; Local Input Resumption Requires Approval
+
+Owner approved869947dd exact failure delta. Original activation05:40:31.622Z,
+business stop07:55:31.622Z and final08:40:31.622Z on2026-10-26 unchanged.
+New R lifecycle GET1 PASS,2 rules/1 relevant prefix; hidden pipe READY did not
+prove an owner-visible console. Owner reported no window. Receiver stopped;
+DB0/SQL0, no password received, raw prefixes not retained. Receipt
+b4c94b1682ca1be2c8aae269a7cca1c406afbf9546687ead83646a945628111f.
+
+Owner ran the new approved current-server reader once. Auth1/Worker6, real same
+moderator/two verified factors/aal2/me200/mfa200/reports200/admin-only403/
+anonymous401/Feed200 and cleanup PASS. Private result SHA
+8d81fa301835bc0b4d9cee30492661dcf2ab5e8a3761ed1f2dc72f28a1ae97e6;
+independent admission PASS06:10:25.622Z. Historical challenge/verify UNKNOWN,
+not replaced with fictional SDK success; no new TOTP/login/refresh. Reuse this
+server evidence, do not ask owner to resubmit. Final deployments GET1 PASS
+06:34:45.107Z: original60ee5c24/b81e3c25/single100. SHA
+7c65f01bf416e1b7df044fd61a656c95f207178269113a82ec31dac5c4c86c35;
+this check preceded DB, not a claimed post-DB read. Known new GETs9 in this
+delta cycle; no management quota remains. No renewal/login needed for DB.
+
+Exact existing two-SQL batch058f7d6a and17-query D transcript prepared, pinned,
+independently reviewed. New server-admission assertions9, isolated local catalog
+projection/preflight/change/predicate checks4, COMMIT/cutoff/rollback checks4 and
+fictitious secure Read-Host check1 passed. No historical suite/build repeated.
+D entry then stopped LOCAL_INPUT06:45:27.414Z: its pre-prompt120-second READY
+wait began during preparation and elapsed before the owner could launch the
+shortcut. Connection0/body0/SQL0/COMMIT NOT_ATTEMPTED; receipt
+872786c6e34127c47d31d55a2206293f5ab766a8f807a34cc1dae2c069716313.
+No D connection/body marker exists. No remote closure PASS is fabricated.
+Old shortcut/input invitation canceled and removed; later owner reported an
+empty clipboard. Do not restore that stale invitation or request input now.
+
+Guarded offline candidates change only local pre-READY timing/owner console
+launch and reuse R historical classification without another lifecycle GET.
+Actual input and post-READY receiver stay120seconds; global cutoffs unchanged.
+Timing assertions4, syntax checks2 and local source/StageA admission checks2
+PASS; both candidates hard-stop before execution. No new Production operation
+during this local preparation. Old receipts/specs/markers remain untouched.
+R empty-prefix aggregate can provide totals/backend/exact alias absence only;
+delete-rule matching/legacy safety remains UNKNOWN, never SAFE by assumption.
+
+Minimum pending local-input amendment in existing private mailbox:
+BLOCKER_RECOVERY_LOCAL_INPUT_RESUME.v1.NOT_AUTHORIZED.json SHA
+c8492e4d122a42d59b442ff1afd8281d2e64e93290421a74f38c84f927958700.
+Eight evidence/template pins verified. It requires explicit owner approval,
+fresh restricted output/input domains and parent-domain exclusive quota
+reservation; no resetting old failures/UNKNOWN or automatic retry. At most one
+R read-only connection and one conditional original D atomic connection from
+unused original allowances. No new lifecycle/management/TOTP/login/refresh,
+factor, deployment or role allowance. Unused final Auth1/Worker4 remains only
+after confirmed D commit/readback. B3/R2 original dependencies/caps unchanged.
+Owner action: approve this minimum amendment before any new input or launch.
+CATALOG_HOLD ACTIVE; Public Beta NOT_AUTHORIZED; destructive jobs paused.
+No push: Production/paid-CI trigger safety not established.
+
 ## Blocker Recovery Approved; Local Launch And Observation Safely Stopped
 
 Owner formally approved2163f899 exact scope and all current conditions. One
