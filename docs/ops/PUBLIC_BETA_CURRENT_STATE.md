@@ -1,5 +1,56 @@
 # Public Beta Current State
 
+## Resume Approved; Two Readonly Connections Complete, Ordinary Signup Pending
+
+Fresh explicit resume approval a327732b recorded2026-10-26T00:13:53.524Z;
+fixed end03:13:53.524Z/business stop02:28:53.524Z. Private approval receipt
+SHA256 e0ab19f2c186496eb141382b48415a23b457083a92b8ccb35992d011b849fef4.
+New execution18c15e12-1f32-43e0-8b1e-483cfdfa520f only; expired old domains,
+consumed allowances and UNKNOWN states preserved. Initial local credential
+margin53minutes. No automatic renewal or window extension.
+
+Actual approved work:
+- C lifecycle GET1: HTTP200,350bytes, complete response,2 rules; minimized safe
+  shape retained before validation. Plan rejected with
+  LIFECYCLE_RULE_SHAPE_UNPROVEN at VALIDATE. Prefix/deletion matching remains
+  NOT_VERIFIED; no raw rules/prefixes retained or request retry.
+- Independent C readonly connection1: strict CA/effective timeouts/target PASS,
+  pinned aggregate once with empty prefix parameters because plan not READY.
+  total2/published0/orphan0; this is not proof of historical media safety or
+  lifecycle matching. Risk UNKNOWN.7 native SQL dispatches, local close CONFIRMED,
+  remote close not independently verified, no writes. C result SHA256
+  0e8f718189c8eeec4c3c8e850de0a39642baba99bcdb48d82b959d216198e0cd.
+- Shared initial deployments GET1 PASS at00:15:53.140Z: exact deployment
+  60ee5c24-68fe-4673-b6e1-2a2206f11e66/version
+  b81e3c25-2b12-45ac-97eb-47e42e7fd310/single100 unchanged. No settings read.
+- D owner ran reviewed exact binding-only adapted snippet once. Result at
+  00:18:04.242Z BLOCKED/FIXED_PAGE in START, before storage marker, Auth or Worker
+  precheck and observer installation. Exact failing origin/path/frame component
+  was not recorded; do not guess. Auth0/Worker0/SDK-AAL0 for this attempt; no
+  TOTP observer or submission authorized to proceed. D stopped without retry or
+  DB attempt; prior challenge/verify UNKNOWN unchanged. Result SHA256
+  14e0cdf7ced814a04452bd5d3e0ea31945e7fd4a0468c266409d05cab4fafb19;
+  exact download imported, hash/owner-only ACL verified, temporary source unlinked.
+- AB independent readonly connection1: exact2 bound aliases absent, PASS;
+  query used only exact email parameters/LIMIT3, no user rows retained.7 native
+  SQL dispatches/local close CONFIRMED, no mutation. Absence receipt SHA256
+  cdddb8e516f75a44b1ce219a56e5ab2474144ceab5b18b989ae013640b75b145.
+  Existing fixed-project containment credential presence/source gate PASS,
+  no Auth administrator request. Passwords were entered only via existing local
+  hidden input and disposed after each connection, not stored or logged.
+
+AB A3 normal owner signup reserved once against that absence receipt; private
+alias placed only on local clipboard. Owner asked to use one separate ordinary
+InPrivate context for signup/email confirmation/password login; no B3 or post
+until actual server identity/Profile gates PASS. Actual signup/login outcome and
+actor UUID not yet reported: do not claim account creation or Auth PASS. Owner
+holds chosen synthetic password in normal browser only, not Codex custody.
+Next sole owner action is the outstanding A3 normal registration/login prompt.
+No new enrollment, deployment, MFA SQL, old migration, tests/build or push.
+Management explicit reads2/3 used; total readonly DB2, native SQL14. Normal owner
+UI traffic is not falsely represented as exact counted wire traffic. Catalog
+ACTIVE, destructive jobs paused, Public Beta NOT_AUTHORIZED.
+
 ## Expired Sprint Preserved; Login Ready, Minimal Resume Approval Pending
 
 Owner completed specified interactive Wrangler login and confirmed readiness.
