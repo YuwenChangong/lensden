@@ -1,5 +1,80 @@
 # Public Beta Current State
 
+## Autonomous Browser Proven Locally; Only New Production Scope Pending
+
+2026-10-26 autonomous preparation: verified actual checkout/clean codex branch,
+not D: unrelated worktree. npx, Git Bash, cached official Playwright CLI0.1.21,
+Edge and browser binaries already exist; no install, package edit, application
+change, build, historical suite, controller reconnect or Production request.
+Real headed Edge controlled entirely by agent on127.0.0.1:48761. Seven new
+local capability checks PASS: navigation, fill/click/real local HTTP echo, two
+isolated in-memory contexts, pinned2018byte MP4 decode, playback progression,
+automatic minimal download/readback and redacted run-code without auto DOM
+snapshot. These are TOOL proofs, not Production Auth/RLS/R2/CAPTCHA proofs.
+One local fixture URL has a harmless favicon404; no app failure inferred.
+
+Privacy constraint proven with fictitious canary: CLI default full ARIA
+snapshots expose password-field values. Never use that mode on credential/
+authenticated Production pages. Official Playwright API tested separately with
+whitelist projection only: no automatic DOM/console/network/trace/storage
+artifact export observed, even with synthetic password/console canaries.
+Additional clean-environment launch PASS: browser gets only essential OS env,
+no provider keys/debug variables, no existing profile/session import. No stealth,
+CAPTCHA bypass/token access or session theft. User need not run future Snippets,
+move Downloads or inspect JSON. Only unavoidable real authentication remains.
+Both owned CLI browsers and API contexts closed; owned loopback server stopped,
+no listener. Evidence21 items moved to exact private folder and each ACL set/
+read back CurrentUser+SYSTEM only; no untracked fixture left in checkout.
+
+Private autonomy-preflight-20261026 proofs: local2ff4fcd5, API privacy39b5d159,
+clean launchb30b5978, reused-evidence261c7825. Cached API core version
+1.64.0-alpha-1789764292000 pinned exactly; no automatic upgrade. It is official
+cached tooling, not falsely labeled a stable release. No new test framework.
+
+Independently revalidated existing pinned D COMMIT/persisted catalog, exact two
+SQL hashes/ledger rows, enabled safety triggers/RLS and final actual server
+AAL2 evidence. MFA_ENFORCEMENT and DATABASE_AAL2 remain PASS from real receipts;
+actual signed server evidence UTC07:18:45.055Z, not a current-session requery.
+No repeated database connection/migration/deployment/factor operation. B3 exact
+ban still VERIFIED; refresh remains UNKNOWN. R aggregate exists: tmp total2,
+published0/orphan0; missing matching-prefix evidence, not missing total query.
+Old video backend definitively Storage routing, not R2 proof. Signed foreign-row
+RLS and genuine R2 object/playback still missing, no invented new P0/P1.
+
+Local credential check only: Cloudflare OAuth expired/unavailable, existing
+Supabase admin env matches fixed project/service role/unexpired claims locally,
+not a new network-auth assertion. Cloudflare/Supabase MCP tools available but
+no provider whoami/project/cost/settings/query dispatched. No DB vault held or
+old password/URL read. Previous absolute window ended08:40:31.622Z, not reused.
+
+Remote ls-remote confirms main88680a6e and no remote working branch; origin/main
+matches, branch179 commits ahead before this documentation commit. No GitHub
+Actions workflow or local pre-push hook found, but external deployment/paid-CI
+integrations and push permission are not proven safe. No push/merge attempted.
+
+One flat pending scope in existing private mailbox/autonomous-minimum-closure-v1:
+AUTONOMOUS_MINIMUM_CLOSURE.v1.NOT_AUTHORIZED.json SHA
+d619cf253c614475c483036ed5096240e549bf28916331d697f409a70a9b9f71.
+Readable OWNER_APPROVAL.txt is the sole signature request, not another GO.
+New private B4 fixture/alias prepared offline, no account created. Explicit
+amendment: reuse normal signup evidence; one create-only confirmed Auth fixture
+then real CAPTCHA/password login, never a banned actor, metadata role or direct
+password bypass. Agent uses official private API projections, not CLI snapshots.
+Fresh legacy mapping+readonly aggregate/absence, exact signed RLS, one conditional
+new R2 video and exact cleanup/ban; management3/Auth12/Worker18/REST20 and separate
+readonly/conditional-unknown caps. No deployment, migration, lifecycle/role change
+or MFA reactivation. One necessary existing-factor step-up only for fresh staff
+authentication if needed, not factor registration/testing. No old quota reused.
+Matching approval alone starts no window: later actual owner/tool/credential
+readiness records180 minutes, new business stops135, no automatic extension.
+
+This run Production requests/connections/writes/accounts/deployments/factor
+operations0. Required next action: owner reviews/signs this one exact scope.
+After approval, only actual normal auth/CAPTCHA/TOTP/hidden password may need
+owner interaction; no ordinary browser operations or evidence handoff by owner.
+Catalog ACTIVE, destructive jobs paused, Public Beta NOT_AUTHORIZED/NO-GO until
+remaining real security/media evidence or an explicit defensible risk decision.
+
 ## B3 Refresh Unknown; Exact Containment Verified, No New Business
 
 2026-10-26T08:04:09Z: owner reports B3 refresh snippet ran. Exact expected
