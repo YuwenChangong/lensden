@@ -1,5 +1,30 @@
 # Public Beta Current State
 
+## A3 Circle Created According To Owner; Exact Readback Pending
+
+Owner reports circle created once; no error/retry reported. This does not yet
+prove its provider ID/owner or exact slug. At2026-10-26T02:12:38.719Z original
+business cutoff02:28:53.524Z and full window03:13:53.524Z still valid, not renewed.
+No B3/post/video authorized to proceed before circle readback. A3 Auth proofs
+reused unchanged, no new login or Production request in this local preparation.
+
+Prepared one scoped normal-session SDK metadata read, not an app/helper change
+or new browser controller. Existing SDK/helper pins checked; actual getUser must
+match exact A3 UUID, then one circles REST query filters exact A3 owner AND
+approved name AND corrected slug, LIMIT2; require exactly one topic circle.
+Only successful exact response may provide circle ID for private parent journal;
+no public scan, unrelated content, credential export or business write. Runtime
+one-use marker, Auth1/REST1 maxima,8s call timeout, original business cutoff and
+fail-closed minimized automatic download. Source privately sealed SHA256
+768529f1c6c8096225eec109116775aa6ff6f28150227fbb2745e4cb5136d0da;
+syntax PASS, no history tests/build. Actual reads NOT_YET_REPORTED, not zeroed.
+
+Next sole owner action: run this reviewed clipboard snippet once in SAME A3
+InPrivate context before original cutoff; do not recreate circle or publish yet.
+Potential cleanup obligations: active verified A3 and owner-reported new circle;
+exact server circle ID not yet known, no deletion/ban has been attempted.
+MFA remains stopped, legacy mapping UNKNOWN, Catalog ACTIVE/Beta NOT_AUTHORIZED.
+
 ## Exact Circle Slug Amendment Approved; One A3 Circle Creation Pending
 
 Owner explicitly approved085848bd slug-only correction. Matching private packet,
