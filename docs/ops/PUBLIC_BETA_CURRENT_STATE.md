@@ -1,5 +1,47 @@
 # Public Beta Current State
 
+## Submission Readback Identity Mismatch; A3 Independently Banned And Verified
+
+Imported owner-run outcome at2026-10-26T02:41:56.609Z: BLOCKED /
+SESSION_IDENTITY_MISMATCH, actual Auth1/REST0. Real returned identity did not
+match pinned A3; no actual other UUID or user response exported. It does not
+prove which account submitted or that a post/upload was absent. Post/media/
+claim/commit/submission UTC remain UNKNOWN, playback NOT_TESTED. Receipt
+9add9520b73c99f83005b5a80e2c35d954ba71ac2d401d9e901cf321b5a03802.
+Private hash/ACL verified; exact Downloads source unlinked and matching own
+clipboard script cleared. Do not retry this read or log out/change unknown
+current browser identity. A3 earlier real Auth/Profile PASS remains valid evidence.
+
+Using original independent failure-containment permission and STILL-valid full
+window, actual three remaining exact Auth administrator calls completed: pre-ban
+GET200 independently matched original absent-before/single-owner-signup A3 UUID,
+email and exact provider time; PUT200 ban_duration876000h once; independent
+GET200 revalidated identity and matching future banned_until. No account listing,
+creation/reset/unban, role change, database or other-user operation. A3 disable
+VERIFIED; receipt
+c3f2ff8ff1af97f9b70756cd2b19235dc6a5ead8e875e46223a49f43bdf738cd.
+Logout NOT_VERIFIED, existing JWT invalidation NOT_PROVEN; ban is not claimed to
+revoke issued JWTs. A3 Auth admin allowance4/4 used incl initial identity GET.
+Total explicit new AB Auth10/REST3; owner UI dispatches remain UNKNOWN/separate.
+No data deletion; known exact circle and uncertain post/media retained. No new
+DPAPI envelope created, no old envelopes inspected or deleted. No B3. No success
+claim for publish/playback/RLS/cleanup and no confirmed new application P0/P1.
+
+New direct metadata query cannot borrow the old AB readonly allowance, whose
+unused connection is limited to unknown-signup lookup. Prepared ONLY fresh
+A3_SUBMISSION_RECONCILIATION.v1.NOT_AUTHORIZED.json in existing private mailbox,
+SHA256 b5d0338d14f5d059fd0db0def67be59782638be2190c4657a11637d9948629ca.
+Independent approval/readiness-activated60min window NOT_STARTED, no permit.
+One strict-TLS readonly connection, existing hidden input/observed adapter, max7
+native dispatches/10 statements/40sec, one pinned metadata SELECT. Only bound
+A3/circle own IDs/state/reference booleans plus circle-scoped non-A3 aggregates;
+no raw other identities/content or object keys/bytes. No browser/Auth/Worker/R2
+request, mutation, cleanup or business resumption. SQL sha2797ed6e; static readonly/
+placeholder checks and all existing evidence/native pins PASS, no live SQL/test
+suite/framework. Original receipt/markers remain intact. Next sole owner action:
+approve this exact independent readonly scope and confirm cost/password readiness.
+MFA stopped/DB AAL2 not activated, legacy UNKNOWN, Catalog ACTIVE/Beta NOT_AUTHORIZED.
+
 ## Business Cutoff Passed; Owner Reports Publish Click, Safety Readback Pending
 
 Original business cutoff02:28:53.524Z is past. Native JSON/UTC check at
