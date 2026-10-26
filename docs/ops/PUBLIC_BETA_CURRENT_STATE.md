@@ -1,5 +1,73 @@
 # Public Beta Current State
 
+## Offline Blocker Recovery; Fresh Scope Prepared, No Production Authority
+
+2026-10-26: only local code/evidence work, no Production request, real credential
+read, account/factor action, DB connection, deployment or old execution reuse.
+Original helper and all stopped/consumed markers/receipts retained. A3 remains
+banned; existing pending_review post/video retained, B3 still not created.
+
+R: actual Windows exclusive-writer fixture reproduces a concrete publication
+defect: final READY is visible while its FileShare.None writer is still open;
+the old reader only retries ENOENT, so EBUSY/EACCES/EPERM or partial parse can
+stop before the receiver. Original execution discarded its immediate exception;
+its exact historical subcause remains UNKNOWN, not a proven password/DB failure.
+Versioned capture-release-password-memory.v2.ps1 changes only safe READY publish:
+CreateNew .publishing, write/flush/close, non-overwriting Move to final name.
+No password-file, pipe/TLS/identity/window or timeout changes. Source SHA256
+91e1834fb27914ad77805ee871bce2cba022442ee58de47de5c90072246d76f8.
+Real Windows publish/CurrentUser pipe tests with fictitious credentials4/4 PASS,
+including prior-marker preservation. Old helper unchanged, not replaced in use.
+
+D: no proven Production handler defect or historical challenge/verify outcome.
+Pinned frozen component's exact six-digit rules/events were exercised offline;
+disabled/invalid controls, challenge error, verify error, SDK success and form
+replacement were distinguished without recording input values. No app patch.
+Existing observer now adds only boolean control/validity/click/invalid state and
+scoped six-stage enums; it checks form detachment during observation AND cleanup.
+Independent review caught cleanup-first detach and non-code invalid attribution;
+three new RED tests reproduced both, then minimal fixes made them GREEN. Review
+recheck: no findings. Source SHA256
+4e2b6dfb46615e2b05a0d49fd121a7c37b598a5bb70f2d0f11c4f18ff481fe90.
+NOT_SUBMITTED is only this bound form; global network remains UNKNOWN. VERIFIED
+means observed SDK success, never server AAL2. Original identity/AAL2 evaluator
+and frozen reader remain unchanged. Methods restore, no code/token/response read.
+New observer8/8 + frozen real-component isolated-browser5/5 PASS; all page
+requests aborted, external page requests0. Directly affected old regressions4/4,
+syntax5/5 PASS. Total new tests17; no full MFA/build/history rerun.
+
+B: normal B3 authentication/admin-denial/logout/independent containment can be
+separately authorized after NEW exact alias absence; D and legacy media outcome
+are not inherent dependencies. Do not relax the live prior contract silently.
+Pending A3 content is not a visible foreign-row baseline: zero update/401 or
+missing row is not cross-user ownership PASS. Strong negative ownership/public
+play still require exact published visibility and real AAL2 moderator action.
+
+R2: prior minimized metadata omitted storage_path, so backend/object/claim/play
+remain NOT_VERIFIED. Claims0 is allowed for Storage/non-tmp paths, not proof of
+R2 failure or success. Pending review blocks public delivery independently.
+First authorized exact backend read must precede any new media fixture. Only if
+it cannot close R2, propose one new B3-owned technical post/video using the same
+2018-byte fixture and existing test circle; no overwrite or reupload to A3 post,
+new A3 login, unban or existing-media deletion. Retained claim/object and decoded
+playback are separate requirements. Legacy lifecycle risk remains UNKNOWN; paused
+application jobs do not disable R2 lifecycle. No new confirmed ordinary-user
+P0/P1 established by these evidence gaps; MFA step-up remains genuinely blocked.
+
+One pending private proposal PUBLIC_BETA_BLOCKER_RECOVERY.v1.NOT_AUTHORIZED.json
+in the existing owner-only mailbox directory, SHA256
+2163f899eb13a1f445c5918e631902bcfd3f844618469887e7c884bedc92e833,
+plus corresponding OWNER_APPROVAL.txt. Fresh independent R/D/B and explicitly
+conditional new-R2 caps, exact old evidence/source/SQL pins, independent B auth,
+real StageA gate before atomic SQL, exact synthetic containment/hide, no old quota
+reuse. Approval AND readiness start one180min window, new business stop135;
+preparation creates no window/permit. New source pins/private ACL/JSON checked.
+Current owner action: review/sign only that fresh proposal after confirming its
+conditions. Do not submit TOTP, rerun snippets or enter a password now.
+Local exact-path commit only; push withheld because Production/paid-CI trigger
+safety is not established under repository zero-cost policy. No merge/deploy.
+Catalog ACTIVE, destructive jobs paused, Public Beta NOT_AUTHORIZED.
+
 ## Approved Failure Delta Executed; D Identity PASS, Step-Up Not Observed
 
 Fresh explicit owner approval for6b1137a9 verified at2026-10-26T04:46Z against

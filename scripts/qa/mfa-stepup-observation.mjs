@@ -11,6 +11,15 @@ const ownValue = (object, key) => object != null
 const emptyOutcome = () => ({ invocations: 0, completion: 'UNKNOWN', success: null,
   errorCode: 'UNKNOWN', httpStatus: null });
 
+function observedStep(submitted, outcomes, blocked) {
+  if (blocked && blocked !== 'MFA_OBSERVATION_SDK_FAILURE') return 'UNKNOWN';
+  if (outcomes.verify.invocations) return outcomes.verify.success === false ? 'VERIFY_FAILED'
+    : outcomes.verify.success === true ? 'VERIFIED' : outcomes.verify.completion === 'PENDING' ? 'VERIFY_STARTED' : 'UNKNOWN';
+  if (outcomes.challenge.invocations) return outcomes.challenge.success === false ? 'CHALLENGE_FAILED'
+    : outcomes.challenge.completion === 'PENDING' ? 'CHALLENGE_STARTED' : 'UNKNOWN';
+  return submitted ? 'UNKNOWN' : 'NOT_SUBMITTED';
+}
+
 // New manual-method projection only; it never fabricates an extension signature,
 // physical tab ID or old aal1 marker. The caller must verify fresh owner authority.
 export function evaluateObservedStepup(observation,readback,sdkAal,expected) {
@@ -58,10 +67,23 @@ export function installMfaStepupObservation(form, auth) {
   let deadline = performance.now() + READY_IDLE_MS;
   const outcomes = { challenge: emptyOutcome(), verify: emptyOutcome() };
   const wrappers = {}, replaced = new Set(), restored = {};
+  const uiEvents = { trustedVerifyClicks: 0, invalidCodeObserved: false };
+  const diagnosticListeners = new Map();
+  const button = typeof form.querySelector === 'function' ? form.querySelector('button[type="submit"]') : null;
+  const codeInput = typeof form.querySelector === 'function' ? form.querySelector('input[autocomplete="one-time-code"]') : null;
+  const fieldset = typeof form.closest === 'function' ? form.closest('fieldset') : null;
+  const booleanOrUnknown = value => typeof value === 'boolean' ? value : 'UNKNOWN';
 
   function owns(name) { return ownValue(mfa, name) === wrappers[name]; }
   function snapshot() {
+    inTime();
     return Object.freeze({ schemaVersion: 2, kind: 'PASSIVE_MFA_SDK_OBSERVATION',
+      observationScope: 'BOUND_FORM_AND_WRAPPED_SDK_ONLY', actualNetworkDispatches: 'UNKNOWN',
+      observedStep: observedStep(submitted, outcomes, blocked),
+      formState: Object.freeze({ connected: booleanOrUnknown(form.isConnected),
+        verifyButtonDisabled: booleanOrUnknown(button?.disabled),
+        fieldsetDisabled: booleanOrUnknown(fieldset?.disabled), codeValid: booleanOrUnknown(codeInput?.validity?.valid) }),
+      uiEvents: Object.freeze({ ...uiEvents }),
       installation: installed ? 'WRAPPERS_INSTALLED' : 'NOT_INSTALLED', active,
       phase: submitted ? 'OWNER_SUBMITTED' : 'WAITING_TRUSTED_OWNER_SUBMIT',
       detachedBy, cleanup, blocked, ignoredSyntheticSubmit,
@@ -74,6 +96,9 @@ export function installMfaStepupObservation(form, auth) {
 
   function close(reason) {
     if (!active) return snapshot();
+    if (form.isConnected === false) {
+      blocked ??= 'MFA_OBSERVATION_FORM_DETACHED'; reason = 'FORM_DETACHED';
+    }
     active = false; detachedBy = reason; cleanup = 'PASS'; clearTimeout(timer);
     for (const name of replaced) {
       if (outcomes[name].completion === 'PENDING') outcomes[name].completion = 'UNKNOWN';
@@ -87,6 +112,10 @@ export function installMfaStepupObservation(form, auth) {
       try { form.removeEventListener('submit', onSubmit, true); }
       catch { cleanup = 'UNCONFIRMED'; }
     }
+    for (const [name, listener] of diagnosticListeners) {
+      try { form.removeEventListener(name, listener, true); }
+      catch { cleanup = 'UNCONFIRMED'; }
+    }
     if (subscribed) {
       try {
         if (typeof subscription?.unsubscribe !== 'function') throw null;
@@ -96,6 +125,9 @@ export function installMfaStepupObservation(form, auth) {
     return snapshot();
   }
   function inTime() {
+    if (active && form.isConnected === false) {
+      blocked ??= 'MFA_OBSERVATION_FORM_DETACHED'; close('FORM_DETACHED');
+    }
     if (active && performance.now() >= deadline) close('DEADLINE');
     return active;
   }
@@ -173,6 +205,19 @@ export function installMfaStepupObservation(form, auth) {
     if (typeof subscription?.unsubscribe !== 'function') throw null;
     listenerAttempted = true;
     form.addEventListener('submit', onSubmit, { capture: true, passive: true });
+    if (button && codeInput) {
+      const onClick = event => {
+        if (inTime() && event?.isTrusted === true
+          && (event.target === button || button.contains?.(event.target))) uiEvents.trustedVerifyClicks++;
+      };
+      const onInvalid = event => {
+        if (inTime() && event?.isTrusted === true && event.target === codeInput) uiEvents.invalidCodeObserved = true;
+      };
+      for (const [name, listener] of [['click', onClick], ['invalid', onInvalid]]) {
+        diagnosticListeners.set(name, listener);
+        form.addEventListener(name, listener, { capture: true, passive: true });
+      }
+    }
     installed = true; armTimer();
   } catch {
     close('INSTALL_FAILED');
