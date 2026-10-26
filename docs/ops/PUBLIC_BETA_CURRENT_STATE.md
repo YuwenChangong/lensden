@@ -1,5 +1,70 @@
 # Public Beta Current State
 
+## Approved Failure Delta Executed; D Identity PASS, Step-Up Not Observed
+
+Fresh explicit owner approval for6b1137a9 verified at2026-10-26T04:46Z against
+exact delta/parent/evidence/candidate pins. New private domain0566dcff-ee39-4efb-a21a-a34d8d3ca460;
+approval01296128e9f8054e22fbf7ba44d9feb75d6bd9041326d1049c682e9acdd3eba1.
+Original activation03:26:50.374Z, business stop05:41:50.374Z and final stop
+06:26:50.374Z unchanged. No renewal or old marker reset. One explicitly allowed
+extra owner Wrangler login completed because old credential had actually expired.
+No automatic refresh, settings request, artifact change, tests/build repetition.
+
+Mechanically adapted only approved R result-array candidate's authority/domain
+checks to the new delta, original times and fresh output; local pins/imports/window
+PASS, source a4eb42b4a1bf3bcd908f9287b2a6763fe6469ea37c548fc5242413ae0553083a.
+Actual new lifecycle GET1 at04:47:33Z: HTTP200/complete350bytes/2 rules, classifier
+PASS/1 relevant deletion-prefix parameter. Then local hidden-input launch/READY
+validation failed UNKNOWN BEFORE receiver and database attempt. Database attempts0,
+SQL0, no metadata/alias/aggregate/HEAD. Later existing safe READY file parsed with
+matching binding/status/nonce; that does not prove the earlier failure subcause.
+Do not assert an asynchronous race or credential rejection without evidence.
+Input process watchdog exited, observed not running; no password received by Codex.
+No local prompt retry/reconnect; transient lifecycle prefixes released. Result
+51fed32120c355b3dfaab84d7bbc110f6cff817dc2ee62b82ddbae707bf51f46.
+Legacy risk/backend/B3 absence still UNKNOWN/NOT_VERIFIED. New connection allowance
+was not dispatched, but this failed R execution is stopped, not auto-reusable.
+
+Independent D source38d840b811a37d07cd20217aefb2070c56d7c491c3faa5a6a80104bde217577b
+reused pinned observer/reader with only new delta/domain/time bindings. Owner
+requested same script recopied before first execution; not an execution retry.
+One canonical same-moderator navigation/first new script execution produced real
+READY at04:51:59.042Z: independent Auth/me precheck PASS, same moderator and both
+verified factor hashes match, observer wrappers installed/active, no method calls
+yet. Ready SHA3e59c4e5d720c0cd797d6938870717ec0b04d9d5383376fb0867938e658de057.
+Owner told only then to submit one existing code before04:53:59Z, reported clicked
+once. Do not reinterpret that report as a verified trusted form event.
+
+Result at04:53:59.060Z BLOCKED/STEPUP_UNCONFIRMED: no trusted submit observed,
+challenge/verify wrapped invocations0, completion/error/status UNKNOWN, no SDK MFA
+event. Observer ended by120sec DEADLINE, methods RESTORED and cleanup PASS.
+Precheck Auth1/Worker1 only; assurance0, actual server AAL readback NOT_REACHED.
+This proves no calls observed through those installed wrappers, not that all
+page/native requests or the owner's click never occurred. Earlier challenge/
+verify UNKNOWN unchanged; current raw network history also not reconstructed.
+No new snapshot, refresh, code submit, factor operation or login retry. AAL2 not
+verified, database gate FAIL; no database connection/migration, no B3 signup or
+post approval/hide. D receipt
+34793d36461b7447cda347f8953ce923314194210166b1f8b69462a2296dac61.
+Ready/result privately hash/ACL checked, exact Downloads sources unlinked;
+matching owned clipboard cleared. No secret, code, token or response export.
+Actual blocked submission stage cause remains UNKNOWN; no speculative MFA patch.
+
+Original unused final deployments GET1 executed04:54:44.727Z HTTP200 PASS:
+same60ee5c24 deployment/b81e3c25 full version/single100. Final receipt
+54500577f885052acfd8fd33ae279bb7a2840be47866fb73d8e8dde617727641.
+Total actual parent-window management4/4 = original lifecycle+initial deployment,
+delta lifecycle+original final deployment. Delta database0/SQL0, mutations0,
+new account/post/upload/factor enrollment/deployment0, retries0. Parent earlier
+readonly connection1/SQL5 remains separately consumed; no fake cleanup upgrade.
+All affected stages stopped, no automatic next recovery packet or new window.
+R2 object/playback and B isolation unverified; A3 authentication evidence reused
+but A3 remains banned/data retained. MFA factors/AAL1 historical PASS, step-up
+BLOCKED/database AAL2 NOT_ACTIVATED. Catalog ACTIVE, destructive jobs paused,
+Public Beta NOT_AUTHORIZED. Current owner action NONE: do not repeat TOTP/script.
+Any future recovery requires concrete new evidence and exact scope, not guessing
+or treating this failed observation as a successful Production step-up.
+
 ## Remaining Closure Approved; R And D Safely Stopped With Exact Local Causes
 
 Owner explicitly approved the full e80ae54f packet and current conditions.
