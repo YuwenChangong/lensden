@@ -1,5 +1,46 @@
 # Public Beta Current State
 
+## B3 Refresh Unknown; Exact Containment Verified, No New Business
+
+2026-10-26T08:04:09Z: owner reports B3 refresh snippet ran. Exact expected
+Downloads file and narrowly matching alternate filenames absent. No result or
+runtime timestamp is available. Do not mark refresh PASS/FAIL or infer no Auth
+request. Frozen snippet rejects an expired business deadline before dispatch,
+but actual historical invocation time remains UNKNOWN; this is not a proven
+application login defect. Original20:55:31 Auckland business cutoff has passed.
+No repeat login/refresh/snippet, post approval, RLS attempt, new post or upload.
+Auth3/REST1 reserved refresh usage remains UNKNOWN, not zero or reusable.
+
+Independent containment executed within original final21:40:31 Auckland window,
+using unchanged ordinarySignupIdentityEvidence plus exact this-run B3 UUID,
+private controlled alias, provider created_at, namespace/journal, prior absence
+and original2163f899 owner scope. Excluded A3/older actors checked. Exact pre-ban
+GET200, one PUT876000h200, independent exact GET200/expiry check: VERIFIED at
+08:07:11.777Z. Auth GET2/PUT1, retries0. Earlier initial exact Auth GET1 was
+already consumed; all four permitted admin operations now consumed, none retried.
+No user listing/reset/deletion, role or global Auth change. Minimal projections
+only, no raw Auth body/credentials retained. B3 remains a synthetic ordinary
+profile, with account access banned; old A3 ban and all previous states preserved.
+
+Known operator B3 Auth calls5 (browser bind1, initial admin GET1, containment3),
+plus reserved refresh up to3 with UNKNOWN actual count; known REST bind1 plus
+reserved refresh1 UNKNOWN. Native normal signup/confirmation/login traffic is
+not falsely claimed as an exact wire count. No current application business
+write or real-user mutation by this stage. No extra database/deployment/MFA or
+lifecycle operation. Ban does not prove revocation of issued access JWTs;
+explicit logout/session isolation remains NOT_VERIFIED, not CLEANUP=PASS.
+
+MFA_PRODUCTION remains DONE. B3 real identity/email confirmation/Profile=user
+and reported normal password login evidence retained; complete refresh/logout,
+foreign-row RLS, real R2 object/playback and lifecycle matching risk remain
+unverified. Existing A3 post stays pending, not publicly approved or deleted;
+known video backend Storage, not R2. No confirmed new P0/P1 invented from absent
+evidence. Legacy risk UNKNOWN; destructive jobs paused, Catalog ACTIVE, Public
+Beta NOT_AUTHORIZED. No new authorization pack or window generated.
+Only current owner action: close the B3 InPrivate test context, keep moderator
+normal Edge, and do not rerun old snippets. Future Production work requires its
+own applicable remaining scope/window; no consumed allowance is restored.
+
 ## B3 Ordinary Identity Pass; Refresh Readback Pending
 
 Owner reports B3 normal signup, email confirmation and password login complete.
