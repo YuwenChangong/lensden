@@ -42,9 +42,14 @@ export function planTmpLifecycleRead(response,source) {
     ||response.result.rules.length>128||Buffer.byteLength(JSON.stringify(response))>262144)return unknown();
   const prefixes=[],ids=new Set();
   for(const rule of response.result.rules) {
+    // Abort-only rules cannot expire completed media; never infer a deletion prefix.
+    const abortOnly=Object.hasOwn(rule??{},'abortMultipartUploadsTransition')
+      &&!Object.hasOwn(rule??{},'deleteObjectsTransition')&&!Object.hasOwn(rule??{},'storageClassTransitions');
+    const omittedAbortPrefix=abortOnly&&shape(rule?.conditions,['prefix'])&&!Object.hasOwn(rule.conditions,'prefix');
     if(!shape(rule,['id','enabled','conditions','deleteObjectsTransition','abortMultipartUploadsTransition','storageClassTransitions'])
       ||typeof rule.id!=='string'||!rule.id||rule.id.length>1024||ids.has(rule.id)||typeof rule.enabled!=='boolean'
-      ||!shape(rule.conditions,['prefix'])||typeof rule.conditions.prefix!=='string'||Buffer.byteLength(rule.conditions.prefix)>1024)return unknown();
+      ||!shape(rule.conditions,['prefix'])||(!omittedAbortPrefix
+        &&(typeof rule.conditions.prefix!=='string'||Buffer.byteLength(rule.conditions.prefix)>1024)))return unknown();
     ids.add(rule.id);
     for(const name of ['deleteObjectsTransition','abortMultipartUploadsTransition'])if(Object.hasOwn(rule,name)
       &&(!shape(rule[name],['condition'])||!validCondition(rule[name].condition,name!=='abortMultipartUploadsTransition')))return unknown();

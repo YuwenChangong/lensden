@@ -1,5 +1,80 @@
 # Public Beta Current State
 
+## Remaining Gaps Reduced Offline; Abort-Only Classifier Fix Verified
+
+No Production request, browser/session action, database connection, account,
+factor, upload, deployment or mutation in this run. Prior b5d033 readonly result
+is consumed and reused as evidence only, not queried again. A3 remains banned;
+its circle/post/video retained, no login, deletion, upload or business resumption.
+
+Exact source analysis (video files unchanged against deployed8b0882f0) establishes:
+- CreatePostForm creates post first, requests one R2 temporary upload ticket,
+  PUTs bytes, then attaches media. The tmp attach branch inserts an irreversible
+  claim BEFORE source HEAD/copy/destination HEAD, then stores the retained path.
+  A claim alone is not copy/object/playback proof; an unknown copy keeps its claim.
+- Native allowed fallback uploads via Storage TUS to an owner/post path and
+  attaches without the tmp-copy branch. A finalized owner/post path is also an
+  accepted attach input; metadata is not a general object-existence check. Thus
+  A3 live owner-linked claims0 is not by itself a defect, no-upload proof or
+  globally empty claim table. The bounded query excludes other owners/tombstones.
+  Actual backend and transient R2 object creation remain UNKNOWN: previous
+  receipt has only owner-path true and retained-claim-reference false, no raw path.
+- Media insertion and review are separate: pending posts can accept media; media
+  review can retain pending_review. UI redirects only for published. Feed/detail
+  and public media proxy require published/published and a visible circle, so
+  pending review can explain lack of a public entry without proving the specific
+  historical UI response. Approval is not needed for the retention claim itself.
+  A public R2 source URL is not made private by a pending database state; do not
+  claim all stored bytes are inaccessible. No bytes/HEAD/player evidence was taken.
+- Proven A3 ordinary signup/confirmation/password-login/Profile/refresh reused;
+  logout/session isolation, B3 and cross-user negative writes NOT_VERIFIED.
+  Pending review is not an application P1; no newly confirmed data-loss P0 or
+  ordinary-user P1. Staff AAL2 live availability/security closure stays BLOCKED,
+  database AAL2 NOT_ACTIVATED. Do not infer a refresh fix from current local source:
+  its enrollment refresh differs from deployed enforcement; frozen SDK diagnosis
+  already showed successful verify saves its session. Live failure remains UNKNOWN.
+  Existing reviewed observer/reader reused; no code/refresh/factor patch or test rerun.
+
+Existing C safe shape identifies a concrete local classification block: abort-only
+rule, conditions object, missing prefix, no completed-object deletion/storage
+action. Classifier formerly required prefix for every rule. Minimal change allows
+omission ONLY for a validated abort-only rule with no unknown filters/actions;
+does not infer a deletion prefix or accept missing deletion filters. Cloudflare
+official object-lifecycles docs distinguish aborting incomplete uploads from
+completed-object expiry and show bucket-wide abort without a prefix:
+https://developers.cloudflare.com/r2/buckets/object-lifecycles/
+API schema still requires deletion filters; no global optional-prefix assumption.
+New targeted tests only: RED2/PASS3 before fix, then5/5 PASS and syntax PASS.
+Mixed real deletion still BLOCKED on matched references, malformed/unknown filters
+remain UNKNOWN. No historical suites or PG fixture run. New classifier SHA256
+d65e7d7c06acc5d1352d1b5e2f5bafcf40571de422518ff2c6214690d22f3b4e.
+Old safe shape lacks actual deletion prefix/enabled/condition values; cannot
+reconstruct it as READY. Historical tmp aggregate2/published0/orphan0 is reused
+with original UTC, not current safety. Lifecycle matching/risk UNKNOWN; paused
+application jobs do not suspend bucket lifecycle. No real object data read.
+
+Prepared one private PUBLIC_BETA_REMAINING_CLOSURE.v1.NOT_AUTHORIZED.json,
+SHA256 e80ae54fb3871fae7881b4fa05156027caf10ee320ac8126223dc53c4306212a,
+plus concise OWNER_APPROVAL.txt in the existing owner-only mailbox directory.
+All referenced old evidence, new helper, frozen SDK/reader/SQL and hidden-input
+pins checked locally, no new broad audit/build. Pending only, no permit/window:
+R independent fixed lifecycle GET1/readonlyDB1/exact synthetic backend/B3 absence,
+at most1 synthetic-only R2 HEAD; D one observable existing-factor step-up and
+conditional unchanged atomic SQL/readbacks; B at most1 new ordinary B3, same
+existing A3 fixture, exact negative RLS/readback and proven playback only.
+Explicit NEW owner decisions include reviewed same-session method and one exact
+synthetic post approval/hide pair after real moderator AAL2, preserving all data.
+No new post/circle/video/upload or A3 account operation. Storage playback never
+passes R2 and no automatic extra upload is authorized. B3 failure identity/ban
+876000h/readback independently bounded; historical identities/envelopes excluded.
+Three-stage quotas isolated,0USD/retries0,180min only after matching approval AND
+actual readiness, business stop135/cleanup reserve45. Independent R is not blocked
+by D. Failed D blocks dependent moderator action, not unrelated approved work.
+No rollback/downgrade/role change or safety waiver. No push: external build/deploy
+triggers and zero-cost implications not proven by absent tracked CI alone.
+Next sole owner action: review/sign that exact remaining-scope approval; no fresh
+Production action before it. Catalog ACTIVE, destructive jobs paused, Beta NO_GO.
+
 ## Exact A3 Readonly Reconciliation Completed; Post Pending Review
 
 Fresh explicit owner approval for b5d0338d14f5d059fd0db0def67be59782638be2190c4657a11637d9948629ca
