@@ -1,5 +1,73 @@
 # Public Beta Current State
 
+## Autonomous Minimum Run Stopped; Legacy Deletion Risk Confirmed
+
+2026-10-26 exact owner approval d619cf25 verified against unchanged packet and
+private fixture hashes. One preactivation Wrangler interactive login completed;
+actual owner readiness subsequently activated UTC09:12:57.564Z through
+12:12:57.564Z, business stop11:27:57.564Z. Failure stop below is binding: this
+window and unused counters do not authorize retrying the stopped login stage.
+No old consumed/UNKNOWN state was reset. No new application code, build, prior
+test, migration, MFA activation or deployment was repeated.
+
+Initial and final fixed deployments GETs PASS: version b81e3c25, deployment
+60ee5c24, single100%, no drift. One lifecycle GET complete/validated: two rules,
+one relevant deletion prefix. Fresh prefixes stayed in memory through the same
+run's aggregate query, not substituted with an empty list. One strictly TLS
+Session Pooler READ ONLY connection, native SQL8/normal statements11, target and
+timeouts verified, local close CONFIRMED, database mutations0. Actual aggregate:
+tmp references2, published0, orphan0; enabled automatic deletion matches current
+references. LEGACY_MEDIA_RISK=BLOCKED / REFERENCED_TMP_CAN_EXPIRE. Past byte loss
+is NOT_PROVEN, not inferred. Paused destructive jobs do not pause R2 lifecycle.
+No real-object HEAD/list/bytes, lifecycle edit or user-data mutation occurred.
+Exact fresh controlled B4 alias absence PASS; this independent admission was not
+blocked by the legacy risk classification, as explicitly approved.
+
+One B4 confirmed Auth fixture created, UUID/provider identity/namespace/nonce and
+confirmation independently checked with exact Auth GET. This is fixture setup,
+not repeated public signup proof. Random password stayed in operator memory and
+was filled through official Playwright API, never tool arguments/files/logs.
+Browser children received only essential OS env, no provider keys or imported
+profiles/sessions; no CAPTCHA bypass, token export, trace/HAR/private screenshot.
+Two isolated normal Edge contexts and actual page controls worked autonomously.
+
+B4 normal login was submitted ONCE. Page HTTP200 but remained /login/ with visible
+Turnstile verification failure; owner screenshot independently reports that
+same failure. No invalid-credentials indication was observed. Auth wire count,
+Turnstile error code and underlying cause remain UNKNOWN. No inferred universal
+site/configuration failure. No refresh, second submit, alternate Auth login,
+stealth or CAPTCHA workaround. Ordinary signed identity, cross-user RLS and new
+R2 publishing/playback were NOT_EXECUTED/NOT_VERIFIED, not silently PASS or proof
+of an application authorization defect. Unneeded staff context was closed;
+current moderator server identity was not rechecked or fabricated from UI.
+
+Independent approved containment: exact B4 pre-ban GET, one876000h PUT, independent
+exact identity/expiry GET all succeeded; B4 ban VERIFIED. Issued JWT revocation
+and explicit logout were not proven. All owned isolated contexts/browser processes
+closed, operator runtime exited, random password references cleared then process
+terminated. No second account/post/video or moderation action. Retained private
+identity/receipts contain no password/token/complete Auth body; no DPAPI cleanup.
+Management3; operator Auth5 (create1/initialGET1/containment3), Worker0/REST0;
+normal native browser requests158 across both contexts, below300. Normal SDK Auth
+wire requests remain UNKNOWN, distinct from the exact operator count. Auth fixture
+creation and ban are real authorized mutations; database/business writes0,
+deployments0, factor operations0, retries0. Owned input shortcut removed only.
+
+Receipts sealed in existing private autonomous-minimum-closure-v1 directory:
+risk-database.safe.json, risk-final.safe.json, B4-login-stop.safe.json,
+B4-containment.safe.json, deployment-initial/final.safe.json and
+execution-stopped.safe.json. Minimal read-only operator reused pinned native
+transport/helper/SQL; no generic framework or application change. Historical
+MFA enforcement and database AAL2 remain DONE/PASS from prior real receipts.
+
+Remaining launch blockers: referenced tmp deletion risk requires an explicit
+bounded safety decision; signed foreign-row isolation and true R2 object/playback
+still lack Production evidence. Controlled-browser CAPTCHA failure is proven in
+this environment only. Do not create another fixture or repeat login under this
+stopped stage. Next owner action: decide whether to authorize a narrowly scoped
+mitigation for the confirmed automatic deletion risk; no change is yet authorized.
+Catalog ACTIVE, destructive jobs paused, Public Beta NOT_AUTHORIZED / NO-GO.
+
 ## Autonomous Browser Proven Locally; Only New Production Scope Pending
 
 2026-10-26 autonomous preparation: verified actual checkout/clean codex branch,
