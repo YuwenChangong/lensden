@@ -1,5 +1,24 @@
 # Public Beta Current State
 
+## Exact Circle Slug Amendment Approved; One A3 Circle Creation Pending
+
+Owner explicitly approved085848bd slug-only correction. Matching private packet,
+original approval record and A3 identity/auth receipts checked; recorded at
+2026-10-26T01:16:20.247Z. Original business stop02:28:53.524Z and window
+end03:13:53.524Z unchanged, no new quota or renewal. Exact circle name remains
+QA0a39aa70-f4d5-40e1/type topic; expected slug nowqa0a39aa70-f4d5-40e1.
+One private A3-circle-create reservation binds the verified A3 UUID, original
+namespace, amendment approval and exact target. Actual creation/returned ID
+NOT_YET_REPORTED; not marked executed. No new Production request in preparation.
+
+Owner asked to create this one circle via normal A3 UI, no cover upload, then
+stop before post/video. Name placed only on local clipboard. Error, unknown
+submission or unexpected slug stops dependent work, no repeat/adoption. Actual
+owner/ID readback required before using the circle for its one test post. A3
+Auth PASS reused; no login/identity test repeated. B3/post/video NOT_STARTED.
+Next sole owner action: pending normal A3 circle-create prompt. MFA remains
+stopped, legacy matching UNKNOWN, Catalog ACTIVE/Public Beta NOT_AUTHORIZED.
+
 ## A3 Real Ordinary Authentication PASS; Uncreated Circle Slug Correction Pending
 
 Imported actual A3 bind-auth result at2026-10-26T00:30:27.170Z: PASS, Auth1/
