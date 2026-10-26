@@ -1,5 +1,43 @@
 # Public Beta Current State
 
+## A3 Real Ordinary Authentication PASS; Uncreated Circle Slug Correction Pending
+
+Imported actual A3 bind-auth result at2026-10-26T00:30:27.170Z: PASS, Auth1/
+REST1; exact authenticated UUID, confirmed email, actual profiles.role=user and
+provider created_at obtained. Private result SHA256
+0a2b70c2d4281d13079e149fc2c0da3c9aef9f261369c4cebb56b891ef70dbbd.
+One approved exact Auth administrator GET200 independently matched the fresh
+alias/UUID/provider time against verified absence and single owner signup journal.
+No QA metadata assumption or local/server time equality. Initial read receipt
+3ac447aeabae81a5f624c0b2021ea58de36f8b672d02d5c77465202bfbfd8fb8;
+exact private A3 identity receipt
+dc5d308762f89ebedc4715177353697d09c24abc1a1a2d102fcf181fd5157e60.
+Only this run's exact new actor qualifies for preauthorized later containment.
+
+Owner then ran existing auth stage once. Imported at00:34:00.575Z: PASS,
+Auth3/REST1, actual same UUID/Profile/confirmed email and refresh readback PASS.
+Receipt4858161d735bc8f1ef06697e665ce6477b7000527186b391320472268b45386c.
+Both minimal downloads copied privately, hashes and owner-only ACL verified;
+exact temporary originals unlinked. No password/JWT/Cookie/full user export.
+A3 real normal owner signup/confirmation/password workflow plus signed-in
+ordinary identity and refreshed session now DONE for this actor, not B3 proof.
+Explicit new Auth operations5 (including one admin GET), REST2; normal UI/native
+traffic remains distinguished, not a fabricated exact global wire count.
+
+Before any circle/post/video write, static existing UI inspection found a scoped
+authorization typo: parent names QA0a39aa70-f4d5-40e1 but expects slug
+qa-0a39aa70-f4d5-40e1. Unchanged deployed source slugifyCircleName generates
+qa0a39aa70-f4d5-40e1 instead. Current relevant source has no diff from exact
+Production source8b0882f0; no app defect or code fix claimed. Do not silently
+change the name or accept a different target. Prepared only one tiny expected-
+slug correction, no new window/requests/writes, preserving original name and all
+caps: PUBLIC_BETA_FINAL_SPRINT.circle-slug-amendment-v1.NOT_AUTHORIZED.json,
+SHA256085848bd7ea9f9a8ecc61e309aa71e63840e8094951558dec634faf8f171ebca.
+Next sole owner action: approve that correction in the SAME valid original
+window. Circle/post/video/B3 still NOT_STARTED; no retry or new MFA/DB operation.
+A3 remains active pending authorized testing and exact cleanup/containment.
+MFA D stopped, legacy matching UNKNOWN, Catalog ACTIVE/Public Beta NOT_AUTHORIZED.
+
 ## A3 Owner Reports Signup, Email Confirmation And Password Login Complete
 
 Owner explicitly reported the single A3 normal website signup, email confirmation
