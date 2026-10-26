@@ -1,5 +1,32 @@
 # Public Beta Current State
 
+## Exact A3 Circle Readback PASS; One Post And Video Submission Reserved
+
+Imported circle readback completed2026-10-26T02:20:51Z within original cutoff:
+Auth1/REST1, same real A3 identity, exact name/corrected slug/topic and owner PASS.
+Receipt b6c32484c16e6c3d5a982c0fb734205e14e3e853c63719e330718b11fe7f9514;
+private circle/owner/parent binding journal
+a250886498fb5350028a4fbeebbbc9cee94088331fcb096f397335a2ecb30dc8.
+Imported hash/owner-only ACL verified, exact temporary download unlinked. No
+circle creation retry or unrelated data read. Explicit new AB Auth6/REST3 total
+so far; native UI traffic still distinguished from exact operator read counts.
+
+At02:23:13.814Z reserved ONLY original A3 post1/video1 against that verified
+circle. Existing2018-byte MP4 hash8c505e72 matched; no rebuild or upload by Codex.
+Owner instructed normal posts/new UI: exact QA circle, feedback type, title
+QA R2 video smoke, exact namespace body and that single video. Actual submission,
+post ID, R2 claim/attachment/publication/playback NOT_YET_REPORTED/NOT_VERIFIED.
+No B3 creation yet. Unknown/pending/moderation failure stops dependent work;
+never operator retry, speculative deletion or automatic fallback PASS.
+
+Original business cutoff remains02:28:53.524Z (15:28:53 Auckland), full window
+03:13:53.524Z. Owner told not to begin submission after cutoff. Next sole owner
+action: outstanding single native post/video submission and nonsecret outcome.
+Do not interpret this reservation as actual business success or new time/quota.
+No new deployment/DB/factor operation; MFA stopped, legacy UNKNOWN, Catalog
+ACTIVE/Public Beta NOT_AUTHORIZED. A3 and verified own circle remain precise
+cleanup obligations; no ban/delete yet.
+
 ## A3 Circle Created According To Owner; Exact Readback Pending
 
 Owner reports circle created once; no error/retry reported. This does not yet
