@@ -1,5 +1,30 @@
 # Public Beta Current State
 
+## A3 Owner Reports Signup, Email Confirmation And Password Login Complete
+
+Owner explicitly reported the single A3 normal website signup, email confirmation
+and password login complete. This is owner workflow evidence, NOT independent
+server identity/Profile PASS. Exact private reservation/absence/approval pins
+matched; at2026-10-26T00:27:49.976Z original resume window and business cutoff
+still valid. No fresh login/signup, account adoption or window renewal requested.
+
+Saved one additive private owner-confirmed signup journal with actual submit
+count1 as OWNER_REPORTED, no invented server response/time/UUID. Generated the
+existing pinned buildOwnerSnippet bind-auth stage without helper changes; syntax
+and local clipboard readback PASS, source SHA256
+7c23cbfaf10fae93ef9444ab5aa5102fc1d5146da00cfdb2ca85518b885e0d1c.
+One private A3-bind-auth reservation binds that journal, exact absent alias,
+current approval and original business deadline. Auth GET1/Profile read1 maximum;
+actual dispatches NOT_YET_REPORTED, not asserted zero. Minimal private download
+will supply real provider UUID/created_at, email confirmation and actual user
+Profile checks; never credentials or full user response. No server PASS yet.
+
+Next owner action: run this already-approved reviewed snippet once in the SAME
+logged-in A3 InPrivate page; no refresh, repeat, moderator switch, B3 or post.
+No new Production request by Codex in this preparation, no build/test suite,
+deployment, database operation or factor action. D remains stopped/FIXED_PAGE,
+legacy lifecycle matching UNKNOWN. Catalog ACTIVE/Public Beta NOT_AUTHORIZED.
+
 ## Resume Approved; Two Readonly Connections Complete, Ordinary Signup Pending
 
 Fresh explicit resume approval a327732b recorded2026-10-26T00:13:53.524Z;
