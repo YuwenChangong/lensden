@@ -45,9 +45,6 @@ export async function verifyAdminTotp(client: SupabaseClient, factorId: string, 
   if (error || !data) throw new Error("MFA_CHALLENGE_FAILED");
   const verified = await client.auth.mfa.verify({ factorId, challengeId: data.id, code });
   if (verified.error) throw new Error("MFA_VERIFY_FAILED");
-  // Enrollment-stage acceptance must prove refreshed, not only newly issued, AAL2.
-  const refreshed = await client.auth.refreshSession();
-  if (refreshed.error || !refreshed.data.session) throw new Error("MFA_SESSION_REFRESH_UNCONFIRMED");
   await confirmAdminAal2(client);
 }
 

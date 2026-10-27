@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 import { isModeratorRole } from "./admin-auth";
+import { assertAdminAssurance, assertStaffWriteAssurance } from "./admin-assurance";
 
 export type ForumRuntimeEnv = Record<string, string | undefined>;
 
@@ -119,6 +120,8 @@ export async function requireForumUser(request: Request, env: ForumRuntimeEnv): 
     throw jsonResponse({ error: "PROFILE_NOT_FOUND" }, 403);
   }
 
+  await assertStaffWriteAssurance(request, client, token, authData.user.id, profile.role);
+
   return {
     token,
     client,
@@ -169,6 +172,10 @@ export async function requireManagedCircleForAuthenticatedUser(params: {
   }
   if (!isCircleManager(circle.owner_id, auth.user.id, auth.profile.role)) {
     throw jsonResponse({ error: "CIRCLE_MANAGE_FORBIDDEN" }, 403);
+  }
+
+  if (isModeratorRole(auth.profile.role)) {
+    await assertAdminAssurance(auth.client, auth.token, auth.user.id);
   }
 
   return {

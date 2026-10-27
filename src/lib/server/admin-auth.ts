@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { assertAdminAssurance } from "./admin-assurance";
+import { assertAdminAssurance, requiresAdminAssurance } from "./admin-assurance";
 
 export type RuntimeEnv = Record<string, string | undefined>;
 
@@ -90,9 +90,7 @@ export async function requireModerator(request: Request, env: RuntimeEnv): Promi
     throw jsonResponse({ error: "Forbidden", details: "profile role not found or not moderator/admin" }, 403);
   }
 
-  // Enrollment-only artifact: only the assurance readback must already prove AAL2.
-  // The separately bound enforcement artifact enables the other staff guards.
-  if (request.method === "GET" && /^\/api\/admin\/mfa\/?$/.test(new URL(request.url).pathname)) {
+  if (requiresAdminAssurance(request)) {
     await assertAdminAssurance(client, token, authData.user.id);
   }
 

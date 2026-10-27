@@ -1,5 +1,137 @@
 # Public Beta Current State
 
+## v11 Local Enforcement Reconciliation and Actual Fixture Decode
+
+Starting HEAD15acc0b999ce2975bc5299e820801172d070e85f. v11 explicitly authorizes
+local release compatibility correction, not deployment or Production requests.
+The existing focused MFA test reproduced the known enrollment-stage regression:
+after two passing checks, AAL1 staff access failed to reject. Restored exactly the
+five source differences from frozen8b0882f09a26375675b21c6f0682c2221365dbf3:
+admin-auth, circle-management, forum posts/comments and admin-totp. The latter
+removes only the enrollment-acceptance extra verification refresh, not the
+existing factor-retirement refresh or server AAL2 readback. No new MFA behavior,
+role change, DB migration or policy widening. Focused RED -> GREEN:20/20 PASS,
+actual signed local JWT fixtures; Production requests0/database connections0.
+
+Full src/public and inspected build inputs (Astro/Wrangler/package/lock/build
+wrapper/runtime-var/SDK resolver) now have no diff against frozen Enforcement.
+Existing363 sealed artifact files/8303819bytes independently hash-read back;
+manifest SHA256ba9ea679c0a5cc347565b1ab3437f5fbb085ac431802af95cf291adcdde57f78.
+Artifact was neither rebuilt nor deployed. This closes a LOCAL source/artifact
+compatibility gap, not a fresh Production security or release acceptance gate.
+Independent reviewer remains PENDING due the previously observed usage limit;
+no repeated agent spawning, upgrade or invented review PASS. Separate local
+review compared the exact restored source and confirmed ordinary role boundaries
+in the focused tests. No push, merge or deployment is authorized by this work.
+
+Pinned2018byte MP4 was actually decoded in an offline browser/blob URL:160x90,
+duration0.834067seconds, readyState4, currentTime0.10373, error null; page requests0.
+Browser/context closed. This is a valid candidate fixture, not R2 playback proof.
+Existing claim-before-copy, ETag-pinned source HEAD/COPY/destination HEAD and
+non-tmp retained-path delivery already address NEW canonical uploads. Inspection
+found no new durable-retention code defect. No historical tests were rerun for
+that unchanged implementation. Legacy three-segment refs are NOT repaired by it;
+object existence, narrow temporary protection and durable historical remediation
+remain separate unclosed matters.
+
+One owner checkpoint is being prepared with independently admitted A/B scopes.
+Any new account-scoped billing read must explicitly accept that the documented
+alpha endpoint has no R2-only server filter: only R2 projection may persist;
+non-R2 financial rows are memory-only. Billing responses/low usage alone never
+prove a reserve, storage class, hard cap or USD0. No unsupported metric/endpoint,
+permission probe, prior Analytics/DB replay or unapproved protection write.
+Current Production operations0; two-user isolation/R2 playback NOT_VERIFIED,
+legacy protection NOT_APPLIED, charges UNKNOWN. Free plans, deployed MFA/DB AAL2,
+Catalog ACTIVE/Public Beta NOT_AUTHORIZED/NO_GO preserved.
+
+## v10 Readiness Decision and Shared Acceptance Fixture Boundary
+
+Verified HEAD15acc0b999ce2975bc5299e820801172d070e85f; prior dirty baseline
+preserved. No Production authority/window was granted by v10 or its continuation.
+Two requested independent reviewers both stopped on account usage limits before
+returning a review. Both closed; independent v10 review is NOT_COMPLETED, not PASS.
+No purchase, paid fallback, replacement-agent loop or status-only commit.
+
+REST minimum documented read group is account-level Workers R2 Storage Read;
+bucket-item read is S3-only. Installed Wrangler's nonsecret scope definitions
+describe account:read as account details/analytics/memberships, not object access;
+no r2:read scope is declared there. This does not establish a different OAuth
+scope mapping. No credential read, issuance, login, refresh or permission probe.
+Official pricing classifies ListObjects as Class A. The exact REST operation's
+applicable included billing treatment and current two-operation reserve remain
+unproved. Delayed v7 observations remain consumed evidence, not current headroom.
+Stop only this workstream; no unready executable LIST packet or repeat Analytics.
+
+C1/C2 can share two newly authorized ordinary actors and ONE owner-authored post
+with ONE pinned2018byte synthetic MP4; the second actor need not publish/upload.
+Existing two-fresh isolation assertions require Auth6/REST12/Worker2 operator
+calls, including three foreign mutations with unchanged reads and two403 staff
+denials. These counts exclude signup, confirmation, fixture setup, media proof,
+cleanup and containment; they are not an entire-browser wire budget or authority.
+Both actors must see the same exact published post/media in an active public
+circle before negative tests. A pending-review post is not that fixture. A future
+combined grant must explicitly cover conditional exact synthetic moderation,
+both source/retained objects, cleanup and proven-identity-only containment.
+
+Pinned MP4 SHA2568c505e7279773c9b2647b3b47611f4cb71d7d83ecbb48e68fcbc5af818f348e0.
+Real R2 proof must bind the new claim/retained non-tmp Key, metadata/owner/post,
+object bytes and actual browser decode/time progression through the production
+media route. Storage fallback is not PASS. A lost copy response preserves claim
+and uncertain object state; no automatic reupload/copy/delete rollback follows.
+The local-real-r2 runner enforces local Supabase and a separate test bucket; its
+guards MUST NOT be removed or its old tmp-only assertions borrowed as current
+Production retention proof. Browser-client wiring/single use remains unbound;
+no complete executable combined grant is falsely offered.
+
+Selected upload/retention/proxy/composer/SDK sources match frozen8b0882f0;
+forum/posts differs in the known staff-AAL2 stage reversal, not a new ordinary
+user defect. Current HEAD MUST NOT DEPLOY. No app edit or test/build rerun was
+justified. Legacy existence UNKNOWN/protection NOT_APPLIED; no protection expiry
+renewed. MFA/DB AAL2 and free plans preserved, no fresh runtime claim. Production
+requests/mutations0; Catalog ACTIVE/Public Beta NOT_AUTHORIZED/NO_GO.
+
+## v9 Access Alternatives: REST Exists, Cost and Authority Still Unproved
+
+HEAD15acc0b9 unchanged; no status-only commit, application patch or test rerun.
+Three native agents reused; only public documentation/specification and local
+source/cached evidence inspected. Production requests0, no repeat of Analytics,
+database or configuration discovery. Existing v7 remains consumed/stopped.
+
+Official REST GET /accounts/{account_id}/r2/buckets/{bucket_name}/objects supports
+prefix/per_page and returns metadata, so S3 signing is NOT the only technical
+route. Proposed independent future scope is two full-Key prefixes/per_page2,
+no pagination/other selector/body/redirect/retry. Exact returned-Key equality,
+bounded successful envelope and terminal metadata govern interpretation. A valid
+exact row can prove presence while collision coverage remains UNKNOWN; suffix
+evidence is only observed collision, and overflow/ambiguity stops further work.
+Optional size/class missing stays UNKNOWN. No target admission or write follows.
+
+Important permission correction: official R2 token docs explicitly restrict
+Object Read/Write (bucket-item permissions) to S3, NOT REST. Account-level Workers
+R2 Storage Read/Admin Read only is documented for read/list access; generic
+account:read OAuth is not thereby proven sufficient. The endpoint specification
+does not declare its accepted group/OAuth mapping. No permission probe occurred.
+ListObjects is Class A exposure. Inspected pricing does not prove this exact
+REST method's class-independent free treatment or a two-operation reserve with
+reporting/concurrency uncertainty. Existing230 operations are reused observations,
+not cost clearance. No executable LIST approval is prepared with false readiness.
+
+Frozen Worker source/cached binding evidence provides no existing exact legacy-
+Key metadata-only HTTP route. Lexicon health may read a fixed body's text; admin
+media is broad database metadata; the media proxy streams bytes and requires
+canonical published paths; retention helpers also COPY. None is an authorized
+substitute. No diagnostic deployment or security change is proposed. Known S3
+process inputs are still absent; no secret-file search, export or issuance.
+
+Minimal categorical evidence is private access-options-v9.safe.json alongside
+the existing lock candidate, with official references. The necessary new external
+scope would be exactly two REST prefix metadata requests with applicable read
+authority and independently supported zero-charge admission; no broad enumeration,
+new S3 key or repeat Analytics is necessary merely to describe that method.
+Until those facts hold, do not ask the owner to sign an allegedly ready operation.
+Objects UNKNOWN/protection NOT_APPLIED/deletion risk persists; expiry unchanged.
+MFA/DB AAL2, free plans and Catalog ACTIVE/Beta NOT_AUTHORIZED remain preserved.
+
 ## v7 Executed After Formal Approval: Complete Usage Observation, HEAD Stopped
 
 Owner formally signed exact packet6a503095 and its independent A/B conditions.
