@@ -1,5 +1,96 @@
 # Public Beta Current State
 
+## Strict Zero Actual Charges: Media Write Remains Pending
+
+2026-10-27 NZDT: owner requires ZERO_ACTUAL_CHARGES across development and Beta.
+This supersedes historical acceptance of delayed/unproven or small extra costs.
+No paid subscriptions, overages, upgrades or paid fallbacks are authorized.
+MEDIA_PROTECTION_WRITE.v1 binding
+a00a436bc45b23fd9829e5e06f0f814f6e0fa40708087684dc7579172df44e11
+is still PENDING, additionally BLOCKED_COST_UNVERIFIED. Its original JSON,
+approval text and exact PUT body are unchanged. No permit/window was created.
+
+Reused discovery.final.safe.json: lifecycleGET1/lockGET1, DB connection1,
+nativeSQL7/normalStatements10 already consumed; no target manifest, HEAD0,
+both object-existence states UNKNOWN, protectionApplied=false. No old counter or
+UNKNOWN was reset. Historical tmp/ deletion-match risk continues; disabling
+application cleanup jobs does not stop provider lifecycle deletion. MFA and
+database AAL2 remain DONE, not retested or changed. Frozen Enforcement remains
+deployed; current enrollment-stage source is NOT an authorized deploy candidate.
+
+Current actual monthly charges, account plans/add-ons, current usage, R2 storage
+classes and remaining shared free allowances are UNKNOWN. Existing ledger evidence
+is explicitly historical: Oct13 owner-attested Workers/Supabase/Turnstile Free
+for GROUP_1 only, and Oct16 delayed R2 display ClassA3/ClassB44/storage0/billable0.
+Neither proves Oct27 account state, full-project billing or remaining headroom.
+The old autonomous packet's owner cost assertion is not a provider usage receipt.
+No fresh billing/usage/Production query was authorized or dispatched this turn.
+
+Public official documentation checked (not account-specific evidence):
+- [R2 pricing](https://developers.cloudflare.com/r2/pricing/): Standard-only free
+  allowance10GB-month, ClassA1million/ClassB10million monthly; free egress does
+  not make reads/writes free. Infrequent Access has no free tier and30day minimum
+  storage duration. Object storage classes and cumulative usage remain unknown.
+- [R2 limits](https://developers.cloudflare.com/r2/platform/limits/): bucket data
+  and object counts are unlimited; documented service limits are not a USD0 cap.
+- [Workers limits](https://developers.cloudflare.com/workers/platform/limits/):
+  Free daily100000 request exhaustion returns1027 (route fail mode matters).
+  This conditional Free boundary is not proof of the actual account plan or R2,
+  external services, public bucket traffic or database cost enforcement.
+- [Supabase cost control](https://supabase.com/docs/guides/platform/cost-control):
+  Free is not charged; Pro Spend Cap covers only selected usage, excluding such
+  items as compute/add-ons, and does not remove a paid subscription charge.
+  [Free allowances](https://supabase.com/pricing):500MB DB,1GB file storage,
+  50000MAU,5GB egress plus5GB cached egress. Actual organization state UNKNOWN.
+- [OpenAI moderation](https://developers.openai.com/api/docs/guides/moderation)
+  endpoint is free; this does not cover chat/completions policy classification.
+  Local wrangler production vars disable that classifier, but current runtime
+  feature/plan evidence is not renewed. Email, KV, optional image processing,
+  monitoring, builds/CI and other account subscriptions still need applicable
+  plan/usage evidence; nothing was activated or contacted to test them.
+
+Focused source checks only, no historical tests/builds rerun: the adopted
+consume_forum_rate_limit RPC has atomic per-user action/per-IP upload reservations,
+10uploads/hour and external-video300MiB/IP/24h; it is NOT an account-wide monthly
+storage/operation/egress budget. See migration20261016061618 lines70-123 and
+src/lib/server/consume-forum-rate-limit.server.ts. CreatePostForm.tsx lines573-604
+can fall back from R2 failure to Storage TUS. r2-server.ts retention uses source
+HEAD/COPY/destination HEAD. Per-file limits, retries=0 for the executor, and API
+rate limits do not bound aggregate growth, retained copies or public media reads.
+No validated end-to-end hard USD0 enforcement was found in these reviewed paths.
+
+Protection comparison: finite full-Key prefix locks are the smaller candidate,
+but exact Keys/size/class/prefix collisions are not admitted, and locks also cover
+future matching objects; they do not cap bytes or restore already lost objects.
+[Lock rules](https://developers.cloudflare.com/r2/buckets/bucket-locks/) override
+lifecycle deletion while active. A finite date is only a retention horizon, not a
+long-term preservation guarantee. Pausing the actual tmp/ deletion rule instead
+covers ALL current/future tmp/ objects with unknown bytes/arrival rate. The pending
+proposal's24h REVIEW is not an automatic expiry. Neither option has demonstrated
+zero-cost feasibility; no indefinite tmp/ retention is admitted. Do not auto-delete,
+auto-reenable or move real media to close the cost gap.
+
+Smallest next authority needed: a separate bounded account-cost read, starting
+with the fixed Cloudflare account's R2 bill-to-date, billing period, shared Standard
+and IA storage usage, ClassA/B/retrieval usage and any actual hard-stop controls;
+no object listing/body/HEAD, repeated lifecycle/lock/DB read or mutation. Full Beta
+also needs current Workers/KV and Supabase organization plan/usage/add-ons and
+applicable email/build/monitoring evidence. No payment details, credentials or
+full invoices should be exported. This is a missing permission, not a new GO.
+After evidence, the minimum candidate adjustment is shared atomic admission at
+the existing upload guard before signing/uploading/copying, with conservative
+reservations for concurrent/in-flight/native fallback work and reporting delay,
+plus separately bounded media-read operations. Fail closed when headroom cannot
+be proved, no paid fallback. This is a local proposal only, not implemented or
+claimed sufficient: direct S3/public reads, other writers and existing storage
+must also be covered; app rejection cannot undo accrued storage charges.
+
+This turn: Production requests0, mutations0, logins0, factor operations0,
+deployments0, database connections0, push/merge0; public documentation only.
+Only local operating policy/current baseline updated. Historical11 tests and
+diagnostic4/4 retained, not repeated; no business/auth/QA framework introduced.
+Public Beta cost readiness BLOCKED_COST_UNVERIFIED; Catalog ACTIVE/Beta NO-GO.
+
 ## Discovery Stopped; Configuration Baselines Acquired, Targets Not Admitted
 
 2026-10-27 NZDT: owner approved50eb5f6f and the exact Wrangler method amendment.

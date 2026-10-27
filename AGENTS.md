@@ -22,6 +22,16 @@ the exact independent authorization and applicable cost proof. Keep private inpu
 credentials, frozen files and historical receipts out of edits and ordinary logs.
 GROUP_1 requires its own subset approval and independent GO; it is not full E_VERIFY.
 
+ZERO_ACTUAL_CHARGES is mandatory during development and Public Beta, not merely
+zero incremental cost for an individual action. No paid plan, overage, paid
+fallback or automatic upgrade is authorized. Old owner cost attestations, credits,
+alerts and nominal free allowances are not current billing or hard-stop proof.
+Unknown plan, usage, storage class, headroom or cost enforcement means
+BLOCKED_COST_UNVERIFIED for the affected operation. Account for reporting delay,
+concurrency and all shared-account consumption; never claim a USD0 guarantee
+without validated controls. New billing/usage reads need separate authorization.
+Pending media-protection writes remain pending; preserve their bound originals.
+
 Use an independent `codex/` branch and exact `git add` paths. Inspect the diff and
 worktree before a local commit. Do not push/merge if it could trigger Production or
 paid CI without separate approval. End each task by updating only new completed
