@@ -1,5 +1,94 @@
 # Public Beta Current State
 
+## Completion v7: Independent Usage and HEAD Review Pending Owner Approval
+
+Actual starting HEADae395338a6504039aab72932b848e43de8085d51. Reused three native
+agents for narrow media capability review, ordinary-acceptance preparation and
+independent critical review. No repeated diagnosis, historical test suite, build,
+provider/account request, browser navigation, database connection, credential
+input/login, mutation, deployment, push or merge. Existing approved/consumed
+diagnostics remain unchanged. The v7 request authorizes local preparation only.
+
+NO OBJECT LISTING. The prior optional ListObjects proposal below is superseded
+and is not pursued. One pending presentation now contains independent scope A:
+one fixed-account R2 aggregate Analytics query; scope B: at most two authenticated
+exact S3 HEAD requests, one per hash-bound quarantined Key. Neither scope borrows
+the other's quota. No SQL, lifecycle/lock/bucket-properties reread, object GET,
+upload, copy, config change or automatic retry. Existing HTTPS/SigV4 tools are
+the proposed methods, not a new framework or executable permit.
+
+Private packet emergency-media-protection-v1/evidence-closure-v7/
+MEDIA_EVIDENCE_CLOSURE.v7.NOT_AUTHORIZED.json SHA256:
+6a5030958c0322f91eb83d2a0a56ae5126979fb05146fb99b046838587c2203d.
+Corresponding OWNER_APPROVAL.txt is the sole proposed signature presentation.
+Query, diagnostic quarantine, existing transport reference and six source/runtime
+pins are bound. Original signed sources, old markers and private records intact.
+CurrentUser+SYSTEM-only ACL verified. No verified-approval, activation, dispatch
+or consumption marker exists in this new domain.
+
+A's current local OAuth is expired. Optional prewindow login requires explicit
+new approval, at most once, account:read plus Wrangler's implicit offline_access
+only. Installed Wrangler describes account:read as covering account analytics;
+actual dataset/account permission remains unverified. Insufficient permission
+stops A without adding workers:write or another scope. No automatic refresh.
+The optional approved login may update only its current local OAuth record;
+historical credential evidence, grants and markers stay intact. Independent
+review caught and corrected an overly broad credential-freeze phrase before
+signature. No credential value was printed, copied or used for a request.
+
+Scope A queries fixed October2026 start through one actual-readiness timestamp,
+not a rolling historical query or invoice. One query/10s/256KiB, operations<129
+and storage<4097 returned groups; incomplete, overflow or invalid results stop.
+Persist only aggregate projected observations, not response or bucket-name lists.
+No undocumented storage-class field. Delayed metrics are not a bill, complete
+accrued GB-month, class proof, reporting/concurrency bound or hard spending cap.
+No automatic headroom/zero-charge or retention approval follows from A.
+
+B is BLOCKED_CREDENTIAL and BLOCKED_COST_UNVERIFIED, not executable readiness.
+Known process S3 inputs absent; no secret-store scan or Worker secret read.
+Wrangler OAuth is not a proven S3 signer. Existing AwsClient.sign plus native
+HTTPS HEAD is usable only with a separately established lawful trusted signer
+and fixed target. Never AwsClient.fetch/default retry, retention/copy helpers or
+the isolated test runner. Per HEAD10s/16KiB headers; no redirects/body/fallback.
+Before either HEAD, cost evidence independent of that HEAD must establish
+class-independent included access or coverage for every still-possible charge,
+including lag/shared concurrency. Standard default/low counts alone do not do so.
+Missing metadata/class, generic404, denial or ambiguity remains UNKNOWN. Stop B
+on the first failure, without blocking an independently admitted A. No credential
+issuance or broader access is authorized to cure missing readiness.
+
+One new60minute single-use window would start only after matching human approval
+AND later actual A readiness, within24hours of approval and withinOctober2026.
+B shares the same absolute end, not its own renewal. Preparation starts no clock.
+Neither the owner text nor JSON grants authority until formally signed; signing
+does not waive unresolved B prerequisites or authorize a protection write.
+
+Critical review separates needed protection invariants from historical forensics:
+full provenance and existence are not inherently prerequisites to temporary
+narrow locking. Exact authority, collateral-prefix effects, operation/retention
+cost coverage, fresh config drift checks, full-rule preservation/readback and a
+useful owner-approved expiry/durable remediation deadline remain necessary.
+HEAD cannot prove suffix-collision absence or future matching-growth bounds.
+Original2026-10-28T05:17:40.601Z candidate date remains an unapproved draft, not
+a justified protection duration or automatic renewal. No executable write grant
+can yet be offered. Actual object loss remains UNKNOWN; deletion risk persists.
+
+Parallel ordinary/R2 preparation reused existing assertions and fixture design.
+No trustworthy active ordinary counterpart is known, so one fresh identity alone
+is not currently sufficient; two active authorized actors are needed. A3/B3/B4
+and historical A/A2 remain banned. Real foreign-mutation/unchanged-data evidence
+and claim/retained-object/browser decoding remain NOT_VERIFIED. Source/operator
+reservations are not whole-browser/provider ceilings or a zero-charge guarantee.
+No new account, object, fixture executor, application patch or test run justified.
+
+Frozen MFA Enforcement/production database AAL2 remain historical applicable PASS;
+current enrollment-stage HEAD MUST NOT DEPLOY. Plans unchanged, external charges
+UNKNOWN, no billable operation authorized. This run Production requests0/writes0.
+Catalog ACTIVE/Beta NO_GO. Only essential owner action: review/sign the single
+pending A/B text, including optional minimal OAuth and conditional B limits.
+After approval, execute only actually admitted reads; otherwise stop that scope,
+not invent evidence or request a broader investigation.
+
 ## Recovery Diagnostic Executed: Current Relationship Observed, Protection Pending
 
 Supersedes the pending recovery-1 status below, without changing historical
