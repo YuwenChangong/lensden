@@ -449,6 +449,64 @@ function twoFreshFixture(p, options = {}) {
   return { owner, other, run: () => ordinaryChecks.runTwoFreshOrdinaryForeignIsolation(owner.client, other.client, p, other.worker) };
 }
 
+function postOnlyFixture(options = {}) {
+  const p = twoFreshPlan();
+  p.acceptanceScope = 'POST_AND_ADMIN_ONLY';
+  delete p.foreignFixture.mediaId;
+  delete p.foreignFixture.storagePath;
+  const f = twoFreshFixture(p, options);
+  return { p, ...f, run: () => ordinaryChecks.runTwoFreshOrdinaryPostIsolation(f.owner.client, f.other.client, p, f.other.worker) };
+}
+
+test('B1 post-only: exact foreign post denials without any media operation or media PASS', async () => {
+  const f = postOnlyFixture(), r = await f.run();
+  assert.equal(r.status, 'PASS');
+  assert.equal(r.acceptanceScope, 'POST_AND_ADMIN_ONLY');
+  assert.equal(r.mediaIsolation, 'NOT_VERIFIED');
+  assert.deepEqual(r.counts, { auth: 6, rest: 8, worker: 2 });
+  assert.equal(r.checks.foreignPostUpdateDeniedUnchanged, true);
+  assert.equal(r.checks.foreignPostDeleteDeniedUnchanged, true);
+  assert.equal(r.checks.ordinaryStaffAndAdminDenied, true);
+  assert.equal(r.checks.foreignMediaDeleteDeniedUnchanged, undefined);
+  assert.ok(![...f.owner.trace, ...f.other.trace].some(x => x.table === 'post_media'));
+  assert.deepEqual(f.other.trace.filter(x => ['update', 'delete'].includes(x.mode)).map(x => [x.table, x.mode]),
+    [['posts', 'update'], ['posts', 'delete']]);
+  for (const value of ['PRIVATE_', freshOwner, freshActor, post, f.p.binding]) assert.ok(!JSON.stringify(r).includes(value));
+});
+
+test('B1 post-only: explicit narrow scope and media-free fixture are mandatory', async () => {
+  for (const change of [p => { delete p.acceptanceScope; }, p => { p.acceptanceScope = 'FULL'; },
+    p => { p.foreignFixture.mediaId = media; }, p => { p.foreignFixture.storagePath = 'PRIVATE_PATH'; },
+    p => { p.owner.journal.verified = false; }, p => { p.expected.id = a; },
+    p => { p.sessionReceipt.authRole = 'service_role'; }]) {
+    const f = postOnlyFixture(); change(f.p);
+    const r = await f.run(); assert.equal(r.status, 'BLOCKED');
+    assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+  }
+});
+
+for (const [label, options, reason] of [
+  ['pending post', { owner: { pending: true } }, 'PUBLIC_FIXTURE_NOT_VISIBLE'],
+  ['nonordinary user', { other: { role: 'moderator' } }, 'ORDINARY_PROFILE_NOT_PROVEN'],
+  ['401', { other: { mutationResponse: { status: 401, error: { code: '42501' } } } }, 'AUTH_FAILURE_NOT_RLS_PROOF'],
+  ['unexpected mutation', { other: { mutationResponse: { status: 200, data: [{ id: post }] } } }, 'UNEXPECTED_WRITE_SUCCESS'],
+  ['changed body', { other: { changedPostField: 'body' } }, 'FOREIGN_POST_CHANGED'],
+  ['changed post after delete', { other: { changedPostField: 'body', changedPostAt: 2 } }, 'FOREIGN_POST_CHANGED'],
+  ['Worker200', { other: { workerStatus: 200 } }, 'ADMIN_ACCESS_NOT_DENIED'],
+]) test(`B1 post-only: ${label} never produces isolation PASS`, async () => {
+  const f = postOnlyFixture(options), r = await f.run();
+  assert.equal(r.reason, reason); assert.notEqual(r.status, 'PASS');
+  assert.equal(r.mediaIsolation, 'NOT_VERIFIED');
+  assert.ok(r.counts.auth <= 6 && r.counts.rest <= 8 && r.counts.worker <= 2);
+});
+
+test('B1 post-only: old full-media entry cannot silently skip its media gate', async () => {
+  const f = postOnlyFixture();
+  const r = await ordinaryChecks.runTwoFreshOrdinaryForeignIsolation(f.owner.client, f.other.client, f.p, f.other.worker);
+  assert.equal(r.status, 'BLOCKED'); assert.equal(r.reason, 'FIXTURE_BINDING_INVALID');
+  assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+});
+
 test(`${twoFreshTestName}: owner and other both authenticate before exact foreign writes`, async () => {
   assert.equal(typeof ordinaryChecks.runTwoFreshOrdinaryForeignIsolation, 'function');
   const p = twoFreshPlan(), f = twoFreshFixture(p), r = await f.run();

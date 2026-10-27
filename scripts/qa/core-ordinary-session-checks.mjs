@@ -196,9 +196,15 @@ export async function runTwoFreshOrdinaryForeignIsolation(ownerClient, client, p
   return runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, true);
 }
 
-async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, twoFresh) {
+// Narrow B1 scope; it must never stand in for media isolation or R2 acceptance.
+export async function runTwoFreshOrdinaryPostIsolation(ownerClient, client, plan, readOrdinaryWorker) {
+  return runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, true, false);
+}
+
+async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, twoFresh, includeMedia = true) {
   const counts = { auth: 0, rest: 0, worker: 0 };
-  const caps = { auth: twoFresh ? 6 : 3, rest: twoFresh ? 12 : 9, worker: 2 };
+  const caps = { auth: twoFresh ? 6 : 3, rest: includeMedia ? (twoFresh ? 12 : 9) : 8, worker: 2 };
+  const narrowScope = includeMedia ? {} : { acceptanceScope: 'POST_AND_ADMIN_ONLY', mediaIsolation: 'NOT_VERIFIED' };
   const checks = {};
   const reasons = new Set(['PLAN_INVALID', 'SOURCE_BINDING_INVALID', 'JOURNAL_BINDING_INVALID',
     'FIXTURE_BINDING_INVALID', 'CLIENT_PROJECT_MISMATCH', 'DEADLINE_EXPIRED', 'BATCH_BUDGET',
@@ -219,6 +225,7 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     const journal = p?.journal;
     const absence = p?.absence;
     const f = p?.foreignFixture;
+    if (!includeMedia) insist(twoFresh && p?.acceptanceScope === 'POST_AND_ADMIN_ONLY', 'PLAN_INVALID');
     insist(p?.project === project && p.origin === origin && hash(p.binding)
       && expected?.project === project && expected.binding === p.binding && id(expected.id)
       && typeof expected.email === 'string' && expected.email.length <= 254
@@ -260,14 +267,15 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
       insist(owner.sessionReceipt.sessionContextSha256 !== p.sessionReceipt.sessionContextSha256, 'SESSION_BINDING_INVALID');
     }
     insist(f?.verified === true && hash(f.sha256) && f.binding === p.binding && f.sourceSha256 === source.sha256
-      && ['authorId', 'postId', 'mediaId', 'circleId'].every(key => id(f[key]))
+      && (includeMedia ? ['authorId', 'postId', 'mediaId', 'circleId'] : ['authorId', 'postId', 'circleId']).every(key => id(f[key]))
       && (twoFresh ? f.authorId === owner.expected.id && f.creatorJournalSha256 === owner.journal.sha256
         && f.namespace === owner.expected.namespace : f.authorId === banned.A3)
       && f.authorId !== expected.id
       && /^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(f.namespace ?? '')
-      && typeof f.storagePath === 'string'
+      && (includeMedia ? typeof f.storagePath === 'string'
       && [ `${f.authorId}/${f.postId}/`, `tmp/${f.authorId}/${f.postId}/` ].some(prefix =>
-        f.storagePath.startsWith(prefix) && /^[a-z0-9_-][a-z0-9._-]{0,239}$/i.test(f.storagePath.slice(prefix.length))),
+        f.storagePath.startsWith(prefix) && /^[a-z0-9_-][a-z0-9._-]{0,239}$/i.test(f.storagePath.slice(prefix.length)))
+        : !Object.hasOwn(f, 'mediaId') && !Object.hasOwn(f, 'storagePath')),
     'FIXTURE_BINDING_INVALID');
     insist(client?.supabaseUrl === `https://${project}.supabase.co`, 'CLIENT_PROJECT_MISMATCH');
     if (twoFresh) insist(ownerClient && ownerClient !== client
@@ -353,16 +361,18 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     if (twoFresh) {
       ownerPost = await read('posts', postColumns, f.postId, ownerClient);
       publicPost(ownerPost);
-      ownerMedia = await read('post_media', mediaColumns, f.mediaId, ownerClient);
-      publicMedia(ownerMedia);
+      if (includeMedia) {
+        ownerMedia = await read('post_media', mediaColumns, f.mediaId, ownerClient);
+        publicMedia(ownerMedia);
+      }
       checks.ownerFixtureReadback = true;
     }
     const post = await read('posts', postColumns, f.postId);
     publicPost(post);
-    const media = await read('post_media', mediaColumns, f.mediaId);
-    publicMedia(media);
+    const media = includeMedia ? await read('post_media', mediaColumns, f.mediaId) : null;
+    if (includeMedia) publicMedia(media);
     if (twoFresh) insist(['id', 'author_id', 'body', 'circle_id', 'status', 'moderation_status'].every(key => ownerPost[key] === post[key])
-      && ['id', 'post_id', 'user_id', 'kind', 'storage_path'].every(key => ownerMedia[key] === media[key]), 'FIXTURE_BINDING_INVALID');
+      && (!includeMedia || ['id', 'post_id', 'user_id', 'kind', 'storage_path'].every(key => ownerMedia[key] === media[key])), 'FIXTURE_BINDING_INVALID');
     checks.publicForeignFixtureVisible = true;
     async function unchangedPost() {
       const after = await read('posts', postColumns, f.postId);
@@ -375,20 +385,22 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     await denied(() => client.from('posts').delete().eq('id', f.postId).eq('author_id', f.authorId).select('id'));
     await unchangedPost();
     checks.foreignPostDeleteDeniedUnchanged = true;
-    await denied(() => client.from('post_media').delete().eq('id', f.mediaId).eq('user_id', f.authorId).select('id'));
-    const after = await read('post_media', mediaColumns, f.mediaId);
-    insist(['id', 'post_id', 'user_id', 'kind', 'storage_path'].every(key => after[key] === media[key]), 'FOREIGN_MEDIA_CHANGED');
-    checks.foreignMediaDeleteDeniedUnchanged = true;
+    if (includeMedia) {
+      await denied(() => client.from('post_media').delete().eq('id', f.mediaId).eq('user_id', f.authorId).select('id'));
+      const after = await read('post_media', mediaColumns, f.mediaId);
+      insist(['id', 'post_id', 'user_id', 'kind', 'storage_path'].every(key => after[key] === media[key]), 'FOREIGN_MEDIA_CHANGED');
+      checks.foreignMediaDeleteDeniedUnchanged = true;
+    }
     for (const path of ['/api/admin/forum/me', '/api/admin/devices']) {
       const response = await call('worker', () => readOrdinaryWorker(`${origin}${path}`, { method: 'GET' }));
       insist(response?.status !== 401, 'AUTH_FAILURE_NOT_RLS_PROOF');
       insist(response?.status === 403, 'ADMIN_ACCESS_NOT_DENIED');
     }
     checks.ordinaryStaffAndAdminDenied = true;
-    return { status: 'PASS', counts, checks, productionAuthority: false, sensitiveValuesExported: false };
+    return { status: 'PASS', ...narrowScope, counts, checks, productionAuthority: false, sensitiveValuesExported: false };
   } catch (error) {
     const reason = reasons.has(error?.message) ? error.message : 'UNKNOWN';
-    return { status: completionUnknown || reason === 'UNKNOWN' ? 'UNKNOWN' : 'BLOCKED', reason,
+    return { status: completionUnknown || reason === 'UNKNOWN' ? 'UNKNOWN' : 'BLOCKED', ...narrowScope, reason,
       counts, checks, outstandingCompletion: completionUnknown || reason === 'UNKNOWN' ? 'UNKNOWN' : 'NONE',
       productionAuthority: false, sensitiveValuesExported: false };
   }
