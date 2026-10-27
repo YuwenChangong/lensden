@@ -1,5 +1,74 @@
 # Public Beta Current State
 
+## Completion v6: Historical Format Found, Narrow Diagnostic Awaiting Approval
+
+2026-10-27 NZDT, actual starting HEAD316345a9530b58ef5bc26803261f6c34527e218e.
+Three native investigators/reviewer actually resumed with disjoint write scopes.
+No Production/provider/browser request, login, real DB connection, account/factor
+operation, deployment, push or merge in this task; old consumed states unchanged.
+
+Historical source5e47bda9 generated tmp/owner/file;2bd0023e accepted owner-only
+bindings.39189bae later added the post segment. October legacy-tmp identity guard
+explicitly preserves old identities; it is not a data rewrite. This proves a
+legitimate historical shape, NOT the actual shape/provenance of either returned
+row. KEY_POST_LINK root remains UNKNOWN_REQUIRES_MINIMAL_PRODUCTION_DIAGNOSTIC.
+No actual data corruption/ownership bypass, parser bug or universal Auth defect
+was proved. Existing admission is unchanged; no relaxed key/post rule was shipped.
+
+Existing one-shot transport/UTC-safe input wrapper reused for one NEW pending
+relationship diagnostic, not another generic framework. Private directory:
+emergency-media-protection-v1/key-post-link-diagnostic-v1. Packet
+KEY_POST_LINK_DIAGNOSTIC.v1.NOT_AUTHORIZED.json SHA
+70eb665652e22bb50c510c0c978bfa7fe0342c2d3932a035a625574ca5fd9a4a.
+Nonce f68754b2-2009-4ea6-a17a-2b8af04ce09f;19 exact source/dependency pins.
+DB1/fixedrelationshipSELECT1/LIMIT3 admitdiagnostic2/native8/statements12,
+strict TLS/CA and existing10s/8s/1s/15s/5s/40s limits. No HTTP/OAuth/Lifecycle/
+Lock/HEAD/bytes/listing/aggregate/account/MFA/deploy/write allowance. New60minute
+window only after matching formal approval AND later actual hidden-input readiness.
+No approval, readiness window, input plan, attempt or dispatch marker exists now.
+
+Five-column private quarantine needs EXPLICIT new acceptance: media/post/key and
+media/post owners, canonical distinct keys/valid distinct media IDs only; missing
+parent may remain null, same posts/owners may repeat. It never admits a target or
+authorizes protection. Safe output only categorical legacy/count/UUID/case/post
+comparison and owner-equality flags; no private IDs/keys/hashes/fragments. No user
+body/email/profile read. LIMIT is a returned-row cap, not a physical planner scan
+guarantee. Existing signed v3/UTC files and all23 v3 pins remain unchanged.
+
+New local projection22/22 and VM admission8/8 PASS, including explicit quarantine
+consent, overflow, mismatched owners, invalid/case/different post, source drift,
+expired/extended window and duplicate marker. First VM run lacked import.meta.url
+initialization; only the fixture was corrected, not counted as PASS. Owned-loopback
+PostgreSQL17 SQL test4/4 PASS: exact five columns, diagnostic-only two rows,
+readonly25006 denial and LIMIT3 overflow/no quarantine; server/port/temp cleanup
+confirmed. Pure stub RED preceded projector implementation. No real input/DB used.
+Independent security review passed packet/pins/projector/transport and B assertions.
+
+v6 requires two ACTIVE ordinary identities. No active authorized counterpart is
+known; banned A3/B3/B4 cannot satisfy it. New separate two-fresh helper checks both
+real ordinary identities/role/journal/session/source bindings, exact public fixture
+owner readback, three denied foreign mutations plus unchanged reads and two403
+Worker denials. Same-session transport provenance and single use remain external
+caller duties. This is assertions-only, not a signup/upload/cleanup executor.
+Local changed-path tests59/59 PASS (23 new two-actor,36 affected shared one-actor);
+old fixed-actor guards preserved. No Production RLS PASS follows from mock tests.
+
+Candidate business group needs its own exact grant and operation-specific cost
+admission: <=2 fresh actors, one own post/2018byte R2 video in a precisely approved
+public circle, exact foreign checks and both source/retained-key cleanup. Proposed
+operator reservations Auth24/REST15/Worker12, R2 source calls20 include native
+DELETE<=11. These are NOT whole-browser/provider wire ceilings or cancellation
+proof. No executable business permission/fixture is created; real resource growth
+remains BLOCKED_COST_UNVERIFIED while account headroom is unproved. No Range206
+gate added beyond the accepted full200/proxy limitation. Storage is not R2 proof.
+
+MFA Enforcement/DB AAL2 and applicable release evidence reused; no app source or
+frozen artifact changed. Current enrollment-stage HEAD must not deploy. Plans
+unchanged, actual charges UNKNOWN. Release blockers remain legacy protection,
+signed Production two-user isolation and real R2 playback. Catalog ACTIVE/Beta
+NO_GO. Next sole owner action: sign the exact diagnostic text after checking its
+conditions; then execute admitted DB observation directly, no new preparation round.
+
 ## Inputs v3 UTC Delta Executed: Two Rows, Key/Post Admission Blocked
 
 2026-10-27T03:29:07.258Z actual DB receipt. Owner approved UTC delta7f1047e7;

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 import { checkPlan, runSessionChecks, buildOwnerSnippet, runFreshOneActorForeignIsolation } from './core-ordinary-session-checks.mjs';
+import * as ordinaryChecks from './core-ordinary-session-checks.mjs';
 
 const a = '11111111-1111-4111-8111-111111111111';
 const b = '22222222-2222-4222-8222-222222222222';
@@ -234,15 +235,19 @@ function freshForeignPlan() {
 }
 function freshForeignFixture(p, options = {}) {
   const trace = [];
+  const actorId = options.actorId ?? freshActor;
+  const foreignAuthor = options.foreignAuthorId ?? a;
+  const foreignNamespace = options.foreignNamespace ?? namespace;
   const rows = {
-    profiles: [{ id: freshActor, role: options.role ?? 'user' }],
-    posts: [{ id: post, author_id: a, body: `${namespace} PRIVATE_FOREIGN_BODY`, circle_id: freshCircle,
+    profiles: [{ id: actorId, role: options.role ?? 'user' }],
+    posts: [{ id: post, author_id: foreignAuthor, body: `${foreignNamespace} PRIVATE_FOREIGN_BODY`, circle_id: freshCircle,
       status: options.pending ? 'pending' : 'published', moderation_status: options.pending ? 'pending_review' : 'published',
       circles: { id: freshCircle, slug: options.hiddenCircle ? 'rls-test-circle' : 'qa-public', name: 'QA public', status: 'active' } }],
-    post_media: [{ id: media, post_id: post, user_id: a, kind: 'video', storage_path: p.foreignFixture.storagePath }],
+    post_media: [{ id: media, post_id: post, user_id: foreignAuthor, kind: 'video', storage_path: p.foreignFixture.storagePath }],
   };
   let authIndex = 0, mutations = 0;
-  const user = { id: freshActor, email: p.expected.email, created_at: p.expected.createdAt, email_confirmed_at: '2026-10-27T01:00:01Z' };
+  const user = { id: actorId, role: options.authRole ?? 'authenticated', email: p.expected.email,
+    created_at: p.expected.createdAt, email_confirmed_at: '2026-10-27T01:00:01Z' };
   const auth = async method => {
     trace.push({ type: 'auth', method });
     const index = authIndex++;
@@ -418,3 +423,165 @@ test(`${freshTestName}: unconfirmed email stops before profile or refresh`, asyn
   const r = await runFreshOneActorForeignIsolation(f.client, p, f.worker);
   assert.equal(r.reason, 'EMAIL_CONFIRMATION_UNKNOWN'); assert.deepEqual(r.counts, { auth: 1, rest: 0, worker: 0 });
 });
+
+const twoFreshTestName = 'two-fresh ordinary isolation';
+const freshOwner = '99999999-9999-4999-8999-999999999999';
+function twoFreshPlan() {
+  const p = freshForeignPlan();
+  const expected = { ...p.expected, id: freshOwner, email: 'PRIVATE_OWNER_MAILBOX@example.org',
+    namespace: 'ogh-core-ordinary-owner-20261027-nonsecret-fixture' };
+  const journal = { ...p.journal, actorId: freshOwner, email: expected.email, namespace: expected.namespace, sha256: '2'.repeat(64) };
+  const absence = { ...p.absence, email: expected.email, sha256: '3'.repeat(64) };
+  const session = (actor, j, context) => ({ verified: true, sha256: context.repeat(64), binding: p.binding,
+    project: p.project, origin: p.origin, sourceSha256: p.source.sha256, actorId: actor.id,
+    journalSha256: j.sha256, sessionContextSha256: context.repeat(64), observedAtUTC: '2026-10-27T01:00:02Z',
+    authRole: 'authenticated', provenance: 'NORMAL_WEBSITE_SESSION' });
+  p.owner = { expected, journal, absence, sessionReceipt: session(expected, journal, '4') };
+  p.sessionReceipt = session(p.expected, p.journal, '5');
+  p.foreignFixture = { ...p.foreignFixture, authorId: freshOwner, namespace: expected.namespace,
+    creatorJournalSha256: journal.sha256, storagePath: `${freshOwner}/${post}/PRIVATE_RETAINED_VIDEO.mp4` };
+  return p;
+}
+function twoFreshFixture(p, options = {}) {
+  const target = { foreignAuthorId: freshOwner, foreignNamespace: p.owner.expected.namespace };
+  const owner = freshForeignFixture({ ...p, ...p.owner }, { ...target, actorId: freshOwner, ...options.owner });
+  const other = freshForeignFixture(p, { ...target, ...options.other });
+  return { owner, other, run: () => ordinaryChecks.runTwoFreshOrdinaryForeignIsolation(owner.client, other.client, p, other.worker) };
+}
+
+test(`${twoFreshTestName}: owner and other both authenticate before exact foreign writes`, async () => {
+  assert.equal(typeof ordinaryChecks.runTwoFreshOrdinaryForeignIsolation, 'function');
+  const p = twoFreshPlan(), f = twoFreshFixture(p), r = await f.run();
+  assert.equal(r.status, 'PASS'); assert.deepEqual(r.counts, { auth: 6, rest: 12, worker: 2 });
+  for (const actor of [f.owner, f.other])
+    assert.deepEqual(actor.trace.filter(x => x.type === 'auth').map(x => x.method), ['getUser', 'refreshSession', 'getUser']);
+  assert.deepEqual(f.owner.trace.filter(x => x.type === 'rest').map(x => [x.table, x.mode]),
+    [['profiles', 'select'], ['posts', 'select'], ['post_media', 'select']]);
+  const writes = f.other.trace.filter(x => x.type === 'rest' && x.mode !== 'select');
+  assert.deepEqual(writes.map(x => [x.table, x.mode, x.filters]), [
+    ['posts', 'update', [['id', post], ['author_id', freshOwner]]],
+    ['posts', 'delete', [['id', post], ['author_id', freshOwner]]],
+    ['post_media', 'delete', [['id', media], ['user_id', freshOwner]]],
+  ]);
+  assert.equal(r.checks.twoFreshOrdinaryIdentities, true); assert.equal(r.checks.ownerFixtureReadback, true);
+  assert.equal(r.productionAuthority, false);
+  for (const value of ['PRIVATE_', freshOwner, freshActor, post, media, p.binding]) assert.ok(!JSON.stringify(r).includes(value));
+});
+
+test(`${twoFreshTestName}: rejects stale banned duplicate or unbound participants before dispatch`, async () => {
+  const changes = [
+    p => { delete p.owner; }, p => { p.owner.expected.id = p.expected.id; },
+    p => { p.owner.expected.id = a; }, p => { p.owner.expected.id = b; }, p => { p.owner.expected.id = bannedB4; },
+    p => { p.expected.id = a; }, p => { p.expected.id = b; }, p => { p.expected.id = bannedB4; },
+    p => { p.owner.expected.email = p.expected.email; }, p => { p.owner.expected.binding = '0'.repeat(64); },
+    p => { p.owner.journal.verified = false; }, p => { p.owner.journal.actorId = freshActor; },
+    p => { p.owner.absence.matches = 1; }, p => { p.owner.absence.binding = '0'.repeat(64); },
+    p => { p.source.binding = '0'.repeat(64); }, p => { p.source.origin += '/wrong'; },
+    p => { delete p.sessionReceipt; }, p => { p.owner.sessionReceipt.verified = false; },
+    p => { p.owner.sessionReceipt.actorId = freshActor; }, p => { p.sessionReceipt.actorId = freshOwner; },
+    p => { p.owner.sessionReceipt.sourceSha256 = '0'.repeat(64); },
+    p => { p.sessionReceipt.journalSha256 = '0'.repeat(64); },
+    p => { p.sessionReceipt.sessionContextSha256 = p.owner.sessionReceipt.sessionContextSha256; },
+    p => { p.owner.sessionReceipt.observedAtUTC = '2020-01-01T00:00:00Z'; },
+    p => { p.foreignFixture.authorId = a; }, p => { p.foreignFixture.postId = 'invalid'; },
+    p => { p.foreignFixture.creatorJournalSha256 = '0'.repeat(64); },
+    p => { p.foreignFixture.namespace = namespace; },
+    p => { p.deadlineUTC = '2020-01-01T00:00:00Z'; },
+  ];
+  for (const change of changes) {
+    const p = twoFreshPlan(), f = twoFreshFixture(p); change(p);
+    const r = await f.run(); assert.equal(r.status, 'BLOCKED');
+    assert.deepEqual(r.counts, { auth: 0, rest: 0, worker: 0 });
+    assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+  }
+});
+
+for (const participant of ['owner', 'other']) {
+  test(`${twoFreshTestName}: ${participant} live identity mismatch blocks business`, async () => {
+    const p = twoFreshPlan(), f = twoFreshFixture(p, { [participant]: { wrongIdentityAt: 1 } }), r = await f.run();
+    assert.equal(r.reason, 'SESSION_IDENTITY_MISMATCH');
+    assert.ok(![...f.owner.trace, ...f.other.trace].some(x => ['update', 'delete'].includes(x.mode)));
+  });
+  test(`${twoFreshTestName}: ${participant} live privileged role blocks business`, async () => {
+    const p = twoFreshPlan(), f = twoFreshFixture(p, { [participant]: { role: 'admin' } }), r = await f.run();
+    assert.equal(r.reason, 'ORDINARY_PROFILE_NOT_PROVEN');
+    assert.ok(!f.other.trace.some(x => ['update', 'delete'].includes(x.mode)));
+  });
+}
+test(`${twoFreshTestName}: either client on another project stops before dispatch`, async () => {
+  for (const participant of ['owner', 'other']) {
+    const p = twoFreshPlan(), f = twoFreshFixture(p); f[participant].client.supabaseUrl = 'https://other.supabase.co';
+    const r = await f.run(); assert.equal(r.reason, 'CLIENT_PROJECT_MISMATCH');
+    assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+  }
+});
+test(`${twoFreshTestName}: owner cannot be the same client object as other`, async () => {
+  const p = twoFreshPlan(), f = twoFreshFixture(p);
+  const r = await ordinaryChecks.runTwoFreshOrdinaryForeignIsolation(f.owner.client, f.owner.client, p, f.other.worker);
+  assert.equal(r.status, 'BLOCKED'); assert.equal(f.owner.trace.length, 0);
+});
+
+for (const participant of ['owner', 'other']) test(`${twoFreshTestName}: ${participant} must see exact public fixture`, async () => {
+  const p = twoFreshPlan(), f = twoFreshFixture(p, { [participant]: { pending: true } }), r = await f.run();
+  assert.equal(r.status, 'BLOCKED');
+  assert.ok(!f.other.trace.some(x => ['update', 'delete'].includes(x.mode)));
+});
+test(`${twoFreshTestName}: owner and foreign readback bodies must match`, async () => {
+  const p = twoFreshPlan(), f = twoFreshFixture(p);
+  const original = f.owner.client.from;
+  f.owner.client.from = table => {
+    const query = original(table), then = query.then;
+    query.then = (resolve, reject) => then.call(query, response => {
+      if (table === 'posts') response.data[0].body += ' PRIVATE_DIFFERENT';
+      resolve(response);
+    }, reject);
+    return query;
+  };
+  const r = await f.run(); assert.equal(r.reason, 'FIXTURE_BINDING_INVALID');
+  assert.ok(!f.other.trace.some(x => ['update', 'delete'].includes(x.mode)));
+});
+
+for (const [label, options, reason] of [
+  ['401', { mutationResponse: { status: 401, error: { code: '42501' } } }, 'AUTH_FAILURE_NOT_RLS_PROOF'],
+  ['unexpected write', { mutationResponse: { status: 200, data: [{ id: post }] } }, 'UNEXPECTED_WRITE_SUCCESS'],
+  ['changed post', { changedPostField: 'body' }, 'FOREIGN_POST_CHANGED'],
+  ['changed media parent', { changedMediaField: 'post_id' }, 'FOREIGN_MEDIA_CHANGED'],
+  ['Worker401', { workerStatus: 401 }, 'AUTH_FAILURE_NOT_RLS_PROOF'],
+  ['Worker200', { workerStatus: 200 }, 'ADMIN_ACCESS_NOT_DENIED'],
+]) test(`${twoFreshTestName}: ${label} is not isolation proof`, async () => {
+  const p = twoFreshPlan(), f = twoFreshFixture(p, { other: options }), r = await f.run();
+  assert.equal(r.reason, reason); assert.notEqual(r.status, 'PASS');
+  assert.ok(r.counts.auth <= 6 && r.counts.rest <= 12 && r.counts.worker <= 2);
+});
+
+test(`${twoFreshTestName}: timeout in owner leaves no other calls or late continuation`, async () => {
+  const p = twoFreshPlan(), f = twoFreshFixture(p); let finish;
+  f.owner.client.auth.getUser = () => new Promise(resolve => { finish = resolve; });
+  const r = await f.run(); assert.equal(r.status, 'UNKNOWN'); assert.equal(r.reason, 'REQUEST_COMPLETION_UNKNOWN');
+  assert.deepEqual(r.counts, { auth: 1, rest: 0, worker: 0 });
+  finish({ data: { user: { id: freshOwner } } }); await Promise.resolve();
+  assert.equal(f.other.trace.length, 0); assert.equal(r.status, 'UNKNOWN');
+});
+
+test(`${twoFreshTestName}: old one-actor entry still rejects a fresh fixture owner`, async () => {
+  const p = twoFreshPlan(), f = twoFreshFixture(p);
+  const r = await runFreshOneActorForeignIsolation(f.other.client, p, f.other.worker);
+  assert.equal(r.reason, 'FIXTURE_BINDING_INVALID'); assert.equal(f.other.trace.length, 0);
+});
+
+for (const participant of ['owner', 'other']) {
+  test(`${twoFreshTestName}: ${participant} nonordinary receipt is rejected before dispatch`, async () => {
+    for (const change of [r => { r.authRole = 'service_role'; }, r => { delete r.provenance; }]) {
+      const p = twoFreshPlan(), f = twoFreshFixture(p);
+      change(participant === 'owner' ? p.owner.sessionReceipt : p.sessionReceipt);
+      const r = await f.run(); assert.equal(r.reason, 'SESSION_BINDING_INVALID');
+      assert.deepEqual(r.counts, { auth: 0, rest: 0, worker: 0 });
+      assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+    }
+  });
+  test(`${twoFreshTestName}: ${participant} live service role is not ordinary proof`, async () => {
+    const p = twoFreshPlan(), f = twoFreshFixture(p, { [participant]: { authRole: 'service_role' } });
+    const r = await f.run(); assert.equal(r.reason, 'SESSION_IDENTITY_MISMATCH');
+    assert.ok(!f.other.trace.some(x => ['update', 'delete'].includes(x.mode)));
+  });
+}

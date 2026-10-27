@@ -186,15 +186,26 @@ export function buildOwnerSnippet(plan) {
 // fixture and single use. Both callbacks use the same ordinary session. Counts
 // cover operator calls only; this function cannot authorize or cancel server work.
 export async function runFreshOneActorForeignIsolation(client, plan, readOrdinaryWorker) {
+  return runBoundForeignIsolation(client, plan, readOrdinaryWorker, null, false);
+}
+
+// Both sessions must come from separately approved normal signups. Receipt pins,
+// ordinary credentials, client/Worker context provenance and single use require
+// external verification; these assertions cannot establish transport provenance.
+export async function runTwoFreshOrdinaryForeignIsolation(ownerClient, client, plan, readOrdinaryWorker) {
+  return runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, true);
+}
+
+async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, twoFresh) {
   const counts = { auth: 0, rest: 0, worker: 0 };
-  const caps = { auth: 3, rest: 9, worker: 2 };
+  const caps = { auth: twoFresh ? 6 : 3, rest: twoFresh ? 12 : 9, worker: 2 };
   const checks = {};
   const reasons = new Set(['PLAN_INVALID', 'SOURCE_BINDING_INVALID', 'JOURNAL_BINDING_INVALID',
     'FIXTURE_BINDING_INVALID', 'CLIENT_PROJECT_MISMATCH', 'DEADLINE_EXPIRED', 'BATCH_BUDGET',
     'SDK_ERROR', 'SESSION_IDENTITY_MISMATCH', 'EMAIL_CONFIRMATION_UNKNOWN', 'ORDINARY_PROFILE_NOT_PROVEN',
     'EXACT_ROW_NOT_VISIBLE', 'PUBLIC_FIXTURE_NOT_VISIBLE', 'AUTH_FAILURE_NOT_RLS_PROOF',
     'UNEXPECTED_WRITE_SUCCESS', 'DENIAL_UNCONFIRMED', 'FOREIGN_POST_CHANGED', 'FOREIGN_MEDIA_CHANGED',
-    'ADMIN_ACCESS_NOT_DENIED', 'REQUEST_COMPLETION_UNKNOWN']);
+    'ADMIN_ACCESS_NOT_DENIED', 'REQUEST_COMPLETION_UNKNOWN', 'SESSION_BINDING_INVALID']);
   let completionUnknown = false;
   const insist = (ok, reason) => { if (!ok) throw new Error(reason); };
   const hash = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
@@ -219,21 +230,48 @@ export async function runFreshOneActorForeignIsolation(client, plan, readOrdinar
     insist(banned && Object.keys(banned).length === 3 && ['A3', 'B3', 'B4'].every(key => id(banned[key]))
       && new Set(Object.values(banned)).size === 3
       && !Object.values(banned).includes(expected.id), 'JOURNAL_BINDING_INVALID');
-    insist(journal?.verified === true && hash(journal.sha256) && journal.binding === p.binding
-      && journal.project === project && journal.namespace === expected.namespace && journal.email === expected.email
-      && journal.actorId === expected.id && journal.createdAt === expected.createdAt && journal.submitCount === 1
-      && journal.method === 'NORMAL_OWNER_WEBSITE_SIGNUP'
-      && absence?.verified === true && hash(absence.sha256) && absence.binding === p.binding
-      && absence.project === project && absence.email === expected.email && absence.matches === 0, 'JOURNAL_BINDING_INVALID');
+    function boundSignup(e, j, a) {
+      insist(j?.verified === true && hash(j.sha256) && j.binding === p.binding
+        && j.project === project && j.namespace === e.namespace && j.email === e.email
+        && j.actorId === e.id && j.createdAt === e.createdAt && j.submitCount === 1
+        && j.method === 'NORMAL_OWNER_WEBSITE_SIGNUP'
+        && a?.verified === true && hash(a.sha256) && a.binding === p.binding
+        && a.project === project && a.email === e.email && a.matches === 0, 'JOURNAL_BINDING_INVALID');
+    }
+    boundSignup(expected, journal, absence);
+    const owner = p.owner;
+    if (twoFresh) {
+      const e = owner?.expected;
+      insist(e?.project === project && e.binding === p.binding && id(e.id) && e.id !== expected.id
+        && !Object.values(banned).includes(e.id) && typeof e.email === 'string' && e.email.length <= 254
+        && e.email.toLowerCase() !== expected.email.toLowerCase()
+        && /^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(e.namespace ?? '') && date(e.createdAt), 'JOURNAL_BINDING_INVALID');
+      boundSignup(e, owner.journal, owner.absence);
+      function boundSession(receipt, actor, j) {
+        insist(receipt?.verified === true && hash(receipt.sha256) && receipt.binding === p.binding
+          && receipt.project === project && receipt.origin === origin && receipt.sourceSha256 === source.sha256
+          && receipt.authRole === 'authenticated' && receipt.provenance === 'NORMAL_WEBSITE_SESSION'
+          && receipt.actorId === actor.id && receipt.journalSha256 === j.sha256 && hash(receipt.sessionContextSha256)
+          && date(receipt.observedAtUTC) && Date.parse(receipt.observedAtUTC) >= Date.parse(actor.createdAt)
+          && Date.parse(receipt.observedAtUTC) < Date.parse(p.deadlineUTC), 'SESSION_BINDING_INVALID');
+      }
+      boundSession(p.sessionReceipt, expected, journal);
+      boundSession(owner.sessionReceipt, e, owner.journal);
+      insist(owner.sessionReceipt.sessionContextSha256 !== p.sessionReceipt.sessionContextSha256, 'SESSION_BINDING_INVALID');
+    }
     insist(f?.verified === true && hash(f.sha256) && f.binding === p.binding && f.sourceSha256 === source.sha256
       && ['authorId', 'postId', 'mediaId', 'circleId'].every(key => id(f[key]))
-      && f.authorId === banned.A3 && f.authorId !== expected.id
+      && (twoFresh ? f.authorId === owner.expected.id && f.creatorJournalSha256 === owner.journal.sha256
+        && f.namespace === owner.expected.namespace : f.authorId === banned.A3)
+      && f.authorId !== expected.id
       && /^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(f.namespace ?? '')
       && typeof f.storagePath === 'string'
       && [ `${f.authorId}/${f.postId}/`, `tmp/${f.authorId}/${f.postId}/` ].some(prefix =>
         f.storagePath.startsWith(prefix) && /^[a-z0-9_-][a-z0-9._-]{0,239}$/i.test(f.storagePath.slice(prefix.length))),
     'FIXTURE_BINDING_INVALID');
     insist(client?.supabaseUrl === `https://${project}.supabase.co`, 'CLIENT_PROJECT_MISMATCH');
+    if (twoFresh) insist(ownerClient && ownerClient !== client
+      && ownerClient.supabaseUrl === `https://${project}.supabase.co`, 'CLIENT_PROJECT_MISMATCH');
     const deadline = Date.parse(p.deadlineUTC);
     async function call(type, operation) {
       insist(Date.now() < deadline, 'DEADLINE_EXPIRED');
@@ -259,14 +297,15 @@ export async function runFreshOneActorForeignIsolation(client, plan, readOrdinar
       insist(response && !response.error, 'SDK_ERROR');
       return response.data;
     }
-    function identity(response) {
+    function identity(response, actor = expected, j = journal, a = absence) {
       const user = data(response)?.user;
-      insist(ordinarySignupIdentityEvidence({ user, expected, journal, absence,
+      if (twoFresh) insist(user?.role === 'authenticated' && user.is_anonymous !== true, 'SESSION_IDENTITY_MISMATCH');
+      insist(ordinarySignupIdentityEvidence({ user, expected: actor, journal: j, absence: a,
         sourceProject: source.project, excludedIds: Object.values(banned) }).identityVerified, 'SESSION_IDENTITY_MISMATCH');
       insist(date(user.email_confirmed_at), 'EMAIL_CONFIRMATION_UNKNOWN');
     }
-    async function read(table, columns, rowId) {
-      const rows = data(await call('rest', () => client.from(table).select(columns).eq('id', rowId).limit(2)));
+    async function read(table, columns, rowId, actorClient = client) {
+      const rows = data(await call('rest', () => actorClient.from(table).select(columns).eq('id', rowId).limit(2)));
       insist(Array.isArray(rows) && rows.length === 1, 'EXACT_ROW_NOT_VISIBLE');
       return structuredClone(rows[0]);
     }
@@ -277,27 +316,53 @@ export async function runFreshOneActorForeignIsolation(client, plan, readOrdinar
       insist(r?.status === 403 || r?.error?.code === '42501'
         || (!r?.error && [200, 204].includes(r?.status) && Array.isArray(r.data) && r.data.length === 0), 'DENIAL_UNCONFIRMED');
     }
+    if (twoFresh) {
+      const e = owner.expected;
+      const ownerIdentity = response => identity(response, e, owner.journal, owner.absence);
+      ownerIdentity(await call('auth', () => ownerClient.auth.getUser()));
+      const profile = await read('profiles', 'id,role', e.id, ownerClient);
+      insist(profile.id === e.id && profile.role === 'user', 'ORDINARY_PROFILE_NOT_PROVEN');
+      ownerIdentity(await call('auth', () => ownerClient.auth.refreshSession()));
+      ownerIdentity(await call('auth', () => ownerClient.auth.getUser()));
+    }
     identity(await call('auth', () => client.auth.getUser()));
     const profile = await read('profiles', 'id,role', expected.id);
     insist(profile.id === expected.id && profile.role === 'user', 'ORDINARY_PROFILE_NOT_PROVEN');
     identity(await call('auth', () => client.auth.refreshSession()));
     identity(await call('auth', () => client.auth.getUser()));
     checks.ordinaryStableIdentity = true;
+    if (twoFresh) checks.twoFreshOrdinaryIdentities = true;
 
     const postColumns = 'id,author_id,body,circle_id,status,moderation_status,circles:circle_id(id,slug,name,status)';
     const mediaColumns = 'id,post_id,user_id,kind,storage_path';
+    function publicPost(post) {
+      const circle = Array.isArray(post.circles) ? (post.circles.length === 1 ? post.circles[0] : null) : post.circles;
+      insist(post.id === f.postId && post.author_id === f.authorId && post.circle_id === f.circleId
+        && typeof post.body === 'string' && post.body.includes(f.namespace)
+        && post.status === 'published' && post.moderation_status === 'published'
+        && circle?.id === f.circleId && circle.status === 'active'
+        && typeof circle.slug === 'string' && typeof circle.name === 'string'
+        && !['rls-test-circle', 'rls-test', 'test-circle'].includes(circle.slug.toLowerCase())
+        && !circle.name.toLowerCase().includes('rls test'), 'PUBLIC_FIXTURE_NOT_VISIBLE');
+    }
+    function publicMedia(media) {
+      insist(media.id === f.mediaId && media.post_id === f.postId && media.user_id === f.authorId
+        && media.kind === 'video' && media.storage_path === f.storagePath, 'PUBLIC_FIXTURE_NOT_VISIBLE');
+    }
+    let ownerPost, ownerMedia;
+    if (twoFresh) {
+      ownerPost = await read('posts', postColumns, f.postId, ownerClient);
+      publicPost(ownerPost);
+      ownerMedia = await read('post_media', mediaColumns, f.mediaId, ownerClient);
+      publicMedia(ownerMedia);
+      checks.ownerFixtureReadback = true;
+    }
     const post = await read('posts', postColumns, f.postId);
-    const circle = Array.isArray(post.circles) ? (post.circles.length === 1 ? post.circles[0] : null) : post.circles;
-    insist(post.id === f.postId && post.author_id === f.authorId && post.circle_id === f.circleId
-      && typeof post.body === 'string' && post.body.includes(f.namespace)
-      && post.status === 'published' && post.moderation_status === 'published'
-      && circle?.id === f.circleId && circle.status === 'active'
-      && typeof circle.slug === 'string' && typeof circle.name === 'string'
-      && !['rls-test-circle', 'rls-test', 'test-circle'].includes(circle.slug.toLowerCase())
-      && !circle.name.toLowerCase().includes('rls test'), 'PUBLIC_FIXTURE_NOT_VISIBLE');
+    publicPost(post);
     const media = await read('post_media', mediaColumns, f.mediaId);
-    insist(media.id === f.mediaId && media.post_id === f.postId && media.user_id === f.authorId
-      && media.kind === 'video' && media.storage_path === f.storagePath, 'PUBLIC_FIXTURE_NOT_VISIBLE');
+    publicMedia(media);
+    if (twoFresh) insist(['id', 'author_id', 'body', 'circle_id', 'status', 'moderation_status'].every(key => ownerPost[key] === post[key])
+      && ['id', 'post_id', 'user_id', 'kind', 'storage_path'].every(key => ownerMedia[key] === media[key]), 'FIXTURE_BINDING_INVALID');
     checks.publicForeignFixtureVisible = true;
     async function unchangedPost() {
       const after = await read('posts', postColumns, f.postId);
