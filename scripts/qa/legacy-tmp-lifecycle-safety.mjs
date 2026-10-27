@@ -117,22 +117,28 @@ export function sealBucketRuleBaseline(raw,source) {
 }
 
 export function admitExactTmpReferences(rows) {
-  const fail=()=>{throw Error('PRIVATE_TMP_TARGET_SCOPE_UNPROVEN');};
+  const fail=check=>{throw Object.assign(Error('PRIVATE_TMP_TARGET_SCOPE_UNPROVEN'),{
+    admissionCheck:check,returnedRowCount:Array.isArray(rows)&&rows.length<=3?rows.length:'OVERFLOW_OR_INVALID'
+  });};
   // Check count first: the third row is overflow detection, never a target.
-  if(!Array.isArray(rows)||rows.length!==2)fail();
+  if(!Array.isArray(rows)||rows.length!==2)fail('ROW_COUNT');
   const uuid=/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
   const columns=['media_id','post_id','storage_path','size_bytes','post_status','moderation_status'];
   const ids=new Set(),keys=new Set();
   for(const r of rows) {
-    if(!r||Object.keys(r).length!==columns.length||!Object.keys(r).every(k=>columns.includes(k))
-      ||!uuid.test(r.media_id)||!uuid.test(r.post_id)||ids.has(r.media_id.toLowerCase())
-      ||typeof r.storage_path!=='string'||!r.storage_path.startsWith('tmp/')
+    if(!r||Object.keys(r).length!==columns.length||!Object.keys(r).every(k=>columns.includes(k)))fail('COLUMNS');
+    if(!uuid.test(r.media_id))fail('MEDIA_ID');
+    if(!uuid.test(r.post_id))fail('POST_ID');
+    if(ids.has(r.media_id.toLowerCase()))fail('DUPLICATE_MEDIA_ID');
+    if(typeof r.storage_path!=='string'||!r.storage_path.startsWith('tmp/')
       ||Buffer.byteLength(r.storage_path)>1024||!/^tmp\/[a-zA-Z0-9._/-]+$/.test(r.storage_path)
-      ||r.storage_path.split('/').some(p=>!p||p==='.'||p==='..')||keys.has(r.storage_path)
-      ||count(r.size_bytes)===null||typeof r.post_status!=='string'||!r.post_status
-      ||typeof r.moderation_status!=='string'||!r.moderation_status)fail();
+      ||r.storage_path.split('/').some(p=>!p||p==='.'||p==='..'))fail('KEY_NONCANONICAL');
+    if(keys.has(r.storage_path))fail('DUPLICATE_KEY');
+    if(count(r.size_bytes)===null)fail('SIZE');
+    if(typeof r.post_status!=='string'||!r.post_status)fail('POST_STATE');
+    if(typeof r.moderation_status!=='string'||!r.moderation_status)fail('MODERATION_STATE');
     const parts=r.storage_path.split('/');
-    if(parts.length!==4||!uuid.test(parts[1])||parts[2]!==r.post_id.toLowerCase())fail();
+    if(parts.length!==4||!uuid.test(parts[1])||parts[2]!==r.post_id.toLowerCase())fail('KEY_POST_LINK');
     ids.add(r.media_id.toLowerCase());keys.add(r.storage_path);
   }
   return {privateTargets:rows.map(r=>Object.fromEntries(columns.map(k=>[k,r[k]]))),

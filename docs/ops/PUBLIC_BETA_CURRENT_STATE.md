@@ -1,5 +1,60 @@
 # Public Beta Current State
 
+## Discovery Stopped; Configuration Baselines Acquired, Targets Not Admitted
+
+2026-10-27 NZDT: owner approved50eb5f6f and the exact Wrangler method amendment.
+One official login, explicit account:read/workers:write plus offline_access;
+no manual token/expiry, whoami or automatic refresh. Window00:02:39.898Z through
+01:02:39.898Z (13:02:39.898 through14:02:39.898 NZDT), not extended. LifecycleGET1
+and lockGET1 both complete HTTP200, bounded10s/256KiB, no retry or redirect.
+Actual lifecycle2 rules: one multipart abort, one enabled tmp/ deletion-only
+Age86400 rule with no other transitions. Bucket locks0. Full private baselines
+and raw/canonical hashes retained, not replaced by CLI summaries.
+Canonical lifecycle SHA32c1d6b9dba4bbfa1872de4de96790d21e4a7bfd759226fb9a09cea2a0c485af;
+lock SHAda506c8a9c8a9f31aa00eaeef23d49764b9ace97158a1a0a7aa628e6d446b0fb.
+
+One strict TLS readonly DB connection actually opened, initialization/readonly
+target gates and the exact identification SELECT executed; native7/statements10.
+Target admission failed PRIVATE_TMP_TARGET_SCOPE_UNPROVEN. Rollback cleanup and
+local driver closure completed, localClose CONFIRMED; remote closure is NOT
+independently verified. No exact target manifest was produced. Row count and
+failed subcondition were not retained: both UNKNOWN, no guessed data defect,
+invalid password or provider failure. Connection quota consumed; no requery or
+reconnect, even inside the remaining window. Object identities/existence UNKNOWN,
+HEAD NOT_EXECUTED, protection NOT_APPLIED, aggregate not repeated, all mutations0.
+Private evidence under existing emergency-media-protection-v1 directory:
+management.final.safe.json, lifecycle/lock.baseline.private.json,
+database.final.safe.json, discovery.final.safe.json. DB receipt SHA
+eca34cc842223e08d28798922aa72555303a523574977ce699766a0ec2952c94.
+Obsolete input shortcuts removed ONLY; old consumed markers/evidence preserved.
+
+Confirmed local observability gap fixed only: admission errors now expose a
+fixed constraint enum and bounded row count, never values; all predicates and
+generic error identity unchanged. Three new diagnostic checks plus one selected
+existing error-path check PASS4/4; no full historical suite. This cannot recover
+this attempt's missing details or grant a new connection. Executed helper is
+preserved by2330254d/source09b361aa; changed helper is future LOCAL QA only.
+
+Narrow full-Key-prefix lock cannot be prepared without admitted Keys. To avoid
+another DB prerequisite before emergency mitigation, one alternative exact
+write proposal is prepared: change ONLY the actual tmp/ deletion rule enabled
+true to false in the full two-rule lifecycle collection. Other multipart rule,
+IDs/order/fields unchanged. This affects ALL existing/future tmp/ objects, not
+two precise objects; count/bytes/cost/existence remain UNKNOWN. No action applied.
+Private MEDIA_PROTECTION_WRITE.v1.NOT_AUTHORIZED.json SHA
+a00a436bc45b23fd9829e5e06f0f814f6e0fa40708087684dc7579172df44e11.
+Exact PUT body, before/after hashes, one independent preGET/PUT/readback each,
+drift/cost/identity/time stops and ambiguous-PUT readback/no-write-retry bound.
+Original read approval gives NO write authority. New owner must explicitly
+accept prefix-wide retention and genuinely establish zero extra cost allowance;
+otherwise no PUT. Pausing enabled has NO automatic expiry:24hour REVIEW is not
+automatic restoration, a finite lock, or permission for indefinite paid storage.
+Never auto-reenable deletion or rollback after a failed/unknown PUT. Later safe
+restoration requires durable reference/object remediation and separate approval.
+Next owner decision: review this broader exact emergency pause/cost obligation,
+not silently approve two-object protection or repeat SQL. No execution permit
+or new window created. MFA/database AAL2 remain DONE; Catalog ACTIVE/Beta NO-GO.
+
 ## Autonomous Fast Track: Offline Preparation Only
 
 2026-10-26, baseline e20fc6e05154a7e76a0c2e0214e0b19912e68542,

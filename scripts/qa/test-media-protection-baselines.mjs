@@ -100,3 +100,32 @@ test('baseline preparation cannot call providers or create execution state',()=>
   globalThis.fetch=()=>{calls++;throw Error('OFFLINE_ONLY');};
   try{seal(raw([]));admitExactTmpReferences(pair());assert.equal(calls,0);}finally{globalThis.fetch=old;}
 });
+
+test('diagnostic distinguishes each failing constraint without disclosing values',()=>{
+  const cases=[['COLUMNS',{extra:'PRIVATE_VALUE'}],['MEDIA_ID',{media_id:'PRIVATE_VALUE'}],
+    ['POST_ID',{post_id:'PRIVATE_VALUE'}],['DUPLICATE_MEDIA_ID',{media_id:row().media_id}],
+    ['KEY_NONCANONICAL',{storage_path:'tmp/PRIVATE_VALUE?secret'}],
+    ['DUPLICATE_KEY',{storage_path:row().storage_path}],['SIZE',{size_bytes:null}],
+    ['POST_STATE',{post_status:null}],['MODERATION_STATE',{moderation_status:null}],
+    ['KEY_POST_LINK',{post_id:'33333333-3333-4333-8333-333333333333'}]];
+  for(const [reason,patch]of cases){
+    const rows=pair();Object.assign(rows[1],patch);
+    assert.throws(()=>admitExactTmpReferences(rows),e=>{
+      assert.equal(e.message,'PRIVATE_TMP_TARGET_SCOPE_UNPROVEN');
+      assert.deepEqual({...e},{admissionCheck:reason,returnedRowCount:2});
+      assert(!JSON.stringify(e).includes('PRIVATE_VALUE'));return true;
+    });
+  }
+});
+
+test('diagnostic count overflow still never inspects third row or accepts extra targets',()=>{
+  const rows=[row(),row(2),null];Object.defineProperty(rows,2,{get(){throw Error('DO_NOT_READ');}});
+  assert.throws(()=>admitExactTmpReferences(rows),e=>e.admissionCheck==='ROW_COUNT'&&e.returnedRowCount===3);
+  assert.throws(()=>admitExactTmpReferences(null),e=>e.admissionCheck==='ROW_COUNT'&&e.returnedRowCount==='OVERFLOW_OR_INVALID');
+});
+
+test('diagnostic does not change valid target projection or provide execution permission',()=>{
+  const r=admitExactTmpReferences(pair());assert.deepEqual(r.privateTargets,pair());
+  assert.equal(r.safeSummary.productionAuthority,false);assert.equal(r.safeSummary.objectExistence,'UNKNOWN');
+  assert.equal(r.safeSummary.protection,'NOT_APPLIED');
+});
