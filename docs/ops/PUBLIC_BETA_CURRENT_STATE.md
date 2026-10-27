@@ -1,5 +1,36 @@
 # Public Beta Current State
 
+## Inputs v3 Execution: Usage Consumed, Local UTC Entry Repair Pending
+
+Owner formally approved286cd393 on2026-10-27. One explicitly scoped official
+Wrangler OAuth completed; exact scopes and local validity verified without token
+export. Actual-readiness window03:17:30.358Z..04:17:30.358Z, unchanged thereafter.
+Fixed bucket propertiesGET1 returned Standard default class. Pinned analytics
+queryPOST1 returned HTTP200 but BODY_INCOMPLETE; usage stage STOPPED, both reads
+consumed, no retry. This is NOT complete analytics, object-class or cost proof.
+
+Owner reported unable to open password shortcut. Input-launch, consumer, attempt
+and database-dispatch markers absent; no matching reader/input process observed
+after excluding the inspector. DB connections0, targetSELECT0, writes0. Actual
+shortcut/display cause remains UNKNOWN. Offline actual wrapper-prefix execution
+independently proves PowerShell7.6.5 ConvertFrom-Json changes deadline to DateTime,
+then ParseExact fails before the launch marker. Alternate entry changes only four
+reads to -DateKind String; corrected prefix and four timestamp fixtures PASS,
+independent review complete. No production launch of that alternate occurred.
+
+Signed parent/source files remain unchanged. Pending local-method delta SHA
+7f1047e7dae8bce4086d7e860753c9dd92de10df25bf572c84e4b377530da9f8
+binds alternate source ea5efd01317540e85532f1b3165be1ff4ed2ac5e514b0514e0702cedfa8ad0c0.
+It adds no Production quota/window/login/read: only one alternate local entry,
+after explicit approval, original-time and unspent-marker checks. Original DB1/
+SELECT1/native8/statements12 remains unspent; consumed usage cannot be replayed.
+Private DACL-only readback verified CurrentUser+SYSTEM; an earlier Set-Acl copy
+raised privilege errors and was not accepted as permission proof. No secret read,
+HEAD, object bytes, mutation, factor change, deployment or push. Exact media
+identities/existence remain UNKNOWN; protection NOT_APPLIED, costs UNKNOWN.
+Next sole owner action: approve the precise UTC-entry delta within original
+window. If expired, stop; no implicit extension. Catalog ACTIVE/Beta NO_GO.
+
 ## Completion v5: Reviewed Local Repairs, Production Still Pending
 
 2026-10-27 NZDT, starting HEAD7274fc12362d5455e5120c7a5f6e144d540e5254.
