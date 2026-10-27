@@ -1,5 +1,34 @@
 # Public Beta Current State
 
+## Relationship Diagnostic: Local Input Missed, No Database Dispatch
+
+Owner formally approved70eb6656. Pins19/unused markers/current runtimes verified;
+actual-readiness window2026-10-27T05:06:16.503Z..06:06:16.503Z. One local launch
+reached consumer/CurrentUser pipe READY. Final receipt05:08:29.256Z is BLOCKED at
+LOCAL_INPUT, attempts0/statements0; no database-dispatch marker or quarantine.
+No matching input/reader processes remain. No Production/provider request, DB
+connection, SQL, mutation, HEAD, deployment or retry occurred in this attempt.
+
+Owner first reported no visible window, then clarified: window appeared while
+away and input period was missed. Preserve both observations; do not diagnose a
+password failure, Production connection fault or new launcher bug. Exact capture
+exit/sentinel/receiver exception was not retained; underlying stop mechanism stays
+UNKNOWN. Independent review confirms only pre-DB local stop. Attempt remains
+consumed even though its DB allowance was not dispatched; no old marker reset.
+
+No code fix or test rerun. Four byte-identical program files reused for a NEW
+pending independent grant under key-post-link-diagnostic-v1/recovery-1. Packet
+KEY_POST_LINK_DIAGNOSTIC.v1.NOT_AUTHORIZED.json SHA
+8d2ab4276d37fbb24e9e32a9fb93b5a305a701c7f58048692786219057820e93.
+Same19pins, strict DB1/SELECT1/LIMIT3/diagnostic2/native8/statements12; same private
+five-field quarantine and zero HTTP/HEAD/write scope. Fresh nonce/local execution
+domain; previous files/receipts/markers unchanged. New60minute window requires
+new explicit approval AND actual owner presence for immediate120second input;
+no activation/permit/attempt exists in recovery preparation. No OAuth needed.
+This does not automatically extend or reuse the stopped grant. Key/post cause,
+exact target identities/existence and cost headroom remain UNKNOWN; protection
+NOT_APPLIED. Catalog ACTIVE/Beta NO_GO; MFA/DB AAL2 and all historical DONE reused.
+
 ## Completion v6: Historical Format Found, Narrow Diagnostic Awaiting Approval
 
 2026-10-27 NZDT, actual starting HEAD316345a9530b58ef5bc26803261f6c34527e218e.
