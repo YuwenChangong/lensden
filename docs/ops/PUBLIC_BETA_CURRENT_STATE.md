@@ -1,5 +1,78 @@
 # Public Beta Current State
 
+## Recovery Diagnostic Executed: Current Relationship Observed, Protection Pending
+
+Supersedes the pending recovery-1 status below, without changing historical
+receipts. Owner formally approved8d2ab427. Actual-readiness window was
+2026-10-27T05:17:28.885Z..06:17:28.885Z. One hidden local input reached the
+consumer; one strict readonly connection and one pinned SELECT returned exactly
+two rows. Native SQL7/normal statements10,2464ms; local close CONFIRMED, remote
+close NOT_INDEPENDENTLY_VERIFIED. This allowance is consumed, not reusable.
+Mutations0/retries0/Cloudflare0/object HEAD-body-list0. Password not retained.
+
+Both current rows have parents and consistent media/post/key-owner relationships.
+Both Keys have three segments, not the four required by the earlier admission.
+One filename is compatible with the historical uploader grammar; the other lacks
+its UUID prefix. The latter is not proof of corruption or uploader provenance.
+No embedded post segment exists to compare. This identifies the current path-
+grammar rejection, not a historical ownership defect. Earlier unretained-row
+identity and historical provenance remain NOT_PROVEN. Original strict admission
+is unchanged; authorized five-field quarantine is not protection-target admission.
+Safe diagnostic receipt SHA256:
+5731f8cef97bdc8469cc05bfe5986c1b1286d3abc7033fd426d6469541d5afc0.
+
+Offline candidate only, in the existing private emergency directory under
+exact-key-prefix-candidate-v1: two Date lock rules, each literal prefix equal to
+one quarantined complete Key, expiring2026-10-28T05:17:40.601Z. This is a draft
+expiry, NOT an activated permit/window. No expiry may be shifted automatically.
+Full-Key prefix matching is NOT exact-object equality: existing/future suffix
+matches can also be protected. Prefixes are mutually nonoverlapping. Existing
+empty lock baseline and lifecycle baseline are preserved; no provider PUT occurs.
+CurrentUser+SYSTEM-only ACL, exact two selectors/date/body hash and absence of
+execution authority verified locally. No old tests or Production reads repeated.
+
+Candidate protection blocks matching deletion/overwrite/old multipart completion,
+not creation. It cannot restore missing bytes. At expiry, overdue lifecycle
+deletion can resume. Broad tmp-rule suspension affects all current/future tmp
+objects and lacks automatic expiry, so is not preferred. Any durable retention or
+real-media copy/rebind needs a separate decision before expiry, not implicit renewal.
+Reference: https://developers.cloudflare.com/r2/buckets/bucket-locks/ .
+
+Object existence, sizes, actual historical storage classes and shared-account free
+headroom remain UNKNOWN. Standard bucket default is not historical-object class;
+incomplete analytics is not zero-charge proof. Candidate writeReady=false and
+productionAuthority=false. No executable protection write approval is prepared.
+All old pending/consumed documents and markers remain unchanged.
+
+Smallest proposed NEW observation: one bounded current-period account-shared R2
+usage query; only after credible Class A reserve including reporting lag and
+concurrency is established, at most two metadata ListObjects requests, each with
+prefix equal to one complete private Key and per_page=2. This requires a new
+explicit metadata-list method permission; old object-list allowance was zero.
+No pagination, other prefix, object body, SQL, retry or write. Parse only exact
+literal equality transiently; discard other Keys/ETags/metadata. Extra matches,
+cursor/limit ambiguity or incomplete results remain UNKNOWN and stop. Empty
+terminal results only describe that observation, not historical deletion.
+Usage alone is not invoice/storage-class/future-retention cost proof; no listing
+may be used to spend through unresolved operation-cost admission. Neither this
+proposal nor candidate creates approval, an executor, a window or resource locks.
+References: https://developers.cloudflare.com/r2/platform/metrics-analytics/
+and https://developers.cloudflare.com/r2/pricing/ .
+
+Three native agents reused: media investigation, acceptance source integration,
+independent safety review. No application patch was justified. Existing59 local
+acceptance checks and diagnostic tests reused, not rerun or relabeled Production
+PASS. Two ACTIVE fresh ordinary identities remain necessary; A3/B3/B4 stay banned.
+Real Production foreign-mutation isolation and R2 decode/playback NOT_VERIFIED.
+
+Frozen MFA Enforcement/production DB AAL2 evidence remains PASS; no new server
+session claim. Current enrollment-stage HEAD MUST NOT DEPLOY. Five known source
+differences from frozen enforcement remain a future release-integration constraint,
+not permission to rebuild/deploy. No push/merge, plan change or new paid service.
+Actual external charges UNKNOWN; no billable operation authorized. This offline
+continuation adds Production0/mutations0. Protection NOT_APPLIED; object loss
+UNKNOWN; lifecycle deletion-match risk remains. Catalog ACTIVE/Beta NO_GO.
+
 ## Relationship Diagnostic: Local Input Missed, No Database Dispatch
 
 Owner formally approved70eb6656. Pins19/unused markers/current runtimes verified;
