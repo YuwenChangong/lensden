@@ -1,5 +1,74 @@
 # Public Beta Current State
 
+## v7 Executed After Formal Approval: Complete Usage Observation, HEAD Stopped
+
+Owner formally signed exact packet6a503095 and its independent A/B conditions.
+Approval recorded2026-10-27T06:12:29.865Z after original/source/query/quarantine
+pins, unused domain and private ACL checks. One approved prewindow OAuth login
+completed06:13:30.137Z; scopes exactly account:read/offline_access, unexpired local
+credential verified without export. No broader scope, whoami/account listing,
+automatic refresh or retry. CLI telemetry/disk logging disabled for this login.
+
+Actual A readiness activated the one common window
+2026-10-27T06:15:24.469Z..07:15:24.469Z. Fixed query covered October1 through that
+activation, not a rolling interval. Native strict HTTPS POST dispatched ONCE to
+the fixed account Analytics endpoint; HTTP200, complete bounded response, no
+GraphQL errors,1931ms. No old top-level reader/bucket-properties GET was invoked.
+All requested field/range/group-cap checks passed. A is terminal/CONSUMED despite
+remaining wall-clock time. No new query, pagination or replay is authorized.
+
+Observed14 operation groups total230 requests;1582 storage observations across
+2 buckets. Sum of each bucket's observed maximum payload+metadata4618642bytes
+(about4.405MiB). Latest storage observation05:40Z lags query end by2124.469seconds.
+These are account-shared delayed observations, NOT current headroom, invoice,
+actual object classes, complete accrued GB-month, unreported/concurrent usage
+bound, hard spending cap or zero-actual-charge guarantee. No raw response, bucket
+name list, private Key or user record persisted. Actual monthly charges UNKNOWN.
+A safe receipt SHA256:
+fdb4ea0e5361d2521a992d9f6c1c9d4373663cd6e4eaa50d57540ee13d5fd06b.
+
+B independently stopped before dispatch: current-process signing inputs absent,
+trusted S3 signer unverified and independent operation-cost proof absent.
+HEAD0/list0/body0, no retry or substitute API. This is not permission to search
+secret files, derive OAuth signing credentials or create/rotate credentials.
+B terminal prerequisite receipt preserves two UNKNOWN object states and target
+admission0. It is not two failed HEADs or historical loss proof. Receipt SHA256:
+32fd7802f2b979ec641794b1ec4b27c9b784285e26de94d15baa69d041f702f1.
+Both new safe receipts read back with CurrentUser+SYSTEM-only ACL. Original v7
+JSON/text/query and all historical receipts/markers remain unchanged.
+
+This run closes the missing complete aggregate observation, NOT protection or
+zero-cost acceptance. No protective PUT or configuration reread, database
+connection, user/factor operation, upload, deployment, merge or push occurred.
+R2/database mutations0 and executor retries0. Legacy existence UNKNOWN,
+protection NOT_APPLIED, referenced-tmp deletion risk remains. Candidate expiry
+not approved/renewed. B/protection require real new signing/cost/impact authority,
+not another copy of v7 or an owner attestation that missing evidence exists.
+No owner action is needed to close this consumed read scope. Further account or
+configuration access needs its own precise authority; do not spend old allowance.
+MFA Enforcement/database AAL2 preserved; Catalog ACTIVE/Public Beta NO_GO.
+
+## v8 Narrow Offline Result, Original v7 Signature Still Required
+
+HEAD9a9b773d unchanged. Original v7 packet6a503095/query/reference/six source pins
+and owner text independently rechecked; no new approval, window, used marker or
+provider request. No packet regeneration, historical test rerun, build or deploy.
+Media investigator and independent reviewer agree: neither actual private full-
+Key prefix can prefix an output of the inspected current upload generator. Its
+mandatory post-UUID segment is incompatible with each private third segment;
+this is not an inference from segment count alone. Generator block matches frozen
+source offline, not a new deployed-runtime check. Minimal categorical evidence
+is private current-generator-prefix-review.safe.json alongside existing candidate.
+No other-writer/existing-suffix exclusion, whole-bucket growth/cost proof, object
+existence or target admission follows. Candidate and expiry remain unchanged.
+Existing two-user checks remain assertions, not a complete Production executor;
+normal browser-to-client wiring, public fixture/claim/playback/cleanup binding
+and new business permission remain necessary. No usable second actor is known.
+No confirmed application defect justified an edit or another test run. This
+additive traceability note is not another status-only commit. Next sole owner
+action is the unchanged complete v7 signature; OAuth and all Production reads
+remain unauthorized until then. B signer/cost blocks do not prevent an admitted A.
+
 ## Completion v7: Independent Usage and HEAD Review Pending Owner Approval
 
 Actual starting HEADae395338a6504039aab72932b848e43de8085d51. Reused three native
