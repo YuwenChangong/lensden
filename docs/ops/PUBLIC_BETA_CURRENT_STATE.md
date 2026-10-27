@@ -1,5 +1,69 @@
 # Public Beta Current State
 
+## Completion v5: Reviewed Local Repairs, Production Still Pending
+
+2026-10-27 NZDT, starting HEAD7274fc12362d5455e5120c7a5f6e144d540e5254.
+Three native agents actually used: media investigator, acceptance implementer,
+and independent high-rigor reviewer. Historical dirty D checkout preserved.
+No Production/provider/browser request, login, DB connection, factor operation,
+deployment, push or merge occurred. No approval/window/consumed marker reset.
+
+Independent review confirmed two defects in pending inputs-v2: its pipe name
+fails both pinned password receiver/capture patterns; project dependencies load
+before approval/source checks. Original c9662f44 packet and old evidence remain
+byte-identical and MUST NOT execute. Necessary successor inputs-v3 fixes only
+pipe/execution bindings, stage-local dependency loading and transitive source pins.
+DB modules import only after approval/window/source admission; usage does not
+evaluate the DB chain. Source pins23 verified. Reviewer also found and verified
+correction of one stale directory in the new owner text; JSON unchanged.
+
+New private packet MEDIA_PROTECTION_INPUTS.v3.NOT_AUTHORIZED.json SHA
+286cd3931da434fbced456eba44a2aa621dd4d5c8cb96f0dbbc678e5ecf7b010,
+under existing emergency-media-protection-v1/inputs-v3; matching OWNER_APPROVAL
+text is PENDING. Nonce3f971f67-81fd-4567-887e-e771dd73cd8d. No effective permit,
+actual-readiness window, input plan or Production result exists. Caps unchanged:
+DB1/exactSELECT1/LIMIT3 admit2/native8/statements12; strict TLS and existing time
+limits; fixed bucket properties GET1 and account-shared R2 analytics query1.
+Lifecycle/Lock GET0,HEAD0,bytes0,listing0,writes0. Optional prewindow OAuth only
+after explicit approval; write-capable credential does not authorize writes.
+
+New local validation: eight VM-isolated gate fixtures PASS, valid fictional
+current-user pipe transfer/disposal PASS, JS/PowerShell syntax PASS. First local
+fixture launch failed before input because an assumed PowerShell path was absent;
+the actual installed runtime was resolved before the fresh successful fixture.
+No real secret, configForStage, database or provider transport used. This is NOT
+a successful Production identification or evidence that old usage was zero.
+
+Existing ordinary-session helper now has a separate fresh-one-actor assertion
+function, not a relaxed A3/B3 guard or executable Production permit. It requires
+externally verified source/signup/absence/fixture bindings, stable ordinary Auth
+and positive public foreign-row visibility before three exact negative writes.
+Each denial requires unchanged selected-field readback;401/write success cannot
+PASS. Same-session Worker/client provenance and single use remain caller duties.
+New selected mock tests36/36 PASS; independent review found no confirmed defect.
+Counts Auth3/REST9/Worker2 exclude provisioning, UI, moderation and native traffic.
+Timeout preserves UNKNOWN with no retry/late continuation. No signed live RLS PASS.
+
+R2 review found a concrete budget mismatch, not a proven application outage:
+existing AwsClient DELETE can internally retry ten times. Proposed old12-operation
+cap cannot cover its worst case; twenty source-level calls include eleven delete
+attempts and exact tmp-source/retained-object cleanup, NOT a whole-wire ceiling.
+Future grant must explicitly cover native redirects/retries and bytes, or the
+affected operation stays blocked. No production code changed to evade the cap.
+Storage is not R2; current proxy full200 versus Range is an accepted disclosed
+limitation, not a newly invented206 release gate. No new upload/playback occurred.
+
+Release blockers remain: exact legacy targets/cost-bounded protection (object
+existence UNKNOWN); signed Production foreign isolation NOT_VERIFIED; true R2
+playback NOT_VERIFIED. Finite full-Key-prefix lock is narrower, not exact-object
+equality; broad tmp pause also retains future objects and has no automatic expiry.
+Neither can restore absent bytes or be approved before actual scope/cost evidence.
+MFA Enforcement/database AAL2 and applicable historical release tests remain DONE;
+current enrollment-stage HEAD must not deploy. CAPTCHA cause UNKNOWN, not a proved
+global login outage. Plans unchanged; actual account charges UNKNOWN, no guarantee
+invented. Catalog ACTIVE,Public Beta NO_GO. Next sole owner action: review/sign new
+v3 read-only text; identification/protection/business grants remain independent.
+
 ## Critical Path v4: Exact Read Packet and Receipt Persistence Ready
 
 2026-10-27 NZDT, starting HEAD2c4080a7503530d3f7ad3620d9f5f8a4f86b51c8,

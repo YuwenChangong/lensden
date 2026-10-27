@@ -1,5 +1,5 @@
 // Post-login owner-operated checks only. This module cannot log in or grant consent.
-import { authEvidence } from './core-auth-admission-v2.mjs';
+import { authEvidence, ordinarySignupIdentityEvidence } from './core-auth-admission-v2.mjs';
 
 const uuid = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
 const origin = 'https://openglasshub.ogh.workers.dev';
@@ -180,4 +180,151 @@ export function buildOwnerSnippet(plan) {
   const safePlan = Object.fromEntries(['binding', 'namespace', 'journalVerified', 'priorAliasAbsenceSha256', 'actorId', 'actor', 'stage', 'deadlineUTC', 'fixtures', 'expectedEmail'].filter(k => plan[k] !== undefined).map(k => [k, plan[k]]));
   // Uses the already deployed singleton in the same real user context; no token export.
   return `(async()=>{const p=${JSON.stringify(safePlan)};if(location.origin!==${JSON.stringify(origin)})throw Error('ORIGIN');const checkPlan=${checkPlan.toString()};const uuid=${uuid};checkPlan(p);const key='ogh-once:'+p.binding+':'+p.actor+':'+p.stage;if(sessionStorage.getItem(key))throw Error('CONSUMED');sessionStorage.setItem(key,'started');const authEvidence=${authEvidence.toString()};const CODES=new Set(${JSON.stringify(['email_not_confirmed','invalid_credentials','captcha_failed','user_banned','request_timeout','session_not_found','unexpected_failure'])});const UUID=${uuid};const m=await import(${JSON.stringify(asset)});const r=await (${runSessionChecks.toString()})(m.n(),p);const blob=new Blob([JSON.stringify(r)],{type:'application/json'});const a=document.createElement('a');const u=URL.createObjectURL(blob);a.href=u;a.download='ogh-core-'+p.actor+'-'+p.stage+'-'+p.binding.slice(0,16)+'.safe.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return {status:r.status,stage:p.stage};})()`;
+}
+
+// Assertions only. The caller must independently approve/bind the source, client,
+// fixture and single use. Both callbacks use the same ordinary session. Counts
+// cover operator calls only; this function cannot authorize or cancel server work.
+export async function runFreshOneActorForeignIsolation(client, plan, readOrdinaryWorker) {
+  const counts = { auth: 0, rest: 0, worker: 0 };
+  const caps = { auth: 3, rest: 9, worker: 2 };
+  const checks = {};
+  const reasons = new Set(['PLAN_INVALID', 'SOURCE_BINDING_INVALID', 'JOURNAL_BINDING_INVALID',
+    'FIXTURE_BINDING_INVALID', 'CLIENT_PROJECT_MISMATCH', 'DEADLINE_EXPIRED', 'BATCH_BUDGET',
+    'SDK_ERROR', 'SESSION_IDENTITY_MISMATCH', 'EMAIL_CONFIRMATION_UNKNOWN', 'ORDINARY_PROFILE_NOT_PROVEN',
+    'EXACT_ROW_NOT_VISIBLE', 'PUBLIC_FIXTURE_NOT_VISIBLE', 'AUTH_FAILURE_NOT_RLS_PROOF',
+    'UNEXPECTED_WRITE_SUCCESS', 'DENIAL_UNCONFIRMED', 'FOREIGN_POST_CHANGED', 'FOREIGN_MEDIA_CHANGED',
+    'ADMIN_ACCESS_NOT_DENIED', 'REQUEST_COMPLETION_UNKNOWN']);
+  let completionUnknown = false;
+  const insist = (ok, reason) => { if (!ok) throw new Error(reason); };
+  const hash = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
+  const id = value => typeof value === 'string' && uuid.test(value);
+  const date = value => typeof value === 'string' && Number.isFinite(Date.parse(value));
+  try {
+    const p = structuredClone(plan);
+    const project = 'xcbnxzjlsvtgzixurcof';
+    const expected = p?.expected;
+    const source = p?.source;
+    const journal = p?.journal;
+    const absence = p?.absence;
+    const f = p?.foreignFixture;
+    insist(p?.project === project && p.origin === origin && hash(p.binding)
+      && expected?.project === project && expected.binding === p.binding && id(expected.id)
+      && typeof expected.email === 'string' && expected.email.length <= 254
+      && /^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(expected.namespace ?? '')
+      && date(expected.createdAt) && date(p.deadlineUTC) && typeof readOrdinaryWorker === 'function', 'PLAN_INVALID');
+    insist(source?.verified === true && source.binding === p.binding && source.project === project && source.origin === origin
+      && /^[a-f0-9]{40}$/.test(source.commit ?? '') && hash(source.sha256), 'SOURCE_BINDING_INVALID');
+    const banned = p.excludedBannedIds;
+    insist(banned && Object.keys(banned).length === 3 && ['A3', 'B3', 'B4'].every(key => id(banned[key]))
+      && new Set(Object.values(banned)).size === 3
+      && !Object.values(banned).includes(expected.id), 'JOURNAL_BINDING_INVALID');
+    insist(journal?.verified === true && hash(journal.sha256) && journal.binding === p.binding
+      && journal.project === project && journal.namespace === expected.namespace && journal.email === expected.email
+      && journal.actorId === expected.id && journal.createdAt === expected.createdAt && journal.submitCount === 1
+      && journal.method === 'NORMAL_OWNER_WEBSITE_SIGNUP'
+      && absence?.verified === true && hash(absence.sha256) && absence.binding === p.binding
+      && absence.project === project && absence.email === expected.email && absence.matches === 0, 'JOURNAL_BINDING_INVALID');
+    insist(f?.verified === true && hash(f.sha256) && f.binding === p.binding && f.sourceSha256 === source.sha256
+      && ['authorId', 'postId', 'mediaId', 'circleId'].every(key => id(f[key]))
+      && f.authorId === banned.A3 && f.authorId !== expected.id
+      && /^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(f.namespace ?? '')
+      && typeof f.storagePath === 'string'
+      && [ `${f.authorId}/${f.postId}/`, `tmp/${f.authorId}/${f.postId}/` ].some(prefix =>
+        f.storagePath.startsWith(prefix) && /^[a-z0-9_-][a-z0-9._-]{0,239}$/i.test(f.storagePath.slice(prefix.length))),
+    'FIXTURE_BINDING_INVALID');
+    insist(client?.supabaseUrl === `https://${project}.supabase.co`, 'CLIENT_PROJECT_MISMATCH');
+    const deadline = Date.parse(p.deadlineUTC);
+    async function call(type, operation) {
+      insist(Date.now() < deadline, 'DEADLINE_EXPIRED');
+      insist(counts[type] < caps[type], 'BATCH_BUDGET');
+      counts[type]++;
+      let timer;
+      try {
+        const result = await Promise.race([
+          Promise.resolve().then(operation),
+          new Promise((_, reject) => { timer = setTimeout(() => {
+            completionUnknown = true;
+            reject(new Error('REQUEST_COMPLETION_UNKNOWN'));
+          }, Math.min(8000, Math.max(1, deadline - Date.now()))); }),
+        ]);
+        if (Date.now() >= deadline) {
+          completionUnknown = true;
+          throw new Error('DEADLINE_EXPIRED');
+        }
+        return result;
+      } finally { clearTimeout(timer); }
+    }
+    function data(response) {
+      insist(response && !response.error, 'SDK_ERROR');
+      return response.data;
+    }
+    function identity(response) {
+      const user = data(response)?.user;
+      insist(ordinarySignupIdentityEvidence({ user, expected, journal, absence,
+        sourceProject: source.project, excludedIds: Object.values(banned) }).identityVerified, 'SESSION_IDENTITY_MISMATCH');
+      insist(date(user.email_confirmed_at), 'EMAIL_CONFIRMATION_UNKNOWN');
+    }
+    async function read(table, columns, rowId) {
+      const rows = data(await call('rest', () => client.from(table).select(columns).eq('id', rowId).limit(2)));
+      insist(Array.isArray(rows) && rows.length === 1, 'EXACT_ROW_NOT_VISIBLE');
+      return structuredClone(rows[0]);
+    }
+    async function denied(operation) {
+      const r = await call('rest', operation);
+      insist(r?.status !== 401 && r?.error?.status !== 401, 'AUTH_FAILURE_NOT_RLS_PROOF');
+      insist(!(Array.isArray(r?.data) && r.data.length), 'UNEXPECTED_WRITE_SUCCESS');
+      insist(r?.status === 403 || r?.error?.code === '42501'
+        || (!r?.error && [200, 204].includes(r?.status) && Array.isArray(r.data) && r.data.length === 0), 'DENIAL_UNCONFIRMED');
+    }
+    identity(await call('auth', () => client.auth.getUser()));
+    const profile = await read('profiles', 'id,role', expected.id);
+    insist(profile.id === expected.id && profile.role === 'user', 'ORDINARY_PROFILE_NOT_PROVEN');
+    identity(await call('auth', () => client.auth.refreshSession()));
+    identity(await call('auth', () => client.auth.getUser()));
+    checks.ordinaryStableIdentity = true;
+
+    const postColumns = 'id,author_id,body,circle_id,status,moderation_status,circles:circle_id(id,slug,name,status)';
+    const mediaColumns = 'id,post_id,user_id,kind,storage_path';
+    const post = await read('posts', postColumns, f.postId);
+    const circle = Array.isArray(post.circles) ? (post.circles.length === 1 ? post.circles[0] : null) : post.circles;
+    insist(post.id === f.postId && post.author_id === f.authorId && post.circle_id === f.circleId
+      && typeof post.body === 'string' && post.body.includes(f.namespace)
+      && post.status === 'published' && post.moderation_status === 'published'
+      && circle?.id === f.circleId && circle.status === 'active'
+      && typeof circle.slug === 'string' && typeof circle.name === 'string'
+      && !['rls-test-circle', 'rls-test', 'test-circle'].includes(circle.slug.toLowerCase())
+      && !circle.name.toLowerCase().includes('rls test'), 'PUBLIC_FIXTURE_NOT_VISIBLE');
+    const media = await read('post_media', mediaColumns, f.mediaId);
+    insist(media.id === f.mediaId && media.post_id === f.postId && media.user_id === f.authorId
+      && media.kind === 'video' && media.storage_path === f.storagePath, 'PUBLIC_FIXTURE_NOT_VISIBLE');
+    checks.publicForeignFixtureVisible = true;
+    async function unchangedPost() {
+      const after = await read('posts', postColumns, f.postId);
+      insist(['id', 'author_id', 'body', 'circle_id', 'status', 'moderation_status'].every(key => after[key] === post[key]), 'FOREIGN_POST_CHANGED');
+    }
+    await denied(() => client.from('posts').update({ body: `${expected.namespace} forbidden` })
+      .eq('id', f.postId).eq('author_id', f.authorId).select('id'));
+    await unchangedPost();
+    checks.foreignPostUpdateDeniedUnchanged = true;
+    await denied(() => client.from('posts').delete().eq('id', f.postId).eq('author_id', f.authorId).select('id'));
+    await unchangedPost();
+    checks.foreignPostDeleteDeniedUnchanged = true;
+    await denied(() => client.from('post_media').delete().eq('id', f.mediaId).eq('user_id', f.authorId).select('id'));
+    const after = await read('post_media', mediaColumns, f.mediaId);
+    insist(['id', 'post_id', 'user_id', 'kind', 'storage_path'].every(key => after[key] === media[key]), 'FOREIGN_MEDIA_CHANGED');
+    checks.foreignMediaDeleteDeniedUnchanged = true;
+    for (const path of ['/api/admin/forum/me', '/api/admin/devices']) {
+      const response = await call('worker', () => readOrdinaryWorker(`${origin}${path}`, { method: 'GET' }));
+      insist(response?.status !== 401, 'AUTH_FAILURE_NOT_RLS_PROOF');
+      insist(response?.status === 403, 'ADMIN_ACCESS_NOT_DENIED');
+    }
+    checks.ordinaryStaffAndAdminDenied = true;
+    return { status: 'PASS', counts, checks, productionAuthority: false, sensitiveValuesExported: false };
+  } catch (error) {
+    const reason = reasons.has(error?.message) ? error.message : 'UNKNOWN';
+    return { status: completionUnknown || reason === 'UNKNOWN' ? 'UNKNOWN' : 'BLOCKED', reason,
+      counts, checks, outstandingCompletion: completionUnknown || reason === 'UNKNOWN' ? 'UNKNOWN' : 'NONE',
+      productionAuthority: false, sensitiveValuesExported: false };
+  }
 }
