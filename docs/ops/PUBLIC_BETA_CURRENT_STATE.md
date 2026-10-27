@@ -1,5 +1,32 @@
 # Public Beta Current State
 
+## Inputs v3 UTC Delta Executed: Two Rows, Key/Post Admission Blocked
+
+2026-10-27T03:29:07.258Z actual DB receipt. Owner approved UTC delta7f1047e7;
+parent23pins, alternate source, original window and unspent markers verified.
+Exactly one alternate local entry reached real consumer/CurrentUser pipe READY;
+owner supplied password only in hidden input. No further input attempt or launch.
+
+DB connection1 opened; timeout initialization/readonly-target gates reached the
+one bound SELECT, which returned2rows. Admission stopped at KEY_POST_LINK before
+any target manifest was written. This check combines four path segments, UUID
+owner-segment syntax and post-segment equality; evidence cannot distinguish which
+clause failed or identify exact objects. Driver projection's generic CONNECTION_OPEN
+label is NOT proof of failed connection: native evidence confirms opened=true.
+Raw receipt preserved; additive clarification records actual TARGET_ADMISSION
+stage, no raw rows/Keys. Root cause UNKNOWN; no gate was relaxed or code guessed.
+Frozen RC and current generator use the expected owner/post path, but do not prove
+that these historical rows were created by that version.
+
+Native SQL7/normal statements10,2603ms; readonly rollback/local close CONFIRMED,
+remote closure NOT_INDEPENDENTLY_VERIFIED. No matching input/reader process remains.
+DB writes0/retries0/HEAD0/body0/config changes0. All current read allowances are
+consumed; remaining wall-clock time is NOT permission to repeat either stage.
+Earlier bucket Standard result remains default-new-object class only; incomplete
+analytics remains UNKNOWN, consumed2requests. Exact Keys/existence/cost headroom
+remain UNKNOWN, protection NOT_APPLIED, old pending write untouched. Receipt DACLs
+read back as CurrentUser+SYSTEM only. Catalog ACTIVE/Beta NO_GO; MFA/DB AAL2 unchanged.
+
 ## Inputs v3 Execution: Usage Consumed, Local UTC Entry Repair Pending
 
 Owner formally approved286cd393 on2026-10-27. One explicitly scoped official
