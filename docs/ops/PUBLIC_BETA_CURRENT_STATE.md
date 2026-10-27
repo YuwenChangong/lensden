@@ -1,5 +1,59 @@
 # Public Beta Current State
 
+## Accelerated Closure v3: Independent Work, Operation-Scoped Cost Admission
+
+2026-10-27 NZDT, input HEAD c96c557abf092f9b5259e70ab4a3639e4b7bcbbf;
+independent worktree clean before this task. Owner confirms existing free plans
+are to be kept, no paid adoption/upgrade/fallback, ZERO_ACTUAL_CHARGES required,
+GLOBAL_BLOCK_ON_UNKNOWN_BILLING_DATA=false. This refines the preceding entry:
+unknown billing does NOT block all local work, independent stages or the project.
+No requirement to prove unlimited future growth free. Concrete new storage,
+operation or retention growth still needs its own allowance evidence/permission.
+This message grants local work, NOT new Production reads, writes or login.
+
+A: existing consumer catch confirms the observability gap: it retained generic
+PRIVATE_TMP_TARGET_SCOPE_UNPROVEN, not row count/failed constraint. Raw rows were
+not saved, so the actual admission cause is unrecoverable, not a proved DB defect.
+Future approved read must persist 3f1cc92d's finite diagnostics, not merely import
+the helper; do not alter predicates. No consumed query/aggregate/GET was rerun.
+Pending write SHA a00a436bc45b23fd9829e5e06f0f814f6e0fa40708087684dc7579172df44e11
+unchanged. Finite full-Key-prefix locks (candidate <=24h) are narrower, but need
+exact Keys/size/class and short-period allowance. tmp/ rule pause covers all
+current/future tmp objects without automatic expiry; copy/retain additionally
+needs real-media/DB writes and extra storage, so is not the preferred substitute.
+Neither risk protection nor object existence is newly proved.
+
+B: existing signed-check/R2 assertion sources compared, not rerun or generalized.
+The ordinary helper pins A3/B3/Storage; isolated R2 helper pins its test bucket
+and loopback DB. Their assertions are reusable, not their grants/target guards.
+Single proposed independent group: <=1 fresh ordinary actor with real login,
+existing A3 synthetic foreign fixture, UPDATE/DELETE/media DELETE plus unchanged
+readbacks/admin denial; <=1 own post/2018byte R2 video and precise cleanup/ban.
+No use/unban of A3/B3/B4. Reuse prior case-size caps as a proposal, never allowance:
+Auth12/Worker18/REST20; R2 operations12; objects4/64KiB each; upload256KiB;
+media4MiB/play30s. Exact fixture/source/method binding still needs its own approval
+and operation-specific cost admission. No new fixture or runnable permit created.
+
+C: only confirmed referenced-tmp deletion risk, signed Production foreign-row
+isolation NOT_VERIFIED and true Production R2 playback NOT_VERIFIED remain in the
+release queue. Historical release/migrations/backup/MFA/database AAL2 and applicable
+Auth/forum/notification/device evidence remain DONE. No newly proved exploit,
+object loss or universal login outage. B4 CAPTCHA receipt proves one visible
+failure, not its cause. P2/obsolete tasks excluded; no CAPTCHA retest.
+
+Independent approvals needed: A-inputs = one NEW strict readonly connection/one
+bounded exact target SELECT with diagnostics, plus limited R2 usage/class/headroom
+read (no repeated lifecycle/lock/aggregate/body). Optional exact authenticated
+HEAD2 only with a lawful available signing source and explicit scope/cost. A-write
+= a later exact finite protection diff/readback once inputs suffice, never implicit
+approval of broad pause. B = the one ordinary/R2 group above, not dependent on A.
+No full billing audit or repeat MFA work is required before independent local work.
+Completed this task: actual HEAD check, source/receipt comparison, scoped policy
+update; only AGENTS/current ledger edited. No new defect-supported business fix,
+test/build rerun, controller, Production request/write/login/DB/factor/deployment,
+push/merge or execution window. Old markers/UNKNOWNs retained. Catalog ACTIVE,
+deployed Enforcement preserved, Beta NO_GO for the three specific remaining gates.
+
 ## Strict Zero Actual Charges: Media Write Remains Pending
 
 2026-10-27 NZDT: owner requires ZERO_ACTUAL_CHARGES across development and Beta.

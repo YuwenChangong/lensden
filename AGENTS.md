@@ -31,6 +31,11 @@ BLOCKED_COST_UNVERIFIED for the affected operation. Account for reporting delay,
 concurrency and all shared-account consumption; never claim a USD0 guarantee
 without validated controls. New billing/usage reads need separate authorization.
 Pending media-protection writes remain pending; preserve their bound originals.
+GLOBAL_BLOCK_ON_UNKNOWN_BILLING_DATA=false. Preserve existing free plans; block
+only the concrete potentially billable operation with unproved allowance, not
+independent local work or already applicable evidence. Do not demand proof that
+all future website growth will remain free. New resource growth still requires
+its own cost admission and precise Production authorization; no paid fallback.
 
 Use an independent `codex/` branch and exact `git add` paths. Inspect the diff and
 worktree before a local commit. Do not push/merge if it could trigger Production or
