@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {sealBucketRuleBaseline,admitExactTmpReferences} from './legacy-tmp-lifecycle-safety.mjs';
+import {sealBucketRuleBaseline,admitExactTmpReferences,tmpTargetFailureReceipt} from './legacy-tmp-lifecycle-safety.mjs';
 
 // Fictitious local values only. This file has no transport or execution permit.
 const account='dcb374166b39234a499985145c075f50';
@@ -128,4 +128,25 @@ test('diagnostic does not change valid target projection or provide execution pe
   const r=admitExactTmpReferences(pair());assert.deepEqual(r.privateTargets,pair());
   assert.equal(r.safeSummary.productionAuthority,false);assert.equal(r.safeSummary.objectExistence,'UNKNOWN');
   assert.equal(r.safeSummary.protection,'NOT_APPLIED');
+});
+
+test('receipt projection persists only bounded admission diagnostics through serialization',()=>{
+  const e=Object.assign(Error('PRIVATE_TMP_TARGET_SCOPE_UNPROVEN'),{
+    admissionCheck:'SIZE',returnedRowCount:2,privateKey:'DO_NOT_SAVE',rows:pair()});
+  const receipt={status:'BLOCKED',...tmpTargetFailureReceipt(e)};
+  assert.deepEqual(JSON.parse(JSON.stringify(receipt)),{
+    status:'BLOCKED',admissionCheck:'SIZE',returnedRowCount:2,rootCause:'UNKNOWN'});
+  assert.equal(Object.hasOwn(receipt,'rows'),false);
+});
+
+test('receipt projection never promotes arbitrary errors or unbounded values',()=>{
+  const unknown={admissionCheck:'UNKNOWN',returnedRowCount:'UNKNOWN',rootCause:'UNKNOWN'};
+  assert.deepEqual(tmpTargetFailureReceipt(null),unknown);
+  assert.deepEqual(tmpTargetFailureReceipt(Object.assign(Error('PRIVATE_VALUE'),{
+    admissionCheck:'SIZE',returnedRowCount:2})),unknown);
+  for(const n of [-1,4,NaN,'2','PRIVATE_VALUE']) {
+    const r=tmpTargetFailureReceipt({message:'PRIVATE_TMP_TARGET_SCOPE_UNPROVEN',
+      admissionCheck:'PRIVATE_VALUE',returnedRowCount:n});
+    assert.deepEqual(r,unknown);
+  }
 });

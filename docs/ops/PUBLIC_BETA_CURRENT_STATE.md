@@ -1,5 +1,71 @@
 # Public Beta Current State
 
+## Critical Path v4: Exact Read Packet and Receipt Persistence Ready
+
+2026-10-27 NZDT, starting HEAD2c4080a7503530d3f7ad3620d9f5f8a4f86b51c8,
+clean independent worktree. No new Production authorization was inferred.
+The target SELECT's six columns match migrations20260524/20260525/20260616.
+size_bytes is nullable bigint; the existing gate intentionally requires known
+safe size. This is a possible rejection, NOT the proven historical cause. All
+count/identity/Key/parent/size predicates are unchanged; old failure remains UNKNOWN.
+
+Only confirmed local gap closed: tmpTargetFailureReceipt projects the existing
+failure enum/bounded row count into serializable receipts, never raw error/rows.
+The new private one-shot reader actually invokes this in its catch. Original
+executed consumer/packets/markers untouched. New projection tests2/2 PASS only;
+historical11/4 suites not rerun. Six VM-isolated gate fixtures PASS: absent/wrong
+approval, expired/extended window, source mismatch and duplicate marker, with
+network/DB0 and virtual old marker unchanged. JS/PowerShell syntax PASS and11
+source/adapter/SQL/query pins verified offline. No browser/controller or app change.
+
+Existing restricted emergency-media-protection-v1/inputs-v2 now contains ONE new
+MEDIA_PROTECTION_INPUTS.v2.NOT_AUTHORIZED.json and matching OWNER_APPROVAL.txt.
+Packet SHA c9662f44be85e541ab34399348a62839a216eacbb52d6b46aa282053fa3f4d61.
+Fresh nonce f61af4d3-eba9-4ac3-be2c-fdbde778e884. ACL CurrentUser+SYSTEM explicit,
+read back. Approval record, actual-readiness/window, input plan, used markers and
+Production results are ABSENT; preparation is not a permit or activation.
+
+Independent caps: DB1/targetSELECT1/LIMIT3 admit2, native8/statements12, existing
+strict CA/TLS and10s/8s/1s/15s/5s/40s bounds; hidden password input once, memory
+only. No aggregate or schema probe. CF fixedbucket propertiesGET1 plus one pinned
+readonly GraphQL queryPOST1, fixedaccount shared R2 aggregates over31days ending
+at activation;10s/256KiB each,128 operationgroups/4096 storage observations with
+overflow sentinels, no pagination/retry. No object names selected or other bucket
+names retained. Bucket default class is NOT legacy-object class; operational
+analytics are NOT invoice/hard-cap/zero-cost proof. Missing/incomplete data stops
+the affected stage; it never grants retention. No Lifecycle/Lock GET, HEAD, bytes,
+object listing, account creation, MFA, deployment or mutation included.
+Optional one prewindow Wrangler login is explicitly in the new approval only,
+exact account:read/workers:write plus implicit offline_access, no scope expansion,
+auto-refresh or write grant. One60minute window begins only after matching new
+formal approval AND actual readiness; stages cannot borrow quotas or reset old ones.
+Historical config snapshots are evidence only: a later protection write still
+needs its own fresh drift check and exact independently approved configuration diff.
+
+B sequence confirmed from existing public-circle/media policies and moderation
+handler: <=1 NEW ordinary actor can test existing A3 foreign synthetic post/media
+without A3 login, conditional on real moderator AAL2/precisely approved publication
+and genuine ordinary public-row visibility. Otherwise stop, not false RLS PASS.
+Reuse foreign UPDATE/DELETE/media DELETE plus unchanged readbacks/admin denial,
+then <=1 own2018byte R2 fixture/claim/object/decoded playback and exact cleanup in
+one future independent decision. No old actor guard is relaxed or service_role
+used as ordinary. No new Production test/account/fixture was executed or approved.
+
+| Release gate | Applicable status |
+| --- | --- |
+| Legacy media protection | BLOCKED on fresh exact targets and bounded retention cost; pending broad write untouched; objects UNKNOWN |
+| Signed Production isolation | NOT_VERIFIED; existing offline assertions retained, independent future approval required |
+| Production R2 playback | NOT_VERIFIED; Storage evidence excluded; minimal existing case reused |
+| Existing release/security/MFA/database AAL2 | HISTORICALLY_VERIFIED, not reopened or redeployed |
+| Cost-controlled actions | Existing plans unchanged; only concrete unproved consumption blocked, no global billing audit requirement |
+| New concrete regression | None proved; nullable-size/old CAPTCHA failure not promoted into universal fault |
+
+Production reads/writes/logins/DB connections/factors/deployments/push0 this task.
+No charge verified or guaranteed. Catalog ACTIVE/Beta NO_GO. Next executable action:
+owner reviews/signs the exact new read-only approval; then execute independent
+admitted inputs directly, no additional preparation round. HEAD/existence and
+protection PUT remain separately unauthorized.
+
 ## Accelerated Closure v3: Independent Work, Operation-Scoped Cost Admission
 
 2026-10-27 NZDT, input HEAD c96c557abf092f9b5259e70ab4a3639e4b7bcbbf;

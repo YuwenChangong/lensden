@@ -116,6 +116,16 @@ export function sealBucketRuleBaseline(raw,source) {
     kind:source.kind,productionAuthority:false,writeReady:false};
 }
 
+export function tmpTargetFailureReceipt(error) {
+  const checks=new Set(['ROW_COUNT','COLUMNS','MEDIA_ID','POST_ID','DUPLICATE_MEDIA_ID',
+    'KEY_NONCANONICAL','DUPLICATE_KEY','SIZE','POST_STATE','MODERATION_STATE','KEY_POST_LINK']);
+  const scoped=error?.message==='PRIVATE_TMP_TARGET_SCOPE_UNPROVEN';
+  const n=error?.returnedRowCount;
+  return {admissionCheck:scoped&&checks.has(error.admissionCheck)?error.admissionCheck:'UNKNOWN',
+    returnedRowCount:scoped&&Number.isInteger(n)&&n>=0&&n<=3?n:'UNKNOWN',
+    rootCause:'UNKNOWN'};
+}
+
 export function admitExactTmpReferences(rows) {
   const fail=check=>{throw Object.assign(Error('PRIVATE_TMP_TARGET_SCOPE_UNPROVEN'),{
     admissionCheck:check,returnedRowCount:Array.isArray(rows)&&rows.length<=3?rows.length:'OVERFLOW_OR_INVALID'
