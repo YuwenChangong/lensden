@@ -1,5 +1,5 @@
 // Post-login owner-operated checks only. This module cannot log in or grant consent.
-import { authEvidence, ordinarySignupIdentityEvidence } from './core-auth-admission-v2.mjs';
+import { authEvidence, ordinarySignupIdentityEvidence, createdActorEvidence } from './core-auth-admission-v2.mjs';
 
 const uuid = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
 const origin = 'https://openglasshub.ogh.workers.dev';
@@ -201,17 +201,23 @@ export async function runTwoFreshOrdinaryPostIsolation(ownerClient, client, plan
   return runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, true, false);
 }
 
-async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, twoFresh, includeMedia = true) {
+// Separately approved, no-mail fixtures still require real ordinary browser sessions.
+export async function runTwoAdminFixturePostIsolation(ownerClient, client, plan, readOrdinaryWorker) {
+  return runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, true, false, true);
+}
+
+async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, twoFresh, includeMedia = true, adminFixtures = false) {
   const counts = { auth: 0, rest: 0, worker: 0 };
   const caps = { auth: twoFresh ? 6 : 3, rest: includeMedia ? (twoFresh ? 12 : 9) : 8, worker: 2 };
-  const narrowScope = includeMedia ? {} : { acceptanceScope: 'POST_AND_ADMIN_ONLY', mediaIsolation: 'NOT_VERIFIED' };
+  const narrowScope = includeMedia ? {} : { acceptanceScope: 'POST_AND_ADMIN_ONLY', mediaIsolation: 'NOT_VERIFIED',
+    ...(adminFixtures ? { identityProvisioning: 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE' } : {}) };
   const checks = {};
   const reasons = new Set(['PLAN_INVALID', 'SOURCE_BINDING_INVALID', 'JOURNAL_BINDING_INVALID',
     'FIXTURE_BINDING_INVALID', 'CLIENT_PROJECT_MISMATCH', 'DEADLINE_EXPIRED', 'BATCH_BUDGET',
     'SDK_ERROR', 'SESSION_IDENTITY_MISMATCH', 'EMAIL_CONFIRMATION_UNKNOWN', 'ORDINARY_PROFILE_NOT_PROVEN',
     'EXACT_ROW_NOT_VISIBLE', 'PUBLIC_FIXTURE_NOT_VISIBLE', 'AUTH_FAILURE_NOT_RLS_PROOF',
     'UNEXPECTED_WRITE_SUCCESS', 'DENIAL_UNCONFIRMED', 'FOREIGN_POST_CHANGED', 'FOREIGN_MEDIA_CHANGED',
-    'ADMIN_ACCESS_NOT_DENIED', 'REQUEST_COMPLETION_UNKNOWN', 'SESSION_BINDING_INVALID']);
+    'ADMIN_ACCESS_NOT_DENIED', 'REQUEST_COMPLETION_UNKNOWN', 'SESSION_BINDING_INVALID', 'FIXTURE_METHOD_BINDING_INVALID']);
   let completionUnknown = false;
   const insist = (ok, reason) => { if (!ok) throw new Error(reason); };
   const hash = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
@@ -226,6 +232,16 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     const absence = p?.absence;
     const f = p?.foreignFixture;
     if (!includeMedia) insist(twoFresh && p?.acceptanceScope === 'POST_AND_ADMIN_ONLY', 'PLAN_INVALID');
+    if (adminFixtures) {
+      const approval = p?.fixtureProvisioningApproval;
+      insist(twoFresh && !includeMedia && approval?.verified === true && hash(approval.sha256)
+        && approval.binding === p.binding && approval.project === project
+        && approval.method === 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE'
+        && approval.maximumCreates === 2 && approval.maximumEmails === 0
+        && !['23c3c903-0687-4c6d-840c-f7f8a0d442db', 'dce0109d-93ef-4cc7-a91f-4085855410c9',
+          '6dab7393-d551-4690-9964-841cfe0c19a4'].some(id => [expected?.id, p.owner?.expected?.id].includes(id)),
+      'FIXTURE_METHOD_BINDING_INVALID');
+    }
     insist(p?.project === project && p.origin === origin && hash(p.binding)
       && expected?.project === project && expected.binding === p.binding && id(expected.id)
       && typeof expected.email === 'string' && expected.email.length <= 254
@@ -241,9 +257,18 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
       insist(j?.verified === true && hash(j.sha256) && j.binding === p.binding
         && j.project === project && j.namespace === e.namespace && j.email === e.email
         && j.actorId === e.id && j.createdAt === e.createdAt && j.submitCount === 1
-        && j.method === 'NORMAL_OWNER_WEBSITE_SIGNUP'
+        && j.method === (adminFixtures ? 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE' : 'NORMAL_OWNER_WEBSITE_SIGNUP')
         && a?.verified === true && hash(a.sha256) && a.binding === p.binding
         && a.project === project && a.email === e.email && a.matches === 0, 'JOURNAL_BINDING_INVALID');
+      if (adminFixtures) {
+        const g = j.initialGet;
+        insist(j.createStatus === 200 && j.requestShapeVerified === true && j.requestedEmailConfirm === true
+          && j.requestRoleOrAppMetadataPresent === false && j.requestPhonePresent === false
+          && g?.verified === true && hash(g.sha256) && g.binding === p.binding && g.project === project
+          && g.actorId === e.id && g.email === e.email && g.createdAt === e.createdAt
+          && g.namespace === e.namespace && g.authRole === 'authenticated' && g.emailConfirmed === true,
+        'JOURNAL_BINDING_INVALID');
+      }
     }
     boundSignup(expected, journal, absence);
     const owner = p.owner;
@@ -308,8 +333,14 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     function identity(response, actor = expected, j = journal, a = absence) {
       const user = data(response)?.user;
       if (twoFresh) insist(user?.role === 'authenticated' && user.is_anonymous !== true, 'SESSION_IDENTITY_MISMATCH');
-      insist(ordinarySignupIdentityEvidence({ user, expected: actor, journal: j, absence: a,
-        sourceProject: source.project, excludedIds: Object.values(banned) }).identityVerified, 'SESSION_IDENTITY_MISMATCH');
+      if (adminFixtures) {
+        insist(createdActorEvidence({ user, expected: actor, sourceProject: source.project,
+          successfulCreate: j.createStatus === 200 }).identityVerified
+          && user.id === actor.id && user.created_at === actor.createdAt, 'SESSION_IDENTITY_MISMATCH');
+      } else {
+        insist(ordinarySignupIdentityEvidence({ user, expected: actor, journal: j, absence: a,
+          sourceProject: source.project, excludedIds: Object.values(banned) }).identityVerified, 'SESSION_IDENTITY_MISMATCH');
+      }
       insist(date(user.email_confirmed_at), 'EMAIL_CONFIRMATION_UNKNOWN');
     }
     async function read(table, columns, rowId, actorClient = client) {

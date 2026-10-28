@@ -458,6 +458,111 @@ function postOnlyFixture(options = {}) {
   return { p, ...f, run: () => ordinaryChecks.runTwoFreshOrdinaryPostIsolation(f.owner.client, f.other.client, p, f.other.worker) };
 }
 
+function adminProvisionedPostFixture(options = {}) {
+  const f = postOnlyFixture(options), p = f.p;
+  p.fixtureProvisioningApproval = { verified: true, sha256: 'a'.repeat(64), binding: p.binding,
+    project: p.project, method: 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE', maximumCreates: 2, maximumEmails: 0 };
+  for (const actor of [p, p.owner]) {
+    actor.journal.method = 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE';
+    Object.assign(actor.journal, { createStatus: 200, requestShapeVerified: true,
+      requestedEmailConfirm: true, requestRoleOrAppMetadataPresent: false, requestPhonePresent: false,
+      initialGet: { verified: true, sha256: '6'.repeat(64), binding: p.binding, project: p.project,
+        actorId: actor.expected.id, email: actor.expected.email, createdAt: actor.expected.createdAt,
+        namespace: actor.expected.namespace, authRole: 'authenticated', emailConfirmed: true } });
+  }
+  for (const [actor, client] of [[p, f.other.client], [p.owner, f.owner.client]]) {
+    for (const method of ['getUser', 'refreshSession']) {
+      const original = client.auth[method];
+      client.auth[method] = async () => {
+        const r = await original();
+        r.data.user.user_metadata = { qa_namespace: actor.expected.namespace };
+        return r;
+      };
+    }
+  }
+  return { ...f, runAdmin: () => ordinaryChecks.runTwoAdminFixturePostIsolation(
+    f.owner.client, f.other.client, p, f.other.worker) };
+}
+
+test('B1 admin-fixture: separate truthful provenance and exact post-only caps', async () => {
+  const f = adminProvisionedPostFixture(), r = await f.runAdmin();
+  assert.equal(r.status, 'PASS');
+  assert.equal(r.identityProvisioning, 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE');
+  assert.equal(r.mediaIsolation, 'NOT_VERIFIED');
+  assert.deepEqual(r.counts, { auth: 6, rest: 8, worker: 2 });
+  assert.ok(!JSON.stringify(r).includes('PRIVATE_'));
+  assert.equal(r.productionAuthority, false);
+});
+
+test('B1 admin-fixture: normal entry cannot accept admin journals or relabelled signups', async () => {
+  const f = adminProvisionedPostFixture();
+  assert.equal((await f.run()).reason, 'JOURNAL_BINDING_INVALID');
+  assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+  const g = postOnlyFixture();
+  const r = await ordinaryChecks.runTwoAdminFixturePostIsolation(g.owner.client, g.other.client, g.p, g.other.worker);
+  assert.equal(r.status, 'BLOCKED');
+  assert.equal(g.owner.trace.length + g.other.trace.length, 0);
+});
+
+test('B1 admin-fixture: exact approval and independent create readback required before calls', async () => {
+  for (const change of [
+    p => { p.fixtureProvisioningApproval.verified = false; },
+    p => { p.fixtureProvisioningApproval.binding = '0'.repeat(64); },
+    p => { p.fixtureProvisioningApproval.maximumCreates = 3; },
+    p => { p.fixtureProvisioningApproval.maximumEmails = 1; },
+    p => { p.owner.journal.method = 'NORMAL_OWNER_WEBSITE_SIGNUP'; },
+    p => { p.journal.createStatus = 201; },
+    p => { p.journal.requestShapeVerified = false; },
+    p => { p.journal.requestedEmailConfirm = false; },
+    p => { p.journal.requestRoleOrAppMetadataPresent = true; },
+    p => { p.journal.requestPhonePresent = true; },
+    p => { p.journal.initialGet.actorId = freshOwner; },
+    p => { p.journal.initialGet.binding = '0'.repeat(64); },
+    p => { p.journal.initialGet.emailConfirmed = false; },
+    p => { p.journal.initialGet.authRole = 'service_role'; },
+    p => { p.journal.initialGet.namespace += '-wrong'; },
+    p => { p.journal.initialGet.createdAt = '2020-01-01T00:00:00Z'; },
+  ]) {
+    const f = adminProvisionedPostFixture(); change(f.p);
+    assert.equal((await f.runAdmin()).status, 'BLOCKED');
+    assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+  }
+});
+
+for (const [label, options, reason] of [
+  ['staff profile', { other: { role: 'moderator' } }, 'ORDINARY_PROFILE_NOT_PROVEN'],
+  ['service client', { other: { authRole: 'service_role' } }, 'SESSION_IDENTITY_MISMATCH'],
+  ['unconfirmed', { owner: { unconfirmed: true } }, 'EMAIL_CONFIRMATION_UNKNOWN'],
+  ['401', { other: { mutationResponse: { status: 401, error: { code: '42501' } } } }, 'AUTH_FAILURE_NOT_RLS_PROOF'],
+  ['write success', { other: { mutationResponse: { status: 200, data: [{ id: post }] } } }, 'UNEXPECTED_WRITE_SUCCESS'],
+  ['changed post', { other: { changedPostField: 'body' } }, 'FOREIGN_POST_CHANGED'],
+  ['admin allowed', { other: { workerStatus: 200 } }, 'ADMIN_ACCESS_NOT_DENIED'],
+]) test(`B1 admin-fixture: ${label} remains fail closed`, async () => {
+  const f = adminProvisionedPostFixture(options), r = await f.runAdmin();
+  assert.notEqual(r.status, 'PASS'); assert.equal(r.reason, reason);
+});
+
+test('B1 admin-fixture: actual server namespace and creation time must match', async () => {
+  for (const [field, value] of [['user_metadata', { qa_namespace: 'wrong' }], ['created_at', '2020-01-01T00:00:00Z']]) {
+    const f = adminProvisionedPostFixture(), original = f.owner.client.auth.getUser;
+    f.owner.client.auth.getUser = async () => { const r = await original(); r.data.user[field] = value; return r; };
+    assert.equal((await f.runAdmin()).reason, 'SESSION_IDENTITY_MISMATCH');
+  }
+});
+
+test('B1 admin-fixture: earlier historical actors stay excluded before any request', async () => {
+  for (const id of ['23c3c903-0687-4c6d-840c-f7f8a0d442db',
+    'dce0109d-93ef-4cc7-a91f-4085855410c9', '6dab7393-d551-4690-9964-841cfe0c19a4']) {
+    for (const owner of [false, true]) {
+      const f = adminProvisionedPostFixture(), actor = owner ? f.p.owner : f.p;
+      actor.expected.id = actor.journal.actorId = actor.journal.initialGet.actorId = actor.sessionReceipt.actorId = id;
+      if (owner) f.p.foreignFixture.authorId = id;
+      assert.equal((await f.runAdmin()).status, 'BLOCKED');
+      assert.equal(f.owner.trace.length + f.other.trace.length, 0);
+    }
+  }
+});
+
 test('B1 post-only: exact foreign post denials without any media operation or media PASS', async () => {
   const f = postOnlyFixture(), r = await f.run();
   assert.equal(r.status, 'PASS');
