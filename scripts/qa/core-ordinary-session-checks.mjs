@@ -206,11 +206,16 @@ export async function runTwoAdminFixturePostIsolation(ownerClient, client, plan,
   return runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, true, false, true);
 }
 
+export async function runAdminFixtureExistingPostIsolation(client, plan, readOrdinaryWorker) {
+  return runBoundForeignIsolation(client, plan, readOrdinaryWorker, null, false, false, true);
+}
+
 async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerClient, twoFresh, includeMedia = true, adminFixtures = false) {
   const counts = { auth: 0, rest: 0, worker: 0 };
-  const caps = { auth: twoFresh ? 6 : 3, rest: includeMedia ? (twoFresh ? 12 : 9) : 8, worker: 2 };
+  const caps = { auth: twoFresh ? 6 : 3, rest: includeMedia ? (twoFresh ? 12 : 9) : (twoFresh ? 8 : 6), worker: 2 };
   const narrowScope = includeMedia ? {} : { acceptanceScope: 'POST_AND_ADMIN_ONLY', mediaIsolation: 'NOT_VERIFIED',
-    ...(adminFixtures ? { identityProvisioning: 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE' } : {}) };
+    ...(adminFixtures ? { identityProvisioning: 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE' } : {}),
+    ...(!twoFresh ? { fixtureRelationship: 'FOREIGN_TO_EXISTING_SYNTHETIC_A3' } : {}) };
   const checks = {};
   const reasons = new Set(['PLAN_INVALID', 'SOURCE_BINDING_INVALID', 'JOURNAL_BINDING_INVALID',
     'FIXTURE_BINDING_INVALID', 'CLIENT_PROJECT_MISMATCH', 'DEADLINE_EXPIRED', 'BATCH_BUDGET',
@@ -231,16 +236,22 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     const journal = p?.journal;
     const absence = p?.absence;
     const f = p?.foreignFixture;
-    if (!includeMedia) insist(twoFresh && p?.acceptanceScope === 'POST_AND_ADMIN_ONLY', 'PLAN_INVALID');
+    if (!includeMedia) insist((twoFresh || adminFixtures) && p?.acceptanceScope === 'POST_AND_ADMIN_ONLY', 'PLAN_INVALID');
     if (adminFixtures) {
       const approval = p?.fixtureProvisioningApproval;
-      insist(twoFresh && !includeMedia && approval?.verified === true && hash(approval.sha256)
+      insist(!includeMedia && approval?.verified === true && hash(approval.sha256)
         && approval.binding === p.binding && approval.project === project
         && approval.method === 'AUTH_ADMIN_CREATE_CONFIRMED_FIXTURE'
         && approval.maximumCreates === 2 && approval.maximumEmails === 0
         && !['23c3c903-0687-4c6d-840c-f7f8a0d442db', 'dce0109d-93ef-4cc7-a91f-4085855410c9',
           '6dab7393-d551-4690-9964-841cfe0c19a4'].some(id => [expected?.id, p.owner?.expected?.id].includes(id)),
       'FIXTURE_METHOD_BINDING_INVALID');
+      if (!twoFresh) insist(p.owner === undefined && ownerClient === null
+        && approval.foreignTargetMode === 'PINNED_EXISTING_A3_POST'
+        && approval.maximumExistingPosts === 1 && approval.maximumMediaOperations === 0
+        && typeof f?.expectedTitle === 'string' && f.expectedTitle.length > 0 && f.expectedTitle.length <= 512
+        && typeof f.expectedBody === 'string' && f.expectedBody.length <= 8192
+        && typeof f.namespace === 'string' && f.expectedBody.includes(f.namespace), 'FIXTURE_METHOD_BINDING_INVALID');
     }
     insist(p?.project === project && p.origin === origin && hash(p.binding)
       && expected?.project === project && expected.binding === p.binding && id(expected.id)
@@ -272,6 +283,15 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     }
     boundSignup(expected, journal, absence);
     const owner = p.owner;
+    function boundSession(receipt, actor, j) {
+      insist(receipt?.verified === true && hash(receipt.sha256) && receipt.binding === p.binding
+        && receipt.project === project && receipt.origin === origin && receipt.sourceSha256 === source.sha256
+        && receipt.authRole === 'authenticated' && receipt.provenance === 'NORMAL_WEBSITE_SESSION'
+        && receipt.actorId === actor.id && receipt.journalSha256 === j.sha256 && hash(receipt.sessionContextSha256)
+        && date(receipt.observedAtUTC) && Date.parse(receipt.observedAtUTC) >= Date.parse(actor.createdAt)
+        && Date.parse(receipt.observedAtUTC) < Date.parse(p.deadlineUTC), 'SESSION_BINDING_INVALID');
+    }
+    if (twoFresh || adminFixtures) boundSession(p.sessionReceipt, expected, journal);
     if (twoFresh) {
       const e = owner?.expected;
       insist(e?.project === project && e.binding === p.binding && id(e.id) && e.id !== expected.id
@@ -279,15 +299,6 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
         && e.email.toLowerCase() !== expected.email.toLowerCase()
         && /^ogh-core-ordinary-[a-z0-9-]{20,100}$/.test(e.namespace ?? '') && date(e.createdAt), 'JOURNAL_BINDING_INVALID');
       boundSignup(e, owner.journal, owner.absence);
-      function boundSession(receipt, actor, j) {
-        insist(receipt?.verified === true && hash(receipt.sha256) && receipt.binding === p.binding
-          && receipt.project === project && receipt.origin === origin && receipt.sourceSha256 === source.sha256
-          && receipt.authRole === 'authenticated' && receipt.provenance === 'NORMAL_WEBSITE_SESSION'
-          && receipt.actorId === actor.id && receipt.journalSha256 === j.sha256 && hash(receipt.sessionContextSha256)
-          && date(receipt.observedAtUTC) && Date.parse(receipt.observedAtUTC) >= Date.parse(actor.createdAt)
-          && Date.parse(receipt.observedAtUTC) < Date.parse(p.deadlineUTC), 'SESSION_BINDING_INVALID');
-      }
-      boundSession(p.sessionReceipt, expected, journal);
       boundSession(owner.sessionReceipt, e, owner.journal);
       insist(owner.sessionReceipt.sessionContextSha256 !== p.sessionReceipt.sessionContextSha256, 'SESSION_BINDING_INVALID');
     }
@@ -332,7 +343,7 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     }
     function identity(response, actor = expected, j = journal, a = absence) {
       const user = data(response)?.user;
-      if (twoFresh) insist(user?.role === 'authenticated' && user.is_anonymous !== true, 'SESSION_IDENTITY_MISMATCH');
+      if (twoFresh || adminFixtures) insist(user?.role === 'authenticated' && user.is_anonymous !== true, 'SESSION_IDENTITY_MISMATCH');
       if (adminFixtures) {
         insist(createdActorEvidence({ user, expected: actor, sourceProject: source.project,
           successfulCreate: j.createStatus === 200 }).identityVerified
@@ -372,12 +383,14 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     checks.ordinaryStableIdentity = true;
     if (twoFresh) checks.twoFreshOrdinaryIdentities = true;
 
-    const postColumns = 'id,author_id,body,circle_id,status,moderation_status,circles:circle_id(id,slug,name,status)';
+    const postColumns = 'id,author_id,body,circle_id,status,moderation_status,circles:circle_id(id,slug,name,status)'
+      + (adminFixtures && !twoFresh ? ',title' : '');
     const mediaColumns = 'id,post_id,user_id,kind,storage_path';
     function publicPost(post) {
       const circle = Array.isArray(post.circles) ? (post.circles.length === 1 ? post.circles[0] : null) : post.circles;
       insist(post.id === f.postId && post.author_id === f.authorId && post.circle_id === f.circleId
         && typeof post.body === 'string' && post.body.includes(f.namespace)
+        && (!(adminFixtures && !twoFresh) || (post.title === f.expectedTitle && post.body === f.expectedBody))
         && post.status === 'published' && post.moderation_status === 'published'
         && circle?.id === f.circleId && circle.status === 'active'
         && typeof circle.slug === 'string' && typeof circle.name === 'string'
@@ -408,6 +421,7 @@ async function runBoundForeignIsolation(client, plan, readOrdinaryWorker, ownerC
     async function unchangedPost() {
       const after = await read('posts', postColumns, f.postId);
       insist(['id', 'author_id', 'body', 'circle_id', 'status', 'moderation_status'].every(key => after[key] === post[key]), 'FOREIGN_POST_CHANGED');
+      if (adminFixtures && !twoFresh) insist(after.title === post.title, 'FOREIGN_POST_CHANGED');
     }
     await denied(() => client.from('posts').update({ body: `${expected.namespace} forbidden` })
       .eq('id', f.postId).eq('author_id', f.authorId).select('id'));

@@ -240,7 +240,8 @@ function freshForeignFixture(p, options = {}) {
   const foreignNamespace = options.foreignNamespace ?? namespace;
   const rows = {
     profiles: [{ id: actorId, role: options.role ?? 'user' }],
-    posts: [{ id: post, author_id: foreignAuthor, body: `${foreignNamespace} PRIVATE_FOREIGN_BODY`, circle_id: freshCircle,
+    posts: [{ id: post, author_id: foreignAuthor, title: options.postTitle ?? 'PRIVATE_FOREIGN_TITLE',
+      body: `${foreignNamespace} PRIVATE_FOREIGN_BODY`, circle_id: freshCircle,
       status: options.pending ? 'pending' : 'published', moderation_status: options.pending ? 'pending_review' : 'published',
       circles: { id: freshCircle, slug: options.hiddenCircle ? 'rls-test-circle' : 'qa-public', name: 'QA public', status: 'active' } }],
     post_media: [{ id: media, post_id: post, user_id: foreignAuthor, kind: 'video', storage_path: p.foreignFixture.storagePath }],
@@ -483,6 +484,78 @@ function adminProvisionedPostFixture(options = {}) {
   return { ...f, runAdmin: () => ordinaryChecks.runTwoAdminFixturePostIsolation(
     f.owner.client, f.other.client, p, f.other.worker) };
 }
+
+function existingPostAdminFixture(options = {}) {
+  const p = adminProvisionedPostFixture().p;
+  delete p.owner;
+  Object.assign(p.fixtureProvisioningApproval, { foreignTargetMode: 'PINNED_EXISTING_A3_POST',
+    maximumExistingPosts: 1, maximumMediaOperations: 0 });
+  Object.assign(p.foreignFixture, { authorId: a, namespace, expectedTitle: 'PRIVATE_FOREIGN_TITLE',
+    expectedBody: `${namespace} PRIVATE_FOREIGN_BODY` });
+  delete p.foreignFixture.creatorJournalSha256;
+  const f = freshForeignFixture(p, { foreignAuthorId: a, foreignNamespace: namespace, ...options });
+  for (const method of ['getUser', 'refreshSession']) {
+    const original = f.client.auth[method];
+    f.client.auth[method] = async () => {
+      const r = await original(); r.data.user.user_metadata = { qa_namespace: p.expected.namespace }; return r;
+    };
+  }
+  return { p, ...f, run: () => ordinaryChecks.runAdminFixtureExistingPostIsolation(f.client, p, f.worker) };
+}
+
+test('B1 existing-post: one ordinary actor tests only foreign post and admin denial', async () => {
+  const f = existingPostAdminFixture(), r = await f.run();
+  assert.equal(r.status, 'PASS');
+  assert.equal(r.fixtureRelationship, 'FOREIGN_TO_EXISTING_SYNTHETIC_A3');
+  assert.equal(r.mediaIsolation, 'NOT_VERIFIED');
+  assert.equal(r.checks.twoFreshOrdinaryIdentities, undefined);
+  assert.deepEqual(r.counts, { auth: 3, rest: 6, worker: 2 });
+  assert.deepEqual(f.trace.filter(x => ['update', 'delete'].includes(x.mode)).map(x => [x.table, x.mode]),
+    [['posts', 'update'], ['posts', 'delete']]);
+  assert.ok(!f.trace.some(x => x.table === 'post_media'));
+  assert.ok(!JSON.stringify(r).includes('PRIVATE_'));
+  assert.equal(r.productionAuthority, false);
+});
+
+test('B1 existing-post: precise target method and normal session provenance required before calls', async () => {
+  for (const change of [
+    p => { delete p.fixtureProvisioningApproval.foreignTargetMode; },
+    p => { p.fixtureProvisioningApproval.maximumExistingPosts = 2; },
+    p => { p.fixtureProvisioningApproval.maximumMediaOperations = 1; },
+    p => { p.foreignFixture.authorId = b; },
+    p => { p.expected.id = a; },
+    p => { p.sessionReceipt.authRole = 'service_role'; },
+    p => { p.sessionReceipt.sourceSha256 = '0'.repeat(64); },
+    p => { p.sessionReceipt.provenance = 'ADMIN_SESSION'; },
+    p => { p.foreignFixture.mediaId = media; },
+    p => { delete p.foreignFixture.expectedBody; },
+  ]) {
+    const f = existingPostAdminFixture(); change(f.p);
+    assert.equal((await f.run()).status, 'BLOCKED'); assert.equal(f.trace.length, 0);
+  }
+});
+
+for (const [label, options, reason] of [
+  ['pending target', { pending: true }, 'PUBLIC_FIXTURE_NOT_VISIBLE'],
+  ['missing target', { missingTable: 'posts' }, 'EXACT_ROW_NOT_VISIBLE'],
+  ['staff profile', { role: 'moderator' }, 'ORDINARY_PROFILE_NOT_PROVEN'],
+  ['privileged client', { authRole: 'service_role' }, 'SESSION_IDENTITY_MISMATCH'],
+  ['401', { mutationResponse: { status: 401, error: { code: '42501' } } }, 'AUTH_FAILURE_NOT_RLS_PROOF'],
+  ['mutation succeeds', { mutationResponse: { status: 200, data: [{ id: post }] } }, 'UNEXPECTED_WRITE_SUCCESS'],
+  ['changed post', { changedPostField: 'body' }, 'FOREIGN_POST_CHANGED'],
+  ['admin allowed', { workerStatus: 200 }, 'ADMIN_ACCESS_NOT_DENIED'],
+  ['changed title', { postTitle: 'PRIVATE_CHANGED_TITLE' }, 'PUBLIC_FIXTURE_NOT_VISIBLE'],
+]) test(`B1 existing-post: ${label} cannot pass`, async () => {
+  const f = existingPostAdminFixture(options), r = await f.run();
+  assert.notEqual(r.status, 'PASS'); assert.equal(r.reason, reason);
+  assert.equal(r.mediaIsolation, 'NOT_VERIFIED');
+});
+
+test('B1 existing-post: namespace alone does not admit changed content', async () => {
+  const f = existingPostAdminFixture(); f.p.foreignFixture.expectedBody += '-different';
+  const r = await f.run(); assert.equal(r.reason, 'PUBLIC_FIXTURE_NOT_VISIBLE');
+  assert.ok(!f.trace.some(x => ['update', 'delete'].includes(x.mode)));
+});
 
 test('B1 admin-fixture: separate truthful provenance and exact post-only caps', async () => {
   const f = adminProvisionedPostFixture(), r = await f.runAdmin();
