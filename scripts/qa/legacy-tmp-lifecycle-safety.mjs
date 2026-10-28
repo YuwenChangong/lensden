@@ -154,3 +154,77 @@ export function admitExactTmpReferences(rows) {
   return {privateTargets:rows.map(r=>Object.fromEntries(columns.map(k=>[k,r[k]]))),
     safeSummary:{admittedReferences:2,objectExistence:'UNKNOWN',protection:'NOT_APPLIED',productionAuthority:false}};
 }
+
+// Metadata only; a prefix page is not an exact-object lookup or a permission proof.
+export function projectBoundR2ObjectPage(response,source,expectedKey) {
+  const unknown=()=>({state:'UNKNOWN',exactKeyMatch:false,listingTerminated:false,
+    suffixCollision:'UNKNOWN',sizeBytes:'UNKNOWN',storageClass:'UNKNOWN',
+    lastModifiedUtc:'UNKNOWN',etag:'UNKNOWN',version:'UNKNOWN',productionAuthority:false});
+  const out=unknown();
+  const validKey=k=>typeof k==='string'&&k.length>0&&k.length<=1024
+    &&/^[a-zA-Z0-9._/-]+$/.test(k)&&k.split('/').every(p=>p&&p!=='.'&&p!=='..');
+  if(!validKey(expectedKey)||source?.account!=='dcb374166b39234a499985145c075f50'
+    ||source.bucket!=='openglasshub-media'||source.jurisdiction!=='default'
+    ||source.status!==200||source.complete!==true||source.redirected!==false
+    ||source.targetVerified!==true||source.prefix!==expectedKey||source.perPage!==2
+    ||source.pagination!==false||response?.success!==true
+    ||(response.errors!==undefined&&(!Array.isArray(response.errors)||response.errors.length)))return out;
+  let bytes;
+  try{bytes=new TextEncoder().encode(JSON.stringify(response)).length;}catch{return out;}
+  const rows=response.result;
+  if(bytes>65536||!Array.isArray(rows)||rows.length>2)return out;
+  const keys=new Set();
+  for(const row of rows){
+    if(!row||typeof row!=='object'||!validKey(row.key)||!row.key.startsWith(expectedKey)
+      ||keys.has(row.key))return out;
+    keys.add(row.key);
+  }
+  const info=response.result_info;
+  if(info?.per_page!==undefined&&info.per_page!==2)return unknown();
+  if(info?.count!==undefined&&(!Number.isSafeInteger(info.count)||info.count!==rows.length))return unknown();
+  out.listingTerminated=info?.is_truncated===false
+    &&(info.cursor===undefined||info.cursor===null||info.cursor==='');
+  const exact=rows.find(r=>r.key===expectedKey);
+  out.suffixCollision=rows.some(r=>r.key!==expectedKey)?'OBSERVED'
+    :out.listingTerminated?'NONE_OBSERVED':'UNKNOWN';
+  if(!exact){if(out.listingTerminated)out.state='NOT_FOUND';return out;}
+  out.state='EXISTS';out.exactKeyMatch=true;
+  if(Number.isSafeInteger(exact.size)&&exact.size>=0)out.sizeBytes=exact.size;
+  if(['Standard','InfrequentAccess'].includes(exact.storage_class))out.storageClass=exact.storage_class;
+  if(typeof exact.last_modified==='string'&&/^\d{4}-\d{2}-\d{2}T.*Z$/.test(exact.last_modified)
+    &&Number.isFinite(Date.parse(exact.last_modified))
+    &&new Date(exact.last_modified).toISOString().slice(0,10)===exact.last_modified.slice(0,10))
+    out.lastModifiedUtc=new Date(exact.last_modified).toISOString();
+  if(typeof exact.etag==='string'&&/^[a-f0-9]{32}(?:-\d+)?$/i.test(exact.etag))out.etag=exact.etag;
+  if(typeof exact.version==='string'&&/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(exact.version))out.version=exact.version;
+  return out;
+}
+
+// Build a draft only. Live object, cost, authorization and drift gates stay separate.
+export function buildFinitePrefixLockCandidate({baseline,expectedConfigurationSha256,keys,ruleIds,expiryUtc,nowUtc}) {
+  const fail=()=>{throw Error('FINITE_PREFIX_LOCK_CANDIDATE_UNPROVEN');};
+  const source={kind:'lock',account:'dcb374166b39234a499985145c075f50',bucket:'openglasshub-media',
+    jurisdiction:'default',endpoint:'https://api.cloudflare.com/client/v4/accounts/dcb374166b39234a499985145c075f50/r2/buckets/openglasshub-media/lock',
+    status:200,complete:true,redirected:false,targetVerified:true};
+  if(baseline?.kind!=='lock'||!Array.isArray(keys)||keys.length<1||keys.length>2
+    ||new Set(keys).size!==keys.length||keys.some(k=>typeof k!=='string'||!/^tmp\/[a-zA-Z0-9._/-]+$/.test(k)
+      ||k.length>1024||k.split('/').length<3||k.split('/').some(p=>!p||p==='.'||p==='..'))
+    ||keys.some((a,i)=>keys.some((b,j)=>i!==j&&b.startsWith(a)))
+    ||!Array.isArray(ruleIds)||ruleIds.length!==keys.length||new Set(ruleIds).size!==ruleIds.length
+    ||ruleIds.some(id=>typeof id!=='string'||!/^ogh-legacy-[a-z0-9-]{1,80}$/.test(id)))fail();
+  const now=Date.parse(nowUtc),end=Date.parse(expiryUtc);
+  if(!Number.isFinite(now)||!Number.isFinite(end)||end-now<3600000||end-now>8*86400000
+    ||new Date(now).toISOString()!==nowUtc||new Date(end).toISOString()!==expiryUtc)fail();
+  const sealed=sealBucketRuleBaseline(Buffer.from(JSON.stringify({success:true,result:baseline.configuration})),source);
+  if(sealed.configurationSha256!==expectedConfigurationSha256
+    ||sealed.configurationSha256!==baseline.configurationSha256||sealed.ruleCount+keys.length>1000
+    ||sealed.configuration.rules.some(r=>ruleIds.includes(r.id)))fail();
+  const configuration=JSON.parse(JSON.stringify(sealed.configuration));
+  configuration.rules.push(...keys.map((prefix,i)=>({id:ruleIds[i],enabled:true,prefix,
+    condition:{type:'Date',date:expiryUtc}})));
+  const candidate=sealBucketRuleBaseline(Buffer.from(JSON.stringify({success:true,result:configuration})),source);
+  return {configuration:candidate.configuration,configurationSha256:candidate.configurationSha256,
+    originalConfigurationSha256:sealed.configurationSha256,preservedRuleCount:sealed.ruleCount,
+    addedRuleCount:keys.length,expiryUtc,fullKeyPrefixesAreNotExactEquality:true,
+    futureSuffixMatchesBounded:false,objectExistence:'UNKNOWN',productionAuthority:false,writeReady:false};
+}

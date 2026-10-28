@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {sealBucketRuleBaseline,admitExactTmpReferences,tmpTargetFailureReceipt} from './legacy-tmp-lifecycle-safety.mjs';
+import {sealBucketRuleBaseline,admitExactTmpReferences,tmpTargetFailureReceipt,
+  projectBoundR2ObjectPage,buildFinitePrefixLockCandidate} from './legacy-tmp-lifecycle-safety.mjs';
 
 // Fictitious local values only. This file has no transport or execution permit.
 const account='dcb374166b39234a499985145c075f50';
@@ -149,4 +150,79 @@ test('receipt projection never promotes arbitrary errors or unbounded values',()
       admissionCheck:'PRIVATE_VALUE',returnedRowCount:n});
     assert.deepEqual(r,unknown);
   }
+});
+
+test('final closure: exact metadata identity never defaults missing fields or version',()=>{
+  const key='tmp/fictitious/video.mp4';
+  const s={account,bucket:'openglasshub-media',jurisdiction:'default',status:200,complete:true,
+    redirected:false,targetVerified:true,prefix:key,perPage:2,pagination:false};
+  const response={success:true,result:[{key,size:2018,storage_class:'Standard',
+    etag:'0'.repeat(32),last_modified:'2026-10-28T00:00:00Z'}],result_info:{is_truncated:false}};
+  const p=projectBoundR2ObjectPage(response,s,key);
+  assert.equal(p.state,'EXISTS');assert.equal(p.storageClass,'Standard');
+  assert.equal(p.suffixCollision,'NONE_OBSERVED');assert.equal(p.version,'UNKNOWN');
+  assert(!JSON.stringify(p).includes(key));
+  const missing=projectBoundR2ObjectPage({...response,result:[{key}]},s,key);
+  assert.equal(missing.sizeBytes,'UNKNOWN');assert.equal(missing.storageClass,'UNKNOWN');
+  const ia=projectBoundR2ObjectPage({...response,result:[{key,storage_class:'InfrequentAccess'}]},s,key);
+  assert.equal(ia.storageClass,'InfrequentAccess');assert.equal(ia.productionAuthority,false);
+  const invalidDate=projectBoundR2ObjectPage({...response,result:[{key,last_modified:'2026-02-31T00:00:00Z'}]},s,key);
+  assert.equal(invalidDate.lastModifiedUtc,'UNKNOWN');
+});
+
+test('final closure: absence requires explicit terminal listing and distinguishes suffixes',()=>{
+  const key='tmp/fictitious/video.mp4';
+  const s={account,bucket:'openglasshub-media',jurisdiction:'default',status:200,complete:true,
+    redirected:false,targetVerified:true,prefix:key,perPage:2,pagination:false};
+  const page=(result,info)=>({success:true,result,result_info:info});
+  assert.equal(projectBoundR2ObjectPage(page([],undefined),s,key).state,'UNKNOWN');
+  assert.equal(projectBoundR2ObjectPage(page([],{is_truncated:true}),s,key).state,'UNKNOWN');
+  assert.equal(projectBoundR2ObjectPage(page([],{is_truncated:false,cursor:'more'}),s,key).state,'UNKNOWN');
+  assert.equal(projectBoundR2ObjectPage(page([],{is_truncated:false}),s,key).state,'NOT_FOUND');
+  assert.equal(projectBoundR2ObjectPage(page([],{is_truncated:false,count:1}),s,key).state,'UNKNOWN');
+  assert.equal(projectBoundR2ObjectPage(page([],{is_truncated:false,count:-1}),s,key).state,'UNKNOWN');
+  const suffix=projectBoundR2ObjectPage(page([{key:key+'.extra'}],{is_truncated:false}),s,key);
+  assert.equal(suffix.state,'NOT_FOUND');assert.equal(suffix.suffixCollision,'OBSERVED');
+  const partial=projectBoundR2ObjectPage(page([{key}],{is_truncated:true,cursor:'more'}),s,key);
+  assert.equal(partial.state,'EXISTS');assert.equal(partial.suffixCollision,'UNKNOWN');
+});
+
+test('final closure: denied wrong-target duplicate overflow and oversized metadata fail closed',()=>{
+  const key='tmp/fictitious/video.mp4';
+  const s={account,bucket:'openglasshub-media',jurisdiction:'default',status:200,complete:true,
+    redirected:false,targetVerified:true,prefix:key,perPage:2,pagination:false};
+  const good={success:true,result:[{key}],result_info:{is_truncated:false}};
+  for(const patch of [{status:403},{complete:false},{redirected:true},{targetVerified:false},
+    {account:'wrong'},{prefix:key+'.other'},{perPage:3},{pagination:true}])
+    assert.equal(projectBoundR2ObjectPage(good,{...s,...patch},key).state,'UNKNOWN');
+  for(const patch of [{success:false},{errors:[{code:1000}]},{result_info:{per_page:3,is_truncated:false}},
+    {result:[{key},{key}]},{result:[{key},{key:key+'a'},{key:key+'b'}]},
+    {result:[{key:'other/key'}]},{result:[{key,custom_metadata:{oversized:'x'.repeat(65536)}}]}])
+    assert.equal(projectBoundR2ObjectPage({...good,...patch},s,key).state,'UNKNOWN');
+});
+
+test('final closure: finite draft preserves every original rule field and order',()=>{
+  const baseline=seal(Buffer.from(JSON.stringify({success:true,result:{future_field:{keep:true},
+    rules:[rule('original-one'),{...rule('original-two'),enabled:false,future_field:'keep'}]}})));
+  const before=JSON.stringify(baseline);
+  const p=buildFinitePrefixLockCandidate({baseline,expectedConfigurationSha256:baseline.configurationSha256,
+    keys:['tmp/fictitious/a.mp4','tmp/fictitious/b.mp4'],ruleIds:['ogh-legacy-one','ogh-legacy-two'],
+    nowUtc:'2026-10-28T10:00:00.000Z',expiryUtc:'2026-11-04T12:00:00.000Z'});
+  assert.deepEqual(p.configuration.rules.slice(0,2),baseline.configuration.rules);
+  assert.deepEqual(p.configuration.future_field,{keep:true});
+  assert.equal(JSON.stringify(baseline),before);assert.equal(p.preservedRuleCount,2);
+  assert.equal(p.addedRuleCount,2);assert.equal(p.productionAuthority,false);assert.equal(p.writeReady,false);
+  assert.deepEqual(p.configuration.rules.slice(2).map(r=>r.prefix),['tmp/fictitious/a.mp4','tmp/fictitious/b.mp4']);
+});
+
+test('final closure: finite draft rejects drift expired overlong overlapping or colliding rules',()=>{
+  const baseline=seal(raw([rule('ogh-legacy-existing')]));
+  const args={baseline,expectedConfigurationSha256:baseline.configurationSha256,
+    keys:['tmp/fictitious/a.mp4'],ruleIds:['ogh-legacy-one'],
+    nowUtc:'2026-10-28T10:00:00.000Z',expiryUtc:'2026-11-04T12:00:00.000Z'};
+  for(const patch of [{expectedConfigurationSha256:'0'.repeat(64)},
+    {expiryUtc:'2026-10-28T09:00:00.000Z'},{expiryUtc:'2026-11-20T12:00:00.000Z'},
+    {ruleIds:['ogh-legacy-existing']},{keys:['tmp/fictitious/a.mp4','tmp/fictitious/a.mp4-extra'],ruleIds:['ogh-legacy-one','ogh-legacy-two']},
+    {keys:['tmp/fictitious/../a']},{keys:[]},{keys:['tmp/fictitious/a.mp4','tmp/fictitious/a.mp4'],ruleIds:['ogh-legacy-one','ogh-legacy-two']}])
+    assert.throws(()=>buildFinitePrefixLockCandidate({...args,...patch}),/FINITE_PREFIX_LOCK_CANDIDATE_UNPROVEN/);
 });
