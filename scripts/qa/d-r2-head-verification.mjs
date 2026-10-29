@@ -6,6 +6,7 @@ import {connect} from 'node:net';
 
 const account='dcb374166b39234a499985145c075f50',bucket='openglasshub-media';
 const host=`${account}.r2.cloudflarestorage.com`;
+const approved24hException='0fb31bcc6a9230ff23914298d781093fa8b90f9f28e627acc59d2063bf885a03';
 const sha=v=>createHash('sha256').update(v).digest('hex');
 const digest=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 const uuid=v=>typeof v==='string'&&/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(v);
@@ -101,6 +102,15 @@ function validDeletion(d,c,b,key,raw,afterUtc) {
 // This factory grants no authority. The existing executor must admit every call
 // through its durable window/quota/permission/cost gate before transport dispatch.
 export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,requestHandler,now=Date.now,timeoutMs=10000}) {
+  const extended=binding?.credentialLifetimePolicy==='D_24H_OWNER_EXCEPTION_V1';
+  // Pins identify the exact owner exception, not provider scope/expiry proof.
+  // The durable execution host must verify both records before admitting a call.
+  if(binding?.credentialLifetimePolicy!==undefined&&!extended
+    ||extended&&(binding.credentialLifetimeApprovalSha256!==approved24hException
+      ||scope?.credentialLifetimeApprovalSha256!==approved24hException
+      ||!Number.isFinite(utc(scope.issuedUtc))||utc(scope.issuedUtc)>utc(binding.notBeforeUtc)
+      ||utc(scope.expiresUtc)<=utc(scope.issuedUtc)||utc(scope.expiresUtc)-utc(scope.issuedUtc)>86400000))
+    throw Error('D_HEAD_CREDENTIAL_EXCEPTION_INVALID');
   if(!binding||!digest(binding.executionBindingSha256)||!digest(binding.connectionBindingSha256)
     ||(binding.creationMode!==undefined&&binding.creationMode!=='SERVER_RECEIPT_V2')
     ||(binding.creationMode==='SERVER_RECEIPT_V2'
@@ -111,7 +121,7 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
     ||!fixedTarget(scope)||scope.permission!=='object-read-only'||!digest(scope.evidenceSha256)
     ||!digest(scope.bucketProvenanceSha256)||scope.configurationWindowBindingSha256!==binding.executionBindingSha256
     ||!Number.isFinite(utc(scope.expiresUtc))||utc(scope.expiresUtc)<utc(binding.deadlineUtc)
-    ||utc(scope.expiresUtc)-utc(binding.notBeforeUtc)>14400000
+    ||utc(scope.expiresUtc)-utc(binding.notBeforeUtc)>(extended?86400000:14400000)
     ||typeof credentials?.accessKeyId!=='string'||!/^[a-zA-Z0-9]{16,128}$/.test(credentials.accessKeyId)
     ||typeof credentials.secretAccessKey!=='string'||!/^[a-zA-Z0-9/+=]{32,256}$/.test(credentials.secretAccessKey)
     ||(credentials.sessionToken!==undefined&&(typeof credentials.sessionToken!=='string'
@@ -188,6 +198,8 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
         executionBindingSha256:b.executionBindingSha256,connectionBindingSha256:b.connectionBindingSha256,
         bucketProvenanceSha256:s.bucketProvenanceSha256,configurationWindowBindingSha256:s.configurationWindowBindingSha256,
         allocationReceiptSha256:allocationRaw?sha(allocationRaw):null,creationReceiptSha256:creationRaw?sha(creationRaw):null};
+      if(extended)Object.assign(intent,{credentialLifetimePolicy:b.credentialLifetimePolicy,
+        credentialLifetimeApprovalSha256:approved24hException,credentialIssuedUtc:s.issuedUtc,credentialExpiresUtc:s.expiresUtc});
       const controller=new AbortController();
       const expired=new Promise((_,reject)=>{timer=setTimeout(()=>{
         stopped=true;controller.abort();reject(Error('D_HEAD_TIMEOUT'));},

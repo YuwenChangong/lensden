@@ -60,6 +60,39 @@ async function preAndPresent(s,bytes=creationRaw()) {
 
 test('D HEAD: SDK verifier is implemented',()=>assert.equal(typeof api?.createDHeadVerifier,'function'));
 
+test('D 24h exception: exact owner pins admit only the fixed bucket and preserve original four-hour default',()=>{
+  const approval='0fb31bcc6a9230ff23914298d781093fa8b90f9f28e627acc59d2063bf885a03';
+  const longScope={...scope,issuedUtc:binding.notBeforeUtc,expiresUtc:'2026-10-30T10:00:00.000Z',credentialLifetimeApprovalSha256:approval};
+  const longBinding={...binding,credentialLifetimePolicy:'D_24H_OWNER_EXCEPTION_V1',credentialLifetimeApprovalSha256:approval};
+  assert.throws(()=>setup([],{scope:longScope}),/D_HEAD_ADMISSION_INVALID/);
+  const accepted=setup([],{binding:longBinding,scope:longScope});accepted.verifier.close();assert.equal(accepted.requests.length,0);
+  for(const patch of [{binding:{...longBinding,credentialLifetimeApprovalSha256:'0'.repeat(64)}},
+    {scope:{...longScope,credentialLifetimeApprovalSha256:'0'.repeat(64)}},
+    {binding:{...longBinding,credentialLifetimePolicy:'UNAPPROVED'}},
+    {scope:{...longScope,bucket:'another-bucket'}}])
+    assert.throws(()=>setup([],{binding:longBinding,scope:longScope,...patch}),/D_HEAD_(CREDENTIAL_EXCEPTION|ADMISSION)_INVALID/);
+});
+
+test('D 24h exception: supplier issuance lifetime is bounded while the execution window stays at most three hours',()=>{
+  const approval='0fb31bcc6a9230ff23914298d781093fa8b90f9f28e627acc59d2063bf885a03';
+  const b={...binding,credentialLifetimePolicy:'D_24H_OWNER_EXCEPTION_V1',credentialLifetimeApprovalSha256:approval};
+  const s={...scope,issuedUtc:binding.notBeforeUtc,expiresUtc:'2026-10-30T10:00:00.000Z',credentialLifetimeApprovalSha256:approval};
+  for(const patch of [{scope:{...s,issuedUtc:undefined}},{scope:{...s,issuedUtc:'2026-10-29T10:01:00.000Z'}},
+    {scope:{...s,issuedUtc:'2026-10-29T09:00:00.000Z'}},{scope:{...s,expiresUtc:'2026-10-30T10:00:00.001Z'}},
+    {binding:{...b,deadlineUtc:'2026-10-29T13:00:00.001Z'}}])
+    assert.throws(()=>setup([],{binding:b,scope:s,...patch}),/D_HEAD_(CREDENTIAL_EXCEPTION|ADMISSION)_INVALID/);
+});
+
+test('D 24h exception: admission sees the exception but denied dispatch still sends no HEAD',async()=>{
+  const approval='0fb31bcc6a9230ff23914298d781093fa8b90f9f28e627acc59d2063bf885a03';let admitted;
+  const s=setup([],{binding:{...binding,credentialLifetimePolicy:'D_24H_OWNER_EXCEPTION_V1',credentialLifetimeApprovalSha256:approval},
+    scope:{...scope,issuedUtc:binding.notBeforeUtc,expiresUtc:'2026-10-30T10:00:00.000Z',credentialLifetimeApprovalSha256:approval},
+    beforeDispatch:async intent=>{admitted=intent;return false;}});
+  try{assert.equal((await s.verifier.head({phase:'BEFORE_CREATE',key,allocationRaw})).state,'UNKNOWN');
+    assert.equal(admitted.credentialLifetimeApprovalSha256,approval);assert.equal(s.requests.length,0);}
+  finally{s.verifier.close();}
+});
+
 test('D HEAD: actual SDK signs only bound HEAD and links independent absent present absent receipts',async()=>{
   const s=setup();const {present}=await preAndPresent(s);s.at(10);
   const read=await s.verifier.head({phase:'AFTER_DELETE',key,creationRaw:creationRaw(),deletion:deletion()});
