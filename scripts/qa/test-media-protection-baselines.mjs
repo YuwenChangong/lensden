@@ -103,6 +103,92 @@ const cleanupCallbacks=(events,patch={})=>({
   finishActor:async()=>({actorId:cleanupTarget.actorId,actorCreationReceiptSha256:cleanupTarget.actorCreationReceiptSha256,
     signedOut:true,banned:true,independentReadback:true}),...patch});
 
+// REST permits absent pagination properties; that is not an absence witness.
+test('D contract: optional pagination survives actual capture without becoming terminal',async()=>{
+  const {runInNewContext}=await import('node:vm');
+  const {webcrypto}=await import('node:crypto');
+  const binding={executionBindingSha256:'1'.repeat(64),connectionBindingSha256:'2'.repeat(64),
+    requestId:'contract-fixture',key:cleanupKey};
+  const response={success:true,errors:[],messages:[],result:[],status:200};
+  let calls=0;
+  const code=metadataEvidence.buildDMetadataCaptureCode(binding);
+  const capture=await runInNewContext(`(${code})()`,{accountId:account,TextEncoder,crypto:webcrypto,Date,
+    setTimeout,clearTimeout,cloudflare:{async request(){calls++;return response;}}});
+  assert.equal(calls,1);assert.equal(capture.rawDecodedResponse,JSON.stringify(response));
+  assert.equal(Object.hasOwn(JSON.parse(capture.rawDecodedResponse),'result_info'),false);
+  assert.equal(capture.providerWireCompletenessProven,false);
+  assert.equal(metadataEvidence.inspectDMetadataCapture(capture,binding).state,'UNKNOWN');
+});
+
+test('D contract: exact presence needs no pagination inference and is not cleanup',()=>{
+  const receipt=metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify({success:true,status:200,
+    result:[{key:cleanupKey,size:2018,storage_class:'Standard'}]})),cleanupSource());
+  assert.equal(receipt.projection.state,'EXISTS');assert.equal(receipt.projection.listingTerminated,false);
+  assert.equal(bindCleanup(receipt,deletionEvidence()).state,'OBJECT_STILL_PRESENT');
+});
+
+test('D contract: only an explicit uncontradicted terminal witness proves prefix absence',()=>{
+  const receipt=metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify({success:true,status:200,
+    result:[],result_info:{is_truncated:false}})),cleanupSource());
+  assert.equal(receipt.projection.state,'NOT_FOUND');
+  assert.equal(bindCleanup(receipt,deletionEvidence()).state,'ABSENCE_OBSERVED_AFTER_DELETE');
+  assert.equal(receipt.providerWireCompletenessProven,false);
+  assert.equal(receipt.productionAuthority,false);
+});
+
+test('D contract: missing false malformed false cursor and pagination never imply termination',()=>{
+  for(const info of [undefined,{},null,{cursor:''},{per_page:2},{is_truncated:null},
+    {is_truncated:'false'},{is_truncated:true},{is_truncated:true,cursor:'next'},
+    {is_truncated:false,cursor:'next'},{is_truncated:false,delimited:['prefix/']}]) {
+    const receipt=metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify({success:true,status:200,
+      result:[],...(info===undefined?{}:{result_info:info})})),cleanupSource());
+    assert.equal(receipt.projection.state,'UNKNOWN');
+    assert.equal(bindCleanup(receipt,deletionEvidence()).state,'UNKNOWN');
+  }
+});
+
+test('D contract: projected arrays or stripped pagination cannot inherit upstream completeness',()=>{
+  for(const response of [[],{success:true,status:200,result:[]},
+    {success:true,status:200,result:[],result_info:{cursor:''}}]) {
+    const bytes=Buffer.from(JSON.stringify(response));
+    if(Array.isArray(response))assert.throws(()=>metadataEvidence.sealR2MetadataReadback(bytes,cleanupSource()),
+      /R2_METADATA_READBACK_UNPROVEN/);
+    else {
+      const receipt=metadataEvidence.sealR2MetadataReadback(bytes,cleanupSource());
+      assert.equal(receipt.providerWireCompletenessProven,false);
+      assert.equal(bindCleanup(receipt,deletionEvidence()).state,'UNKNOWN');
+    }
+  }
+});
+
+test('D contract: errors incomplete arrays and timed out sources cannot prove absence',()=>{
+  for(const response of [{success:true,status:200,result:[],errors:[{code:1000}],result_info:{is_truncated:false}},
+    {success:true,status:200,result:[{}],result_info:{is_truncated:false}}]) {
+    const receipt=metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify(response)),cleanupSource());
+    assert.equal(bindCleanup(receipt,deletionEvidence()).state,'UNKNOWN');
+  }
+  for(const response of [{success:false,status:403,result:null},
+    {success:true,status:200},{success:true,status:200,result:'--- TRUNCATED ---'}])
+    assert.throws(()=>metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify(response)),cleanupSource()),
+      /R2_METADATA_READBACK_UNPROVEN/);
+  assert.throws(()=>metadataEvidence.sealR2MetadataReadback(terminalBytes(),{...cleanupSource(),
+    completedUtc:'2026-10-29T04:50:12.001Z'}),/R2_METADATA_READBACK_UNPROVEN/);
+});
+
+test('D contract: author deletion remains first but optional pagination stops cleanup proof',async()=>{
+  const events=[];
+  const result=await metadataEvidence.runDBoundCleanup({creationRaw:dCreationBytes(),actorCreationRaw:actorCreationBytes(),
+    postState:'published',target:cleanupTarget,callbacks:cleanupCallbacks(events,{
+      readExactObject:async key=>metadataEvidence.sealR2MetadataReadback(
+        Buffer.from(JSON.stringify({success:true,errors:[],messages:[],result:[],status:200})),
+        {...cleanupSource(),prefix:key}),
+    })});
+  assert.equal(events[0],'OWNER_DELETE');assert.equal(result.state,'BLOCKED');
+  assert.equal(result.actorContained,true);
+  assert.equal(events.filter(phase=>phase.startsWith('OBJECT_READBACK_')).length,1);
+  assert.equal(events.includes('HIDE'),false);assert.equal(result.productionAuthority,false);
+});
+
 test('D sprint: cleanup executes owner delete first and independently verifies every created key',async()=>{
   const events=[];
   const result=await metadataEvidence.runDBoundCleanup({creationRaw:dCreationBytes(),actorCreationRaw:actorCreationBytes(),postState:'published',
