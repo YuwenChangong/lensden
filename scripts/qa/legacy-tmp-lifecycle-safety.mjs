@@ -373,7 +373,15 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
     const post=await dispatch('POST_READBACK',()=>callbacks.readPost(target.postId));
     if(post?.postId!==target.postId||post.independent!==true||post.postState!=='deleted'||post.mediaRows!==0||post.anonymousStatus!==404)
       throw Error('D_POST_CLEANUP_UNPROVEN');
-    const deletion=await dispatch('EXACT_OBJECT_DELETE',()=>callbacks.deleteExactObjects([...c.keys]));
+    const deleteResult=await dispatch('EXACT_OBJECT_DELETE',()=>callbacks.deleteExactObjects([...c.keys]));
+    const deletion=deleteResult?.evidence,deleteText=deleteResult?.rawDecodedResponse;
+    if(typeof deleteText!=='string'||!deleteText.length||Buffer.byteLength(deleteText)>65536
+      ||deleteText.includes('--- TRUNCATED ---')||sha256(deleteText)!==deletion?.responseSha256)
+      throw Error('D_DELETE_RESPONSE_UNPROVEN');
+    const ack=JSON.parse(deleteText);
+    if(ack?.success!==true||ack.result!==null
+      ||(ack.errors!==undefined&&(!Array.isArray(ack.errors)||ack.errors.length)))
+      throw Error('D_DELETE_RESPONSE_UNPROVEN');
     // Both tmp source and retained key need their own later terminal observation.
     const readRequestIds=new Set();
     for(let i=0;i<c.keys.length;i++) {

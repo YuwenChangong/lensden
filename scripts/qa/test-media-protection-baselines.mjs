@@ -46,6 +46,10 @@ const dKeys=[`tmp/${cleanupTarget.actorId}/${cleanupTarget.postId}/fixture.mp4`,
   `${cleanupTarget.actorId}/${cleanupTarget.postId}/r2-retained-33333333-3333-4333-8333-333333333333.mp4`];
 const dCreationBytes=(keys=[dKeys[0]])=>Buffer.from(JSON.stringify({...JSON.parse(creationBytes()),keys}));
 const dDeletion=(keys=[dKeys[0]])=>({...deletionEvidence(),keys,createdKeys:keys,creationReceiptSha256:digest(dCreationBytes(keys))});
+const dDeleteResult=(keys=[dKeys[0]],body={success:true,result:null,errors:[],messages:[]})=>{
+  const rawDecodedResponse=JSON.stringify(body);
+  return {evidence:{...dDeletion(keys),responseSha256:digest(rawDecodedResponse)},rawDecodedResponse};
+};
 
 test('D sprint: actual metadata capture code preserves the complete envelope with one request',async()=>{
   const {runInNewContext}=await import('node:vm');
@@ -94,7 +98,7 @@ const cleanupCallbacks=(events,patch={})=>({
   beforeDispatch:async phase=>{events.push(phase);return true;},
   ownerDelete:async()=>({postId:cleanupTarget.postId,postState:'deleted',acknowledged:true}),
   readPost:async()=>({postId:cleanupTarget.postId,independent:true,postState:'deleted',mediaRows:0,anonymousStatus:404}),
-  deleteExactObjects:async keys=>dDeletion(keys),
+  deleteExactObjects:async keys=>dDeleteResult(keys),
   readExactObject:async key=>metadataEvidence.sealR2MetadataReadback(terminalBytes(),{...cleanupSource(),prefix:key}),
   finishActor:async()=>({actorId:cleanupTarget.actorId,actorCreationReceiptSha256:cleanupTarget.actorCreationReceiptSha256,
     signedOut:true,banned:true,independentReadback:true}),...patch});
@@ -113,6 +117,8 @@ test('D sprint: hidden targets partial failures missing terminal pages and denie
     {ownerDelete:async()=>({postId:'wrong-post',postState:'deleted',acknowledged:true})},
     {ownerDelete:async()=>({postId:cleanupTarget.postId,postState:'deleted',acknowledged:false})},
     {readPost:async()=>({independent:true,postState:'hidden',mediaRows:1,anonymousStatus:404})},
+    {deleteExactObjects:async keys=>dDeleteResult(keys,{success:true,result:null,errors:[{code:1000}]})},
+    {deleteExactObjects:async keys=>dDeleteResult(keys,{success:true,result:{failed:['fixture-only']},errors:[]})},
     {readExactObject:async key=>metadataEvidence.sealR2MetadataReadback(Buffer.from('{"success":true,"result":[]}'),{...cleanupSource(),prefix:key})},
     {finishActor:async()=>({signedOut:true,banned:false,independentReadback:false})},
     {beforeDispatch:async()=>false}]) {
@@ -126,11 +132,11 @@ test('D sprint: hidden targets partial failures missing terminal pages and denie
 });
 
 test('D sprint: two created objects require two distinct complete independent receipts',async()=>{
-  const keys=dKeys,bytes=dCreationBytes(keys),deletion=dDeletion(keys);
+  const keys=dKeys,bytes=dCreationBytes(keys);
   for(const duplicateRequestId of [false,true]) {
     const events=[];
     const result=await metadataEvidence.runDBoundCleanup({creationRaw:bytes,actorCreationRaw:actorCreationBytes(),postState:'published',target:cleanupTarget,
-      callbacks:cleanupCallbacks(events,{deleteExactObjects:async exact=>{assert.deepEqual(exact,keys);return deletion;},
+      callbacks:cleanupCallbacks(events,{deleteExactObjects:async exact=>{assert.deepEqual(exact,keys);return dDeleteResult(keys);},
         readExactObject:async key=>metadataEvidence.sealR2MetadataReadback(terminalBytes(),{...cleanupSource(),prefix:key,
           requestId:duplicateRequestId?'same-request':'fixture-read-'+keys.indexOf(key)})})});
     assert.equal(result.state,duplicateRequestId?'BLOCKED':'CLEANUP_SEQUENCE_VERIFIED');
