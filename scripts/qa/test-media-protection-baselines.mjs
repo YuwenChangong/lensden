@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {sealBucketRuleBaseline,admitExactTmpReferences,tmpTargetFailureReceipt,
   projectBoundR2ObjectPage,buildFinitePrefixLockCandidate} from './legacy-tmp-lifecycle-safety.mjs';
+import * as metadataEvidence from './legacy-tmp-lifecycle-safety.mjs';
 
 // Fictitious local values only. This file has no transport or execution permit.
 const account='dcb374166b39234a499985145c075f50';
@@ -18,6 +19,136 @@ const row=(n=1)=>({media_id:`00000000-0000-4000-8000-00000000000${n}`,
   size_bytes:'2018',post_status:'pending',moderation_status:'pending_review'});
 const pair=()=>[row(),row(2)];
 const rejects=f=>assert.throws(f,e=>/^PRIVATE_(RULE_BASELINE|TMP_TARGET_SCOPE)_UNPROVEN$/.test(e.message));
+
+const cleanupKey='tmp/fictitious-run/fictitious-video.mp4';
+const digest=v=>createHash('sha256').update(v).digest('hex');
+const cleanupSource=()=>({...source('metadata'),endpoint:`https://api.cloudflare.com/client/v4/accounts/${account}/r2/buckets/openglasshub-media/objects`,
+  method:'GET',prefix:cleanupKey,perPage:2,pagination:false,
+  executionBindingSha256:'1'.repeat(64),connectionBindingSha256:'2'.repeat(64),
+  requestId:'fixture-independent-read',startedUtc:'2026-10-29T04:50:02.000Z',completedUtc:'2026-10-29T04:50:03.000Z'});
+const creationBytes=()=>Buffer.from(JSON.stringify({executionBindingSha256:'1'.repeat(64),connectionBindingSha256:'2'.repeat(64),
+  account,bucket:'openglasshub-media',jurisdiction:'default',keys:[cleanupKey],
+  observedUtc:'2026-10-29T04:49:59.000Z',uploadReceiptSha256:'5'.repeat(64),retentionReceiptSha256:'6'.repeat(64)}));
+const deletionEvidence=()=>({executionBindingSha256:'1'.repeat(64),connectionBindingSha256:'2'.repeat(64),
+  account,bucket:'openglasshub-media',jurisdiction:'default',method:'DELETE',requestId:'fixture-delete',
+  keys:[cleanupKey],createdKeys:[cleanupKey],creationReceiptSha256:digest(creationBytes()),
+  responseSha256:'4'.repeat(64),status:200,complete:true,
+  startedUtc:'2026-10-29T04:50:00.000Z',completedUtc:'2026-10-29T04:50:01.000Z'});
+const terminalBytes=()=>Buffer.from(JSON.stringify({success:true,status:200,errors:[],messages:[],result:[],
+  result_info:{is_truncated:false,cursor:'',per_page:2,count:0}}));
+const bindCleanup=(receipt,deletion,creation=creationBytes())=>metadataEvidence.bindR2CleanupReadback(receipt,deletion,creation);
+
+test('D cleanup: retains complete decoded envelope and exact private bytes without inventing wire proof',()=>{
+  const bytes=terminalBytes(),s=cleanupSource();
+  const sealed=metadataEvidence.sealR2MetadataReadback(bytes,s);
+  assert.equal(sealed.rawDecodedResponse,bytes.toString('utf8'));
+  assert.equal(sealed.decodedResponseSha256,digest(bytes));
+  assert.deepEqual(sealed.response,JSON.parse(bytes));
+  assert.deepEqual(sealed.source,s);
+  assert.equal(sealed.projection.state,'NOT_FOUND');
+  assert.equal(sealed.productionAuthority,false);
+  assert.equal(sealed.providerWireCompletenessProven,false);
+  s.prefix='changed';assert.equal(sealed.source.prefix,cleanupKey);
+});
+
+test('D cleanup: full object metadata and pagination survive a serialized private receipt roundtrip',()=>{
+  const response={success:true,status:200,errors:[],messages:[],
+    result:[{key:cleanupKey,size:2018,storage_class:'Standard',custom_metadata:{fixture:'only'}},
+      {key:cleanupKey+'.suffix',size:0,storage_class:'InfrequentAccess'}],
+    result_info:{is_truncated:true,cursor:'fixture-next',per_page:2,count:2}};
+  const receipt=metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify(response)),cleanupSource());
+  const persisted=JSON.parse(JSON.stringify(receipt));
+  assert.deepEqual(persisted.response,response);
+  assert.deepEqual(JSON.parse(persisted.rawDecodedResponse),response);
+  assert.equal(bindCleanup(persisted,deletionEvidence()).state,'UNKNOWN');
+  const resealed=metadataEvidence.sealR2MetadataReadback(Buffer.from(persisted.rawDecodedResponse),persisted.source);
+  assert.equal(resealed.decodedResponseSha256,receipt.decodedResponseSha256);
+  assert.equal(bindCleanup(resealed,deletionEvidence()).state,'OBJECT_STILL_PRESENT');
+});
+
+test('D cleanup: missing or contradictory termination never proves absence',()=>{
+  for(const info of [undefined,{is_truncated:true},{is_truncated:false,cursor:'more'},
+    {is_truncated:false,count:1},{is_truncated:false,per_page:3},
+    {is_truncated:false,delimited:[cleanupKey+'/']},{is_truncated:false,delimited:'invalid'}]) {
+    const sealed=metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify({success:true,result:[],result_info:info})),cleanupSource());
+    assert.equal(sealed.projection.state,'UNKNOWN');
+    assert.equal(bindCleanup(sealed,deletionEvidence()).state,'UNKNOWN');
+  }
+});
+
+test('D cleanup: response truncation tampering wrong source and unbounded data fail closed',()=>{
+  for(const bytes of [Buffer.from([0xff]),Buffer.from('{broken'),Buffer.alloc(65537,32),
+    Buffer.from('{"success":true,"result":[],"messages":["--- TRUNCATED ---"]}')])
+    assert.throws(()=>metadataEvidence.sealR2MetadataReadback(bytes,cleanupSource()),/R2_METADATA_READBACK_UNPROVEN/);
+  for(const patch of [{account:'other'},{bucket:'other'},{endpoint:'https://example.invalid'},
+    {method:'HEAD'},{complete:false},{targetVerified:false},{redirected:true},{status:403},
+    {executionBindingSha256:'invalid'},{connectionBindingSha256:''},
+    {startedUtc:'2026-10-29T04:50:04.000Z'},{completedUtc:'2026-10-29T04:50:15.000Z'}])
+    assert.throws(()=>metadataEvidence.sealR2MetadataReadback(terminalBytes(),{...cleanupSource(),...patch}),/R2_METADATA_READBACK_UNPROVEN/);
+  const receipt=metadataEvidence.sealR2MetadataReadback(terminalBytes(),cleanupSource());
+  receipt.response.result_info.is_truncated=true;
+  assert.equal(bindCleanup(receipt,deletionEvidence()).state,'UNKNOWN');
+});
+
+test('D cleanup: independent later read binds run connection exact created key and deletion receipt',()=>{
+  const sealed=metadataEvidence.sealR2MetadataReadback(terminalBytes(),cleanupSource());
+  const deletion=deletionEvidence();
+  const verified=bindCleanup(sealed,deletion);
+  assert.equal(verified.state,'ABSENCE_OBSERVED_AFTER_DELETE');
+  assert.equal(verified.deletionReceiptSha256,digest(JSON.stringify(deletion)));
+  assert.equal(verified.productionAuthority,false);
+  for(const patch of [{method:'GET'},{account:'other'},{bucket:'other'},{jurisdiction:'eu'},
+    {executionBindingSha256:'a'.repeat(64)},{connectionBindingSha256:'b'.repeat(64)},
+    {requestId:sealed.source.requestId},{keys:[cleanupKey+'.other']},{createdKeys:[]},
+    {creationReceiptSha256:''},{creationReceiptSha256:'a'.repeat(64)},{responseSha256:''},{status:403},{complete:false},
+    {completedUtc:'2026-10-29T04:50:02.500Z'},{startedUtc:'2026-10-29T04:50:02.000Z'}])
+    assert.equal(bindCleanup(sealed,{...deletion,...patch}).state,'UNKNOWN');
+});
+
+test('D cleanup: creation provenance requires actual matching bytes keys run connection and chronology',()=>{
+  const receipt=metadataEvidence.sealR2MetadataReadback(terminalBytes(),cleanupSource());
+  assert.equal(metadataEvidence.bindR2CleanupReadback(receipt,deletionEvidence()).state,'UNKNOWN');
+  for(const patch of [{keys:[cleanupKey+'.other']},{executionBindingSha256:'a'.repeat(64)},
+    {connectionBindingSha256:'b'.repeat(64)},{bucket:'other'},{observedUtc:'2026-10-29T04:50:02.000Z'},
+    {uploadReceiptSha256:''},{retentionReceiptSha256:''}]) {
+    const bytes=Buffer.from(JSON.stringify({...JSON.parse(creationBytes()),...patch}));
+    assert.equal(bindCleanup(receipt,{...deletionEvidence(),creationReceiptSha256:digest(bytes)},bytes).state,'UNKNOWN');
+  }
+});
+
+test('D cleanup: DELETE200 never substitutes for absent independent provider metadata',()=>{
+  assert.equal(bindCleanup(null,deletionEvidence()).state,'UNKNOWN');
+  const present=metadataEvidence.sealR2MetadataReadback(Buffer.from(JSON.stringify({success:true,
+    result:[{key:cleanupKey,size:2018}],result_info:{is_truncated:false}})),cleanupSource());
+  assert.equal(bindCleanup(present,deletionEvidence()).state,'OBJECT_STILL_PRESENT');
+});
+
+test('D cleanup: actual post target guard rejects hide-before-owner-delete without changing permissions',async()=>{
+  const {readFile}=await import('node:fs/promises');
+  const {runInNewContext}=await import('node:vm');
+  const {default:ts}=await import('typescript');
+  const text=await readFile(new URL('../../src/pages/api/forum/posts.ts',import.meta.url),'utf8');
+  const ast=ts.createSourceFile('posts.ts',text,ts.ScriptTarget.Latest,true,ts.ScriptKind.TS);
+  const fn=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text==='resolveAccessibleForumPostTarget');
+  assert.ok(fn);
+  const module={exports:{}};
+  const compiled=ts.transpileModule(fn.getText(ast),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+  // Only the target resolver is evaluated; no route imports, SDK, credentials or transport.
+  runInNewContext(compiled,{exports:module.exports,module,
+    UUID_REGEX:/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i,isPublicVisibleCircle:()=>true});
+  const id='11111111-1111-4111-8111-111111111111',circle='22222222-2222-4222-8222-222222222222';
+  for(const [status,moderation,expected] of [['published','published',true],['hidden','published',false],
+    ['published','hidden',false],['pending','pending_review',false],['deleted','published',true]]) {
+    const calls=[];
+    const client={from(table){calls.push(table);const q={select(){return q;},eq(){return q;},async maybeSingle(){
+      return {error:null,data:table==='posts'?{id,author_id:'fixture-owner',circle_id:circle,status,moderation_status:moderation}
+        :{id:circle,slug:'fixture-circle',status:'active'}};
+    }};return q;}};
+    const result=await module.exports.resolveAccessibleForumPostTarget(client,id,true);
+    assert.equal(result.ok,expected);
+    if(!expected){assert.equal(result.status,404);assert.deepEqual(calls,['posts']);}
+  }
+});
 
 test('complete private rule baseline retains unrelated fields and hashes raw bytes',()=>{
   const input=Buffer.from('{"success":true,"result":{"future_field":{"opaque":true},"rules":[]}}');

@@ -183,7 +183,8 @@ export function projectBoundR2ObjectPage(response,source,expectedKey) {
   if(info?.per_page!==undefined&&info.per_page!==2)return unknown();
   if(info?.count!==undefined&&(!Number.isSafeInteger(info.count)||info.count!==rows.length))return unknown();
   out.listingTerminated=info?.is_truncated===false
-    &&(info.cursor===undefined||info.cursor===null||info.cursor==='');
+    &&(info.cursor===undefined||info.cursor===null||info.cursor==='')
+    &&(info.delimited===undefined||(Array.isArray(info.delimited)&&info.delimited.length===0));
   const exact=rows.find(r=>r.key===expectedKey);
   out.suffixCollision=rows.some(r=>r.key!==expectedKey)?'OBSERVED'
     :out.listingTerminated?'NONE_OBSERVED':'UNKNOWN';
@@ -198,6 +199,83 @@ export function projectBoundR2ObjectPage(response,source,expectedKey) {
   if(typeof exact.etag==='string'&&/^[a-f0-9]{32}(?:-\d+)?$/i.test(exact.etag))out.etag=exact.etag;
   if(typeof exact.version==='string'&&/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(exact.version))out.version=exact.version;
   return out;
+}
+
+const metadataReceipts=new WeakMap();
+const sha256=value=>createHash('sha256').update(value).digest('hex');
+const hashValue=value=>sha256(JSON.stringify(value));
+const digestShape=value=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
+const utcMillis=value=>{
+  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value))return NaN;
+  const n=Date.parse(value);return Number.isFinite(n)&&new Date(n).toISOString()===value?n:NaN;
+};
+const requestIdentity=value=>typeof value==='string'&&/^[a-zA-Z0-9_-]{1,128}$/.test(value);
+const metadataKey=value=>typeof value==='string'&&value.length<=1024&&/^[a-zA-Z0-9._/-]+$/.test(value)
+  &&value.split('/').every(p=>p&&p!=='.'&&p!=='..');
+
+// Preserve the entire decoded MCP envelope privately, not only its projection.
+// This cannot certify upstream wire completeness, OAuth identity or permission.
+export function sealR2MetadataReadback(raw,source) {
+  const fail=()=>{throw Error('R2_METADATA_READBACK_UNPROVEN');};
+  const fields=['kind','account','bucket','jurisdiction','endpoint','status','complete','redirected','targetVerified',
+    'method','prefix','perPage','pagination','executionBindingSha256','connectionBindingSha256','requestId','startedUtc','completedUtc'];
+  const start=utcMillis(source?.startedUtc),end=utcMillis(source?.completedUtc);
+  if(!Buffer.isBuffer(raw)||!raw.length||raw.length>65536||!shape(source,fields)
+    ||source.kind!=='metadata'||source.method!=='GET'||source.status!==200
+    ||source.account!=='dcb374166b39234a499985145c075f50'||source.bucket!=='openglasshub-media'
+    ||source.jurisdiction!=='default'||source.complete!==true||source.redirected!==false||source.targetVerified!==true
+    ||source.endpoint!==`https://api.cloudflare.com/client/v4/accounts/${source.account}/r2/buckets/${source.bucket}/objects`
+    ||!metadataKey(source.prefix)||source.perPage!==2||source.pagination!==false
+    ||!digestShape(source.executionBindingSha256)||!digestShape(source.connectionBindingSha256)
+    ||!requestIdentity(source.requestId)||!Number.isFinite(start)||!Number.isFinite(end)||end<start||end-start>10000)fail();
+  let text,response;
+  try{text=new TextDecoder('utf-8',{fatal:true}).decode(raw);response=JSON.parse(text);}catch{fail();}
+  if(text.includes('--- TRUNCATED ---')||response?.success!==true
+    ||(response.status!==undefined&&response.status!==source.status)
+    ||!Array.isArray(response.result)||response.result.length>2)fail();
+  const receipt={source:JSON.parse(JSON.stringify(source)),rawDecodedResponse:text,
+    decodedResponseSha256:sha256(raw),response,projection:projectBoundR2ObjectPage(response,source,source.prefix),
+    providerWireCompletenessProven:false,productionAuthority:false};
+  metadataReceipts.set(receipt,hashValue(receipt));return receipt;
+}
+
+// Correlate local capture records only; absence still needs a trusted live channel.
+// A DELETE acknowledgement alone or a caller-fabricated read receipt is insufficient.
+export function bindR2CleanupReadback(receipt,deletion,creationRaw) {
+  const unknown=()=>({state:'UNKNOWN',productionAuthority:false});
+  try {
+    if(!receipt||metadataReceipts.get(receipt)!==hashValue(receipt))return unknown();
+    const s=receipt.source,d=deletion;
+    if(!Buffer.isBuffer(creationRaw)||!creationRaw.length||creationRaw.length>8192)return unknown();
+    const creation=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(creationRaw));
+    const start=utcMillis(d?.startedUtc),end=utcMillis(d?.completedUtc);
+    if(!shape(d,['executionBindingSha256','connectionBindingSha256','account','bucket','jurisdiction','method',
+      'requestId','keys','createdKeys','creationReceiptSha256','responseSha256','status','complete','startedUtc','completedUtc'])
+      ||d.method!=='DELETE'||d.status!==200||d.complete!==true
+      ||d.executionBindingSha256!==s.executionBindingSha256||d.connectionBindingSha256!==s.connectionBindingSha256
+      ||d.account!==s.account||d.bucket!==s.bucket||d.jurisdiction!==s.jurisdiction
+      ||!requestIdentity(d.requestId)||d.requestId===s.requestId
+      ||!digestShape(d.creationReceiptSha256)||!digestShape(d.responseSha256)
+      ||!Array.isArray(d.keys)||d.keys.length<1||d.keys.length>2||new Set(d.keys).size!==d.keys.length
+      ||!Array.isArray(d.createdKeys)||d.createdKeys.length<1||d.createdKeys.length>2
+      ||new Set(d.createdKeys).size!==d.createdKeys.length
+      ||!d.keys.every(k=>metadataKey(k)&&d.createdKeys.includes(k))||!d.keys.includes(s.prefix)
+      ||sha256(creationRaw)!==d.creationReceiptSha256
+      ||!shape(creation,['executionBindingSha256','connectionBindingSha256','account','bucket','jurisdiction',
+        'keys','observedUtc','uploadReceiptSha256','retentionReceiptSha256'])
+      ||creation.executionBindingSha256!==s.executionBindingSha256||creation.connectionBindingSha256!==s.connectionBindingSha256
+      ||creation.account!==s.account||creation.bucket!==s.bucket||creation.jurisdiction!==s.jurisdiction
+      ||!digestShape(creation.uploadReceiptSha256)||!digestShape(creation.retentionReceiptSha256)
+      ||!Array.isArray(creation.keys)||creation.keys.length!==d.createdKeys.length
+      ||new Set(creation.keys).size!==creation.keys.length
+      ||!creation.keys.every(k=>metadataKey(k)&&d.createdKeys.includes(k))
+      ||!Number.isFinite(utcMillis(creation.observedUtc))||utcMillis(creation.observedUtc)>start
+      ||!Number.isFinite(start)||!Number.isFinite(end)||end<start||end>utcMillis(s.startedUtc))return unknown();
+    const projection=projectBoundR2ObjectPage(receipt.response,s,s.prefix);
+    return {state:projection.state==='NOT_FOUND'?'ABSENCE_OBSERVED_AFTER_DELETE'
+      :projection.state==='EXISTS'?'OBJECT_STILL_PRESENT':'UNKNOWN',
+      deletionReceiptSha256:hashValue(d),readbackReceiptSha256:metadataReceipts.get(receipt),productionAuthority:false};
+  }catch{return unknown();}
 }
 
 // Build a draft only. Live object, cost, authorization and drift gates stay separate.
