@@ -334,7 +334,7 @@ export function inspectDMetadataCapture(capture,binding) {
 
 // Existing bound executors supply all callbacks and durable quota/window gates.
 // This coordinator cannot grant permission, refresh a session, retry, or hide a post.
-export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,target,callbacks}) {
+export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,target,callbacks,headVerifier}) {
   const result={state:'BLOCKED',phase:'ADMISSION',objectProofs:[],actorContained:false,productionAuthority:false};
   let admitted=false;
   const dispatch=async(phase,operation)=>{
@@ -368,6 +368,15 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
           &&k.split('/').length===3&&/^r2-retained-[a-f0-9-]+\.(mp4|webm|mov)$/i.test(k.split('/')[2])))
       throw Error('D_CREATION_UNPROVEN');
     if(postState!=='published')throw Error('D_OWNER_DELETE_STATE_UNAVAILABLE');
+    let headProof;
+    if(headVerifier!==undefined) {
+      headProof=await import('./d-r2-head-verification.mjs');
+      if(!headProof.isDHeadVerifier(headVerifier))throw Error('D_HEAD_VERIFIER_UNPROVEN');
+      for(let i=0;i<c.keys.length;i++) {
+        const read=await dispatch('OBJECT_PREDELETE_HEAD_'+i,()=>headVerifier.head({phase:'BEFORE_DELETE',key:c.keys[i],creationRaw}));
+        if(read.state!=='PRESENT')throw Error('D_HEAD_PREDELETE_UNPROVEN');
+      }
+    }
     const owner=await dispatch('OWNER_DELETE',()=>callbacks.ownerDelete(target.postId));
     if(owner?.postId!==target.postId||owner.acknowledged!==true||owner.postState!=='deleted')throw Error('D_OWNER_DELETE_UNPROVEN');
     const post=await dispatch('POST_READBACK',()=>callbacks.readPost(target.postId));
@@ -382,13 +391,16 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
     if(ack?.success!==true||ack.result!==null
       ||(ack.errors!==undefined&&(!Array.isArray(ack.errors)||ack.errors.length)))
       throw Error('D_DELETE_RESPONSE_UNPROVEN');
-    // Both tmp source and retained key need their own later terminal observation.
+    // Both tmp source and retained key need an independent later observation.
     const readRequestIds=new Set();
     for(let i=0;i<c.keys.length;i++) {
-      const read=await dispatch('OBJECT_READBACK_'+i,()=>callbacks.readExactObject(c.keys[i]));
+      const read=await dispatch('OBJECT_READBACK_'+i,()=>headProof
+        ?headVerifier.head({phase:'AFTER_DELETE',key:c.keys[i],creationRaw,deletion})
+        :callbacks.readExactObject(c.keys[i]));
       if(read?.source?.prefix!==c.keys[i]||readRequestIds.has(read?.source?.requestId))throw Error('D_OBJECT_TARGET_UNPROVEN');
       readRequestIds.add(read.source.requestId);
-      const proof=bindR2CleanupReadback(read,deletion,creationRaw);
+      const proof=headProof?headProof.bindDHeadCleanupReadback(read,deletion,creationRaw)
+        :bindR2CleanupReadback(read,deletion,creationRaw);
       result.objectProofs.push(proof);
       if(proof.state!=='ABSENCE_OBSERVED_AFTER_DELETE')throw Error('D_OBJECT_CLEANUP_UNPROVEN');
     }
