@@ -70,23 +70,41 @@ function creation(raw,b,key,now) {
     ||!digest(c.uploadReceiptSha256)||!digest(c.retentionReceiptSha256)
     ||!Number.isFinite(utc(c.observedUtc))||utc(c.observedUtc)<utc(b.notBeforeUtc)||utc(c.observedUtc)>now)
     throw Error('D_HEAD_RECEIPT_INVALID');
+  if(b.creationMode==='SERVER_RECEIPT_V2') {
+    if(c.actorId!==b.actorId||c.postId!==b.postId||c.actorCreationReceiptSha256!==b.actorCreationReceiptSha256
+      ||c.identityReceiptSha256!==b.identityReceiptSha256||c.frozenArtifactSha256!==b.frozenArtifactSha256
+      ||c.observerSourceSha256!==b.observerSourceSha256
+      ||!Array.isArray(c.objectMetadata)||c.objectMetadata.length!==c.keys.length
+      ||new Set(c.objectMetadata.map(m=>m?.key)).size!==c.keys.length
+      ||!c.objectMetadata.every(m=>c.keys.includes(m?.key)&&m.sizeBytes===2018&&m.mimeType==='video/mp4'
+        &&typeof m.etag==='string'&&/^"[a-f0-9]{32}"$/i.test(m.etag)))throw Error('D_HEAD_CREATION_METADATA_UNPROVEN');
+  }
   return c;
 }
 function validDeletion(d,c,b,key,raw,afterUtc) {
-  return sameRun(d,b)&&fixedTarget(d)&&d.method==='DELETE'&&d.status===200&&d.complete===true
+  if(!(sameRun(d,b)&&fixedTarget(d)&&d.method==='DELETE'&&d.status===200&&d.complete===true
     &&typeof d.requestId==='string'&&/^[a-zA-Z0-9_-]{1,128}$/.test(d.requestId)
     &&digest(d.responseSha256)&&d.creationReceiptSha256===sha(raw)
-    &&Array.isArray(d.keys)&&Array.isArray(d.createdKeys)&&d.keys.length===c.keys.length
-    &&d.createdKeys.length===c.keys.length&&new Set(d.keys).size===c.keys.length
-    &&new Set(d.createdKeys).size===c.keys.length&&c.keys.every(k=>d.keys.includes(k)&&d.createdKeys.includes(k))
-    &&d.keys.includes(key)&&utc(d.startedUtc)>=utc(c.observedUtc)
-    &&utc(d.completedUtc)>=utc(d.startedUtc)&&utc(d.completedUtc)<=afterUtc;
+    &&Array.isArray(d.keys)&&Array.isArray(d.createdKeys)&&d.keys.length>0&&d.keys.length<=c.keys.length
+    &&d.createdKeys.length===c.keys.length&&new Set(d.keys).size===d.keys.length
+    &&new Set(d.createdKeys).size===c.keys.length&&c.keys.every(k=>d.createdKeys.includes(k))
+    &&d.keys.every(k=>c.keys.includes(k))&&utc(d.startedUtc)>=utc(c.observedUtc)
+    &&utc(d.completedUtc)>=utc(d.startedUtc)&&utc(d.completedUtc)<=afterUtc))return false;
+  if(d.keys.includes(key))return true;
+  const a=d.applicationDeletion;
+  return a?.actorId===b.actorId&&a.postId===b.postId&&a.status===200&&a.cleanupOk===true&&digest(a.responseSha256)
+    &&typeof a.requestId==='string'&&a.requestId!==d.requestId&&Array.isArray(a.keys)&&a.keys.length===1
+    &&a.keys[0]===key&&key.startsWith(`${b.actorId}/${b.postId}/`)
+    &&utc(a.startedUtc)>=utc(c.observedUtc)&&utc(a.completedUtc)>=utc(a.startedUtc)&&utc(a.completedUtc)<=utc(d.startedUtc);
 }
 
 // This factory grants no authority. The existing executor must admit every call
 // through its durable window/quota/permission/cost gate before transport dispatch.
 export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,requestHandler,now=Date.now,timeoutMs=10000}) {
   if(!binding||!digest(binding.executionBindingSha256)||!digest(binding.connectionBindingSha256)
+    ||(binding.creationMode!==undefined&&binding.creationMode!=='SERVER_RECEIPT_V2')
+    ||(binding.creationMode==='SERVER_RECEIPT_V2'
+      &&!['identityReceiptSha256','frozenArtifactSha256','observerSourceSha256'].every(k=>digest(binding[k])))
     ||!digest(binding.actorCreationReceiptSha256)||!uuid(binding.actorId)||!uuid(binding.postId)
     ||!Number.isFinite(utc(binding.notBeforeUtc))||!Number.isFinite(utc(binding.deadlineUtc))
     ||utc(binding.deadlineUtc)<=utc(binding.notBeforeUtc)||utc(binding.deadlineUtc)-utc(binding.notBeforeUtc)>10800000
@@ -154,15 +172,16 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
           throw Error('D_HEAD_ALLOCATION_UNPROVEN');
       } else {
         c=creation(creationRaw,b,key,start);
-        if(phase==='AFTER_CREATE'&&key.startsWith('tmp/'))throw Error('D_HEAD_PHASE_UNPROVEN');
+        if(phase==='AFTER_CREATE'&&key.startsWith('tmp/')&&b.creationMode!=='SERVER_RECEIPT_V2')throw Error('D_HEAD_PHASE_UNPROVEN');
         const sourceKey=precreate.keys().next().value;
-        if(precreate.size!==1||!c.keys.includes(sourceKey)||c.keys.filter(k=>k.startsWith('tmp/')).length!==1
-          ||precreate.get(sourceKey).ended>utc(c.observedUtc))throw Error('D_HEAD_SOURCE_UNPROVEN');
-        if(key.startsWith('tmp/')&&(!precreate.has(key)||precreate.get(key).ended>utc(c.observedUtc)))
+        if(b.creationMode!=='SERVER_RECEIPT_V2'&&(precreate.size!==1||!c.keys.includes(sourceKey)||c.keys.filter(k=>k.startsWith('tmp/')).length!==1
+          ||precreate.get(sourceKey).ended>utc(c.observedUtc)))throw Error('D_HEAD_SOURCE_UNPROVEN');
+        if(b.creationMode!=='SERVER_RECEIPT_V2'&&key.startsWith('tmp/')&&(!precreate.has(key)||precreate.get(key).ended>utc(c.observedUtc)))
           throw Error('D_HEAD_PRECREATE_UNPROVEN');
         if(phase==='AFTER_DELETE'&&(!beforeDelete.has(key)||beforeDelete.get(key).creationSha!==sha(creationRaw)
           ||!validDeletion(deletion,c,b,key,creationRaw,start)
-          ||beforeDelete.get(key).ended>utc(deletion.startedUtc)))throw Error('D_HEAD_DELETE_UNPROVEN');
+          ||beforeDelete.get(key).ended>utc(deletion.keys.includes(key)?deletion.startedUtc:deletion.applicationDeletion?.startedUtc)))
+          throw Error('D_HEAD_DELETE_UNPROVEN');
       }
       used.add(`${phase}:${key}`);
       const requestId=randomUUID();intent={phase,key,requestId,method:'HEAD',account,bucket,jurisdiction:'default',
@@ -196,6 +215,10 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
         sizeBytes=Number(r.size);etag=r.etag;
         if(r.storageClass==='STANDARD'||r.storageClass==='Standard')storageClass='Standard';
         if(r.storageClass==='STANDARD_IA'||r.storageClass==='InfrequentAccess')storageClass='InfrequentAccess';
+        if(b.creationMode==='SERVER_RECEIPT_V2') {
+          const m=c.objectMetadata.find(m=>m.key===key);
+          if(sizeBytes!==m.sizeBytes||etag!==m.etag)throw Error('D_HEAD_CREATION_METADATA_MISMATCH');
+        }
       }
       const response={status:r.status,providerRequestId:r.requestId,ray:r.ray,sizeBytes,etag,storageClass};
       const source={...intent,kind:'s3-head',prefix:key,endpoint:`https://${host}/${bucket}/${key}`,
@@ -204,7 +227,8 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
       const receipt={state:expected===200?'PRESENT':phase==='BEFORE_CREATE'?'PRECREATE_NOT_FOUND_CANDIDATE':'ABSENT',
         source,response,responseSha256:sha(JSON.stringify(response)),
         notFoundClassification:expected===404?'BOUND_HEAD404_NOT_PROVIDER_EXCEPTION_CODE':null,
-        precreationProof:key.startsWith('tmp/')?'TICKET_BOUND_HEAD404':'SERVER_COPY_CREATION_RECEIPT_ONLY',
+        precreationProof:b.creationMode==='SERVER_RECEIPT_V2'?'CAPTURED_SERVER_CREATION_CHAIN'
+          :key.startsWith('tmp/')?'TICKET_BOUND_HEAD404':'SERVER_COPY_CREATION_RECEIPT_ONLY',
         mode,storageClass,productionAuthority:false};
       if(phase==='BEFORE_CREATE')precreate.set(key,{ended:end});
       if(phase==='BEFORE_DELETE')beforeDelete.set(key,{ended:end,creationSha:sha(creationRaw)});
@@ -235,7 +259,8 @@ export function bindDHeadCleanupReadback(receipt,deletion,creationRaw) {
       ||s.requestId===deletion?.requestId||record.deletionSha256!==sha(JSON.stringify(deletion)))return unknown();
     const c=creation(creationRaw,record.binding,s.key,utc(s.startedUtc));
     if(!validDeletion(deletion,c,record.binding,s.key,creationRaw,utc(s.startedUtc))
-      ||!record.before||record.before.creationSha!==sha(creationRaw)||record.before.ended>utc(deletion.startedUtc))return unknown();
+      ||!record.before||record.before.creationSha!==sha(creationRaw)
+      ||record.before.ended>utc(deletion.keys.includes(s.key)?deletion.startedUtc:deletion.applicationDeletion?.startedUtc))return unknown();
     return {state:'ABSENCE_OBSERVED_AFTER_DELETE',deletionReceiptSha256:sha(JSON.stringify(deletion)),
       readbackReceiptSha256:record.hash,mode:receipt.mode,productionAuthority:false};
   }catch{return unknown();}

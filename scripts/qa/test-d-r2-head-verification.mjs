@@ -171,7 +171,7 @@ test('D HEAD: deletion evidence is snapshotted before asynchronous dispatch admi
 test('D HEAD: existing cleanup uses both predelete 200 proofs before owner delete and independent HEAD after',async()=>{
   const bytes=creationRaw([key,retained]),s=setup([404,200,200,404,404]),events=[];
   await s.verifier.head({phase:'BEFORE_CREATE',key,allocationRaw});s.at(6);
-  const ack=JSON.stringify({success:true,result:null,errors:[]});const d={...deletion(bytes),responseSha256:hash(ack)};
+  const ack=JSON.stringify({success:true,result:[{key},{key:retained}],errors:[]});const d={...deletion(bytes),responseSha256:hash(ack)};
   const result=await runDBoundCleanup({creationRaw:bytes,actorCreationRaw:actorRaw,postState:'published',
     target:{actorId,postId,actorCreationReceiptSha256:hash(actorRaw)},headVerifier:s.verifier,
     callbacks:{beforeDispatch:async phase=>{events.push(phase);return true;},

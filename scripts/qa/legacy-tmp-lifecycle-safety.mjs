@@ -334,16 +334,28 @@ export function inspectDMetadataCapture(capture,binding) {
 
 // Existing bound executors supply all callbacks and durable quota/window gates.
 // This coordinator cannot grant permission, refresh a session, retry, or hide a post.
-export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,target,callbacks,headVerifier}) {
-  const result={state:'BLOCKED',phase:'ADMISSION',objectProofs:[],actorContained:false,productionAuthority:false};
+export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,target,callbacks,headVerifier,
+  callbackTimeoutMs=10000,containmentTimeoutMs=60000}) {
+  const result={state:'BLOCKED',phase:'ADMISSION',failedPhase:null,objectProofs:[],objectOutcomes:[],
+    actorContained:false,providerCancellationProven:false,productionAuthority:false};
   let admitted=false;
   const dispatch=async(phase,operation)=>{
-    result.phase=phase;
-    if(typeof callbacks?.beforeDispatch!=='function'||await callbacks.beforeDispatch(phase)!==true)
-      throw Error('D_CLEANUP_DISPATCH_NOT_ADMITTED');
-    return operation();
+    if(phase!=='ACTOR_CONTAINMENT')result.phase=phase;
+    const limit=phase==='ACTOR_CONTAINMENT'?containmentTimeoutMs:callbackTimeoutMs;
+    if(!Number.isInteger(limit)||limit<1||limit>120000)throw Error('D_CALLBACK_BOUND_INVALID');
+    let timer,stopped=false;const controller=new AbortController(),end=Date.now()+limit;
+    try {
+      return await Promise.race([(async()=>{
+        if(typeof callbacks?.beforeDispatch!=='function'||await callbacks.beforeDispatch(phase)!==true||stopped)
+          throw Error('D_CLEANUP_DISPATCH_NOT_ADMITTED');
+        return operation(controller.signal,new Date(end).toISOString());
+      })(),new Promise((_,reject)=>{timer=setTimeout(()=>{stopped=true;controller.abort();reject(Error('D_CALLBACK_TIMEOUT'));},limit);})]);
+    }finally{clearTimeout(timer);controller.abort();}
   };
   try {
+    target=structuredClone(target);callbacks={...callbacks};
+    if(Buffer.isBuffer(creationRaw))creationRaw=Buffer.from(creationRaw);
+    if(Buffer.isBuffer(actorCreationRaw))actorCreationRaw=Buffer.from(actorCreationRaw);
     const uuid=/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
     if(!Buffer.isBuffer(actorCreationRaw)||!actorCreationRaw.length||actorCreationRaw.length>4096
       ||!uuid.test(target?.actorId)||sha256(actorCreationRaw)!==target?.actorCreationReceiptSha256)
@@ -367,6 +379,7 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
         :k.startsWith(`${target.actorId}/${target.postId}/`)
           &&k.split('/').length===3&&/^r2-retained-[a-f0-9-]+\.(mp4|webm|mov)$/i.test(k.split('/')[2])))
       throw Error('D_CREATION_UNPROVEN');
+    result.objectOutcomes=c.keys.map(key=>({key,state:'UNKNOWN',readback:'NOT_ATTEMPTED'}));
     if(postState!=='published')throw Error('D_OWNER_DELETE_STATE_UNAVAILABLE');
     let headProof;
     if(headVerifier!==undefined) {
@@ -374,42 +387,62 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
       if(!headProof.isDHeadVerifier(headVerifier))throw Error('D_HEAD_VERIFIER_UNPROVEN');
       for(let i=0;i<c.keys.length;i++) {
         const read=await dispatch('OBJECT_PREDELETE_HEAD_'+i,()=>headVerifier.head({phase:'BEFORE_DELETE',key:c.keys[i],creationRaw}));
+        result.objectOutcomes[i].predelete=read;
         if(read.state!=='PRESENT')throw Error('D_HEAD_PREDELETE_UNPROVEN');
       }
     }
-    const owner=await dispatch('OWNER_DELETE',()=>callbacks.ownerDelete(target.postId));
+    const owner=await dispatch('OWNER_DELETE',(signal,deadline)=>callbacks.ownerDelete(target.postId,signal,deadline));
     if(owner?.postId!==target.postId||owner.acknowledged!==true||owner.postState!=='deleted')throw Error('D_OWNER_DELETE_UNPROVEN');
-    const post=await dispatch('POST_READBACK',()=>callbacks.readPost(target.postId));
+    const post=await dispatch('POST_READBACK',(signal,deadline)=>callbacks.readPost(target.postId,signal,deadline));
     if(post?.postId!==target.postId||post.independent!==true||post.postState!=='deleted'||post.mediaRows!==0||post.anonymousStatus!==404)
       throw Error('D_POST_CLEANUP_UNPROVEN');
-    const deleteResult=await dispatch('EXACT_OBJECT_DELETE',()=>callbacks.deleteExactObjects([...c.keys]));
-    const deletion=deleteResult?.evidence,deleteText=deleteResult?.rawDecodedResponse;
+    const applicationKeys=Array.isArray(owner.applicationDeletedKeys)?owner.applicationDeletedKeys:[];
+    if(new Set(applicationKeys).size!==applicationKeys.length||!applicationKeys.every(k=>c.keys.includes(k)
+      &&k.startsWith(`${target.actorId}/${target.postId}/`)))throw Error('D_APPLICATION_DELETE_TARGET_UNPROVEN');
+    const remainingKeys=c.keys.filter(k=>!applicationKeys.includes(k));
+    if(!remainingKeys.length)throw Error('D_SOURCE_CLEANUP_TARGET_REQUIRED');
+    const deleteResult=await dispatch('EXACT_OBJECT_DELETE',signal=>callbacks.deleteExactObjects(remainingKeys,signal));
+    const deletion=deleteResult?.evidence?structuredClone(deleteResult.evidence):null,deleteText=deleteResult?.rawDecodedResponse;
     if(typeof deleteText!=='string'||!deleteText.length||Buffer.byteLength(deleteText)>65536
       ||deleteText.includes('--- TRUNCATED ---')||sha256(deleteText)!==deletion?.responseSha256)
       throw Error('D_DELETE_RESPONSE_UNPROVEN');
     const ack=JSON.parse(deleteText);
-    if(ack?.success!==true||ack.result!==null
+    if(ack?.success!==true||!Array.isArray(ack.result)||ack.result.length!==remainingKeys.length
+      ||new Set(ack.result.map(r=>r?.key)).size!==remainingKeys.length
+      ||!ack.result.every(r=>remainingKeys.includes(r?.key))
       ||(ack.errors!==undefined&&(!Array.isArray(ack.errors)||ack.errors.length)))
       throw Error('D_DELETE_RESPONSE_UNPROVEN');
+    if(applicationKeys.length) {
+      if(owner.actorId!==target.actorId||typeof owner.requestId!=='string'
+        ||!Number.isFinite(utcMillis(owner.startedUtc))||!Number.isFinite(utcMillis(owner.completedUtc))
+        ||utcMillis(owner.completedUtc)<utcMillis(owner.startedUtc)||utcMillis(owner.completedUtc)>utcMillis(deletion.startedUtc)
+        ||deletion.createdKeys?.length!==c.keys.length||!c.keys.every(k=>deletion.createdKeys.includes(k)))
+        throw Error('D_APPLICATION_DELETE_UNPROVEN');
+      deletion.applicationDeletion={actorId:target.actorId,postId:target.postId,keys:applicationKeys,
+        requestId:owner.requestId,status:200,startedUtc:owner.startedUtc,completedUtc:owner.completedUtc,
+        responseSha256:hashValue(owner),cleanupOk:owner.cleanupOk===true};
+    }
     // Both tmp source and retained key need an independent later observation.
     const readRequestIds=new Set();
     for(let i=0;i<c.keys.length;i++) {
       const read=await dispatch('OBJECT_READBACK_'+i,()=>headProof
         ?headVerifier.head({phase:'AFTER_DELETE',key:c.keys[i],creationRaw,deletion})
         :callbacks.readExactObject(c.keys[i]));
+      result.objectOutcomes[i].readback=read;
       if(read?.source?.prefix!==c.keys[i]||readRequestIds.has(read?.source?.requestId))throw Error('D_OBJECT_TARGET_UNPROVEN');
       readRequestIds.add(read.source.requestId);
       const proof=headProof?headProof.bindDHeadCleanupReadback(read,deletion,creationRaw)
         :bindR2CleanupReadback(read,deletion,creationRaw);
       result.objectProofs.push(proof);
+      result.objectOutcomes[i].state=proof.state==='ABSENCE_OBSERVED_AFTER_DELETE'?'ABSENCE_VERIFIED':'UNKNOWN';
       if(proof.state!=='ABSENCE_OBSERVED_AFTER_DELETE')throw Error('D_OBJECT_CLEANUP_UNPROVEN');
     }
     result.state='CLEANUP_SEQUENCE_VERIFIED';
-  }catch{result.state='BLOCKED';}
+  }catch{result.state='BLOCKED';result.failedPhase=result.phase;}
   finally {
     // Failure containment is separately admitted even when a business step stops.
     if(admitted)try {
-      const actor=await dispatch('ACTOR_CONTAINMENT',()=>callbacks.finishActor(target.actorId));
+      const actor=await dispatch('ACTOR_CONTAINMENT',(signal,deadline)=>callbacks.finishActor(target.actorId,signal,deadline));
       result.actorContained=actor?.actorId===target.actorId&&actor.actorCreationReceiptSha256===target.actorCreationReceiptSha256
         &&actor.signedOut===true&&actor.banned===true&&actor.independentReadback===true;
     }catch{result.actorContained=false;}

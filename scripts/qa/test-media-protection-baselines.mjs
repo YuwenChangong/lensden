@@ -46,7 +46,7 @@ const dKeys=[`tmp/${cleanupTarget.actorId}/${cleanupTarget.postId}/fixture.mp4`,
   `${cleanupTarget.actorId}/${cleanupTarget.postId}/r2-retained-33333333-3333-4333-8333-333333333333.mp4`];
 const dCreationBytes=(keys=[dKeys[0]])=>Buffer.from(JSON.stringify({...JSON.parse(creationBytes()),keys}));
 const dDeletion=(keys=[dKeys[0]])=>({...deletionEvidence(),keys,createdKeys:keys,creationReceiptSha256:digest(dCreationBytes(keys))});
-const dDeleteResult=(keys=[dKeys[0]],body={success:true,result:null,errors:[],messages:[]})=>{
+const dDeleteResult=(keys=[dKeys[0]],body={success:true,result:keys.map(key=>({key})),errors:[],messages:[]})=>{
   const rawDecodedResponse=JSON.stringify(body);
   return {evidence:{...dDeletion(keys),responseSha256:digest(rawDecodedResponse)},rawDecodedResponse};
 };
