@@ -37,6 +37,117 @@ const deletionEvidence=()=>({executionBindingSha256:'1'.repeat(64),connectionBin
 const terminalBytes=()=>Buffer.from(JSON.stringify({success:true,status:200,errors:[],messages:[],result:[],
   result_info:{is_truncated:false,cursor:'',per_page:2,count:0}}));
 const bindCleanup=(receipt,deletion,creation=creationBytes())=>metadataEvidence.bindR2CleanupReadback(receipt,deletion,creation);
+const cleanupTarget={postId:'11111111-1111-4111-8111-111111111111',actorId:'22222222-2222-4222-8222-222222222222',
+  actorCreationReceiptSha256:'7'.repeat(64)};
+const actorCreationBytes=()=>Buffer.from(JSON.stringify({executionBindingSha256:'1'.repeat(64),actorId:cleanupTarget.actorId,
+  createdByThisRun:true,createdUtc:'2026-10-29T04:49:00.000Z',providerReceiptSha256:'8'.repeat(64)}));
+cleanupTarget.actorCreationReceiptSha256=digest(actorCreationBytes());
+const dKeys=[`tmp/${cleanupTarget.actorId}/${cleanupTarget.postId}/fixture.mp4`,
+  `${cleanupTarget.actorId}/${cleanupTarget.postId}/r2-retained-33333333-3333-4333-8333-333333333333.mp4`];
+const dCreationBytes=(keys=[dKeys[0]])=>Buffer.from(JSON.stringify({...JSON.parse(creationBytes()),keys}));
+const dDeletion=(keys=[dKeys[0]])=>({...deletionEvidence(),keys,createdKeys:keys,creationReceiptSha256:digest(dCreationBytes(keys))});
+
+test('D sprint: actual metadata capture code preserves the complete envelope with one request',async()=>{
+  const {runInNewContext}=await import('node:vm');
+  const {webcrypto}=await import('node:crypto');
+  const binding={executionBindingSha256:'1'.repeat(64),connectionBindingSha256:'2'.repeat(64),
+    requestId:'new-capability-fixture',key:'qa-d-capability/11111111-1111-4111-8111-111111111111/never-created.mp4'};
+  const response={success:true,status:200,result:[],errors:[],messages:[],
+    result_info:{is_truncated:false,cursor:'',per_page:2,count:0}};
+  let calls=0,observed;
+  const code=metadataEvidence.buildDMetadataCaptureCode(binding);
+  const capture=await runInNewContext(`(${code})()`,{accountId:account,TextEncoder,crypto:webcrypto,Date,
+    setTimeout,clearTimeout,cloudflare:{async request(options){calls++;observed=options;return response;}}});
+  assert.equal(calls,1);assert.equal(observed.method,'GET');
+  assert.equal(observed.query.prefix,binding.key);assert.equal(observed.query.per_page,2);
+  assert.deepEqual(Object.keys(observed.query).sort(),['per_page','prefix']);
+  assert.deepEqual(JSON.parse(capture.rawDecodedResponse),response);
+  assert.equal(capture.responseSha256,digest(capture.rawDecodedResponse));
+  assert.equal(capture.dispatchInvocations,1);assert.equal(capture.productionAuthority,false);
+  assert.equal(capture.request.executionBindingSha256,binding.executionBindingSha256);
+  assert.equal(metadataEvidence.inspectDMetadataCapture(capture,binding).state,'TERMINAL_PAGE_OBSERVED');
+  const clipped=JSON.parse(JSON.stringify(capture));clipped.rawDecodedResponse+=' ';
+  assert.equal(metadataEvidence.inspectDMetadataCapture(clipped,binding).state,'UNKNOWN');
+  assert.equal(metadataEvidence.inspectDMetadataCapture(capture,{...binding,requestId:'wrong-request'}).state,'UNKNOWN');
+  const unbound=JSON.parse(JSON.stringify(capture));
+  for(const field of ['key','requestId','executionBindingSha256','connectionBindingSha256'])delete unbound.request[field];
+  delete unbound.request.query.prefix;
+  assert.equal(metadataEvidence.inspectDMetadataCapture(unbound,{}).state,'UNKNOWN');
+});
+
+test('D sprint: capture errors and timeouts stop once without fabricating response evidence',async()=>{
+  const {runInNewContext}=await import('node:vm');
+  const {webcrypto}=await import('node:crypto');
+  const code=metadataEvidence.buildDMetadataCaptureCode({executionBindingSha256:'1'.repeat(64),
+    connectionBindingSha256:'2'.repeat(64),requestId:'fixture-failed-read',key:cleanupKey});
+  for(const mode of ['error','timeout']) {
+    let calls=0;
+    const result=await runInNewContext(`(${code})()`,{accountId:account,TextEncoder,crypto:webcrypto,Date,
+      setTimeout:fn=>setTimeout(fn,1),clearTimeout,cloudflare:{request(){calls++;
+        if(mode==='error')throw Error('DO_NOT_EXPORT_SECRET_OR_KEY');return new Promise(()=>{});}}});
+    assert.equal(calls,1);assert.equal(result.state,'UNKNOWN');assert.equal(result.dispatchInvocations,1);
+    assert.equal(result.rawDecodedResponse,undefined);assert.equal(JSON.stringify(result).includes('DO_NOT_EXPORT'),false);
+  }
+});
+
+const cleanupCallbacks=(events,patch={})=>({
+  beforeDispatch:async phase=>{events.push(phase);return true;},
+  ownerDelete:async()=>({postId:cleanupTarget.postId,postState:'deleted',acknowledged:true}),
+  readPost:async()=>({postId:cleanupTarget.postId,independent:true,postState:'deleted',mediaRows:0,anonymousStatus:404}),
+  deleteExactObjects:async keys=>dDeletion(keys),
+  readExactObject:async key=>metadataEvidence.sealR2MetadataReadback(terminalBytes(),{...cleanupSource(),prefix:key}),
+  finishActor:async()=>({actorId:cleanupTarget.actorId,actorCreationReceiptSha256:cleanupTarget.actorCreationReceiptSha256,
+    signedOut:true,banned:true,independentReadback:true}),...patch});
+
+test('D sprint: cleanup executes owner delete first and independently verifies every created key',async()=>{
+  const events=[];
+  const result=await metadataEvidence.runDBoundCleanup({creationRaw:dCreationBytes(),actorCreationRaw:actorCreationBytes(),postState:'published',
+    target:cleanupTarget,callbacks:cleanupCallbacks(events)});
+  assert.equal(result.state,'CLEANUP_SEQUENCE_VERIFIED');
+  assert.deepEqual(events,['OWNER_DELETE','POST_READBACK','EXACT_OBJECT_DELETE','OBJECT_READBACK_0','ACTOR_CONTAINMENT']);
+  assert.equal(events.some(v=>v.includes('HIDE')),false);assert.equal(result.productionAuthority,false);
+});
+
+test('D sprint: hidden targets partial failures missing terminal pages and denied dispatch cannot pass',async()=>{
+  for(const patch of [{ownerDelete:async()=>{throw Error('timeout');}},
+    {ownerDelete:async()=>({postId:'wrong-post',postState:'deleted',acknowledged:true})},
+    {ownerDelete:async()=>({postId:cleanupTarget.postId,postState:'deleted',acknowledged:false})},
+    {readPost:async()=>({independent:true,postState:'hidden',mediaRows:1,anonymousStatus:404})},
+    {readExactObject:async key=>metadataEvidence.sealR2MetadataReadback(Buffer.from('{"success":true,"result":[]}'),{...cleanupSource(),prefix:key})},
+    {finishActor:async()=>({signedOut:true,banned:false,independentReadback:false})},
+    {beforeDispatch:async()=>false}]) {
+    const events=[];const result=await metadataEvidence.runDBoundCleanup({creationRaw:dCreationBytes(),actorCreationRaw:actorCreationBytes(),postState:'published',
+      target:cleanupTarget,callbacks:cleanupCallbacks(events,patch)});
+    assert.equal(result.state,'BLOCKED');assert.ok(events.filter(p=>p==='OWNER_DELETE').length<=1);
+  }
+  const events=[];
+  const hidden=await metadataEvidence.runDBoundCleanup({creationRaw:dCreationBytes(),actorCreationRaw:actorCreationBytes(),postState:'hidden',target:cleanupTarget,callbacks:cleanupCallbacks(events)});
+  assert.equal(hidden.state,'BLOCKED');assert.equal(events.includes('OWNER_DELETE'),false);
+});
+
+test('D sprint: two created objects require two distinct complete independent receipts',async()=>{
+  const keys=dKeys,bytes=dCreationBytes(keys),deletion=dDeletion(keys);
+  for(const duplicateRequestId of [false,true]) {
+    const events=[];
+    const result=await metadataEvidence.runDBoundCleanup({creationRaw:bytes,actorCreationRaw:actorCreationBytes(),postState:'published',target:cleanupTarget,
+      callbacks:cleanupCallbacks(events,{deleteExactObjects:async exact=>{assert.deepEqual(exact,keys);return deletion;},
+        readExactObject:async key=>metadataEvidence.sealR2MetadataReadback(terminalBytes(),{...cleanupSource(),prefix:key,
+          requestId:duplicateRequestId?'same-request':'fixture-read-'+keys.indexOf(key)})})});
+    assert.equal(result.state,duplicateRequestId?'BLOCKED':'CLEANUP_SEQUENCE_VERIFIED');
+  }
+});
+
+test('D sprint: proven actor containment survives failed upload and cross-fixture objects never delete',async()=>{
+  const events=[];
+  const failed=await metadataEvidence.runDBoundCleanup({creationRaw:Buffer.from('{bad'),actorCreationRaw:actorCreationBytes(),
+    postState:'published',target:cleanupTarget,callbacks:cleanupCallbacks(events)});
+  assert.equal(failed.state,'BLOCKED');assert.equal(failed.actorContained,true);
+  assert.deepEqual(events,['ACTOR_CONTAINMENT']);
+  const mixed=[];
+  const result=await metadataEvidence.runDBoundCleanup({creationRaw:dCreationBytes(),actorCreationRaw:actorCreationBytes(),
+    postState:'published',target:{...cleanupTarget,postId:'44444444-4444-4444-8444-444444444444'},callbacks:cleanupCallbacks(mixed)});
+  assert.equal(result.state,'BLOCKED');assert.equal(mixed.includes('OWNER_DELETE'),false);
+});
 
 test('D cleanup: retains complete decoded envelope and exact private bytes without inventing wire proof',()=>{
   const bytes=terminalBytes(),s=cleanupSource();

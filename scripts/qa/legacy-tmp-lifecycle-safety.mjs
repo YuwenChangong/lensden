@@ -1,5 +1,5 @@
-// Offline-only classification of the documented R2 lifecycle shape. No transport,
-// credentials, database connection, mutation or execution authority lives here.
+// Offline QA helpers. No built-in transport, credentials, database connection or
+// execution authority. Live callbacks/code require separate exact authorization.
 import {createHash} from 'node:crypto';
 const shape=(v,keys)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).every(k=>keys.includes(k));
 const count=v=>{const n=typeof v==='string'&&/^\d+$/.test(v)?Number(v):v;return Number.isSafeInteger(n)&&n>=0?n:null;};
@@ -276,6 +276,126 @@ export function bindR2CleanupReadback(receipt,deletion,creationRaw) {
       :projection.state==='EXISTS'?'OBJECT_STILL_PRESENT':'UNKNOWN',
       deletionReceiptSha256:hashValue(d),readbackReceiptSha256:metadataReceipts.get(receipt),productionAuthority:false};
   }catch{return unknown();}
+}
+
+// Draft executable code for the existing MCP, never dispatch it during preparation.
+// Keep the complete decoded envelope inside a hash-checked string across tool output.
+const validDMetadataBinding=binding=>shape(binding,['executionBindingSha256','connectionBindingSha256','requestId','key'])
+  &&digestShape(binding.executionBindingSha256)&&digestShape(binding.connectionBindingSha256)
+  &&requestIdentity(binding.requestId)&&metadataKey(binding.key);
+export function buildDMetadataCaptureCode(binding) {
+  if(!validDMetadataBinding(binding))throw Error('D_METADATA_CAPTURE_BINDING_INVALID');
+  return `async () => {
+    const binding=${JSON.stringify(binding)};
+    const fixedAccount="dcb374166b39234a499985145c075f50";
+    if(accountId!==fixedAccount)return {state:"UNKNOWN",dispatchInvocations:0,productionAuthority:false};
+    const request={...binding,account:fixedAccount,bucket:"openglasshub-media",jurisdiction:"default",method:"GET",
+      path:"/accounts/"+fixedAccount+"/r2/buckets/openglasshub-media/objects",query:{prefix:binding.key,per_page:2}};
+    const startedUtc=new Date().toISOString();let timer;
+    try {
+      const response=await Promise.race([cloudflare.request({method:request.method,path:request.path,query:request.query}),
+        new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error("TIMEOUT")),10000);})]);
+      const rawDecodedResponse=JSON.stringify(response),bytes=new TextEncoder().encode(rawDecodedResponse);
+      if(bytes.length>65536||rawDecodedResponse.includes("--- TRUNCATED ---"))throw new Error("INCOMPLETE");
+      const hash=await crypto.subtle.digest("SHA-256",bytes);
+      return {request,startedUtc,completedUtc:new Date().toISOString(),rawDecodedResponse,responseBytes:bytes.length,
+        responseSha256:Array.from(new Uint8Array(hash),b=>b.toString(16).padStart(2,"0")).join(""),
+        dispatchInvocations:1,providerWireCompletenessProven:false,productionAuthority:false};
+    }catch{return {request,startedUtc,completedUtc:new Date().toISOString(),state:"UNKNOWN",
+      dispatchInvocations:1,providerCancellationProven:false,productionAuthority:false};}
+    finally{clearTimeout(timer);}
+  }`;
+}
+
+export function inspectDMetadataCapture(capture,binding) {
+  const unknown=()=>({state:'UNKNOWN',productionAuthority:false,deleteAfterReadback:'NOT_RUN'});
+  try {
+    const r=capture?.request,text=capture?.rawDecodedResponse;
+    if(!validDMetadataBinding(binding)||!r||typeof text!=='string'||Buffer.byteLength(text)>65536||text.includes('--- TRUNCATED ---')
+      ||capture.dispatchInvocations!==1||capture.responseBytes!==Buffer.byteLength(text)
+      ||capture.responseSha256!==sha256(text)||r.method!=='GET'||r.account!=='dcb374166b39234a499985145c075f50'
+      ||r.bucket!=='openglasshub-media'||r.jurisdiction!=='default'
+      ||r.path!==`/accounts/${r.account}/r2/buckets/openglasshub-media/objects`
+      ||!shape(r.query,['prefix','per_page'])||r.query.per_page!==2||r.query.prefix!==binding?.key
+      ||!['key','requestId','executionBindingSha256','connectionBindingSha256'].every(k=>r[k]===binding?.[k])
+      ||!Number.isFinite(utcMillis(capture.startedUtc))||!Number.isFinite(utcMillis(capture.completedUtc))
+      ||utcMillis(capture.completedUtc)<utcMillis(capture.startedUtc)
+      ||utcMillis(capture.completedUtc)-utcMillis(capture.startedUtc)>10000)return unknown();
+    const response=JSON.parse(text),info=response?.result_info;
+    if(response.status!==200||response.success!==true||!Array.isArray(response.result)||response.result.length!==0
+      ||(response.errors!==undefined&&(!Array.isArray(response.errors)||response.errors.length))
+      ||info?.is_truncated!==false||![undefined,null,''].includes(info.cursor)
+      ||(info.per_page!==undefined&&info.per_page!==2)||(info.count!==undefined&&info.count!==0)
+      ||(info.delimited!==undefined&&(!Array.isArray(info.delimited)||info.delimited.length!==0)))return unknown();
+    return {state:'TERMINAL_PAGE_OBSERVED',responseSha256:capture.responseSha256,
+      productionAuthority:false,deleteAfterReadback:'NOT_RUN'};
+  }catch{return unknown();}
+}
+
+// Existing bound executors supply all callbacks and durable quota/window gates.
+// This coordinator cannot grant permission, refresh a session, retry, or hide a post.
+export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,target,callbacks}) {
+  const result={state:'BLOCKED',phase:'ADMISSION',objectProofs:[],actorContained:false,productionAuthority:false};
+  let admitted=false;
+  const dispatch=async(phase,operation)=>{
+    result.phase=phase;
+    if(typeof callbacks?.beforeDispatch!=='function'||await callbacks.beforeDispatch(phase)!==true)
+      throw Error('D_CLEANUP_DISPATCH_NOT_ADMITTED');
+    return operation();
+  };
+  try {
+    const uuid=/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
+    if(!Buffer.isBuffer(actorCreationRaw)||!actorCreationRaw.length||actorCreationRaw.length>4096
+      ||!uuid.test(target?.actorId)||sha256(actorCreationRaw)!==target?.actorCreationReceiptSha256)
+      throw Error('D_ACTOR_CREATION_UNPROVEN');
+    const actor=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(actorCreationRaw));
+    if(!shape(actor,['executionBindingSha256','actorId','createdByThisRun','createdUtc','providerReceiptSha256'])
+      ||actor.actorId!==target.actorId||actor.createdByThisRun!==true||!digestShape(actor.executionBindingSha256)
+      ||!digestShape(actor.providerReceiptSha256)||!Number.isFinite(utcMillis(actor.createdUtc)))
+      throw Error('D_ACTOR_CREATION_UNPROVEN');
+    admitted=true;
+    if(!Buffer.isBuffer(creationRaw)||creationRaw.length>8192)throw Error('D_CREATION_UNPROVEN');
+    const c=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(creationRaw));
+    if(c.account!=='dcb374166b39234a499985145c075f50'||c.bucket!=='openglasshub-media'||c.jurisdiction!=='default'
+      ||!digestShape(c.executionBindingSha256)||!digestShape(c.connectionBindingSha256)
+      ||!digestShape(c.uploadReceiptSha256)||!digestShape(c.retentionReceiptSha256)
+      ||!Number.isFinite(utcMillis(c.observedUtc))||!Array.isArray(c.keys)||c.keys.length<1||c.keys.length>2
+      ||new Set(c.keys).size!==c.keys.length||!c.keys.every(metadataKey)
+      ||!uuid.test(target?.postId)||c.executionBindingSha256!==actor.executionBindingSha256
+      ||utcMillis(c.observedUtc)<utcMillis(actor.createdUtc)
+      ||!c.keys.every(k=>k.startsWith(`tmp/${target.actorId}/${target.postId}/`)?k.split('/').length===4
+        :k.startsWith(`${target.actorId}/${target.postId}/`)
+          &&k.split('/').length===3&&/^r2-retained-[a-f0-9-]+\.(mp4|webm|mov)$/i.test(k.split('/')[2])))
+      throw Error('D_CREATION_UNPROVEN');
+    if(postState!=='published')throw Error('D_OWNER_DELETE_STATE_UNAVAILABLE');
+    const owner=await dispatch('OWNER_DELETE',()=>callbacks.ownerDelete(target.postId));
+    if(owner?.postId!==target.postId||owner.acknowledged!==true||owner.postState!=='deleted')throw Error('D_OWNER_DELETE_UNPROVEN');
+    const post=await dispatch('POST_READBACK',()=>callbacks.readPost(target.postId));
+    if(post?.postId!==target.postId||post.independent!==true||post.postState!=='deleted'||post.mediaRows!==0||post.anonymousStatus!==404)
+      throw Error('D_POST_CLEANUP_UNPROVEN');
+    const deletion=await dispatch('EXACT_OBJECT_DELETE',()=>callbacks.deleteExactObjects([...c.keys]));
+    // Both tmp source and retained key need their own later terminal observation.
+    const readRequestIds=new Set();
+    for(let i=0;i<c.keys.length;i++) {
+      const read=await dispatch('OBJECT_READBACK_'+i,()=>callbacks.readExactObject(c.keys[i]));
+      if(read?.source?.prefix!==c.keys[i]||readRequestIds.has(read?.source?.requestId))throw Error('D_OBJECT_TARGET_UNPROVEN');
+      readRequestIds.add(read.source.requestId);
+      const proof=bindR2CleanupReadback(read,deletion,creationRaw);
+      result.objectProofs.push(proof);
+      if(proof.state!=='ABSENCE_OBSERVED_AFTER_DELETE')throw Error('D_OBJECT_CLEANUP_UNPROVEN');
+    }
+    result.state='CLEANUP_SEQUENCE_VERIFIED';
+  }catch{result.state='BLOCKED';}
+  finally {
+    // Failure containment is separately admitted even when a business step stops.
+    if(admitted)try {
+      const actor=await dispatch('ACTOR_CONTAINMENT',()=>callbacks.finishActor(target.actorId));
+      result.actorContained=actor?.actorId===target.actorId&&actor.actorCreationReceiptSha256===target.actorCreationReceiptSha256
+        &&actor.signedOut===true&&actor.banned===true&&actor.independentReadback===true;
+    }catch{result.actorContained=false;}
+    if(!result.actorContained)result.state='BLOCKED';
+  }
+  return result;
 }
 
 // Build a draft only. Live object, cost, authorization and drift gates stay separate.
