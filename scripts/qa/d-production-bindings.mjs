@@ -48,6 +48,39 @@ export function buildDProductionCreation({captureRaw,snapshotRaw,binding}) {
   }catch{throw Error('D_CREATION_CHAIN_UNPROVEN');}
 }
 
+// Recovery evidence for an acknowledged source PUT stopped before attachment.
+// This is not a retention receipt, successful upload acceptance, or permission.
+export function buildDPartialSourceCreation({captureRaw,binding}) {
+  try {
+    const c=decode(captureRaw),b=binding;
+    if(b?.creationMode!=='SOURCE_UPLOAD_RECOVERY_V1'||!uuid(b.actorId)||!uuid(b.postId)
+      ||!['executionBindingSha256','connectionBindingSha256','actorCreationReceiptSha256',
+        'frozenArtifactSha256','observerSourceSha256','identityReceiptSha256'].every(k=>digest(b[k]))
+      ||c.binding!==b.executionBindingSha256||c.actorId!==b.actorId||c.postId!==b.postId
+      ||c.status!=='STOPPED_UNKNOWN'||c.failurePhase!=='PUT_ETAG_UNAVAILABLE'
+      ||c.retainedKey!==null||c.mediaId!==null||c.media!==undefined||!Array.isArray(c.events)||c.events.length!==3)
+      throw Error();
+    const stages=[['POST','/api/forum/posts',201,'PROJECTED'],['POST','/api/forum/external-video-upload',200,'PROJECTED'],
+      ['PUT','EXACT_S3_OBJECT',200,'REQUEST_OR_PROJECTION_UNKNOWN']];
+    if(!stages.every((s,i)=>s[0]===c.events[i].method&&s[1]===c.events[i].path
+      &&s[2]===c.events[i].httpStatus&&s[3]===c.events[i].outcome))throw Error();
+    const prefix=`tmp/${b.actorId}/${b.postId}/`,put=c.put;
+    if(typeof c.sourceKey!=='string'||!c.sourceKey.startsWith(prefix)
+      ||!/^[a-z0-9._-]{1,240}$/i.test(c.sourceKey.slice(prefix.length))
+      ||put?.account!==account||put.bucket!==bucket||put.key!==c.sourceKey||put.status!==200||put.complete!==true
+      ||put.sizeBytes!==2018||put.mimeType!=='video/mp4'||put.etag!==null
+      ||!Number.isFinite(Date.parse(c.observedUtc)))throw Error();
+    const record={executionBindingSha256:b.executionBindingSha256,connectionBindingSha256:b.connectionBindingSha256,
+      account,bucket,jurisdiction:'default',keys:[c.sourceKey],actorId:b.actorId,postId:b.postId,mediaId:null,claimId:null,
+      observedUtc:c.observedUtc,uploadReceiptSha256:hash(captureRaw),retentionReceiptSha256:null,
+      frozenArtifactSha256:b.frozenArtifactSha256,observerSourceSha256:b.observerSourceSha256,
+      identityReceiptSha256:b.identityReceiptSha256,actorCreationReceiptSha256:b.actorCreationReceiptSha256,
+      recoveryOnly:true,attachmentDispatched:false,uploadAcknowledged:true,
+      objectMetadata:[{key:c.sourceKey,sizeBytes:2018,mimeType:'video/mp4',etag:null}]};
+    return {creationRaw:Buffer.from(JSON.stringify(record)),productionAuthority:false};
+  }catch{throw Error('D_PARTIAL_SOURCE_UNPROVEN');}
+}
+
 // Passive extension of the already reviewed form observer. No provider call is
 // initiated here, and signed upload URLs/request headers are never exported.
 export function installDVideoCreationObserver(p) {
@@ -106,9 +139,14 @@ export function installDVideoCreationObserver(p) {
       const response=await Promise.race([original.apply(this,arguments),stopped]);event.httpStatus=response.status;
       if(done||response.redirected||!response.ok)throw Error();
       if(put) {
-        const etag=response.headers.get('etag');if(response.status!==200||!/^"[a-f0-9]{32}"$/i.test(etag??''))throw Error();
+        const etag=response.headers.get('etag');if(response.status!==200)throw Error();
+        const validEtag=/^"[a-f0-9]{32}"$/i.test(etag??'');
         state.put={account:'dcb374166b39234a499985145c075f50',bucket:'openglasshub-media',key:state.sourceKey,
-          status:200,sizeBytes:2018,mimeType:'video/mp4',etag,complete:true};
+          status:200,sizeBytes:2018,mimeType:'video/mp4',etag:validEtag?etag:null,complete:true};
+        if(!validEtag) {
+          state.failurePhase='PUT_ETAG_UNAVAILABLE';
+          throw Error();
+        }
       }else {
         const r=await boundedJson(response);if(done)throw Error();
         if(url.pathname===routes[0]){if(response.status!==201||!uuid(r.post?.id))throw Error();state.postId=r.post.id;}
@@ -143,7 +181,9 @@ export async function runDProductionCheckpoint(p,client) {
     if(window.top!==window||location.origin!=='https://openglasshub.ogh.workers.dev'||location.search||location.hash
       ||client?.supabaseUrl!=='https://xcbnxzjlsvtgzixurcof.supabase.co'
       ||!['OWNER_DELETE','CREATION_SNAPSHOT','POST_READBACK','ACTOR_LOGOUT'].includes(p.phase)
-      ||!uuid(p.actorId)||!uuid(p.postId)||!uuid(p.mediaId)||!digest(p.executionBindingSha256)
+      ||!uuid(p.actorId)||!uuid(p.postId)
+      ||(p.recoveryOnly===true?(!['POST_READBACK','ACTOR_LOGOUT'].includes(p.phase)||p.mediaId!==null):!uuid(p.mediaId))
+      ||!digest(p.executionBindingSha256)
       ||!digest(p.verifiedContextReceiptSha256)||!Number.isFinite(Date.parse(p.deadlineUtc))||Date.now()>=Date.parse(p.deadlineUtc)
       ||typeof p.requestId!=='string'||!/^[a-zA-Z0-9_-]{1,128}$/.test(p.requestId))throw Error();
     const marker='__ogh_d_checkpoint_'+p.executionBindingSha256+'_'+p.requestId;
@@ -212,7 +252,8 @@ export async function runDProductionCheckpoint(p,client) {
       }
       if(post.status!=='deleted'||media.length!==0)throw Error();
       return {postId:p.postId,independent:true,postState:'deleted',mediaRows:0,requestId:p.requestId,
-        requiresSeparateAnonymousDenial:true,observedUtc:new Date().toISOString()};
+        ...(p.recoveryOnly===true?{noMediaCreated:true,requiresSeparateAnonymousDenial:false}:
+          {requiresSeparateAnonymousDenial:true}),observedUtc:new Date().toISOString()};
     })(),timeout]);
     if(Date.now()>=Date.parse(p.deadlineUtc))throw Error();return {...result,productionAuthority:false};
   }catch{return unknown();}finally{clearTimeout(timer);}
@@ -246,7 +287,7 @@ export function buildDObjectDeleteCode(b) {
 
 export function buildDCheckpointCode(p) {
   if(!p||Object.keys(p).some(k=>!['executionBindingSha256','actorId','postId','mediaId','moderatorId','retainedKey',
-    'phase','requestId','deadlineUtc','verifiedContextReceiptSha256'].includes(k)))throw Error('D_CHECKPOINT_BINDING_INVALID');
+    'phase','requestId','deadlineUtc','verifiedContextReceiptSha256','recoveryOnly'].includes(k)))throw Error('D_CHECKPOINT_BINDING_INVALID');
   p={...p,deadlineUtc:new Date(Math.min(Date.parse(p.deadlineUtc),Date.now()+120000)).toISOString()};
   return `async () => {
     if(window.top!==window||location.origin!=="${origin}"||location.search||location.hash)throw Error("D_CONTEXT_INVALID");
@@ -326,7 +367,10 @@ export async function containDProductionActor({binding,actorCreationRaw,adminKey
 export function createDProductionCleanupCallbacks({binding,creationRaw,actorCreationRaw,adminKey,
   ownerCheckpoint,moderatorCheckpoint,mcpExecute,anonymousReadback,beforeDispatch,logoutTimeoutMs=10000}) {
   const b=structuredClone(binding),raw=Buffer.from(creationRaw),created=decode(raw),actorRaw=Buffer.from(actorCreationRaw);
-  if(created.actorId!==b.actorId||created.postId!==b.postId||!uuid(created.mediaId)||!uuid(b.moderatorId)
+  const partial=b.creationMode==='SOURCE_UPLOAD_RECOVERY_V1';
+  if(created.actorId!==b.actorId||created.postId!==b.postId
+    ||(partial?(created.recoveryOnly!==true||created.attachmentDispatched!==false||created.mediaId!==null
+      ||created.keys?.length!==1||!created.keys[0].startsWith(`tmp/${b.actorId}/${b.postId}/`)):!uuid(created.mediaId))||!uuid(b.moderatorId)
     ||hash(actorRaw)!==b.actorCreationReceiptSha256||!digest(b.ownerContextReceiptSha256)
     ||!digest(b.moderatorContextReceiptSha256)||typeof beforeDispatch!=='function'
     ||!Number.isInteger(logoutTimeoutMs)||logoutTimeoutMs<1||logoutTimeoutMs>30000
@@ -340,6 +384,7 @@ export function createDProductionCleanupCallbacks({binding,creationRaw,actorCrea
     const requestId='d-'+phase.toLowerCase().replaceAll('_','-')+'-'+b.executionBindingSha256.slice(0,12);
     const p={executionBindingSha256:b.executionBindingSha256,actorId:b.actorId,postId:b.postId,mediaId:created.mediaId,
       moderatorId:b.moderatorId,retainedKey:retained,phase,requestId,
+      ...(partial?{recoveryOnly:true}:{}),
       deadlineUtc:new Date(Math.min(Date.parse(b.deadlineUtc),Date.parse(checkpointDeadlineUtc),
         Date.now()+(phase==='ACTOR_LOGOUT'?logoutTimeoutMs:120000))).toISOString(),
       verifiedContextReceiptSha256:phase==='POST_READBACK'?b.moderatorContextReceiptSha256:b.ownerContextReceiptSha256};
@@ -348,10 +393,11 @@ export function createDProductionCleanupCallbacks({binding,creationRaw,actorCrea
     return result;
   };
   return Object.freeze({beforeDispatch,
-    ownerDelete:async(postId,signal,deadline)=>{if(postId!==b.postId)throw Error('D_CALLBACK_TARGET_INVALID');return invoke('OWNER_DELETE',ownerCheckpoint,signal,deadline);},
+    ownerDelete:async(postId,signal,deadline)=>{if(partial||postId!==b.postId)throw Error('D_CALLBACK_TARGET_INVALID');return invoke('OWNER_DELETE',ownerCheckpoint,signal,deadline);},
     readPost:async(postId,signal,deadline)=>{
       if(postId!==b.postId)throw Error('D_CALLBACK_TARGET_INVALID');const post=await invoke('POST_READBACK',moderatorCheckpoint,signal,deadline);guard(signal);
       if(post.postId!==b.postId||post.mediaRows!==0||post.postState!=='deleted')throw Error('D_POST_READBACK_UNPROVEN');
+      if(partial){if(post.noMediaCreated!==true)throw Error('D_POST_READBACK_UNPROVEN');return post;}
       if(await beforeDispatch('ANONYMOUS_AFTER_DELETE')!==true)throw Error('D_CALLBACK_NOT_ADMITTED');guard(signal);
       const denial=await anonymousReadback(Object.freeze({mediaId:created.mediaId,stage:'after-hide',deadlineUtc:b.deadlineUtc}));
       guard(signal);

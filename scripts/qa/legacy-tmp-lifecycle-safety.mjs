@@ -368,9 +368,11 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
     admitted=true;
     if(!Buffer.isBuffer(creationRaw)||creationRaw.length>8192)throw Error('D_CREATION_UNPROVEN');
     const c=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(creationRaw));
+    const partial=target.creationMode==='SOURCE_UPLOAD_RECOVERY_V1';
+    if(partial)result.dAcceptance='FAIL';
     if(c.account!=='dcb374166b39234a499985145c075f50'||c.bucket!=='openglasshub-media'||c.jurisdiction!=='default'
       ||!digestShape(c.executionBindingSha256)||!digestShape(c.connectionBindingSha256)
-      ||!digestShape(c.uploadReceiptSha256)||!digestShape(c.retentionReceiptSha256)
+      ||!digestShape(c.uploadReceiptSha256)||(!partial&&!digestShape(c.retentionReceiptSha256))
       ||!Number.isFinite(utcMillis(c.observedUtc))||!Array.isArray(c.keys)||c.keys.length<1||c.keys.length>2
       ||new Set(c.keys).size!==c.keys.length||!c.keys.every(metadataKey)
       ||!uuid.test(target?.postId)||c.executionBindingSha256!==actor.executionBindingSha256
@@ -379,8 +381,12 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
         :k.startsWith(`${target.actorId}/${target.postId}/`)
           &&k.split('/').length===3&&/^r2-retained-[a-f0-9-]+\.(mp4|webm|mov)$/i.test(k.split('/')[2])))
       throw Error('D_CREATION_UNPROVEN');
+    if(partial&&(c.recoveryOnly!==true||c.attachmentDispatched!==false||c.uploadAcknowledged!==true
+      ||c.retentionReceiptSha256!==null||c.keys.length!==1||!c.keys[0].startsWith('tmp/')
+      ||c.actorId!==target.actorId||c.postId!==target.postId||c.mediaId!==null||c.claimId!==null
+      ||!headVerifier))throw Error('D_PARTIAL_SOURCE_UNPROVEN');
     result.objectOutcomes=c.keys.map(key=>({key,state:'UNKNOWN',readback:'NOT_ATTEMPTED'}));
-    if(postState!=='published')throw Error('D_OWNER_DELETE_STATE_UNAVAILABLE');
+    if(!partial&&postState!=='published')throw Error('D_OWNER_DELETE_STATE_UNAVAILABLE');
     let headProof;
     if(headVerifier!==undefined) {
       headProof=await import('./d-r2-head-verification.mjs');
@@ -391,12 +397,16 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
         if(read.state!=='PRESENT')throw Error('D_HEAD_PREDELETE_UNPROVEN');
       }
     }
-    const owner=await dispatch('OWNER_DELETE',(signal,deadline)=>callbacks.ownerDelete(target.postId,signal,deadline));
-    if(owner?.postId!==target.postId||owner.acknowledged!==true||owner.postState!=='deleted')throw Error('D_OWNER_DELETE_UNPROVEN');
-    const post=await dispatch('POST_READBACK',(signal,deadline)=>callbacks.readPost(target.postId,signal,deadline));
-    if(post?.postId!==target.postId||post.independent!==true||post.postState!=='deleted'||post.mediaRows!==0||post.anonymousStatus!==404)
-      throw Error('D_POST_CLEANUP_UNPROVEN');
-    const applicationKeys=Array.isArray(owner.applicationDeletedKeys)?owner.applicationDeletedKeys:[];
+    // The frozen form already attempts rollback before attachment. Never repeat
+    // that possibly consumed DELETE; recover only the acknowledged source here.
+    const owner=partial?null:await dispatch('OWNER_DELETE',(signal,deadline)=>callbacks.ownerDelete(target.postId,signal,deadline));
+    if(!partial){
+      if(owner?.postId!==target.postId||owner.acknowledged!==true||owner.postState!=='deleted')throw Error('D_OWNER_DELETE_UNPROVEN');
+      const post=await dispatch('POST_READBACK',(signal,deadline)=>callbacks.readPost(target.postId,signal,deadline));
+      if(post?.postId!==target.postId||post.independent!==true||post.postState!=='deleted'||post.mediaRows!==0||post.anonymousStatus!==404)
+        throw Error('D_POST_CLEANUP_UNPROVEN');
+    }
+    const applicationKeys=Array.isArray(owner?.applicationDeletedKeys)?owner.applicationDeletedKeys:[];
     if(new Set(applicationKeys).size!==applicationKeys.length||!applicationKeys.every(k=>c.keys.includes(k)
       &&k.startsWith(`${target.actorId}/${target.postId}/`)))throw Error('D_APPLICATION_DELETE_TARGET_UNPROVEN');
     const remainingKeys=c.keys.filter(k=>!applicationKeys.includes(k));
@@ -437,7 +447,13 @@ export async function runDBoundCleanup({creationRaw,actorCreationRaw,postState,t
       result.objectOutcomes[i].state=proof.state==='ABSENCE_OBSERVED_AFTER_DELETE'?'ABSENCE_VERIFIED':'UNKNOWN';
       if(proof.state!=='ABSENCE_OBSERVED_AFTER_DELETE')throw Error('D_OBJECT_CLEANUP_UNPROVEN');
     }
-    result.state='CLEANUP_SEQUENCE_VERIFIED';
+    if(partial){
+      const post=await dispatch('POST_READBACK',(signal,deadline)=>callbacks.readPost(target.postId,signal,deadline));
+      result.postReadback=post;
+      if(post?.postId!==target.postId||post.independent!==true||post.postState!=='deleted'||post.mediaRows!==0||post.noMediaCreated!==true)
+        throw Error('D_POST_CLEANUP_UNPROVEN');
+    }
+    result.state=partial?'PARTIAL_SOURCE_RECOVERED_D_FAILED':'CLEANUP_SEQUENCE_VERIFIED';
   }catch{result.state='BLOCKED';result.failedPhase=result.phase;}
   finally {
     // Failure containment is separately admitted even when a business step stops.

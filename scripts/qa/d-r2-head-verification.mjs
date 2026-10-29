@@ -66,19 +66,23 @@ function validKey(key,b) {
 }
 function creation(raw,b,key,now) {
   const c=parse(raw,8192);
+  const partial=b.creationMode==='SOURCE_UPLOAD_RECOVERY_V1';
   if(!sameRun(c,b)||!fixedTarget(c)||!Array.isArray(c.keys)||!c.keys.length||c.keys.length>2
     ||new Set(c.keys).size!==c.keys.length||!c.keys.includes(key)||!c.keys.every(k=>validKey(k,b))
-    ||!digest(c.uploadReceiptSha256)||!digest(c.retentionReceiptSha256)
+    ||!digest(c.uploadReceiptSha256)||(!partial&&!digest(c.retentionReceiptSha256))
     ||!Number.isFinite(utc(c.observedUtc))||utc(c.observedUtc)<utc(b.notBeforeUtc)||utc(c.observedUtc)>now)
     throw Error('D_HEAD_RECEIPT_INVALID');
-  if(b.creationMode==='SERVER_RECEIPT_V2') {
+  if(b.creationMode==='SERVER_RECEIPT_V2'||partial) {
     if(c.actorId!==b.actorId||c.postId!==b.postId||c.actorCreationReceiptSha256!==b.actorCreationReceiptSha256
       ||c.identityReceiptSha256!==b.identityReceiptSha256||c.frozenArtifactSha256!==b.frozenArtifactSha256
       ||c.observerSourceSha256!==b.observerSourceSha256
       ||!Array.isArray(c.objectMetadata)||c.objectMetadata.length!==c.keys.length
       ||new Set(c.objectMetadata.map(m=>m?.key)).size!==c.keys.length
       ||!c.objectMetadata.every(m=>c.keys.includes(m?.key)&&m.sizeBytes===2018&&m.mimeType==='video/mp4'
-        &&typeof m.etag==='string'&&/^"[a-f0-9]{32}"$/i.test(m.etag)))throw Error('D_HEAD_CREATION_METADATA_UNPROVEN');
+        &&(partial?m.etag===null:typeof m.etag==='string'&&/^"[a-f0-9]{32}"$/i.test(m.etag))))throw Error('D_HEAD_CREATION_METADATA_UNPROVEN');
+    if(partial&&(c.recoveryOnly!==true||c.attachmentDispatched!==false||c.uploadAcknowledged!==true
+      ||c.retentionReceiptSha256!==null||c.keys.length!==1||!key.startsWith('tmp/')
+      ||c.mediaId!==null||c.claimId!==null))throw Error('D_HEAD_PARTIAL_SOURCE_UNPROVEN');
   }
   return c;
 }
@@ -112,8 +116,8 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
       ||utc(scope.expiresUtc)<=utc(scope.issuedUtc)||utc(scope.expiresUtc)-utc(scope.issuedUtc)>86400000))
     throw Error('D_HEAD_CREDENTIAL_EXCEPTION_INVALID');
   if(!binding||!digest(binding.executionBindingSha256)||!digest(binding.connectionBindingSha256)
-    ||(binding.creationMode!==undefined&&binding.creationMode!=='SERVER_RECEIPT_V2')
-    ||(binding.creationMode==='SERVER_RECEIPT_V2'
+    ||(binding.creationMode!==undefined&&!['SERVER_RECEIPT_V2','SOURCE_UPLOAD_RECOVERY_V1'].includes(binding.creationMode))
+    ||(['SERVER_RECEIPT_V2','SOURCE_UPLOAD_RECOVERY_V1'].includes(binding.creationMode)
       &&!['identityReceiptSha256','frozenArtifactSha256','observerSourceSha256'].every(k=>digest(binding[k])))
     ||!digest(binding.actorCreationReceiptSha256)||!uuid(binding.actorId)||!uuid(binding.postId)
     ||!Number.isFinite(utc(binding.notBeforeUtc))||!Number.isFinite(utc(binding.deadlineUtc))
@@ -173,6 +177,8 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
       if(!Number.isFinite(start)||start<utc(b.notBeforeUtc)||start>=utc(b.deadlineUtc)||start>=utc(s.expiresUtc)
         ||!['BEFORE_CREATE','AFTER_CREATE','BEFORE_DELETE','AFTER_DELETE'].includes(phase)||!validKey(key,b)
         ||used.has(`${phase}:${key}`)||count>=6)throw Error('D_HEAD_NOT_ADMITTED');
+      if(b.creationMode==='SOURCE_UPLOAD_RECOVERY_V1'&&!['BEFORE_DELETE','AFTER_DELETE'].includes(phase))
+        throw Error('D_HEAD_PARTIAL_RECOVERY_ONLY');
       let c;
       if(phase==='BEFORE_CREATE') {
         const a=parse(allocationRaw,4096);
@@ -184,9 +190,9 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
         c=creation(creationRaw,b,key,start);
         if(phase==='AFTER_CREATE'&&key.startsWith('tmp/')&&b.creationMode!=='SERVER_RECEIPT_V2')throw Error('D_HEAD_PHASE_UNPROVEN');
         const sourceKey=precreate.keys().next().value;
-        if(b.creationMode!=='SERVER_RECEIPT_V2'&&(precreate.size!==1||!c.keys.includes(sourceKey)||c.keys.filter(k=>k.startsWith('tmp/')).length!==1
+        if(!['SERVER_RECEIPT_V2','SOURCE_UPLOAD_RECOVERY_V1'].includes(b.creationMode)&&(precreate.size!==1||!c.keys.includes(sourceKey)||c.keys.filter(k=>k.startsWith('tmp/')).length!==1
           ||precreate.get(sourceKey).ended>utc(c.observedUtc)))throw Error('D_HEAD_SOURCE_UNPROVEN');
-        if(b.creationMode!=='SERVER_RECEIPT_V2'&&key.startsWith('tmp/')&&(!precreate.has(key)||precreate.get(key).ended>utc(c.observedUtc)))
+        if(!['SERVER_RECEIPT_V2','SOURCE_UPLOAD_RECOVERY_V1'].includes(b.creationMode)&&key.startsWith('tmp/')&&(!precreate.has(key)||precreate.get(key).ended>utc(c.observedUtc)))
           throw Error('D_HEAD_PRECREATE_UNPROVEN');
         if(phase==='AFTER_DELETE'&&(!beforeDelete.has(key)||beforeDelete.get(key).creationSha!==sha(creationRaw)
           ||!validDeletion(deletion,c,b,key,creationRaw,start)
@@ -239,7 +245,8 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
       const receipt={state:expected===200?'PRESENT':phase==='BEFORE_CREATE'?'PRECREATE_NOT_FOUND_CANDIDATE':'ABSENT',
         source,response,responseSha256:sha(JSON.stringify(response)),
         notFoundClassification:expected===404?'BOUND_HEAD404_NOT_PROVIDER_EXCEPTION_CODE':null,
-        precreationProof:b.creationMode==='SERVER_RECEIPT_V2'?'CAPTURED_SERVER_CREATION_CHAIN'
+        precreationProof:b.creationMode==='SOURCE_UPLOAD_RECOVERY_V1'?'ACKNOWLEDGED_SOURCE_ONLY_RECOVERY_NOT_D_ACCEPTANCE'
+          :b.creationMode==='SERVER_RECEIPT_V2'?'CAPTURED_SERVER_CREATION_CHAIN'
           :key.startsWith('tmp/')?'TICKET_BOUND_HEAD404':'SERVER_COPY_CREATION_RECEIPT_ONLY',
         mode,storageClass,productionAuthority:false};
       if(phase==='BEFORE_CREATE')precreate.set(key,{ended:end});

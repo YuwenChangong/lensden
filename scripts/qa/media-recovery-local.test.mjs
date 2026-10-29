@@ -49,6 +49,31 @@ test('unknown reference shapes, traversal and signed URLs fail closed', () => {
   assert.throws(()=>implementation.collectMediaReferences({...rows,news_articles:[{id:'news',content:'\u0000'}]},mapping),{code:'NEWS_CONTENT_BOUND'});
 });
 
+test('durable R2 recovery projects retained keys into the media bucket', () => {
+  const retained=`${user}/${post}/r2-retained-00000000-0000-0000-0000-000000000003.mp4`;
+  const rows={post_media:[{id:'retained',post_id:post,storage_path:retained}],profiles:[],circles:[],news_articles:[],devices:[]};
+  const refs=implementation.collectMediaReferences(rows,mapping);
+  assert.equal(refs.managed.length,1);
+  assert.equal(refs.managed[0].provider,'r2');
+  assert.equal(refs.managed[0].bucket,mapping.mediaBucket);
+  assert.equal(refs.managed[0].key===retained,true);
+});
+
+test('durable R2 recovery keeps Storage lookalikes and orphan references distinct', () => {
+  const rows={post_media:[
+    {id:'orphan',post_id:null,storage_path:`${user}/${post}/r2-retained-00000000-0000-0000-0000-000000000003.webm`},
+    {id:'storage',storage_path:`${user}/${post}/fallback.mp4`},
+    {id:'lookalike',storage_path:`${user}/${post}/r2-retained-not-a-claim.mp4`},
+  ],profiles:[],circles:[],news_articles:[],devices:[]};
+  const refs=implementation.collectMediaReferences(rows,mapping);
+  assert.deepEqual(refs.managed.map(r=>r.provider),['r2','supabase','supabase']);
+  assert.deepEqual(refs.managed.map(r=>r.bucket),[mapping.mediaBucket,'post-media','post-media']);
+  assert.equal(Object.hasOwn(refs.managed[0],'post_id'),false);
+  assert.equal(Object.hasOwn(refs.managed[0],'parentPresent'),false);
+  assert.equal(Object.hasOwn(refs.managed[0],'productionAuthority'),false);
+  assert.equal(rows.post_media[0].post_id,null);
+});
+
 async function privateFixtureRoot() {
   const root = await mkdtemp(join(tmpdir(),'ogh-media-recovery-local-'));
   if(process.platform==='win32') {

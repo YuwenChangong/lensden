@@ -4,6 +4,7 @@ import { dirname, basename, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { Readable, Writable } from 'node:stream';
 import { pathToFileURL } from 'node:url';
+import { isRetainedR2VideoPath } from '../../src/lib/r2-media-path.ts';
 
 // A bounded synthetic filesystem proof, deliberately without provider clients,
 // environment configuration, production credentials or a cloud execution path.
@@ -48,7 +49,7 @@ export function collectMediaReferences(rows,mapping){
       requireThat(matching.length<=1,'R2_MAPPING_AMBIGUOUS');
       if(!matching.length){result.external.push({...reference,url:value});return;}
       const base=matching[0];key=decodeURIComponent(url.pathname.slice(base.url.pathname.replace(/\/$/,'').length+1));provider='r2';bucket=base.bucket;
-    }else if(value.startsWith('tmp/')){provider='r2';bucket=mapping.mediaBucket;}
+    }else if(value.startsWith('tmp/')||isRetainedR2VideoPath(value)){provider='r2';bucket=mapping.mediaBucket;}
     requireThat(keyValid(key),'REFERENCE_KEY_INVALID');
     if(provider==='supabase')requireThat(/^(?:[a-f0-9-]{36}\/[a-f0-9-]{36}\/|profile-avatars\/|profile-banners\/|circle-covers\/|news-covers\/|news-content\/)/.test(key),'REFERENCE_KEY_CLASS_UNKNOWN');
     result.managed.push({...reference,provider,bucket,key});
