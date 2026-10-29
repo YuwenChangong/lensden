@@ -81,7 +81,7 @@ export function installDVideoCreationObserver(p) {
     const url=new URL(typeof input==='string'?input:input instanceof URL?input.href:input.url,location.origin);
     const method=String(init?.method??input?.method??'GET').toUpperCase();
     const routes=['/api/forum/posts','/api/forum/external-video-upload','/api/forum/post-media'];
-    const put=method==='PUT'&&state.sourceKey!==null&&url.pathname===`/openglasshub-media/${state.sourceKey}`;
+    const put=method==='PUT'&&state.sourceKey!==null;
     const site=method==='POST'&&url.origin===location.origin&&routes.includes(url.pathname);
     if(!put&&!site)return original.apply(this,arguments);
     const label=put?'EXACT_S3_OBJECT':url.pathname,id=method+' '+label;
@@ -90,7 +90,11 @@ export function installDVideoCreationObserver(p) {
     try {
       let body;
       if(put) {
-        if(url.protocol!=='https:'||url.hostname!=='dcb374166b39234a499985145c075f50.r2.cloudflarestorage.com'
+        const exactTarget=(url.hostname==='dcb374166b39234a499985145c075f50.r2.cloudflarestorage.com'
+          &&url.pathname===`/openglasshub-media/${state.sourceKey}`)
+          ||(url.hostname==='openglasshub-media.dcb374166b39234a499985145c075f50.r2.cloudflarestorage.com'
+          &&url.pathname===`/${state.sourceKey}`);
+        if(url.protocol!=='https:'||!exactTarget
           ||url.username||url.password||url.port||url.hash||init?.body?.size!==2018||init.body.type!=='video/mp4')throw Error();
       } else {
         if(typeof init?.body!=='string'||init.body.length>65536)throw Error();body=JSON.parse(init.body);

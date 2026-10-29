@@ -25,6 +25,54 @@ const snapshot=()=>({post:{id:postId,author_id:actorId,status:'published',modera
   claim:{post_id:postId,user_id:actorId,claim_id:claimId,retained_key:retainedKey,mime_type:'video/mp4'},
   observedUtc:'2026-10-29T10:02:02.000Z'});
 
+test('D runtime closure: actual SDK virtual-hosted PUT is observed while wrong targets and missing ETag fail closed',async()=>{
+  const {S3Client,PutObjectCommand}=await import('@aws-sdk/client-s3');
+  const {getSignedUrl}=await import('@aws-sdk/s3-request-presigner');
+  const s3=new S3Client({region:'auto',maxAttempts:1,endpoint:'https://dcb374166b39234a499985145c075f50.r2.cloudflarestorage.com',
+    credentials:{accessKeyId:'FICTITIOUSACCESSKEYONLY',secretAccessKey:'FICTITIOUSSECRETKEYONLYNOTREAL000000000000'}});
+  let signed;
+  try{signed=await getSignedUrl(s3,new PutObjectCommand({Bucket:'openglasshub-media',Key:sourceKey,ContentType:'video/mp4'}),{expiresIn:900});}
+  finally{s3.destroy();}
+  const names=['window','location','document','URL'],prior=Object.fromEntries(names.map(n=>[n,globalThis[n]]));
+  assert.equal(new prior.URL(signed).hostname,'openglasshub-media.dcb374166b39234a499985145c075f50.r2.cloudflarestorage.com');
+  for(const kind of ['virtual','path','foreign','wrong-key','missing-etag']){
+    let blob,putCalls=0;const w={};w.top=w;
+    w.fetch=async(input,init)=>{
+      const u=new prior.URL(input,'https://openglasshub.ogh.workers.dev');
+      if(init.method==='PUT'){putCalls++;return new Response(null,{status:200,headers:kind==='missing-etag'?{}:{etag:'"'+'a'.repeat(32)+'"'}});}
+      if(u.pathname==='/api/forum/posts')return new Response(JSON.stringify({post:{id:postId}}),{status:201});
+      if(u.pathname==='/api/forum/external-video-upload')return new Response(JSON.stringify({storage_path:sourceKey}),{status:200});
+      return new Response(JSON.stringify({media:[capture().media]}),{status:201});
+    };
+    globalThis.window=w;globalThis.location={origin:'https://openglasshub.ogh.workers.dev',pathname:'/posts/new/',search:'',hash:''};
+    globalThis.document={body:{appendChild(){}},createElement:()=>({click(){},remove(){}})};
+    class LocalURL extends prior.URL{}LocalURL.createObjectURL=b=>{blob=b;return 'blob:fixture';};LocalURL.revokeObjectURL=()=>{};globalThis.URL=LocalURL;
+    let observer;
+    try{
+      observer=api.installDVideoCreationObserver({...binding,verifiedContextReceiptSha256:'7'.repeat(64),
+        deadlineUtc:new Date(Date.now()+10000).toISOString(),title:'fixture',body:'synthetic',circleSlug:'fixture'});
+      await w.fetch('/api/forum/posts',{method:'POST',body:JSON.stringify({title:'fixture',body:'synthetic',circle_slug:'fixture',type:'feedback',has_media:true})});
+      await w.fetch('/api/forum/external-video-upload',{method:'POST',body:JSON.stringify({post_id:postId})});
+      const u=new prior.URL(signed);
+      if(kind==='path'){u.hostname='dcb374166b39234a499985145c075f50.r2.cloudflarestorage.com';u.pathname='/openglasshub-media/'+sourceKey;}
+      if(kind==='foreign')u.hostname='another-bucket.dcb374166b39234a499985145c075f50.r2.cloudflarestorage.com';
+      if(kind==='wrong-key')u.pathname+='.wrong';
+      const upload=()=>w.fetch(u.href,{method:'PUT',body:new Blob([new Uint8Array(2018)],{type:'video/mp4'})});
+      if(['foreign','wrong-key','missing-etag'].includes(kind)){
+        await assert.rejects(upload(),/D_OBSERVER_FAILED_NO_RETRY/);
+        assert.equal(putCalls,kind==='missing-etag'?1:0);const partial=JSON.parse(await blob.text());
+        assert.equal(partial.status,'STOPPED_UNKNOWN');assert.equal(partial.sourceKey,sourceKey);
+        assert.throws(()=>api.buildDProductionCreation({captureRaw:Buffer.from(JSON.stringify(partial)),
+          snapshotRaw:Buffer.from(JSON.stringify(snapshot())),binding}),/D_CREATION_CHAIN_UNPROVEN/);
+      }else{
+        await upload();await w.fetch('/api/forum/post-media',{method:'POST',body:JSON.stringify({post_id:postId,media:[{storage_path:sourceKey}]})});
+        const text=await blob.text();assert.equal(JSON.parse(text).events[2].path,'EXACT_S3_OBJECT');assert.equal(putCalls,1);
+        assert.equal(text.includes('X-Amz-'),false);
+      }
+    }finally{observer?.finish();for(const n of names)globalThis[n]=prior[n];}
+  }
+});
+
 test('D binding: actual creation observer and production checkpoints are implemented',()=>{
   assert.equal(typeof api?.buildDProductionCreation,'function');
   assert.equal(typeof api?.runDProductionCheckpoint,'function');
