@@ -313,7 +313,7 @@ export function buildDObserverCode(p) {
 
 // Existing private Auth admin access only; never acquire/export a credential here.
 // Raw provider user JSON is transiently inspected, not persisted or returned.
-export async function containDProductionActor({binding,actorCreationRaw,adminKey,logoutEvidence,beforeDispatch}) {
+export async function containDProductionActor({binding,actorCreationRaw,adminKey,logoutEvidence,beforeDispatch,afterResponse}) {
   const b=structuredClone(binding),out={actorId:binding?.actorId,actorCreationReceiptSha256:binding?.actorCreationReceiptSha256,
     signedOut:false,banned:false,independentReadback:false,phase:'ADMISSION',productionAuthority:false};
   let calls=0;
@@ -325,7 +325,8 @@ export async function containDProductionActor({binding,actorCreationRaw,adminKey
       ||typeof b.actorEmail!=='string'||!/^[^\s@]+@[^\s@]+$/.test(b.actorEmail)
       ||typeof b.namespace!=='string'||!/^[a-zA-Z0-9_-]{1,160}$/.test(b.namespace)
       ||!Number.isFinite(Date.parse(b.createdAt))||!Number.isFinite(Date.parse(b.deadlineUtc))
-      ||typeof adminKey!=='string'||!adminKey.length||typeof beforeDispatch!=='function')throw Error();
+      ||typeof adminKey!=='string'||!adminKey.length||typeof beforeDispatch!=='function'
+      ||(afterResponse!==undefined&&typeof afterResponse!=='function'))throw Error();
     const bounded=async operation=>{
       let timer;
       try{return await Promise.race([operation(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error()),
@@ -344,16 +345,23 @@ export async function containDProductionActor({binding,actorCreationRaw,adminKey
     if(!out.signedOut)out.logout='UNKNOWN';
     const call=async(method,phase)=>{
       await gate(phase);if(++calls>3)throw Error();
-      const response=await fetch(`https://xcbnxzjlsvtgzixurcof.supabase.co/auth/v1/admin/users/${b.actorId}`,{
-        method,redirect:'error',cache:'no-store',signal:AbortSignal.timeout(Math.max(1,Math.min(10000,Date.parse(b.deadlineUtc)-Date.now()))),
-        headers:{authorization:'Bearer '+adminKey,apikey:adminKey,'content-type':'application/json'},
-        ...(method==='PUT'?{body:JSON.stringify({ban_duration:'876000h'})}:{})});
-      if(response.status!==200||response.redirected)throw Error();
-      const chunks=[];let size=0;for await(const chunk of response.body){size+=chunk.length;if(size>131072)throw Error();chunks.push(chunk);}
-      const u=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)));
-      if(u.id!==b.actorId||u.email!==b.actorEmail||u.created_at!==b.createdAt||u.role!=='authenticated'
-        ||u.user_metadata?.qa_namespace!==b.namespace||Date.now()>=Date.parse(b.deadlineUtc))throw Error();
-      return u;
+      const startedUtc=new Date().toISOString();let status=null,complete=false,identityVerified=false;
+      try {
+        const response=await fetch(`https://xcbnxzjlsvtgzixurcof.supabase.co/auth/v1/admin/users/${b.actorId}`,{
+          method,redirect:'error',cache:'no-store',signal:AbortSignal.timeout(Math.max(1,Math.min(10000,Date.parse(b.deadlineUtc)-Date.now()))),
+          headers:{authorization:'Bearer '+adminKey,apikey:adminKey,'content-type':'application/json'},
+          ...(method==='PUT'?{body:JSON.stringify({ban_duration:'876000h'})}:{})});
+        status=Number.isInteger(response.status)?response.status:null;
+        if(response.status!==200||response.redirected)throw Error();
+        const chunks=[];let size=0;for await(const chunk of response.body){size+=chunk.length;if(size>131072)throw Error();chunks.push(chunk);}
+        complete=true;const u=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)));
+        if(u.id!==b.actorId||u.email!==b.actorEmail||u.created_at!==b.createdAt||u.role!=='authenticated'
+          ||u.user_metadata?.qa_namespace!==b.namespace||Date.now()>=Date.parse(b.deadlineUtc))throw Error();
+        identityVerified=true;return u;
+      }finally{
+        if(afterResponse!==undefined&&await bounded(()=>afterResponse(phase,Object.freeze({phase,method,status,
+          complete,identityVerified,startedUtc,completedUtc:new Date().toISOString()})))!==true)throw Error();
+      }
     };
     await call('GET','ACTOR_PREBAN');await call('PUT','ACTOR_BAN');const read=await call('GET','ACTOR_READBACK');
     out.banned=Date.parse(read.banned_until)>=Date.now()+876000*3600000-120000;out.independentReadback=out.banned;
@@ -364,7 +372,7 @@ export async function containDProductionActor({binding,actorCreationRaw,adminKey
 
 // Connect the existing manual Edge checkpoints and MCP dispatcher, not a new
 // controller. Transport readiness/import provenance remain execution-host gates.
-export function createDProductionCleanupCallbacks({binding,creationRaw,actorCreationRaw,adminKey,
+export function createDProductionCleanupCallbacks({binding,creationRaw,actorCreationRaw,adminKey,actorContainment,
   ownerCheckpoint,moderatorCheckpoint,mcpExecute,anonymousReadback,beforeDispatch,logoutTimeoutMs=10000}) {
   const b=structuredClone(binding),raw=Buffer.from(creationRaw),created=decode(raw),actorRaw=Buffer.from(actorCreationRaw);
   const partial=b.creationMode==='SOURCE_UPLOAD_RECOVERY_V1';
@@ -374,6 +382,8 @@ export function createDProductionCleanupCallbacks({binding,creationRaw,actorCrea
     ||hash(actorRaw)!==b.actorCreationReceiptSha256||!digest(b.ownerContextReceiptSha256)
     ||!digest(b.moderatorContextReceiptSha256)||typeof beforeDispatch!=='function'
     ||!Number.isInteger(logoutTimeoutMs)||logoutTimeoutMs<1||logoutTimeoutMs>30000
+    ||(actorContainment!==undefined&&(typeof actorContainment!=='function'||adminKey!==undefined))
+    ||(actorContainment===undefined&&(typeof adminKey!=='string'||!adminKey.length))
     ||![ownerCheckpoint,moderatorCheckpoint,mcpExecute,anonymousReadback].every(f=>typeof f==='function'))
     throw Error('D_CALLBACK_BINDING_INVALID');
   const retained=created.keys.find(k=>!k.startsWith('tmp/'));const used=new Set();
@@ -426,6 +436,7 @@ export function createDProductionCleanupCallbacks({binding,creationRaw,actorCrea
       })(),new Promise((_,reject)=>{timer=setTimeout(()=>{logoutAbort.abort();reject(Error());},logoutTimeoutMs);})]);}
       catch{}finally{clearTimeout(timer);logoutAbort.abort();}
       guard(signal);
+      if(actorContainment)return actorContainment({binding:b,actorCreationRaw:actorRaw,logoutEvidence,signal});
       return containDProductionActor({binding:b,actorCreationRaw:actorRaw,adminKey,logoutEvidence,
         beforeDispatch:async phase=>{guard(signal);const admitted=await beforeDispatch(phase);guard(signal);return admitted;}});
     }});

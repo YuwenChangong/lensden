@@ -149,7 +149,7 @@ test('D HEAD: occupied allocation unauthorized key wrong receipts and expired cr
   assert.equal(late.requests.length,0);late.verifier.close();occupied.verifier.close();expired.verifier.close();
 });
 
-test('D HEAD: provider identity and present metadata are required; class is never defaulted',async()=>{
+test('D HEAD: provider identity and present metadata are required; only omitted Standard class follows S3 semantics',async()=>{
   for(const entry of [{status:404,headers:{'x-amz-request-id':undefined,'cf-ray':undefined}},
     {status:200,headers:{'content-length':undefined}},{status:200,headers:{etag:undefined}}]) {
     const s=setup([404,entry]);await s.verifier.head({phase:'BEFORE_CREATE',key,allocationRaw});s.at(6);
@@ -157,7 +157,9 @@ test('D HEAD: provider identity and present metadata are required; class is neve
     s.verifier.close();
   }
   const s=setup([404,{status:200,headers:{'x-amz-storage-class':undefined}}]);
-  const {present}=await preAndPresent(s);assert.equal(present.storageClass,'UNKNOWN');s.verifier.close();
+  const {present}=await preAndPresent(s);assert.equal(present.storageClass,'Standard');s.verifier.close();
+  const unknown=setup([404,{status:200,headers:{'x-amz-storage-class':'UNRECOGNIZED'}}]);
+  assert.equal((await preAndPresent(unknown)).present.storageClass,'UNKNOWN');unknown.verifier.close();
 });
 
 test('D HEAD: repeat phases forged tampered cross-key and premature postdelete evidence fail closed',async()=>{

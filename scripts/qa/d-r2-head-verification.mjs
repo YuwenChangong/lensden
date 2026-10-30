@@ -105,7 +105,8 @@ function validDeletion(d,c,b,key,raw,afterUtc) {
 
 // This factory grants no authority. The existing executor must admit every call
 // through its durable window/quota/permission/cost gate before transport dispatch.
-export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,requestHandler,now=Date.now,timeoutMs=10000}) {
+export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,afterResponse,onUnknown,
+  requestHandler,now=Date.now,timeoutMs=10000}) {
   const extended=binding?.credentialLifetimePolicy==='D_24H_OWNER_EXCEPTION_V1';
   // Pins identify the exact owner exception, not provider scope/expiry proof.
   // The durable execution host must verify both records before admitting a call.
@@ -130,7 +131,9 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
     ||typeof credentials.secretAccessKey!=='string'||!/^[a-zA-Z0-9/+=]{32,256}$/.test(credentials.secretAccessKey)
     ||(credentials.sessionToken!==undefined&&(typeof credentials.sessionToken!=='string'
       ||!credentials.sessionToken.length||credentials.sessionToken.length>8192||/[^\x21-\x7e]/.test(credentials.sessionToken)))
-    ||typeof beforeDispatch!=='function'||typeof now!=='function'||!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>10000)
+    ||typeof beforeDispatch!=='function'||(afterResponse!==undefined&&typeof afterResponse!=='function')
+    ||(onUnknown!==undefined&&typeof onUnknown!=='function')
+    ||typeof now!=='function'||!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>10000)
     throw Error('D_HEAD_ADMISSION_INVALID');
   const b=structuredClone(binding),s=structuredClone(scope),secret={...credentials};
   const mode=requestHandler?'OFFLINE_FIXTURE':'S3_HEAD_CAPTURE';
@@ -156,7 +159,7 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
       size:typeof headers['content-length']==='string'&&/^\d{1,20}$/.test(headers['content-length'])?headers['content-length']:null,
       etag:typeof headers.etag==='string'&&/^"[a-f0-9]{32}"$/i.test(headers.etag)?headers.etag:null,
       storageClass:['STANDARD','Standard','STANDARD_IA','InfrequentAccess'].includes(headers['x-amz-storage-class'])
-        ?headers['x-amz-storage-class']:'UNKNOWN',
+        ?headers['x-amz-storage-class']:headers['x-amz-storage-class']===undefined?'STANDARD_HEADER_OMITTED':'UNKNOWN',
       errorCode:headers['x-amz-error-code']===undefined?null
         :['NotFound','NoSuchKey','NoSuchBucket','AccessDenied','ExpiredToken','SignatureDoesNotMatch'].includes(headers['x-amz-error-code'])
           ?headers['x-amz-error-code']:'UNRECOGNIZED'};
@@ -232,6 +235,10 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
           ||typeof r.etag!=='string'||!/^"[a-f0-9]{32}"$/i.test(r.etag))throw Error('D_HEAD_METADATA_UNPROVEN');
         sizeBytes=Number(r.size);etag=r.etag;
         if(r.storageClass==='STANDARD'||r.storageClass==='Standard')storageClass='Standard';
+        // S3 HeadObject omits this header for Standard; R2 implements HeadObject.
+        // An explicit but unrecognized value is still UNKNOWN, never Standard.
+        // https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html
+        if(r.storageClass==='STANDARD_HEADER_OMITTED')storageClass='Standard';
         if(r.storageClass==='STANDARD_IA'||r.storageClass==='InfrequentAccess')storageClass='InfrequentAccess';
         if(b.creationMode==='SERVER_RECEIPT_V2') {
           const m=c.objectMetadata.find(m=>m.key===key);
@@ -254,9 +261,12 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,re
       records.set(receipt,{hash:sha(JSON.stringify(receipt)),binding:b,
         before:phase==='AFTER_DELETE'?beforeDelete.get(key):null,
         deletionSha256:phase==='AFTER_DELETE'?sha(JSON.stringify(deletion)):null});
+      if(afterResponse&&await afterResponse(structuredClone(receipt))!==true)throw Error('D_HEAD_ACK_UNPROVEN');
+      if(stopped||now()>=utc(b.deadlineUtc))throw Error('D_HEAD_STOPPED');
       return receipt;
     }catch{
       stopped=true;
+      if(intent&&onUnknown)try{await onUnknown(structuredClone(intent));}catch{}
       return {...unknown(),...(intent?{source:{...intent,kind:'s3-head',endpoint:`https://${host}/${bucket}/${key}`,
         ...(Number.isFinite(dispatchUtc)?{startedUtc:new Date(dispatchUtc).toISOString()}:{}),
         credentialScopeEvidenceSha256:s.evidenceSha256}}:{}),
