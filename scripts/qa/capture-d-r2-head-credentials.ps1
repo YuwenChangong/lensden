@@ -8,6 +8,8 @@ param(
 $ErrorActionPreference='Stop'
 $pipe=$null;$secrets=@();$pointers=@();$plain=@();$bytes=$null;$watchdog=$null
 try {
+    # Older hosts must not silently omit the same-user pipe protection.
+    if(-not ([Enum]::GetNames([IO.Pipes.PipeOptions]) -contains 'CurrentUserOnly')){throw 'UNSUPPORTED_SECURE_PIPE_HOST'}
     if($Nonce -cnotmatch '^[a-f0-9-]{36}$' -or $Binding -cnotmatch '^[a-f0-9]{64}$'){throw 'INVALID_SCOPE'}
     if(($OfflineFixture -and $Binding -cne ('0'*64)) -or (-not $OfflineFixture -and $Binding -ceq ('0'*64))){throw 'FIXTURE_SCOPE'}
     $end=[DateTimeOffset]::ParseExact($WindowEndUTC,'yyyy-MM-ddTHH:mm:ss.fffZ',[Globalization.CultureInfo]::InvariantCulture,[Globalization.DateTimeStyles]::AssumeUniversal)
@@ -57,7 +59,12 @@ try {
     $bytes=[Text.Encoding]::UTF8.GetBytes(($frame|ConvertTo-Json -Compress))
     $pipe.Write($bytes,0,$bytes.Length);$pipe.Flush()
     Write-Output 'LOCAL_S3_CREDENTIAL_TRANSFER_COMPLETE_NO_PRODUCTION_REQUEST'
-}catch{Write-Output 'SAFE_LOCAL_S3_CREDENTIAL_INPUT_FAILURE';exit 1}
+}catch{
+    if($_.Exception.Message -ceq 'UNSUPPORTED_SECURE_PIPE_HOST'){
+        Write-Output 'SAFE_LOCAL_S3_CREDENTIAL_INPUT_FAILURE_UNSUPPORTED_SECURE_PIPE_HOST'
+    }else{Write-Output 'SAFE_LOCAL_S3_CREDENTIAL_INPUT_FAILURE'}
+    exit 1
+}
 finally {
     if($bytes){[Array]::Clear($bytes,0,$bytes.Length)}
     foreach($ptr in $pointers){if($ptr -ne [IntPtr]::Zero){[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)}}

@@ -253,6 +253,28 @@ test('D HEAD: local input rejects unbound fixture frames without leaking their v
   await assert.rejects(api.receiveDHeadCredentials({bindingSha256:'0'.repeat(64),nonce,deadlineUtc}));
 });
 
+test('D HEAD: unsupported Windows PowerShell stops before publishing private input readiness',async()=>{
+  const execute=promisify(execFile),nonce=randomUUID();
+  const root=path.join(process.env.LOCALAPPDATA,'OpenGlassHub');
+  const directory=await mkdtemp(path.join(root,'d-head-input-unsupported-'));
+  try {
+    const script=path.resolve('scripts/qa/capture-d-r2-head-credentials.ps1');
+    await assert.rejects(execute('powershell.exe',['-NoProfile','-NonInteractive','-File',script,
+      '-Nonce',nonce,'-Binding','0'.repeat(64),'-WindowEndUTC',new Date(Date.now()+10000).toISOString(),
+      '-StatusDirectory',directory,'-OfflineFixture'],{windowsHide:true}),error=>{
+      assert.equal(error.code,1);
+      assert.equal(error.stdout.trim(),'SAFE_LOCAL_S3_CREDENTIAL_INPUT_FAILURE_UNSUPPORTED_SECURE_PIPE_HOST');
+      assert.equal(error.stderr,'');
+      return true;
+    });
+    assert.deepEqual(await readdir(directory),[]);
+  }finally{
+    assert.equal(path.resolve(directory).startsWith(path.resolve(root)+path.sep),true);
+    assert.match(path.basename(directory),/^d-head-input-unsupported-/);
+    await rm(directory,{recursive:true,force:true});
+  }
+});
+
 test('D HEAD: actual hidden input script transfers fictitious credentials only in a private local pipe',async()=>{
   const execute=promisify(execFile),nonce=randomUUID();
   const root=path.join(process.env.LOCALAPPDATA,'OpenGlassHub');
