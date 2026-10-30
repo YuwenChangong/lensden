@@ -75,6 +75,15 @@ export function createModeratorCheckpointLease({directory,binding,readerSource,r
           if(Date.now()<Date.parse(p.approvedUTC)||Date.now()>=Date.parse(p.windowEndUTC)-15000)throw Error("MODERATOR_LEASE_EXPIRED");
           const marker="__ogh_moderator_"+p.nonce;
           if(Object.hasOwn(window,marker))throw Error("MODERATOR_ALREADY_USED");
+          if(typeof navigator?.locks?.request!=="function")throw Error("MODERATOR_SHARED_ADMISSION_REQUIRED");
+          const shared="ogh-moderator-once:"+p.methodBinding+":"+p.nonce;
+          await navigator.locks.request(shared,{mode:"exclusive"},()=>{
+            if(Date.now()<Date.parse(p.approvedUTC)||Date.now()>=Date.parse(p.windowEndUTC)-15000)throw Error("MODERATOR_LEASE_EXPIRED");
+            if(localStorage.getItem(shared)!==null)throw Error("MODERATOR_ALREADY_USED");
+            const claim=JSON.stringify({binding:p.methodBinding,nonce:p.nonce,auth:1,worker:2,state:"RESERVED_UNKNOWN"});
+            localStorage.setItem(shared,claim);
+            if(localStorage.getItem(shared)!==claim)throw Error("MODERATOR_SHARED_RESERVATION_UNPROVEN");
+          });
           Object.defineProperty(window,marker,{value:true});
           const result=await (${readerSource})(p);
           const u=URL.createObjectURL(new Blob([JSON.stringify(result)],{type:"application/json"}));

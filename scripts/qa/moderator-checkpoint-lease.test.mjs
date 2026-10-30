@@ -123,16 +123,42 @@ test('moderator lease: a result persisted after the deadline remains an unaccept
 
 test('moderator lease: actual generated wrapper permits delayed manual delivery within ten minutes, never renewal',async t=>{
   const s=setup(t);s.lease.prepare(facts);const a=s.lease.activate();s.advance(180000);
-  let calls=0,download=0;const w={};w.top=w;
+  let calls=0,download=0;const w={};w.top=w;const storage=new Map();
   class Clock extends Date{static now(){return s.now();}}
   const context={window:w,location:{origin:'https://openglasshub.ogh.workers.dev',pathname:'/admin/security/',search:'',hash:''},
     Date:Clock,Blob,URL:{createObjectURL(){return 'blob:OFFLINE';},revokeObjectURL(){}},setTimeout(){},
+    navigator:{locks:{request:async(name,options,fn)=>fn()}},
+    localStorage:{getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},
     document:{body:{appendChild(){}},createElement:()=>({click(){download++;},remove(){}})},
     fixtureRead:async p=>{calls++;assert.equal(p.dispatchNotAfterUTC,a.deadlineUtc);return result(s);}};
   // The wrapper's only runtime is an isolated VM; fixtureRead never uses fetch.
   const code=fs.readFileSync(a.scriptPath,'utf8').replace(/^void /,'');
   await vm.runInNewContext(code,context);assert.equal(calls,1);assert.equal(download,1);
   await assert.rejects(vm.runInNewContext(code,context),/ALREADY_USED/);assert.equal(calls,1);
+  context.window={};context.window.top=context.window;
+  await assert.rejects(vm.runInNewContext(code,context),/ALREADY_USED/);assert.equal(calls,1);
   s.advance(420000);context.window={};context.window.top=context.window;
   await assert.rejects(vm.runInNewContext(code,context),/LEASE_EXPIRED/);assert.equal(calls,1);
+});
+
+test('moderator lease: concurrent separate documents share one durable admission before any reader call',async t=>{
+  const s=setup(t);s.lease.prepare(facts);const a=s.lease.activate();
+  const code=fs.readFileSync(a.scriptPath,'utf8').replace(/^void /,'');
+  let calls=0,tail=Promise.resolve();const storage=new Map();
+  const locks={request(name,options,fn){const result=tail.then(fn);tail=result.catch(()=>{});return result;}};
+  const context=()=>{const window={};window.top=window;return {window,
+    location:{origin:'https://openglasshub.ogh.workers.dev',pathname:'/admin/reports/',search:'',hash:''},
+    Date:class extends Date{static now(){return s.now();}},Blob,setTimeout(){},navigator:{locks},
+    localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},
+    URL:{createObjectURL(){return 'blob:OFFLINE';},revokeObjectURL(){}},
+    document:{body:{appendChild(){}},createElement:()=>({click(){},remove(){}})},
+    fixtureRead:async()=>{calls++;return result(s);}};};
+  const outcomes=await Promise.allSettled([vm.runInNewContext(code,context()),vm.runInNewContext(code,context())]);
+  assert.equal(outcomes.filter(r=>r.status==='fulfilled').length,1);
+  assert.equal(outcomes.filter(r=>r.status==='rejected'&&/ALREADY_USED/.test(r.reason.message)).length,1);
+  assert.equal(calls,1);assert.equal(storage.size,1);
+  for(const patch of [{navigator:{}},{localStorage:{getItem(){throw Error('STORAGE_BLOCKED');}}},
+    {localStorage:{getItem:()=>null,setItem(){}}}]){
+    await assert.rejects(vm.runInNewContext(code,{...context(),...patch}));assert.equal(calls,1);
+  }
 });
