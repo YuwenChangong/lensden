@@ -185,6 +185,51 @@ test('legacy HEAD: only evidenced explicit NoSuchKey 404 can report NOT_FOUND',a
   }
 });
 
+test('legacy HEAD: generic 404 preserves bounded error and wire diagnostics without claiming absence',async t=>{
+  for(const errorCode of [undefined,'NoSuchKey','NoSuchBucket']) {
+    const s=setup(t,[{status:404,headers:{'x-amz-error-code':errorCode}}]);
+    const r=await s.verifier.head({key:keys[0]});
+    assert.equal(r.state,'UNKNOWN');assert.equal(r.reason,'HEAD_404_ABSENCE_NOT_PROVEN_UNDER_CURRENT_CONTRACT');
+    assert.equal(r.response.errorCode,errorCode===undefined?null:errorCode==='NoSuchKey'?'NoSuchKey':'OTHER');
+    assert.equal(r.response.redirected,false);
+    assert.equal(r.source.transportEvidence.requestBound,true);
+    assert.equal(r.source.transportEvidence.sdkStatus,404);assert.equal(r.source.transportEvidence.sdkFailed,true);
+    assert.equal(r.source.transportEvidence.responseWithinDeadline,true);
+    assert.equal(r.source.transportEvidence.tlsCertificateVerification,'OFFLINE_FIXTURE');
+    assert.equal(r.source.transportEvidence.bodyRead,false);
+    assert.equal(JSON.stringify(r).includes(credentials.secretAccessKey),false);
+    assert.equal(s.requests.length,1);assert.equal(s.counters().bodyReads,0);
+  }
+});
+
+test('legacy HEAD: prospective context contract needs independent real-evidence admission, never just 404 or pins',async t=>{
+  const absenceContext={bucketReceiptSha256:'9'.repeat(64),lockReceiptSha256:'a'.repeat(64),
+    continuityReceiptSha256:'b'.repeat(64),credentialScopeEvidenceSha256:scope.credentialScopeEvidenceSha256,
+    bucketObservedUtc:binding.notBeforeUtc,continuityConfirmedUtc:binding.notBeforeUtc,
+    protectedUntilUtc:'2026-11-04T12:00:00.000Z'};
+  const options={binding:{...binding,absenceSemantics:'VERIFIED_BUCKET_CONTEXT_V2'},
+    scope:{...scope,absenceSemantics:'VERIFIED_BUCKET_CONTEXT_V2',absenceContext},
+    verifyAbsenceContext:intent=>intent.absenceContext===undefined?false:
+      intent.key===keys[0]&&intent.absenceContext.bucketReceiptSha256==='9'.repeat(64)};
+  const s=setup(t,[{status:404}],options),r=await s.verifier.head({key:keys[0]});
+  assert.equal(r.state,'NOT_PRESENT_AT_OBSERVATION');assert.equal(r.productionAuthority,false);
+  assert.equal(r.source.absenceSemantics,'VERIFIED_BUCKET_CONTEXT_V2');assert.equal(r.response.errorCode,null);
+  for(const verifyAbsenceContext of [()=>false,()=>({verified:true}),()=>Promise.resolve(true),()=>{throw Error('PRIVATE');}]){
+    const denied=setup(t,[],{...options,verifyAbsenceContext});
+    assert.equal((await denied.verifier.head({key:keys[0]})).state,'UNKNOWN');assert.equal(denied.requests.length,0);
+  }
+  for(const code of ['NoSuchBucket','AccessDenied']){
+    const rejected=setup(t,[{status:404,headers:{'x-amz-error-code':code}}],options);
+    assert.equal((await rejected.verifier.head({key:keys[0]})).state,'UNKNOWN');
+  }
+  assert.throws(()=>setup(t,[],{...options,verifyAbsenceContext:undefined}),/ADMISSION_INVALID/);
+  assert.throws(()=>setup(t,[],{...options,scope:{...options.scope,
+    absenceContext:{...absenceContext,secretAccessKey:'MUST_NOT_CAPTURE'}}}),/ADMISSION_INVALID/);
+  const stale=setup(t,[],{...options,scope:{...options.scope,absenceContext:{...absenceContext,
+    bucketObservedUtc:'2026-10-30T08:59:59.000Z'}}});
+  assert.equal((await stale.verifier.head({key:keys[0]})).state,'UNKNOWN');assert.equal(stale.requests.length,0);
+});
+
 test('legacy HEAD: malformed metadata or missing provider identity cannot prove EXISTS',async t=>{
   for(const headers of [{'x-amz-request-id':undefined,'cf-ray':undefined},{'content-length':undefined},
     {'content-length':'9007199254740992'},{'content-type':undefined},{etag:undefined},{etag:'invalid'},

@@ -17,13 +17,15 @@ const fail=()=>{throw Error('LEGACY_HEAD_ADMISSION_INVALID');};
 
 // Pins and supplier/owner records are verified by the external durable caller.
 // This helper neither loads a manifest/credential nor creates execution authority.
-export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDispatch,requestHandler,now=Date.now,timeoutMs=10000}={}) {
+export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDispatch,verifyAbsenceContext,
+  requestHandler,now=Date.now,timeoutMs=10000}={}) {
   let b,s,secret;
   try {
     b=structuredClone(binding);s=structuredClone(scope);
     const start=utc(b?.notBeforeUtc),end=utc(b?.deadlineUtc),issued=utc(s?.issuedUtc),expires=utc(s?.expiresUtc);
     const instant=typeof now==='function'?now():NaN;
     const absentEvidence=s?.notFoundHeaderSemantics!==undefined||s?.notFoundHeaderEvidenceSha256!==undefined;
+    const context=b?.absenceSemantics!==undefined||s?.absenceSemantics!==undefined||s?.absenceContext!==undefined;
     if(!fixed(b)||!fixed(s)||!pins.every(k=>hashPin(b[k])&&s[k]===b[k])
       ||!Array.isArray(b.keys)||b.keys.length!==2||!b.keys.every(legacyKey)||new Set(b.keys).size!==2
       ||b.keys.some((a,i)=>b.keys.some((other,j)=>i!==j&&a.startsWith(other)))
@@ -33,6 +35,15 @@ export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDisp
       ||!['supplierProvenanceSha256','bucketProvenanceSha256','credentialScopeEvidenceSha256'].every(k=>hashPin(s[k]))
       ||!Number.isFinite(issued)||!Number.isFinite(expires)||issued>start||expires<end||expires<=issued||expires-issued>86400000
       ||absentEvidence&&(s.notFoundHeaderSemantics!=='RELIABLE_NOSUCHKEY_HEADER_V1'||!hashPin(s.notFoundHeaderEvidenceSha256))
+      ||context&&(b.absenceSemantics!=='VERIFIED_BUCKET_CONTEXT_V2'||s.absenceSemantics!==b.absenceSemantics
+        ||absentEvidence||typeof verifyAbsenceContext!=='function'
+        ||!['bucketReceiptSha256','lockReceiptSha256','continuityReceiptSha256'].every(k=>hashPin(s.absenceContext?.[k]))
+        ||Object.keys(s.absenceContext).sort().join(',')!=='bucketObservedUtc,bucketReceiptSha256,continuityConfirmedUtc,continuityReceiptSha256,credentialScopeEvidenceSha256,lockReceiptSha256,protectedUntilUtc'
+        ||s.absenceContext.credentialScopeEvidenceSha256!==s.credentialScopeEvidenceSha256
+        ||!Number.isFinite(utc(s.absenceContext.bucketObservedUtc))
+        ||!Number.isFinite(utc(s.absenceContext.continuityConfirmedUtc))
+        ||!Number.isFinite(utc(s.absenceContext.protectedUntilUtc))
+        ||end>utc(s.absenceContext.protectedUntilUtc))
       ||typeof beforeDispatch!=='function'||!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>10000
       ||requestHandler!==undefined&&typeof requestHandler?.handle!=='function')fail();
     secret=structuredClone(credentials);
@@ -50,7 +61,8 @@ export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDisp
   const provenance=Object.freeze({...Object.fromEntries(pins.map(k=>[k,b[k]])),
     supplierProvenanceSha256:s.supplierProvenanceSha256,bucketProvenanceSha256:s.bucketProvenanceSha256,
     credentialScopeEvidenceSha256:s.credentialScopeEvidenceSha256,credentialIssuedUtc:s.issuedUtc,credentialExpiresUtc:s.expiresUtc,
-    notFoundHeaderSemantics:s.notFoundHeaderSemantics??null,notFoundHeaderEvidenceSha256:s.notFoundHeaderEvidenceSha256??null});
+    notFoundHeaderSemantics:s.notFoundHeaderSemantics??null,notFoundHeaderEvidenceSha256:s.notFoundHeaderEvidenceSha256??null,
+    absenceSemantics:s.absenceSemantics??null,absenceContext:s.absenceContext?Object.freeze({...s.absenceContext}):null});
   const used=new Set(),counts={attempts:0,admissions:0,sdkCalls:0,transportCalls:0};
   let stopped=false,closed=false,busy=false,active=null;
   const inWindow=instant=>Number.isFinite(instant)&&instant>=utc(b.notBeforeUtc)
@@ -63,6 +75,7 @@ export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDisp
       ||Object.entries(request.query??{}).some(([k,v])=>k!=='x-id'||v!=='HeadObject')
       ||request.body!==undefined||!/^AWS4-HMAC-SHA256 /.test(request.headers.authorization??''))
       throw Error('LEGACY_HEAD_TRANSPORT_UNBOUND');
+    a.requestBound=true;
     counts.transportCalls++;
     const {response}=await forward(request,options);
     // Discard even error bodies before the SDK can deserialize them.
@@ -87,7 +100,8 @@ export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDisp
   const unknown=(reason,source,response)=>({state:'UNKNOWN',reason,stopped:true,mode,productionAuthority:false,
     providerCancellationProven:false,...source&&{source},...response&&{response}});
   const safeResponse=r=>r?{status:r.status,providerRequestId:r.providerRequestId,ray:r.ray,
-    sizeBytes:r.sizeBytes,mimeType:r.mimeType,etag:r.etag,storageClass:r.storageClass}:undefined;
+    sizeBytes:r.sizeBytes,mimeType:r.mimeType,etag:r.etag,storageClass:r.storageClass,
+    redirected:r.redirected,errorCode:r.errorCode}:undefined;
   return Object.freeze({
     get counts(){return Object.freeze({...counts});},
     async head(input={}) {
@@ -106,11 +120,20 @@ export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDisp
           permission:'object-read-only',singleBucket:true,ownerExplicitUseRevision:true});
         source={...provenance,account,bucket,jurisdiction:'default',purpose,method:'HEAD',key,
           admissionStartedUtc:new Date(start).toISOString()};
-        observation={key,calls:0,response:null,controller,wallDeadline:wallStart+duration};active=observation;
+        observation={key,calls:0,response:null,requestBound:false,controller,wallDeadline:wallStart+duration};active=observation;
         const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>{
           timedOut=true;stopped=true;controller.abort();reject(Error('LEGACY_HEAD_TIMEOUT'));
         },duration);});
         counts.admissions++;
+        if(s.absenceSemantics==='VERIFIED_BUCKET_CONTEXT_V2') {
+          const c=s.absenceContext,time=now();
+          // Pins alone are not truth. The reviewed durable host must verify the
+          // real bucket200, this signing credential's scope and exact active C
+          // lock coverage plus no intervening changes, before any HEAD dispatch.
+          if(time<utc(c.bucketObservedUtc)||time-utc(c.bucketObservedUtc)>3600000
+            ||time<utc(c.continuityConfirmedUtc)||time-utc(c.continuityConfirmedUtc)>600000
+            ||verifyAbsenceContext(Object.freeze({...intent,absenceContext:provenance.absenceContext}))!==true)throw Error();
+        }
         if(await Promise.race([Promise.resolve().then(()=>beforeDispatch(intent)),timeout])!==true)throw Error();
         const dispatch=now();
         if(stopped||closed||controller.signal.aborted||!inWindow(dispatch)||dispatch<start
@@ -123,6 +146,12 @@ export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDisp
           .catch(error=>{sdkFailed=true;sdkStatus=error?.$metadata?.httpStatusCode;}),timeout]);
         const end=now(),r=observation.response;
         source.completedUtc=new Date(end).toISOString();
+        source.transportEvidence={requestBound:observation.requestBound,https:true,
+          tlsCertificateVerification:requestHandler?'OFFLINE_FIXTURE':'REQUIRED_BY_NATIVE_AGENT',
+          endpoint:host,bodyRead:false,transportCalls:observation.calls,
+          sdkStatus:Number.isInteger(sdkStatus)?sdkStatus:null,sdkFailed,
+          responseWithinDeadline:inWindow(end)&&end>=dispatch&&end-start<=duration
+            &&performance.now()<observation.wallDeadline};
         if(stopped||closed||!inWindow(end)||end<dispatch||end-start>duration||performance.now()>=observation.wallDeadline
           ||observation.calls!==1||!r||r.redirected||!r.providerRequestId&&!r.ray)throw Error();
         let state;
@@ -132,13 +161,21 @@ export function createLegacyR2HeadVerifier({binding,scope,credentials,beforeDisp
         // actual header reliability evidence; fixture declarations cannot supply it.
         else if(r.status===404&&sdkFailed&&sdkStatus===404&&r.errorCode==='NoSuchKey'
           &&s.notFoundHeaderSemantics==='RELIABLE_NOSUCHKEY_HEADER_V1'&&hashPin(s.notFoundHeaderEvidenceSha256))state='NOT_FOUND';
+        else if(r.status===404&&sdkFailed&&sdkStatus===404&&[null,'NoSuchKey'].includes(r.errorCode)
+          &&s.absenceSemantics==='VERIFIED_BUCKET_CONTEXT_V2'
+          &&end<utc(s.absenceContext.protectedUntilUtc)
+          &&end-utc(s.absenceContext.bucketObservedUtc)<=3600000
+          &&end-utc(s.absenceContext.continuityConfirmedUtc)<=600000)state='NOT_PRESENT_AT_OBSERVATION';
         else throw Error();
         return {state,source,response:safeResponse(r),mode,productionAuthority:false,
-          notFoundClassification:state==='NOT_FOUND'?'EXPLICIT_NOSUCHKEY_HEADER_WITH_CALLER_VERIFIED_PROVENANCE':null};
+          notFoundClassification:state==='NOT_FOUND'?'EXPLICIT_NOSUCHKEY_HEADER_WITH_CALLER_VERIFIED_PROVENANCE'
+            :state==='NOT_PRESENT_AT_OBSERVATION'?'CALLER_VERIFIED_BUCKET_PERMISSION_LOCK_CONTINUITY_AND_COMPLETE_404':null};
       }catch{
         stopped=true;
         const end=now();if(source&&Number.isFinite(end))source.completedUtc=new Date(end).toISOString();
-        return unknown(timedOut?'TIMEOUT':'UNPROVEN',source,safeResponse(observation?.response));
+        const reason=timedOut?'TIMEOUT':observation?.response?.status===404
+          ?'HEAD_404_ABSENCE_NOT_PROVEN_UNDER_CURRENT_CONTRACT':'UNPROVEN';
+        return unknown(reason,source,safeResponse(observation?.response));
       }finally{clearTimeout(timer);controller?.abort();active=null;busy=false;}
     },
     close(){closed=true;stopped=true;active?.controller.abort();client.destroy();agent?.destroy();
