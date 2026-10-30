@@ -170,3 +170,74 @@ test('guard: external binding/body mutation and async response approval do not w
   const g = fixture(t, {validateResponse: async () => true});
   await assert.rejects(g.guard.dispatch('BEFORE_GET'));
 });
+
+const lockBase='https://api.cloudflare.com/client/v4/accounts/dcb374166b39234a499985145c075f50/r2/buckets/openglasshub-media';
+const lockRemaining=[{phase:'LOCK_PUT',method:'PUT',target:lockBase+'/lock',body:'{"rules":[]}'},
+  {phase:'LOCK_AFTER',method:'GET',target:lockBase+'/lock'},
+  {phase:'LIFECYCLE_AFTER',method:'GET',target:lockBase+'/lifecycle'}];
+const lockBinding={...binding,lockTimeoutAmendmentSha256:'c'.repeat(64)};
+
+test('guard: explicit lock-only amendment permits13.534s/10.857s responses within30s',async t=>{
+  let time=Date.parse('2026-10-30T00:00:01.000Z');
+  const f=fixture(t,{binding:lockBinding,operations:lockRemaining,timeoutMs:30000,now:()=>time,
+    transport:async op=>{time+=op.phase==='LOCK_PUT'?13534:10857;return {status:200,complete:true};}});
+  for(const op of lockRemaining)await f.guard.dispatch(op.phase);
+  assert.equal(f.guard.status().completed,3);assert.equal(f.guard.status().exhausted,true);
+  const file=fs.readdirSync(f.directory).find(n=>n.endsWith('.LOCK_PUT.used.json'));
+  const receipt=JSON.parse(fs.readFileSync(path.join(f.directory,file)));
+  assert.equal(receipt.lockTimeoutAmendmentSha256,lockBinding.lockTimeoutAmendmentSha256);
+  assert.equal(receipt.requestTimeoutMs,30000);
+});
+
+test('guard: thirty-second policy cannot spread to other endpoints, accounts, methods or unpinned callers',t=>{
+  const invalid=[{binding}, {binding:{...lockBinding,lockTimeoutAmendmentSha256:'0'.repeat(64)}},
+    ...[10000,10001,29999,30001].map(timeoutMs=>({timeoutMs})),
+    {operations:[{...lockRemaining[0],target:lockBase+'/cors'}]},
+    {operations:[{...lockRemaining[0],target:lockBase.replace('openglasshub-media','other')+'/lock'}]},
+    {operations:[{...lockRemaining[0],target:lockBase.replace('dcb374166b39234a499985145c075f50','unapproved')+'/lock'}]},
+    {operations:[{...lockRemaining[0],method:'DELETE'}]},
+    {operations:[{...lockRemaining[0],phase:'UNBOUND_PHASE'}]},
+    {operations:[lockRemaining[2],lockRemaining[0]]}];
+  for(const patch of invalid)assert.throws(()=>fixture(t,{binding:lockBinding,operations:lockRemaining,
+    timeoutMs:30000,...patch}),/PRODUCTION_DISPATCH_/);
+});
+
+test('guard: unamended callers retain ten-second maximum and reject13.534s completion',async t=>{
+  let time=Date.parse('2026-10-30T00:00:01.000Z');
+  const f=fixture(t,{timeoutMs:10000,now:()=>time,transport:async()=>{time+=13534;return {status:200,complete:true};}});
+  await assert.rejects(f.guard.dispatch('BEFORE_GET'));assert.equal(f.guard.status().completed,0);
+  assert.throws(()=>fixture(t,{timeoutMs:30000}),/BINDING_INVALID/);
+});
+
+test('guard: thirty-second cutoff still stops late results and forbids retry/reconstruction',async t=>{
+  let time=Date.parse('2026-10-30T00:00:01.000Z'),calls=0;
+  const f=fixture(t,{binding:lockBinding,operations:lockRemaining,timeoutMs:30000,now:()=>time,
+    transport:async()=>{calls++;time+=30000;return {status:200,complete:true};}});
+  await assert.rejects(f.guard.dispatch('LOCK_PUT'));await assert.rejects(f.guard.dispatch('LOCK_AFTER'));
+  assert.equal(calls,1);assert.equal(f.guard.status().completed,0);
+  assert.throws(()=>createProductionDispatchGuard(f.options));
+});
+
+test('guard: lock PUT requires enough original-window time for all remaining calls and margin',async t=>{
+  const time=Date.parse(binding.deadlineUtc)-119999;let calls=0;
+  const f=fixture(t,{binding:lockBinding,operations:lockRemaining,timeoutMs:30000,now:()=>time,
+    transport:async()=>{calls++;return {status:200,complete:true};}});
+  await assert.rejects(f.guard.dispatch('LOCK_PUT'));assert.equal(calls,0);
+  assert.equal(fs.readdirSync(f.directory).some(n=>n.endsWith('.used.json')),false);
+});
+
+test('guard: amended PUT cannot omit either independent readback or shrink its reserve',t=>{
+  for(const incomplete of [[lockRemaining[0]],[lockRemaining[0],lockRemaining[1]],
+    [lockRemaining[0],lockRemaining[2]]]){
+    assert.throws(()=>fixture(t,{binding:lockBinding,operations:incomplete,timeoutMs:30000,
+      now:()=>Date.parse(binding.deadlineUtc)-60000}),/PRODUCTION_DISPATCH_/);
+  }
+});
+
+test('guard: amended reads cannot run or acknowledge past the unchanged overall deadline',async t=>{
+  let time=Date.parse(binding.deadlineUtc)-20000,calls=0;
+  const f=fixture(t,{binding:lockBinding,operations:lockRemaining.slice(2),timeoutMs:30000,now:()=>time,
+    transport:async()=>{calls++;time=Date.parse(binding.deadlineUtc);return {status:200,complete:true};}});
+  await assert.rejects(f.guard.dispatch('LIFECYCLE_AFTER'));assert.equal(calls,1);
+  assert.equal(f.guard.status().completed,0);
+});
