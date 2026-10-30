@@ -15,18 +15,24 @@ export function createProductionDispatchGuard({directory, binding, operations, a
   validateResponse, now = Date.now, timeoutMs = 10000}) {
   const b = structuredClone(binding), ops = structuredClone(operations);
   const lockTimeout = b?.lockTimeoutAmendmentSha256 !== undefined;
+  const contextTimeout = b?.contextReadTimeoutAmendmentSha256 !== undefined;
   const lockBase = 'https://api.cloudflare.com/client/v4/accounts/dcb374166b39234a499985145c075f50/r2/buckets/openglasshub-media';
   const lockPhases = ['LOCK_BEFORE', 'LIFECYCLE_BEFORE', 'LOCK_PUT', 'LOCK_AFTER', 'LIFECYCLE_AFTER'];
   if (!digest(b?.authorizationSha256) || !digest(b.guardSourceSha256)
-    || Object.keys(b).some(k => !['authorizationSha256', 'guardSourceSha256', 'sourceCommit', 'nonce', 'notBeforeUtc', 'deadlineUtc', 'lockTimeoutAmendmentSha256'].includes(k))
+    || Object.keys(b).some(k => !['authorizationSha256', 'guardSourceSha256', 'sourceCommit', 'nonce', 'notBeforeUtc', 'deadlineUtc', 'lockTimeoutAmendmentSha256', 'contextReadTimeoutAmendmentSha256'].includes(k))
     || b.guardSourceSha256 !== hash(fs.readFileSync(fileURLToPath(import.meta.url)))
     || !/^[a-f0-9]{40}$/.test(b.sourceCommit) || !/^[a-zA-Z0-9_-]{16,128}$/.test(b.nonce)
     || !utc(b.notBeforeUtc) || !utc(b.deadlineUtc) || Date.parse(b.notBeforeUtc) >= Date.parse(b.deadlineUtc)
     || !Array.isArray(ops) || !ops.length || ops.length > 64
     || ![admit, transport, validateResponse, now].every(f => typeof f === 'function')
     || !Number.isInteger(timeoutMs) || timeoutMs < 1
+    || (lockTimeout && contextTimeout)
+    || (contextTimeout && (timeoutMs !== 30000 || !digest(b.contextReadTimeoutAmendmentSha256)
+      || b.contextReadTimeoutAmendmentSha256 !== b.authorizationSha256
+      || b.contextReadTimeoutAmendmentSha256 === '0'.repeat(64)
+      || ops.length > 2 || Date.parse(b.deadlineUtc) - Date.parse(b.notBeforeUtc) > 3600000))
     || (lockTimeout ? timeoutMs !== 30000 || !digest(b.lockTimeoutAmendmentSha256)
-      || b.lockTimeoutAmendmentSha256 === '0'.repeat(64) : timeoutMs > 10000)
+      || b.lockTimeoutAmendmentSha256 === '0'.repeat(64) : !contextTimeout && timeoutMs > 10000)
     || !path.isAbsolute(directory) || !fs.lstatSync(directory).isDirectory())
     throw Error('PRODUCTION_DISPATCH_BINDING_INVALID');
   const phases = new Set(); let lastLockPhase = -1;
@@ -52,6 +58,12 @@ export function createProductionDispatchGuard({directory, binding, operations, a
         throw Error('PRODUCTION_DISPATCH_LOCK_TIMEOUT_SCOPE_INVALID');
       lastLockPhase = index;
     }
+    // Separate signed opt-in for only the two source-adoption context reads.
+    // It grants neither another read nor a longer timeout to any D business call.
+    if (contextTimeout && (op.method !== 'GET'
+      || !['CONTEXT_LOCK', 'CONTEXT_BUCKET'].includes(op.phase)
+      || op.target !== (op.phase === 'CONTEXT_LOCK' ? `${lockBase}/lock` : lockBase)))
+      throw Error('PRODUCTION_DISPATCH_CONTEXT_TIMEOUT_SCOPE_INVALID');
     phases.add(op.phase);
     Object.freeze(op);
   }
