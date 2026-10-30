@@ -6,7 +6,7 @@ param(
     [switch]$OfflineFixture
 )
 $ErrorActionPreference='Stop'
-$pipe=$null;$secrets=@();$pointers=@();$plain=@();$bytes=$null;$watchdog=$null
+$pipe=$null;$secrets=@();$pointers=@();$plain=@();$bytes=$null;$watchdog=$null;$ack=$null
 try {
     # Older hosts must not silently omit the same-user pipe protection.
     if(-not ([Enum]::GetNames([IO.Pipes.PipeOptions]) -contains 'CurrentUserOnly')){throw 'UNSUPPORTED_SECURE_PIPE_HOST'}
@@ -30,13 +30,21 @@ try {
     $sids=@([Security.Principal.WindowsIdentity]::GetCurrent().User.Value,'S-1-5-18')
     foreach($rule in (Get-Acl -LiteralPath $directory).Access){if($rule.AccessControlType -eq 'Allow' -and $rule.IdentityReference.Translate([Security.Principal.SecurityIdentifier]).Value -notin $sids){throw 'PRIVATE_ACL_REQUIRED'}}
     $prefix=if($OfflineFixture){'OGHR2HeadCredentials-Fixture-'}else{'OGHR2HeadCredentials-'}
-    $pipe=[IO.Pipes.NamedPipeServerStream]::new(($prefix+$Nonce),[IO.Pipes.PipeDirection]::Out,1,[IO.Pipes.PipeTransmissionMode]::Byte,
+    $pipe=[IO.Pipes.NamedPipeServerStream]::new(($prefix+$Nonce),[IO.Pipes.PipeDirection]::InOut,1,[IO.Pipes.PipeTransmissionMode]::Byte,
         ([IO.Pipes.PipeOptions]::Asynchronous -bor [IO.Pipes.PipeOptions]::CurrentUserOnly))
     $file=Join-Path $directory ('head-input.'+$Nonce+'.ready.safe.json')
     $ready=[Text.Encoding]::UTF8.GetBytes((@{schemaVersion=1;binding=$Binding;nonce=$Nonce;pid=$PID;status='LOCAL_CURRENT_USER_PIPE_READY';productionRequests=0}|ConvertTo-Json -Compress))
     $stream=[IO.File]::Open(($file+'.publishing'),[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
     try{$stream.Write($ready,0,$ready.Length);$stream.Flush($true)}finally{$stream.Dispose()}
     [IO.File]::Move(($file+'.publishing'),$file)
+    Write-Output 'LOCAL_WAITING_FOR_BOUND_NATIVE_RECEIVER_DO_NOT_CREATE_TOKEN'
+    $cancel=[Threading.CancellationTokenSource]::new([int][Math]::Max(1,[Math]::Min(120000,($end-[DateTimeOffset]::UtcNow).TotalMilliseconds)))
+    try{$pipe.WaitForConnectionAsync($cancel.Token).GetAwaiter().GetResult()}finally{$cancel.Dispose()}
+    $expected=[Text.Encoding]::ASCII.GetBytes(('OGH_HEAD_RECEIVER_V1 '+$Binding+' '+$Nonce+"`n"))
+    $ack=[byte[]]::new($expected.Length);$offset=0
+    while($offset -lt $ack.Length){$n=$pipe.Read($ack,$offset,$ack.Length-$offset);if($n -eq 0){throw 'RECEIVER_NOT_BOUND'};$offset+=$n}
+    if([DateTimeOffset]::UtcNow -ge $end -or [Convert]::ToBase64String($ack) -cne [Convert]::ToBase64String($expected)){throw 'RECEIVER_NOT_BOUND'}
+    Write-Output 'LOCAL_BOUND_NATIVE_RECEIVER_CONNECTED_NO_PRODUCTION_REQUEST'
     if($OfflineFixture){$plain=@(('a'*32),('b'*64),'FICTITIOUS_SESSION_TOKEN_ONLY')}
     else {
         $Host.UI.RawUI.WindowTitle='OpenGlass Hub - R2 HEAD Credentials (LOCAL PRIVATE ONLY)'
@@ -51,8 +59,6 @@ try {
     }
     if($plain[0] -cnotmatch '^[a-zA-Z0-9]{16,128}$' -or $plain[1] -cnotmatch '^[a-zA-Z0-9/+=]{32,256}$' -or
         $plain[2].Length -gt 8192 -or $plain[2] -match '[^\x21-\x7e]' -or [DateTimeOffset]::UtcNow -ge $end){throw 'INVALID_CREDENTIAL_INPUT'}
-    $cancel=[Threading.CancellationTokenSource]::new(120000)
-    try{$pipe.WaitForConnectionAsync($cancel.Token).GetAwaiter().GetResult()}finally{$cancel.Dispose()}
     if([DateTimeOffset]::UtcNow -ge $end){throw 'WINDOW_EXPIRED'}
     $frame=@{schemaVersion=1;binding=$Binding;nonce=$Nonce;accessKeyId=$plain[0];secretAccessKey=$plain[1]}
     if($plain[2].Length){$frame.sessionToken=$plain[2]}
@@ -67,6 +73,7 @@ try {
 }
 finally {
     if($bytes){[Array]::Clear($bytes,0,$bytes.Length)}
+    if($ack){[Array]::Clear($ack,0,$ack.Length)}
     foreach($ptr in $pointers){if($ptr -ne [IntPtr]::Zero){[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)}}
     foreach($secret in $secrets){$secret.Dispose()}
     if($pipe){$pipe.Dispose()};if($watchdog){$watchdog.Dispose()}

@@ -37,6 +37,8 @@ export function receiveDHeadCredentials({bindingSha256,nonce,deadlineUtc,offline
       error?reject(Error('D_HEAD_PRIVATE_INPUT_INVALID')):resolve(value);
     };
     const timer=setTimeout(()=>finish(true),Math.min(120000,utc(deadlineUtc)-Date.now()));
+    // The capture host must see a bound native receiver before prompting for secrets.
+    socket.on('connect',()=>socket.write(`OGH_HEAD_RECEIVER_V1 ${bindingSha256} ${nonce}\n`));
     socket.on('error',()=>finish(true));
     socket.on('data',chunk=>{chunks.push(chunk);length+=chunk.length;if(length>16384)finish(true);});
     socket.on('end',()=>{

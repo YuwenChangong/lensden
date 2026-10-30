@@ -37,14 +37,37 @@ are `{path:<absolute>,sha256:<actual bytes>}`. Required references:
   The host cannot create this approval on the owner's behalf.
 - `parentOwnerApproval`, `inheritedFiles`, `independentReview`, `targets`,
   `runtimeAdmission`, `moderatorEvidence`, `bucketEvidence`, `corsEvidence`,
-  `videoTemplate`, `supplierEvidence`. The loader validates original target and
+  `videoTemplate`. The loader validates original target and
   reader hashes. The independent review binds the adoption hash and non-author
   reviewers; no self-review or unavailable-reviewer result counts as PASS.
 - `credentialInput:{nonce,expectedPid,deadlineUtc,readyRecord}`. The existing
   reviewed PowerShell7 CurrentUserOnly pipe is the sole S3 secret channel.
+  Start the native `--execute-production` process immediately after the capture
+  publishes READY and the private plan binds that exact record/PID. Do NOT wait
+  for the owner's input-complete message. Capture waits for a nonce/adoption-bound
+  native receiver ACK before showing any S3 input prompt. Its original absolute
+  input deadline (at most 120 seconds) is unchanged; no connection retry occurs.
+- `supplierConfirmation:{path,deadlineUtc}` admits one later **non-secret**
+  confirmation, at most ten minutes from loader invocation, no later extension.
+  The exact path is `supplier-confirmation.<inputNonce>.safe.json` inside the
+  private execution directory. It must not exist before input transfer. After
+  transfer the native host emits `OWNER_SUPPLIER_CONFIRMATION_REQUIRED` and keeps
+  credentials only in its own memory while waiting. This starts no D window or
+  provider request. The trusted owner-result importer must publish actual owner
+  confirmation, never a prediction or Codex signature: `schemaVersion:1`, exact
+  `runId`, `nonce`, `sourceAdoptionSha256`, `tokenLabel`, `ownerConfirmed:true`,
+  `provenance:OWNER_OFFICIAL_DASHBOARD`, and actual `confirmedUtc` after input.
+  Its `supplierEvidence:{path,sha256}` binds the actual immutable bytes at
+  `supplier-evidence.<inputNonce>.safe.json` in the same private directory.
   Supplier evidence records the exact token label/account/bucket/permission,
   24-hour TTL, create-after-visible-prompt assertion, and conservatively proven
-  `issuedUtc`/`expiresUtc`, without inventing official timestamps.
+  `issuedUtc`/`expiresUtc`, without inventing official timestamps. The native
+  runtime uses this actual evidence hash for HEAD provenance, not an unfilled
+  pre-creation hash. Missing/malformed/mismatched/expired confirmation stops and
+  clears held credential references, retaining the exact-token revocation duty.
+  Source, owner readiness, Standard context and actual local carriers are checked
+  again before starting D's unchanged 180/135-minute window. These method/source
+  changes grant no new Token or request allowance and require source adoption.
 
 `runtimeAdmission` is an evidence-backed gate record, not an approval. Its kind
 is `D_RUNTIME_ADMISSION_NOT_AUTHORIZATION`; it pins the adoption and run, actual

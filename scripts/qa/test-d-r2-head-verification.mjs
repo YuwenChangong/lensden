@@ -246,7 +246,7 @@ test('D HEAD: a stalled admission callback times out without starting transport'
 
 test('D HEAD: local input rejects unbound fixture frames without leaking their values',async()=>{
   const nonce=randomUUID(),deadlineUtc=new Date(Date.now()+10000).toISOString();
-  const server=createServer(socket=>socket.end(JSON.stringify({schemaVersion:1,binding:'9'.repeat(64),nonce,...secrets})));
+  const server=createServer(socket=>socket.once('data',()=>socket.end(JSON.stringify({schemaVersion:1,binding:'9'.repeat(64),nonce,...secrets}))));
   await new Promise(resolve=>server.listen('\\\\.\\pipe\\OGHR2HeadCredentials-Fixture-'+nonce,resolve));
   try {
     await assert.rejects(api.receiveDHeadCredentials({bindingSha256:'0'.repeat(64),nonce,deadlineUtc,offlineFixture:true}),
@@ -304,8 +304,15 @@ test('D HEAD: actual hidden input script transfers fictitious credentials only i
       if(child.exitCode!==null)break;await new Promise(r=>setTimeout(r,50));
     }
     assert.equal(ready?.status,'LOCAL_CURRENT_USER_PIPE_READY');assert.equal(ready.pid,child.pid);
+    // A published input pipe is not a receiver: never prompt/transfer until ACK.
+    await new Promise(resolve=>setTimeout(resolve,100));
+    assert.match(stdout,/LOCAL_WAITING_FOR_BOUND_NATIVE_RECEIVER_DO_NOT_CREATE_TOKEN/);
+    assert.equal(stdout.includes('LOCAL_BOUND_NATIVE_RECEIVER_CONNECTED'),false);
+    assert.equal(stdout.includes('LOCAL_S3_CREDENTIAL_TRANSFER_COMPLETE'),false);
+    assert.equal(child.exitCode,null);
     const credentials=await api.receiveDHeadCredentials({bindingSha256:'0'.repeat(64),nonce,deadlineUtc,offlineFixture:true});
     assert.deepEqual(credentials,secrets);assert.equal(await completed,0);
+    assert.match(stdout,/LOCAL_BOUND_NATIVE_RECEIVER_CONNECTED_NO_PRODUCTION_REQUEST/);
     const stored=await readdir(directory);assert.deepEqual(stored,[path.basename(readyFile)]);
     const publicBytes=await readFile(readyFile,'utf8');
     for(const value of Object.values(secrets))assert.equal((publicBytes+stdout+stderr).includes(value),false);

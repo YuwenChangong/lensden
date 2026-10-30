@@ -36,6 +36,64 @@ function privateDirectory(directory) {
   const out=execFileSync(pwsh,['-NoProfile','-NonInteractive','-CommandWithArgs',script,directory],{encoding:'utf8',windowsHide:true,timeout:10000});
   if(out.trim()!=='PRIVATE_CURRENT_USER_DIRECTORY_VERIFIED')throw Error('D_PRIVATE_ACL_UNPROVEN');
 }
+
+function supplierHandoff({input,supplierConfirmation,directory}) {
+  const c=supplierConfirmation;
+  if(!uuid(input?.nonce)||!timestamp(input.deadlineUtc)||!path.isAbsolute(directory)
+    ||!c||!timestamp(c.deadlineUtc)||Date.parse(c.deadlineUtc)<=Date.now()
+    ||Date.parse(c.deadlineUtc)-Date.now()>600000||Date.parse(c.deadlineUtc)<Date.parse(input.deadlineUtc)
+    ||c.path!==path.join(directory,'supplier-confirmation.'+input.nonce+'.safe.json'))
+    throw Error('D_SUPPLIER_HANDOFF_NOT_ADMITTED');
+  return c;
+}
+
+export function assertDSupplierDeadline(supplier,deadlineUtc) {
+  if(!timestamp(supplier?.expiresUtc)||!timestamp(deadlineUtc)||Date.parse(supplier.expiresUtc)<Date.parse(deadlineUtc))
+    throw Error('D_SUPPLIER_LIFETIME_UNPROVEN');
+}
+
+// Credentials stay in this native process while the trusted owner-result importer
+// publishes a non-secret, hash-bound confirmation. No D window exists yet.
+export async function receiveDConfirmedHeadCredentials({input,supplierConfirmation,directory,runId,
+  bindingSha256,tokenLabel,offlineFixture=false,onReceived=()=>{}}) {
+  const c=supplierHandoff({input,supplierConfirmation,directory});
+  if(!uuid(runId)||!digest(bindingSha256)||typeof tokenLabel!=='string'||!tokenLabel.length
+    ||fs.existsSync(c.path))throw Error('D_SUPPLIER_HANDOFF_NOT_ADMITTED');
+  let credentials,returned=false;
+  try {
+    credentials=await receiveDHeadCredentials({bindingSha256,nonce:input.nonce,deadlineUtc:input.deadlineUtc,offlineFixture});
+    if(credentials.sessionToken!==undefined)throw Error('D_ORDINARY_TOKEN_THIRD_FIELD_FORBIDDEN');
+    const receivedUtc=new Date().toISOString();
+    onReceived({event:'OWNER_SUPPLIER_CONFIRMATION_REQUIRED',runId,nonce:input.nonce,
+      confirmationPath:c.path,deadlineUtc:c.deadlineUtc,receivedUtc,productionRequests:0});
+    while(Date.now()<Date.parse(c.deadlineUtc)) {
+      try {
+        const stat=fs.lstatSync(c.path);
+        if(!stat.isFile()||stat.isSymbolicLink()||stat.size>4096)throw Error('D_SUPPLIER_CONFIRMATION_INVALID');
+        const confirmation=JSON.parse(readBound({path:c.path,sha256:pin(c.path)},4096));
+        if(confirmation.schemaVersion!==1||confirmation.runId!==runId||confirmation.nonce!==input.nonce
+          ||confirmation.sourceAdoptionSha256!==bindingSha256||confirmation.tokenLabel!==tokenLabel
+          ||confirmation.provenance!=='OWNER_OFFICIAL_DASHBOARD'||confirmation.ownerConfirmed!==true
+          ||!timestamp(confirmation.confirmedUtc)||Date.parse(confirmation.confirmedUtc)<Date.parse(receivedUtc)
+          ||Date.parse(confirmation.confirmedUtc)>Date.now()||Date.parse(confirmation.confirmedUtc)>=Date.parse(c.deadlineUtc)
+          ||confirmation.supplierEvidence?.path!==path.join(directory,'supplier-evidence.'+input.nonce+'.safe.json'))
+          throw Error('D_SUPPLIER_CONFIRMATION_INVALID');
+        const supplier=JSON.parse(readBound(confirmation.supplierEvidence,4096)),start=Date.now();
+        if(supplier.account!==account||supplier.bucket!==bucket||supplier.tokenLabel!==tokenLabel
+          ||supplier.permission!=='object-read-only'||supplier.ttlHours!==24||supplier.createdAfterVisiblePrompt!==true
+          ||!timestamp(supplier.issuedUtc)||!timestamp(supplier.expiresUtc)||Date.parse(supplier.issuedUtc)>start
+          ||Date.parse(supplier.expiresUtc)<start+10800000||Date.parse(supplier.expiresUtc)-Date.parse(supplier.issuedUtc)>86400000
+          ||start>=Date.parse(c.deadlineUtc))throw Error('D_SUPPLIER_LIFETIME_UNPROVEN');
+        returned=true;
+        return {credentials,supplier,supplierEvidence:confirmation.supplierEvidence};
+      }catch(error){if(error.code!=='ENOENT')throw error;}
+      await new Promise(resolve=>setTimeout(resolve,50));
+    }
+    throw Error('D_SUPPLIER_CONFIRMATION_EXPIRED');
+  }finally{
+    if(!returned)for(const key of Object.keys(credentials??{}))credentials[key]='';
+  }
+}
 export function validateDPlan(plan,{inspect=false,resume=false}={}) {
   if(plan?.schemaVersion!==1||plan.account!==account||plan.bucket!==bucket||plan.project!==project
     ||!uuid(plan.runId)||!digest(plan.connectionBindingSha256)||!path.isAbsolute(plan.directory)
@@ -195,12 +253,13 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     onReady:job=>process.stdout.write(JSON.stringify({event:'CODEX_MCP_TOOL_CALL_REQUIRED',requestId:job.requestId,requestPath:job.requestPath})+'\n')});
   if(!manual.ready().ready||!bridge.ready().ready)throw Error('D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND');
   if(inspect)return {status:'NONCREDENTIAL_CARRIERS_BOUND_RUNTIME_ASSERTIONS_REMAIN',productionAuthority:false};
+  if(!resume)supplierHandoff({input:plan.credentialInput,supplierConfirmation:plan.supplierConfirmation,directory:plan.directory});
   const claimDirectory=path.join(os.homedir(),'AppData/Local/OpenGlassHub/mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302/emergency-media-protection-v1/final-production-closure-v1');
   privateDirectory(claimDirectory);claimDExecution({claimDirectory,plan,resume});
   const revocationDuty={kind:'TOKEN_REVOCATION_DUTY_BEFORE_PRIVATE_INPUT',runId:plan.runId,tokenLabel:plan.tokenLabel,
     account,bucket,status:'REQUIRES_OWNER_OFFICIAL_REVOCATION_ON_STOP',notObjectCleanup:true};
   if(!resume)sealDRecord(path.join(plan.directory,'TOKEN_REVOCATION_DUTY.before-input.safe.json'),revocationDuty);
-  let credentials=null,supplier=null,binding;
+  let credentials=null,supplier=null,supplierEvidence=null,binding;
   try{
   if(resume){
     const startFile=path.join(plan.directory,'d-receipt-000001.json'),first=JSON.parse(fs.readFileSync(startFile,'utf8'));
@@ -216,15 +275,13 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     if($p.ExecutablePath -ine $args[1] -or $o.Sid -ne [Security.Principal.WindowsIdentity]::GetCurrent().User.Value){throw 'OWNER'};'READY_HOST_MATCH'`;
   if(execFileSync(pwsh,['-NoProfile','-NonInteractive','-CommandWithArgs',procCheck,String(input.expectedPid),pwsh],
     {encoding:'utf8',windowsHide:true,timeout:10000}).trim()!=='READY_HOST_MATCH')throw Error('D_PRIVATE_HOST_UNPROVEN');
-  credentials=await receiveDHeadCredentials({bindingSha256:plan.sourceAdoption.sha256,nonce:input.nonce,deadlineUtc:input.deadlineUtc});
-  if(credentials.sessionToken!==undefined){for(const k of Object.keys(credentials))credentials[k]='';credentials=null;throw Error('D_ORDINARY_TOKEN_THIRD_FIELD_FORBIDDEN');}
-  supplier=JSON.parse(readBound(plan.supplierEvidence));
+  ({credentials,supplier,supplierEvidence}=await receiveDConfirmedHeadCredentials({input,supplierConfirmation:plan.supplierConfirmation,
+    directory:plan.directory,runId:plan.runId,bindingSha256:plan.sourceAdoption.sha256,tokenLabel:plan.tokenLabel,
+    onReceived:event=>process.stdout.write(JSON.stringify(event)+'\n')}));
+  validateDPlan(plan);
+  if(!manual.ready().ready||!bridge.ready().ready)throw Error('D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND');
   const start=Date.now(),deadlineUtc=new Date(start+10800000).toISOString();
-  if(supplier.account!==account||supplier.bucket!==bucket||supplier.tokenLabel!==plan.tokenLabel||supplier.permission!=='object-read-only'||supplier.ttlHours!==24
-    ||!timestamp(supplier.issuedUtc)||!timestamp(supplier.expiresUtc)
-    ||supplier.createdAfterVisiblePrompt!==true||Date.parse(supplier.issuedUtc)>start||Date.parse(supplier.expiresUtc)<start+10800000
-    ||Date.parse(supplier.expiresUtc)-Date.parse(supplier.issuedUtc)>86400000){
-      for(const k of Object.keys(credentials))credentials[k]='';credentials=null;throw Error('D_SUPPLIER_LIFETIME_UNPROVEN');}
+  assertDSupplierDeadline(supplier,deadlineUtc);
   binding={authorizationSha256:plan.sourceAdoption.sha256,executionBindingSha256:plan.sourceAdoption.sha256,
     sourceCommit:checked.adoption.sourceCommit,runId:plan.runId,notBeforeUtc:new Date(start).toISOString(),deadlineUtc,
     businessStopUtc:new Date(start+8100000).toISOString(),connectionBindingSha256:plan.connectionBindingSha256,
@@ -276,7 +333,7 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     headVerifier({binding:b}) {
       if(!credentials||!supplier)throw Error('D_S3_INPUT_NOT_REPLAYED_DURING_RECOVERY');
       return createDHeadVerifier({binding:{...b,credentialLifetimePolicy:'D_24H_OWNER_EXCEPTION_V1',credentialLifetimeApprovalSha256:credentialException},
-        scope:{account,bucket,jurisdiction:'default',permission:'object-read-only',evidenceSha256:plan.supplierEvidence.sha256,
+        scope:{account,bucket,jurisdiction:'default',permission:'object-read-only',evidenceSha256:supplierEvidence.sha256,
           bucketProvenanceSha256:plan.bucketEvidence.sha256,configurationWindowBindingSha256:b.executionBindingSha256,
           issuedUtc:supplier.issuedUtc,expiresUtc:supplier.expiresUtc,credentialLifetimeApprovalSha256:credentialException},credentials,
         beforeDispatch:async i=>journal.reserve({id:'HEAD_'+i.phase+'_'+(i.key.startsWith('tmp/')?'SOURCE':'RETAINED'),cost:{HEAD:1},
