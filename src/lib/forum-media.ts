@@ -19,6 +19,7 @@ export interface PostMediaRow {
   sort_order?: number | null;
   is_cover?: boolean | null;
   created_at?: string | null;
+  unavailable_at?: string | null;
 }
 
 export interface ResolvedPostMedia extends PostMediaRow {
@@ -83,6 +84,7 @@ export async function resolveSignedPostMedia(
     : [...new Set(
         sortedRows
           .flatMap((item) => {
+            if (item.unavailable_at) return [];
             const values: string[] = [];
             if ((item.kind === "image" || item.kind === "video") && item.storage_path && !isR2Media(item)) {
               values.push(item.storage_path);
@@ -114,6 +116,7 @@ export async function resolveSignedPostMedia(
   };
 
   return Promise.all(sortedRows.map(async (item) => {
+    if (item.unavailable_at) return { ...item, displayUrl: "", previewUrl: "" };
     const isR2 = isR2Media(item);
     const fallbackExternalUrl =
       r2PublicBaseUrl && item.storage_path && isR2

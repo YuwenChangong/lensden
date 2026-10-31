@@ -101,6 +101,14 @@ try {
     await check(width, "CLOSE_BUTTON_RESTORES_FOCUS", async () => {
       assert.equal(await trigger.evaluate(el => document.activeElement === el), true);
     });
+    await page.goto(origin + "/post-media.html?unavailable=1", { waitUntil: "networkidle" });
+    await check(width, "UNAVAILABLE_REFERENCE_HAS_NO_BROKEN_PLAYER", async () => {
+      await page.getByRole("status").waitFor();
+      assert.equal(await page.getByRole("status").textContent(), "This media is currently unavailable. The post is preserved.");
+      assert.equal(await page.locator("video,img,.post-media-main__expand").count(), 0);
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    });
+    await page.screenshot({ path: path.join(out, `media-unavailable-${width}.png`), fullPage: true });
     await page.close();
   }
   await context.close();

@@ -94,7 +94,9 @@ export default function PostMediaGallery({ media, postTitle, localeContext = res
   return (
     <section className="post-media-gallery">
       <div className={`post-media-main${isPortrait ? " post-media-main--portrait" : " post-media-main--landscape"}`}>
-        {active.kind === "image" ? (
+        {active.unavailable_at ? (
+          <p role="status" className="forum-meta">{text.mediaUnavailable}</p>
+        ) : active.kind === "image" ? (
           <button type="button" className="post-media-main__trigger" onClick={openLightbox}>
             <img
               src={active.displayUrl}
@@ -136,7 +138,9 @@ export default function PostMediaGallery({ media, postTitle, localeContext = res
                 className={`post-media-thumb${isActive ? " post-media-thumb-active" : ""}`}
                 onClick={() => setActiveIndex(index)}
               >
-                {item.kind === "image" ? (
+                {item.unavailable_at ? (
+                  <span className="forum-meta">{text.mediaUnavailable}</span>
+                ) : item.kind === "image" ? (
                   <img
                     src={item.previewUrl || item.displayUrl}
                     alt={item.alt_text || postTitle}
@@ -179,7 +183,9 @@ export default function PostMediaGallery({ media, postTitle, localeContext = res
               </>
             ) : null}
             <div className="post-lightbox__content">
-              {active.kind === "image" ? (
+              {active.unavailable_at ? (
+                <p role="status" className="forum-meta">{text.mediaUnavailable}</p>
+              ) : active.kind === "image" ? (
                 <img src={active.displayUrl} alt={active.alt_text || postTitle} />
               ) : active.kind === "video" ? (
                 <video controls playsInline preload="metadata" src={active.displayUrl}>

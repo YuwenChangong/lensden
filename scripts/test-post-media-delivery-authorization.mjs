@@ -170,6 +170,7 @@ async function main() {
     assert.equal(temporary.effects.lastR2Url, `https://media.example/${tempPath}`);
 
     const deniedCases = [
+      ["unavailable video preserves its row without object access", mediaRow({ kind: "video", storage_path: tempPath, unavailable_at: "2026-10-31T09:42:53.357Z" }), {}],
       ["malformed media id", mediaRow(), { mediaId: "not-a-uuid" }],
       ["missing media row", null, {}],
       ["unpublished post", mediaRow({ posts: { ...mediaRow().posts, status: "pending" } }), {}],
@@ -199,6 +200,20 @@ async function main() {
     assert.equal(resolvedTemp, null, "the focused route test uses fakes only");
     const fakeClient = createClient(mediaRow(), []);
     assert.deepEqual(await resolvePublicPostMediaTarget(fakeClient, ids.media, "thumb"), { path: finalPath, delivery: "supabase" });
+    const { resolveSignedPostMedia } = await vite.ssrLoadModule("/src/lib/forum-media.ts");
+    let signingCalls = 0;
+    const signClient = { storage: { from() { signingCalls += 1; throw Error("UNEXPECTED_STORAGE_SIGNING"); } } };
+    const unavailable = mediaRow({ kind: "video", storage_path: tempPath, unavailable_at: "2026-10-31T09:42:53.357Z" });
+    for (const publicProxy of [false, true]) {
+      const resolved = await resolveSignedPostMedia(signClient, [unavailable], 3600, "https://media.example", { publicProxy });
+      assert.equal(resolved[0].displayUrl, "");
+      assert.equal(resolved[0].previewUrl, "");
+      assert.equal(resolved[0].storage_path, tempPath, "preserve the recoverable original reference");
+      assert.equal(resolved[0].unavailable_at, unavailable.unavailable_at);
+    }
+    assert.equal(signingCalls, 0);
+    const restored = await resolveSignedPostMedia(signClient, [{ ...unavailable, unavailable_at: null }], 3600, "https://media.example", { publicProxy: true });
+    assert.equal(restored[0].displayUrl, `/api/media/post/${ids.media}`);
   } finally {
     await vite.close();
   }

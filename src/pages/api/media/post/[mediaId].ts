@@ -29,6 +29,7 @@ type PublicPostMediaRow = {
   url?: string | null;
   storage_path?: string | null;
   thumbnail_url?: string | null;
+  unavailable_at?: string | null;
   posts?: {
     id?: string | null;
     status?: string | null;
@@ -77,7 +78,7 @@ export async function resolvePublicPostMediaTarget(
 
   const { data, error } = await supabase
     .from("post_media")
-    .select("id,post_id,user_id,kind,url,storage_path,thumbnail_url,posts:post_id(id,status,moderation_status,circle_id,circles:circle_id(id,slug,name,status))")
+    .select("id,post_id,user_id,kind,url,storage_path,thumbnail_url,unavailable_at,posts:post_id(id,status,moderation_status,circle_id,circles:circle_id(id,slug,name,status))")
     .eq("id", normalizedMediaId)
     .maybeSingle();
   const media = data as PublicPostMediaRow | null;
@@ -85,6 +86,7 @@ export async function resolvePublicPostMediaTarget(
   const circle = post && !Array.isArray(post.circles) ? post.circles : null;
 
   if (error || !media || media.id !== normalizedMediaId || !isMediaId(media.post_id) || !isMediaId(media.user_id)) return null;
+  if (media.unavailable_at) return null;
   if (!post || post.id !== media.post_id || !isMediaId(post.circle_id) || post.status !== "published" || post.moderation_status !== "published") return null;
   if (!circle || circle.id !== post.circle_id || circle.status?.toLowerCase() !== "active" || !isPublicVisibleCircle(circle)) return null;
   if (String(media.url ?? "").trim()) return null;
