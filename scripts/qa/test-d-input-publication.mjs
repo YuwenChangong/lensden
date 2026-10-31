@@ -198,6 +198,105 @@ test('input publication: actual PowerShell publisher emits no partial final and 
     assert.equal(JSON.parse(fs.readFileSync(file+'.failure.safe.json')).status,'STOPPED');
   });
 
+for(const stopBeforeConfirmation of [false,true])test(
+  `native local chain: actual child ${stopBeforeConfirmation?'STOP and reap':'ADMIT and exit'} with revocation duty`,
+  {skip:process.platform!=='win32',timeout:30000},async t=>{
+    const root=path.join(process.env.LOCALAPPDATA,'OpenGlassHub');
+    const f=fixture(t,{deadlineUtc:new Date(Date.now()+25000).toISOString()},root);
+    f.parameters.deadlineUtc=new Date(Date.now()+20000).toISOString();
+    const pwsh='C:/Users/1/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe';
+    const q=s=>"'"+s.replaceAll("'","''")+"'";
+    const env=Object.fromEntries(['SystemRoot','WINDIR','TEMP','TMP','PATH','LOCALAPPDATA','USERPROFILE']
+      .filter(k=>process.env[k]!==undefined).map(k=>[k,process.env[k]]));
+    execFileSync(pwsh,['-NoProfile','-NonInteractive','-Command',
+      `$a=[Security.AccessControl.DirectorySecurity]::new();$a.SetAccessRuleProtection($true,$false);`+
+      `$sid=[Security.Principal.WindowsIdentity]::GetCurrent().User;`+
+      `foreach($s in @($sid,[Security.Principal.SecurityIdentifier]::new('S-1-5-18'))){`+
+      `$a.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new($s,'FullControl','ContainerInherit,ObjectInherit','None','Allow'))};`+
+      `Set-Acl -LiteralPath ${q(f.directory)} -AclObject $a`],{env,windowsHide:true,timeout:10000});
+    const fake={accessKeyId:'a'.repeat(32),secretAccessKey:'b'.repeat(64)};
+    const publisher=path.resolve('scripts/qa/d-local-input-receipt.ps1'),capture=path.resolve('scripts/qa/capture-d-r2-head-credentials.ps1');
+    const ps=`. ${q(publisher)};$global:fixtureIndex=0;
+      function global:Read-Host {param([string]$Prompt,[switch]$AsSecureString)
+        $labels=@('S3 Access Key ID','S3 Secret Access Key');
+        if(-not $AsSecureString -or $global:fixtureIndex -ge 2 -or $Prompt -cne $labels[$global:fixtureIndex]){throw 'FIXTURE_PROMPT'};
+        Write-Host ('FIXTURE_PROMPT:'+ $Prompt);
+        $values=@(${q(fake.accessKeyId)},${q(fake.secretAccessKey)});
+        $v=$values[$global:fixtureIndex];$global:fixtureIndex++;
+        ConvertTo-SecureString -String $v -AsPlainText -Force
+      }
+      & ${q(capture)} -Nonce ${q(f.nonce)} -Binding ${q(f.binding)} -WindowEndUTC ${q(f.parameters.deadlineUtc)} -StatusDirectory ${q(f.directory)};
+      if($LASTEXITCODE){exit $LASTEXITCODE};
+      Seal-LocalRecord ${q(f.at(`INPUT_TERMINAL.${f.nonce}.safe.json`))} (${q(JSON.stringify(f.terminal))}|ConvertFrom-Json);`;
+    const control=startDInputCoordinator(f.context);t.after(()=>control.stop());
+    const children=[],streams=[];
+    const launch=(file,args)=>{
+      const child=spawn(file,args,{env,windowsHide:true,stdio:['ignore','pipe','pipe']});children.push(child);
+      const output={stdout:'',stderr:''};streams.push(output);
+      child.stdout.on('data',b=>output.stdout+=b);child.stderr.on('data',b=>output.stderr+=b);
+      return {child,output,exit:new Promise((resolve,reject)=>{child.once('error',reject);child.once('exit',resolve);})};
+    };
+    const wait=async predicate=>{const until=Date.now()+12000;while(!predicate()){
+      if(Date.now()>until)throw Error('LOCAL_NATIVE_FIXTURE_TIMEOUT');await pause(10);}};
+    try {
+      publishDInputRecord(f.at(`HEAD_INPUT.${f.nonce}.parameters.safe.json`),f.parameters);
+      const producer=launch(pwsh,['-NoProfile','-NonInteractive','-OutputFormat','Text',
+        '-EncodedCommand',Buffer.from(ps,'utf16le').toString('base64')]);
+      const nativePlan=f.at(`D.plan.native-input.${f.nonce}.private.json`);
+      await wait(()=>fs.existsSync(nativePlan));
+      const nativeSource=`import fs from 'node:fs';import path from 'node:path';
+        import {receiveDConfirmedHeadCredentials,sealDRevocationDutyBeforeInput,verifyDPrivateInputHost} from './scripts/qa/d-execution-runtime.mjs';
+        import {assertDInputAdmissionActive,publishDInputRecord,publishDInputAdmission} from './scripts/qa/d-input-coordination.mjs';
+        const p=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));
+        const b={directory:p.directory,nonce:p.credentialInput.nonce,binding:p.sourceAdoption.sha256,runId:p.runId,
+          deadlineUtc:p.inputCoordination.deadlineUtc};let result;
+        try {
+          sealDRevocationDutyBeforeInput(p);verifyDPrivateInputHost(p.credentialInput.expectedPid);
+          result=await receiveDConfirmedHeadCredentials({directory:p.directory,runId:p.runId,bindingSha256:b.binding,
+            tokenLabel:p.tokenLabel,input:p.credentialInput,supplierConfirmation:p.supplierConfirmation,
+            assertAdmissionActive:()=>assertDInputAdmissionActive(b),
+            onReceived:r=>publishDInputRecord(path.join(p.directory,'NATIVE_FIXTURE_RECEIVED.safe.json'),r)});
+          while(!assertDInputAdmissionActive(b))await new Promise(r=>setTimeout(r,5));
+          const admittedUtc=new Date().toISOString();
+          publishDInputAdmission({...b,entryDeadlineUtc:b.deadlineUtc,admittedUtc,
+            deadlineUtc:new Date(Date.parse(admittedUtc)+10800000).toISOString(),
+            businessStopUtc:new Date(Date.parse(admittedUtc)+8100000).toISOString()});
+          process.stdout.write('SYNTHETIC_NATIVE_ADMITTED_NO_PROVIDER_CALLS');
+        }catch(e){process.stdout.write(e.message==='D_INPUT_COORDINATOR_STOPPED'?'SYNTHETIC_NATIVE_STOPPED':'SYNTHETIC_NATIVE_UNCLASSIFIED');
+          process.exitCode=e.message==='D_INPUT_COORDINATOR_STOPPED'?75:1;
+        }finally{for(const key of Object.keys(result?.credentials??{}))result.credentials[key]='';}`;
+      const native=launch(process.execPath,['--input-type=module','-e',nativeSource,nativePlan]);
+      const receivedFile=f.at('NATIVE_FIXTURE_RECEIVED.safe.json');await wait(()=>fs.existsSync(receivedFile));
+      const received=JSON.parse(fs.readFileSync(receivedFile));
+      const duty=JSON.parse(fs.readFileSync(f.at(`TOKEN_REVOCATION_DUTY.before-input.${f.binding}.safe.json`)));
+      assert.equal(duty.status,'REQUIRES_OWNER_OFFICIAL_REVOCATION_ON_STOP');assert.equal(duty.notObjectCleanup,true);
+      if(stopBeforeConfirmation)control.stop();
+      else {
+        const supplier=f.ref(f.at(`supplier-evidence.${f.nonce}.safe.json`),{account:'dcb374166b39234a499985145c075f50',
+          bucket:'openglasshub-media',tokenLabel:f.context.tokenLabel,permission:'object-read-only',ttlHours:24,
+          createdAfterVisiblePrompt:true,issuedUtc:received.receivedUtc,
+          expiresUtc:new Date(Date.parse(received.receivedUtc)+86400000).toISOString()});
+        publishDInputRecord(received.confirmationPath,{schemaVersion:1,runId:f.runId,nonce:f.nonce,
+          sourceAdoptionSha256:f.binding,tokenLabel:f.context.tokenLabel,provenance:'OWNER_OFFICIAL_DASHBOARD',
+          ownerConfirmed:true,confirmedUtc:new Date().toISOString(),supplierEvidence:supplier});
+      }
+      assert.equal(await producer.exit,0);assert.equal(await native.exit,stopBeforeConfirmation?75:0);
+      assert.equal(native.child.exitCode,stopBeforeConfirmation?75:0);
+      assert.equal(producer.output.stdout.indexOf('LOCAL_BOUND_NATIVE_RECEIVER_CONNECTED_NO_PRODUCTION_REQUEST')
+        <producer.output.stdout.indexOf('FIXTURE_PROMPT:S3 Access Key ID'),true);
+      assert.equal((producer.output.stdout.match(/FIXTURE_PROMPT:/g)??[]).length,2);
+      publishDInputRecord(f.at(`WORKSPACE_NATIVE_EXIT.${f.nonce}.safe.json`),{kind:'ACTUAL_NATIVE_EXIT_NOT_CLEANUP_PASS',
+        binding:f.binding,nonce:f.nonce,pid:native.child.pid,exitCode:native.child.exitCode,supervisionUnknown:false,
+        provenance:'SYNTHETIC_REAL_CHILD_EXIT_NOT_PRODUCTION'});
+      assert.equal((await control.done).status,stopBeforeConfirmation?'STOPPED':'LOCAL_NATIVE_EXIT');
+      const stored=fs.readdirSync(f.directory).map(name=>fs.readFileSync(f.at(name),'utf8')).join('');
+      for(const value of Object.values(fake))assert.equal((stored+JSON.stringify(streams)).includes(value),false);
+      assert.equal(streams.every(s=>s.stderr===''),true);
+    }finally{
+      for(const child of children)if(child.exitCode===null){child.kill();await new Promise(r=>child.once('exit',r));}
+    }
+  });
+
 test('input publication: actual coordinator + PowerShell producer + receiver + confirmation + terminal + simulated native exit',
   {skip:process.platform!=='win32',timeout:30000},async t=>{
     const root=path.join(process.env.LOCALAPPDATA,'OpenGlassHub');

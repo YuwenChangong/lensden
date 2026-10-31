@@ -157,6 +157,10 @@ export function validateDPlan(plan,{inspect=false,resume=false}={}) {
     'd-protected-actor-child.mjs','d-protected-actor-carrier.mjs','d-production-bindings.mjs','d-r2-head-verification.mjs',
     'legacy-tmp-lifecycle-safety.mjs','capture-d-r2-head-credentials.ps1','d-private-fixture-display.ps1',
     'd-input-coordination.mjs','d-local-input-receipt.ps1'];
+  if(plan.legacyHeadPlan||adoption.legacyHeadExecution) {
+    if(!plan.legacyHeadPlan||!adoption.legacyHeadExecution)throw Error('D_LEGACY_SCOPE_NOT_BOUND');
+    required.push('legacy-r2-head-host.mjs','legacy-r2-head-verification.mjs','production-dispatch-guard.mjs');
+  }
   for(const relative of Object.keys(adoption.sourceHashes??{}))if(!/^scripts\/qa\/[a-zA-Z0-9._-]+$/.test(relative))throw Error('D_SOURCE_PIN_PATH_INVALID');
   for(const name of required) {
     const relative='scripts/qa/'+name;
@@ -364,6 +368,28 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
   while(!assertDInputAdmissionActive(inputCoordination)) {
     if(Date.now()>=Date.parse(plan.supplierConfirmation.deadlineUtc))throw Error('D_INPUT_COORDINATOR_STOPPED');
     await new Promise(resolve=>setTimeout(resolve,50));
+  }
+  if(plan.legacyHeadPlan) {
+    // Shared signer remains private to this process. H owns a cloned signer and
+    // separate durable HEAD2 ledger; an H observation is never D or durable-H PASS.
+    const legacyPlan=structuredClone(plan.legacyHeadPlan);
+    let legacyResult;
+    try {
+      if(legacyPlan.sourceAdoption?.sha256!==plan.sourceAdoption.sha256
+        ||legacyPlan.ownerApproval?.sha256!==plan.ownerApproval.sha256||legacyPlan.targets?.sha256!==plan.targets.sha256
+        ||legacyPlan.bucketEvidence?.sha256!==plan.bucketEvidence.sha256||legacyPlan.connectionBindingSha256!==plan.connectionBindingSha256)
+        throw Error();
+      const start=Date.now();
+      legacyPlan.notBeforeUtc=new Date(start).toISOString();
+      legacyPlan.deadlineUtc=new Date(Math.min(start+3600000,Date.parse(inputCoordination.deadlineUtc),
+        Date.parse(supplier.expiresUtc),Date.parse('2026-11-04T12:00:00Z'))).toISOString();
+      const {runLegacyR2HeadHost}=await import('./legacy-r2-head-host.mjs');
+      legacyResult=await runLegacyR2HeadHost({plan:legacyPlan,credentials,supplier,supplierEvidence,
+        verifyPrivateDirectory:directory=>{privateDirectory(directory);return true;},
+        assertAdmissionActive:()=>assertDInputAdmissionActive(inputCoordination)});
+    }catch{legacyResult={status:'BLOCKED',productionPass:false,reason:'LEGACY_SCOPE_OR_EXECUTION_NOT_PROVEN'};}
+    publishDInputRecord(path.join(plan.directory,'LEGACY_RUNTIME_OUTCOME.'+plan.sourceAdoption.sha256+'.safe.json'),legacyResult);
+    assertDInputAdmissionActive(inputCoordination);
   }
   localPhase='FINAL_ADMISSION';
   validateDPlan(plan);
