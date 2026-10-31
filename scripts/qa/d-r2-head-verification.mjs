@@ -111,8 +111,16 @@ function validDeletion(d,c,b,key,raw,afterUtc) {
 
 // This factory grants no authority. The existing executor must admit every call
 // through its durable window/quota/permission/cost gate before transport dispatch.
+// Remote mode takes an opaque SDK R2Bucket, not a URL or an owner JSON result.
+// Its source-bound caller must verify the sealed session's ACL/provenance and
+// actual handle/account/bucket association; a matching digest is not authority.
+// remoteSessionRaw is a bounded R2_REMOTE_HEAD_SESSION_V1 JSON receipt pinned
+// by binding.remoteSessionReceiptSha256. It binds the source, run, connection,
+// fixed target, scope/provenance hashes and established/expires times. Its
+// offlineFixture bit must match the explicit constructor option, never inferred.
 export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,afterResponse,onUnknown,
-  requestHandler,now=Date.now,timeoutMs=10000}) {
+  requestHandler,remoteBucket,remoteSessionRaw,offlineFixture=false,now=Date.now,timeoutMs=10000}) {
+  const remote=remoteBucket!==undefined;
   const extended=binding?.credentialLifetimePolicy==='D_24H_OWNER_EXCEPTION_V1';
   // Pins identify the exact owner exception, not provider scope/expiry proof.
   // The durable execution host must verify both records before admitting a call.
@@ -133,20 +141,41 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,af
     ||!digest(scope.bucketProvenanceSha256)||scope.configurationWindowBindingSha256!==binding.executionBindingSha256
     ||!Number.isFinite(utc(scope.expiresUtc))||utc(scope.expiresUtc)<utc(binding.deadlineUtc)
     ||utc(scope.expiresUtc)-utc(binding.notBeforeUtc)>(extended?86400000:14400000)
-    ||typeof credentials?.accessKeyId!=='string'||!/^[a-zA-Z0-9]{16,128}$/.test(credentials.accessKeyId)
+    ||!remote&&(typeof credentials?.accessKeyId!=='string'||!/^[a-zA-Z0-9]{16,128}$/.test(credentials.accessKeyId)
     ||typeof credentials.secretAccessKey!=='string'||!/^[a-zA-Z0-9/+=]{32,256}$/.test(credentials.secretAccessKey)
     ||(credentials.sessionToken!==undefined&&(typeof credentials.sessionToken!=='string'
-      ||!credentials.sessionToken.length||credentials.sessionToken.length>8192||/[^\x21-\x7e]/.test(credentials.sessionToken)))
+      ||!credentials.sessionToken.length||credentials.sessionToken.length>8192||/[^\x21-\x7e]/.test(credentials.sessionToken))))
     ||typeof beforeDispatch!=='function'||(afterResponse!==undefined&&typeof afterResponse!=='function')
     ||(onUnknown!==undefined&&typeof onUnknown!=='function')
     ||typeof now!=='function'||!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>10000)
     throw Error('D_HEAD_ADMISSION_INVALID');
-  const b=structuredClone(binding),s=structuredClone(scope),secret={...credentials};
-  const mode=requestHandler?'OFFLINE_FIXTURE':'S3_HEAD_CAPTURE';
-  const agent=requestHandler?null:new Agent({rejectUnauthorized:true,keepAlive:false,maxSockets:1});
-  const transport=requestHandler??new NodeHttpHandler({connectionTimeout:2000,requestTimeout:10000,httpsAgent:agent});
+  const b=structuredClone(binding),s=structuredClone(scope),secret=remote?{}:{...credentials};
+  let remoteHead,remoteSessionExpiresUtc;
+  if(remote) {
+    try {
+      if(credentials!==undefined||requestHandler!==undefined||extended||typeof offlineFixture!=='boolean'
+        ||!['SERVER_RECEIPT_V2','SOURCE_UPLOAD_RECOVERY_V1'].includes(b.creationMode)
+        ||!digest(b.remoteSourceSha256)||!digest(b.remoteSessionReceiptSha256)
+        ||!Buffer.isBuffer(remoteSessionRaw)||sha(remoteSessionRaw)!==b.remoteSessionReceiptSha256
+        ||typeof remoteBucket?.head!=='function')throw Error();
+      const session=parse(remoteSessionRaw,8192);
+      if(session.schemaVersion!==1||session.kind!=='R2_REMOTE_HEAD_SESSION_V1'||!sameRun(session,b)||!fixedTarget(session)
+        ||session.sourceSha256!==b.remoteSourceSha256||session.scopeEvidenceSha256!==s.evidenceSha256
+        ||session.bucketProvenanceSha256!==s.bucketProvenanceSha256
+        ||session.configurationWindowBindingSha256!==s.configurationWindowBindingSha256
+        ||session.offlineFixture!==offlineFixture||!Number.isFinite(utc(session.establishedUtc))
+        ||utc(session.establishedUtc)>utc(b.notBeforeUtc)||!Number.isFinite(utc(session.expiresUtc))
+        ||utc(session.expiresUtc)<utc(b.deadlineUtc)||utc(session.expiresUtc)>utc(s.expiresUtc))throw Error();
+      remoteHead=remoteBucket.head.bind(remoteBucket);
+      remoteSessionExpiresUtc=session.expiresUtc;
+    }catch{throw Error('D_HEAD_REMOTE_SESSION_INVALID');}
+  } else if(remoteSessionRaw!==undefined||offlineFixture)throw Error('D_HEAD_REMOTE_SESSION_INVALID');
+  const mode=remote?(offlineFixture?'OFFLINE_FIXTURE':'R2_BINDING_HEAD_CAPTURE')
+    :requestHandler?'OFFLINE_FIXTURE':'S3_HEAD_CAPTURE';
+  const agent=remote||requestHandler?null:new Agent({rejectUnauthorized:true,keepAlive:false,maxSockets:1});
+  const transport=remote?null:requestHandler??new NodeHttpHandler({connectionTimeout:2000,requestTimeout:10000,httpsAgent:agent});
   let stopped=false,busy=false,closed=false,count=0,active;
-  const used=new Set(),precreate=new Map(),beforeDelete=new Map();
+  const used=new Set(),precreate=new Map(),beforeDelete=new Map(),createdVersions=new Map();
   const unknown=()=>({state:'UNKNOWN',stopped:true,mode,providerCancellationProven:false,productionAuthority:false});
   const handler={metadata:{handlerProtocol:'http/1.1'},destroy(){transport.destroy?.();},async handle(request,options) {
     const a=active;
@@ -171,12 +200,12 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,af
           ?headers['x-amz-error-code']:'UNRECOGNIZED'};
     return {response};
   }};
-  const client=new S3Client({region:'auto',endpoint:`https://${host}`,forcePathStyle:true,maxAttempts:1,
+  const client=remote?null:new S3Client({region:'auto',endpoint:`https://${host}`,forcePathStyle:true,maxAttempts:1,
     followRegionRedirects:false,credentials:secret,requestHandler:handler,
     logger:{trace(){},debug(){},info(){},warn(){},error(){}}});
   const verifier={async head({phase,key,allocationRaw,creationRaw,deletion}={}) {
     if(stopped||closed||busy){stopped=true;return unknown();}
-    busy=true;let timer,intent,dispatchUtc,observation,sdkErrorCode=null;
+    busy=true;let timer,expired,intent,dispatchUtc,observation,sdkErrorCode=null;
     try {
       // Do not let caller mutation during an admission await rebind evidence.
       if(Buffer.isBuffer(allocationRaw))allocationRaw=Buffer.from(allocationRaw);
@@ -186,6 +215,7 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,af
       if(!Number.isFinite(start)||start<utc(b.notBeforeUtc)||start>=utc(b.deadlineUtc)||start>=utc(s.expiresUtc)
         ||!['BEFORE_CREATE','AFTER_CREATE','BEFORE_DELETE','AFTER_DELETE'].includes(phase)||!validKey(key,b)
         ||used.has(`${phase}:${key}`)||count>=6)throw Error('D_HEAD_NOT_ADMITTED');
+      if(remote&&phase==='BEFORE_CREATE')throw Error('D_HEAD_REMOTE_CREATION_RECEIPT_REQUIRED');
       if(b.creationMode==='SOURCE_UPLOAD_RECOVERY_V1'&&!['BEFORE_DELETE','AFTER_DELETE'].includes(phase))
         throw Error('D_HEAD_PARTIAL_RECOVERY_ONLY');
       let c;
@@ -209,35 +239,59 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,af
           throw Error('D_HEAD_DELETE_UNPROVEN');
       }
       used.add(`${phase}:${key}`);
-      const requestId=randomUUID();intent={phase,key,requestId,method:'HEAD',account,bucket,jurisdiction:'default',
+      const requestId=randomUUID();intent={phase,key,requestId,method:remote?'R2Bucket.head':'HEAD',account,bucket,jurisdiction:'default',
         executionBindingSha256:b.executionBindingSha256,connectionBindingSha256:b.connectionBindingSha256,
         bucketProvenanceSha256:s.bucketProvenanceSha256,configurationWindowBindingSha256:s.configurationWindowBindingSha256,
         allocationReceiptSha256:allocationRaw?sha(allocationRaw):null,creationReceiptSha256:creationRaw?sha(creationRaw):null};
+      if(remote)Object.assign(intent,{remoteSourceSha256:b.remoteSourceSha256,remoteSessionReceiptSha256:b.remoteSessionReceiptSha256,
+        remoteScopeEvidenceSha256:s.evidenceSha256,remoteSessionExpiresUtc});
       if(extended)Object.assign(intent,{credentialLifetimePolicy:b.credentialLifetimePolicy,
         credentialLifetimeApprovalSha256:approved24hException,credentialIssuedUtc:s.issuedUtc,credentialExpiresUtc:s.expiresUtc});
       const controller=new AbortController();
-      const expired=new Promise((_,reject)=>{timer=setTimeout(()=>{
+      expired=new Promise((_,reject)=>{timer=setTimeout(()=>{
         stopped=true;controller.abort();reject(Error('D_HEAD_TIMEOUT'));},
       Math.min(timeoutMs,utc(b.deadlineUtc)-start,utc(s.expiresUtc)-start));});
       if(await Promise.race([beforeDispatch(Object.freeze(intent)),expired])!==true)throw Error('D_HEAD_NOT_ADMITTED');
       dispatchUtc=now();
-      if(stopped||dispatchUtc<start||dispatchUtc>=utc(b.deadlineUtc)||dispatchUtc>=utc(s.expiresUtc))throw Error('D_HEAD_EXPIRED');
+      if(stopped||dispatchUtc<start||dispatchUtc>=utc(b.deadlineUtc)||dispatchUtc>=utc(s.expiresUtc)
+        ||remote&&(!Number.isFinite(dispatchUtc)||dispatchUtc-start>=timeoutMs))throw Error('D_HEAD_EXPIRED');
       count++;active={key,calls:0,response:null};observation=active;
       let sdkFailed=false,sdkStatus;
-      await Promise.race([client.send(new HeadObjectCommand({Bucket:bucket,Key:key}),{abortSignal:controller.signal})
+      if(remote) {
+        // R2Bucket.head has no HTTP status, headers or cancellation argument.
+        // Capture only documented metadata; never call get(), read a body, or retry.
+        observation.calls++;
+        const value=await Promise.race([Promise.resolve().then(()=>remoteHead(key)),expired]);
+        if(value===null)observation.response={exists:false};
+        else {
+          if(!value||typeof value!=='object'||'body' in value||value.key!==key||value.size!==2018
+            ||typeof value.etag!=='string'||!/^[a-f0-9]{32}$/i.test(value.etag)
+            ||value.httpEtag!==`"${value.etag}"`||value.storageClass!=='Standard'
+            ||typeof value.version!=='string'||!/^[\x21-\x7e]{1,1024}$/.test(value.version)
+            ||!(value.uploaded instanceof Date)||!Number.isFinite(value.uploaded.getTime())
+            ||value.uploaded.getTime()<utc(b.notBeforeUtc)||value.uploaded.getTime()>utc(c.observedUtc))
+            throw Error('D_HEAD_REMOTE_METADATA_UNPROVEN');
+          const r={exists:true,size:value.size,etag:value.httpEtag,storageClass:value.storageClass,
+            version:value.version,uploadedUtc:value.uploaded.toISOString()};
+          if(createdVersions.has(key)&&createdVersions.get(key)!==r.version)throw Error('D_HEAD_REMOTE_VERSION_CHANGED');
+          observation.response=r;
+        }
+      } else await Promise.race([client.send(new HeadObjectCommand({Bucket:bucket,Key:key}),{abortSignal:controller.signal})
         .catch(error=>{sdkFailed=true;sdkStatus=error?.$metadata?.httpStatusCode;
           sdkErrorCode=['NotFound','NoSuchKey','NoSuchBucket','AccessDenied','ExpiredToken','SignatureDoesNotMatch'].includes(error?.name)
             ?error.name:'UNRECOGNIZED';}),expired]);
       const end=now(),r=observation.response;
       if(stopped||!r||observation.calls!==1||end<dispatchUtc||end-dispatchUtc>10000
-        ||end>=utc(b.deadlineUtc)||end>=utc(s.expiresUtc)||r.redirected||(!r.requestId&&!r.ray))throw Error('D_HEAD_RESPONSE_UNPROVEN');
-      const expected=phase==='BEFORE_DELETE'||phase==='AFTER_CREATE'?200:404;
-      if(r.status!==expected||(expected===200&&sdkFailed)
+        ||end>=utc(b.deadlineUtc)||end>=utc(s.expiresUtc)
+        ||(remote?(!Number.isFinite(end)||end-start>=timeoutMs):r.redirected||(!r.requestId&&!r.ray)))throw Error('D_HEAD_RESPONSE_UNPROVEN');
+      const presentExpected=phase==='BEFORE_DELETE'||phase==='AFTER_CREATE';
+      const expected=presentExpected?200:404;
+      if(remote?r.exists!==presentExpected:r.status!==expected||(expected===200&&sdkFailed)
         ||(expected===404&&(!sdkFailed||sdkStatus!==404||!['NotFound','NoSuchKey'].includes(sdkErrorCode)
           ||(r.errorCode!==null&&!['NotFound','NoSuchKey'].includes(r.errorCode)))))throw Error('D_HEAD_UNEXPECTED_STATUS');
       let sizeBytes=null,etag=null,storageClass='UNKNOWN';
-      if(expected===200) {
-        if(typeof r.size!=='string'||!/^\d+$/.test(r.size)||!Number.isSafeInteger(Number(r.size))||Number(r.size)!==2018
+      if(presentExpected) {
+        if((!remote&&(typeof r.size!=='string'||!/^\d+$/.test(r.size)))||!Number.isSafeInteger(Number(r.size))||Number(r.size)!==2018
           ||typeof r.etag!=='string'||!/^"[a-f0-9]{32}"$/i.test(r.etag))throw Error('D_HEAD_METADATA_UNPROVEN');
         sizeBytes=Number(r.size);etag=r.etag;
         if(r.storageClass==='STANDARD'||r.storageClass==='Standard')storageClass='Standard';
@@ -251,36 +305,52 @@ export function createDHeadVerifier({binding,scope,credentials,beforeDispatch,af
           if(sizeBytes!==m.sizeBytes||etag!==m.etag)throw Error('D_HEAD_CREATION_METADATA_MISMATCH');
         }
       }
-      const response={status:r.status,providerRequestId:r.requestId,ray:r.ray,sizeBytes,etag,storageClass};
-      const source={...intent,kind:'s3-head',prefix:key,endpoint:`https://${host}/${bucket}/${key}`,
+      const response=remote?{exists:r.exists,sizeBytes,etag,storageClass,
+        ...(r.exists?{version:r.version,uploadedUtc:r.uploadedUtc}:{})}
+        :{status:r.status,providerRequestId:r.requestId,ray:r.ray,sizeBytes,etag,storageClass};
+      const source={...intent,...(remote?{kind:'r2-binding-head'}:{kind:'s3-head',endpoint:`https://${host}/${bucket}/${key}`}),prefix:key,
         startedUtc:new Date(dispatchUtc).toISOString(),completedUtc:new Date(end).toISOString(),
-        credentialScopeEvidenceSha256:s.evidenceSha256,credentialExpiresUtc:s.expiresUtc};
-      const receipt={state:expected===200?'PRESENT':phase==='BEFORE_CREATE'?'PRECREATE_NOT_FOUND_CANDIDATE':'ABSENT',
+        ...(remote?{}:{credentialScopeEvidenceSha256:s.evidenceSha256,credentialExpiresUtc:s.expiresUtc})};
+      const receipt={state:presentExpected?'PRESENT':phase==='BEFORE_CREATE'?'PRECREATE_NOT_FOUND_CANDIDATE':'ABSENT',
         source,response,responseSha256:sha(JSON.stringify(response)),
-        notFoundClassification:expected===404?'BOUND_HEAD404_NOT_PROVIDER_EXCEPTION_CODE':null,
+        notFoundClassification:!presentExpected?(remote?'AUTHENTICATED_R2_BINDING_NULL_AT_QUERY':'BOUND_HEAD404_NOT_PROVIDER_EXCEPTION_CODE'):null,
         precreationProof:b.creationMode==='SOURCE_UPLOAD_RECOVERY_V1'?'ACKNOWLEDGED_SOURCE_ONLY_RECOVERY_NOT_D_ACCEPTANCE'
           :b.creationMode==='SERVER_RECEIPT_V2'?'CAPTURED_SERVER_CREATION_CHAIN'
           :key.startsWith('tmp/')?'TICKET_BOUND_HEAD404':'SERVER_COPY_CREATION_RECEIPT_ONLY',
         mode,storageClass,productionAuthority:false};
       if(phase==='BEFORE_CREATE')precreate.set(key,{ended:end});
       if(phase==='BEFORE_DELETE')beforeDelete.set(key,{ended:end,creationSha:sha(creationRaw)});
-      records.set(receipt,{hash:sha(JSON.stringify(receipt)),binding:b,
+      const record={hash:sha(JSON.stringify(receipt)),binding:b,
         before:phase==='AFTER_DELETE'?beforeDelete.get(key):null,
-        deletionSha256:phase==='AFTER_DELETE'?sha(JSON.stringify(deletion)):null});
-      if(afterResponse&&await afterResponse(structuredClone(receipt))!==true)throw Error('D_HEAD_ACK_UNPROVEN');
-      if(stopped||now()>=utc(b.deadlineUtc))throw Error('D_HEAD_STOPPED');
+        deletionSha256:phase==='AFTER_DELETE'?sha(JSON.stringify(deletion)):null};
+      if(!remote)records.set(receipt,record);
+      if(afterResponse&&(remote?await Promise.race([Promise.resolve().then(()=>afterResponse(structuredClone(receipt))),expired])
+        :await afterResponse(structuredClone(receipt)))!==true)throw Error('D_HEAD_ACK_UNPROVEN');
+      if(remote) {
+        const acknowledged=now();
+        if(stopped||!Number.isFinite(acknowledged)||acknowledged<end||acknowledged>=utc(b.deadlineUtc)
+          ||acknowledged-start>=timeoutMs||acknowledged>=utc(s.expiresUtc))throw Error('D_HEAD_STOPPED');
+      } else if(stopped||now()>=utc(b.deadlineUtc))throw Error('D_HEAD_STOPPED');
+      if(remote) {
+        if(phase==='AFTER_CREATE')createdVersions.set(key,r.version);
+        records.set(receipt,record);
+      }
       return receipt;
     }catch{
       stopped=true;
-      if(intent&&onUnknown)try{await onUnknown(structuredClone(intent));}catch{}
-      return {...unknown(),...(intent?{source:{...intent,kind:'s3-head',endpoint:`https://${host}/${bucket}/${key}`,
+      if(intent&&onUnknown)try{
+        if(remote&&expired)await Promise.race([Promise.resolve().then(()=>onUnknown(structuredClone(intent))),expired]);
+        else await onUnknown(structuredClone(intent));
+      }catch{}
+      return {...unknown(),...(intent?{source:{...intent,
+        ...(remote?{kind:'r2-binding-head'}:{kind:'s3-head',endpoint:`https://${host}/${bucket}/${key}`}),
         ...(Number.isFinite(dispatchUtc)?{startedUtc:new Date(dispatchUtc).toISOString()}:{}),
-        credentialScopeEvidenceSha256:s.evidenceSha256}}:{}),
-        ...(observation?.response?{response:{...observation.response,sdkErrorCode},
-          responseSha256:sha(JSON.stringify({...observation.response,sdkErrorCode}))}:{})};
+        ...(remote?{}:{credentialScopeEvidenceSha256:s.evidenceSha256})}}:{}),
+        ...(observation?.response?{response:{...observation.response,...(remote?{}:{sdkErrorCode})},
+          responseSha256:sha(JSON.stringify({...observation.response,...(remote?{}:{sdkErrorCode})}))}:{})};
     }
     finally{clearTimeout(timer);active=null;busy=false;}
-  },close(){closed=true;stopped=true;client.destroy();agent?.destroy();
+  },close(){closed=true;stopped=true;client?.destroy();agent?.destroy();remoteHead=null;
     for(const name of Object.keys(secret))secret[name]='';}};
   Object.freeze(verifier);verifiers.add(verifier);return verifier;
 }
@@ -311,8 +381,14 @@ export function bindDHeadPersistence(initial,delayed) {
       ||initial.source.key!==delayed.source.key||initial.source.requestId===delayed.source.requestId
       ||!sameRun(initial.source,delayed.source)
       ||initial.source.creationReceiptSha256!==delayed.source.creationReceiptSha256
-      ||initial.source.credentialScopeEvidenceSha256!==delayed.source.credentialScopeEvidenceSha256
       ||initial.source.bucketProvenanceSha256!==delayed.source.bucketProvenanceSha256
+      ||((initial.source.kind==='r2-binding-head'||delayed.source.kind==='r2-binding-head')
+        ?initial.source.kind!==delayed.source.kind||initial.source.remoteSessionReceiptSha256!==delayed.source.remoteSessionReceiptSha256
+          ||initial.source.remoteSourceSha256!==delayed.source.remoteSourceSha256
+          ||initial.source.remoteScopeEvidenceSha256!==delayed.source.remoteScopeEvidenceSha256
+          ||initial.source.remoteSessionExpiresUtc!==delayed.source.remoteSessionExpiresUtc
+          ||initial.response.version!==delayed.response.version
+        :initial.source.credentialScopeEvidenceSha256!==delayed.source.credentialScopeEvidenceSha256)
       ||initial.response.etag!==delayed.response.etag||initial.response.sizeBytes!==delayed.response.sizeBytes
       ||initial.storageClass!=='Standard'||delayed.storageClass!=='Standard'
       ||utc(delayed.source.startedUtc)-utc(initial.source.completedUtc)<600000)return unknown();
