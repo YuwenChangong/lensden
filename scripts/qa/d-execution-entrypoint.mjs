@@ -215,10 +215,11 @@ export async function recoverDUnissuedCleanup({journal,ports,binding}) {
 }
 
 export async function mainD(argv) {
-  const modes=['--inspect','--execute-production','--resume-cleanup'];
+  const modes=['--inspect','--execute-production','--resume-cleanup','--coordinate-input'];
   if(argv.length!==3||!modes.includes(argv[0])||argv[1]!=='--plan'||!path.isAbsolute(argv[2]))
-    throw Error('USAGE: node scripts/qa/d-execution-entrypoint.mjs --inspect|--execute-production|--resume-cleanup --plan <absolute-private-plan.json>');
-  const {loadDProductionRuntime}=await import('./d-execution-runtime.mjs');
+    throw Error('USAGE: node scripts/qa/d-execution-entrypoint.mjs --inspect|--execute-production|--resume-cleanup|--coordinate-input --plan <absolute-private-plan.json>');
+  const {loadDProductionRuntime,coordinateDPrivateInput}=await import('./d-execution-runtime.mjs');
+  if(argv[0]==='--coordinate-input')return coordinateDPrivateInput(argv[2]);
   const runtime=await loadDProductionRuntime(argv[2],{inspect:argv[0]==='--inspect',resume:argv[0]==='--resume-cleanup'});
   if(argv[0]==='--inspect')return runtime;
   return runDExecution(runtime);
@@ -228,6 +229,7 @@ if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.m
     // Keys, aliases and raw receipts stay in the private execution directory.
     process.stdout.write(JSON.stringify({state:result.state??result.status,mode:result.mode??'INSPECT',
       assertions:result.assertions??{},residualCount:result.residuals?.length??0})+'\n');
-    if(result.state==='BLOCKED')process.exitCode=1;
+    if(result.state==='BLOCKED'||result.status==='STOPPED'
+      ||process.argv[2]==='--coordinate-input'&&result.status!=='LOCAL_NATIVE_EXIT')process.exitCode=1;
   }).catch(()=>{process.stderr.write('D_ENTRYPOINT_FAIL_CLOSED\n');process.exitCode=1;});
 }

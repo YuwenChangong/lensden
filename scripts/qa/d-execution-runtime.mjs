@@ -43,7 +43,7 @@ const loaderPhases=new Set(['REVOCATION_DUTY','RECOVERY_BINDING','PRIVATE_READY'
 const loaderReasons=new Set(['D_ORIGINAL_RECOVERY_WINDOW_EXPIRED','D_PRIVATE_INPUT_NOT_READY',
   'D_PRIVATE_HOST_UNPROVEN','D_HEAD_PRIVATE_INPUT_INVALID','D_ORDINARY_TOKEN_THIRD_FIELD_FORBIDDEN',
   'D_SUPPLIER_CONFIRMATION_INVALID','D_SUPPLIER_CONFIRMATION_EXPIRED','D_SUPPLIER_HANDOFF_NOT_ADMITTED',
-  'D_SUPPLIER_LIFETIME_UNPROVEN','D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND','D_RUNTIME_GATES_NOT_ADMITTED',
+  'D_SUPPLIER_LIFETIME_UNPROVEN','D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND','D_RUNTIME_GATES_NOT_ADMITTED','D_INPUT_COORDINATOR_STOPPED',
   'D_STANDARD_CONTEXT_STALE','D_RUNTIME_SOURCE_CHANGED','D_SOURCE_COMMIT_MISMATCH','D_REVOCATION_DUTY_UNPROVEN']);
 export function dLoaderFailureDetails(phase,error) {
   // Never persist raw exceptions, command output or credential-derived values.
@@ -85,18 +85,24 @@ export function assertDSupplierDeadline(supplier,deadlineUtc) {
 // Credentials stay in this native process while the trusted owner-result importer
 // publishes a non-secret, hash-bound confirmation. No D window exists yet.
 export async function receiveDConfirmedHeadCredentials({input,supplierConfirmation,directory,runId,
-  bindingSha256,tokenLabel,offlineFixture=false,onReceived=()=>{}}) {
+  bindingSha256,tokenLabel,offlineFixture=false,onReceived=()=>{},assertAdmissionActive=()=>{}}) {
   const c=supplierHandoff({input,supplierConfirmation,directory});
   if(!uuid(runId)||!digest(bindingSha256)||typeof tokenLabel!=='string'||!tokenLabel.length
     ||fs.existsSync(c.path))throw Error('D_SUPPLIER_HANDOFF_NOT_ADMITTED');
-  let credentials,returned=false;
+  let credentials,returned=false,admissionStopped=false;
+  const aborter=new AbortController();
+  const checkAdmission=()=>{try{assertAdmissionActive();}catch{admissionStopped=true;throw Error('D_INPUT_COORDINATOR_STOPPED');}};
+  const watch=setInterval(()=>{try{checkAdmission();}catch{aborter.abort();}},50);
   try {
-    credentials=await receiveDHeadCredentials({bindingSha256,nonce:input.nonce,deadlineUtc:input.deadlineUtc,offlineFixture});
+    checkAdmission();
+    credentials=await receiveDHeadCredentials({bindingSha256,nonce:input.nonce,deadlineUtc:input.deadlineUtc,offlineFixture,signal:aborter.signal});
+    checkAdmission();
     if(credentials.sessionToken!==undefined)throw Error('D_ORDINARY_TOKEN_THIRD_FIELD_FORBIDDEN');
     const receivedUtc=new Date().toISOString();
     onReceived({event:'OWNER_SUPPLIER_CONFIRMATION_REQUIRED',runId,nonce:input.nonce,
       confirmationPath:c.path,deadlineUtc:c.deadlineUtc,receivedUtc,productionRequests:0});
     while(Date.now()<Date.parse(c.deadlineUtc)) {
+      checkAdmission();
       try {
         const stat=fs.lstatSync(c.path);
         if(!stat.isFile()||stat.isSymbolicLink()||stat.size>4096)throw Error('D_SUPPLIER_CONFIRMATION_INVALID');
@@ -120,7 +126,9 @@ export async function receiveDConfirmedHeadCredentials({input,supplierConfirmati
       await new Promise(resolve=>setTimeout(resolve,50));
     }
     throw Error('D_SUPPLIER_CONFIRMATION_EXPIRED');
-  }finally{
+  }catch(error){if(admissionStopped)throw Error('D_INPUT_COORDINATOR_STOPPED');throw error;}
+  finally{
+    clearInterval(watch);
     if(!returned)for(const key of Object.keys(credentials??{}))credentials[key]='';
   }
 }
@@ -147,7 +155,8 @@ export function validateDPlan(plan,{inspect=false,resume=false}={}) {
   if(head!==adoption.sourceCommit||!/^[a-f0-9]{40}$/.test(head))throw Error('D_SOURCE_COMMIT_MISMATCH');
   const required=['d-execution-entrypoint.mjs','d-execution-runtime.mjs','d-execution-journal.mjs','d-execution-carriers.mjs',
     'd-protected-actor-child.mjs','d-protected-actor-carrier.mjs','d-production-bindings.mjs','d-r2-head-verification.mjs',
-    'legacy-tmp-lifecycle-safety.mjs','capture-d-r2-head-credentials.ps1','d-private-fixture-display.ps1'];
+    'legacy-tmp-lifecycle-safety.mjs','capture-d-r2-head-credentials.ps1','d-private-fixture-display.ps1',
+    'd-input-coordination.mjs','d-local-input-receipt.ps1'];
   for(const relative of Object.keys(adoption.sourceHashes??{}))if(!/^scripts\/qa\/[a-zA-Z0-9._-]+$/.test(relative))throw Error('D_SOURCE_PIN_PATH_INVALID');
   for(const name of required) {
     const relative='scripts/qa/'+name;
@@ -275,6 +284,24 @@ export async function openDTrustedToolBridge(planFile,{register=false}={}) {
   return bridge;
 }
 
+// Run the metadata poller through the same source/approval-bound native entrypoint,
+// not a separate untracked REPL timer. This mode cannot create a D window or call providers.
+export async function coordinateDPrivateInput(planFile) {
+  privateDirectory(path.dirname(planFile));
+  const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
+  privateDirectory(plan.directory);
+  const checked=validateDPlan(plan,{resume:true}),input=plan.inputCoordination;
+  const expectedEnd=checked.adoption.additionalContextReadsProposed?.originalContextDeadlineUtc;
+  if(!uuid(input?.nonce)||input.deadlineUtc!==expectedEnd||!timestamp(expectedEnd)
+    ||Date.now()>=Date.parse(expectedEnd)||Date.parse(expectedEnd)-Date.now()>3600000)
+    throw Error('D_ORIGINAL_RECOVERY_WINDOW_EXPIRED');
+  const {startDInputCoordinator}=await import('./d-input-coordination.mjs');
+  const coordinator=startDInputCoordinator({directory:plan.directory,nonce:input.nonce,
+    binding:plan.sourceAdoption.sha256,runId:plan.runId,tokenLabel:plan.tokenLabel,deadlineUtc:expectedEnd,
+    verifyPrivateDirectory:directory=>{privateDirectory(directory);return true;}});
+  return coordinator.done;
+}
+
 export async function loadDProductionRuntime(planFile,{inspect=false,resume=false}={}) {
   privateDirectory(path.dirname(planFile));const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
   privateDirectory(plan.directory);const checked=validateDPlan(plan,{inspect,resume});
@@ -299,7 +326,7 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
   if(!resume)supplierHandoff({input:plan.credentialInput,supplierConfirmation:plan.supplierConfirmation,directory:plan.directory});
   const claimDirectory=path.join(os.homedir(),'AppData/Local/OpenGlassHub/mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302/emergency-media-protection-v1/final-production-closure-v1');
   privateDirectory(claimDirectory);claimDExecution({claimDirectory,plan,resume});
-  let credentials=null,supplier=null,supplierEvidence=null,binding,localPhase='REVOCATION_DUTY';
+  let credentials=null,supplier=null,supplierEvidence=null,binding,inputCoordination=null,localPhase='REVOCATION_DUTY';
   try{
   if(!resume)sealDRevocationDutyBeforeInput(plan);
   localPhase='RECOVERY_BINDING';
@@ -309,6 +336,13 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     if(binding?.authorizationSha256!==plan.sourceAdoption.sha256||binding.runId!==plan.runId
       ||binding.sourceCommit!==checked.adoption.sourceCommit||Date.now()>=Date.parse(binding.deadlineUtc))throw Error('D_ORIGINAL_RECOVERY_WINDOW_EXPIRED');
   }else{
+  const {assertDInputAdmissionActive,publishDInputRecord}=await import('./d-input-coordination.mjs');
+  const inputContextEnd=checked.adoption.additionalContextReadsProposed?.originalContextDeadlineUtc;
+  if(plan.inputCoordination?.nonce!==plan.credentialInput?.nonce||plan.inputCoordination?.deadlineUtc!==inputContextEnd)
+    throw Error('D_INPUT_COORDINATOR_STOPPED');
+  inputCoordination={directory:plan.directory,nonce:plan.credentialInput.nonce,binding:plan.sourceAdoption.sha256,
+    runId:plan.runId,deadlineUtc:inputContextEnd};
+  assertDInputAdmissionActive(inputCoordination);
   localPhase='PRIVATE_READY';
   const input=plan.credentialInput,ready=JSON.parse(readBound(input.readyRecord,4096));
   if(ready.status!=='LOCAL_CURRENT_USER_PIPE_READY'||ready.binding!==plan.sourceAdoption.sha256||ready.nonce!==input.nonce
@@ -318,7 +352,19 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
   localPhase='PRIVATE_RECEIVE';
   ({credentials,supplier,supplierEvidence}=await receiveDConfirmedHeadCredentials({input,supplierConfirmation:plan.supplierConfirmation,
     directory:plan.directory,runId:plan.runId,bindingSha256:plan.sourceAdoption.sha256,tokenLabel:plan.tokenLabel,
-    onReceived:event=>{localPhase='SUPPLIER_CONFIRMATION';process.stdout.write(JSON.stringify(event)+'\n');}}));
+    onReceived:event=>{
+      localPhase='SUPPLIER_CONFIRMATION';
+      publishDInputRecord(path.join(plan.directory,'INPUT_RECEIVED.'+input.nonce+'.safe.json'),{
+        kind:'NATIVE_PRIVATE_INPUT_RECEIVED_NOT_ADMITTED',binding:plan.sourceAdoption.sha256,
+        nonce:input.nonce,runId:plan.runId,tokenLabel:plan.tokenLabel,receivedUtc:event.receivedUtc,
+        confirmationPath:event.confirmationPath,confirmationDeadlineUtc:event.deadlineUtc,productionRequests:0});
+      process.stdout.write(JSON.stringify(event)+'\n');
+    },
+    assertAdmissionActive:()=>assertDInputAdmissionActive(inputCoordination)}));
+  while(!assertDInputAdmissionActive(inputCoordination)) {
+    if(Date.now()>=Date.parse(plan.supplierConfirmation.deadlineUtc))throw Error('D_INPUT_COORDINATOR_STOPPED');
+    await new Promise(resolve=>setTimeout(resolve,50));
+  }
   localPhase='FINAL_ADMISSION';
   validateDPlan(plan);
   if(!manual.ready().ready||!bridge.ready().ready)throw Error('D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND');
@@ -331,6 +377,11 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     frozenArtifactSha256:plan.frozenArtifactSha256,observerSourceSha256:plan.observerSourceSha256};
   }
   localPhase='PORTS_BINDING';
+  if(!resume) {
+    const {publishDInputAdmission}=await import('./d-input-coordination.mjs');
+    publishDInputAdmission({...inputCoordination,entryDeadlineUtc:inputCoordination.deadlineUtc,
+      admittedUtc:binding.notBeforeUtc,deadlineUtc:binding.deadlineUtc,businessStopUtc:binding.businessStopUtc});
+  }
   const deadlineUtc=binding.deadlineUtc;
   const journal=openDJournal({directory:plan.directory,binding,resume,admit:()=>Object.entries(checked.adoption.sourceHashes)
     .every(([relative,sha])=>pin(path.join(root,relative))===sha)});

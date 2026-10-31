@@ -23,25 +23,29 @@ const records=new WeakMap(),verifiers=new WeakSet();
 
 // Same-user local pipe only; never accepts a URL, remote socket or secret file.
 // The caller validates the private READY record/ACL/PID before invoking this.
-export function receiveDHeadCredentials({bindingSha256,nonce,deadlineUtc,offlineFixture=false}) {
+export function receiveDHeadCredentials({bindingSha256,nonce,deadlineUtc,offlineFixture=false,signal}) {
   if(!digest(bindingSha256)||!uuid(nonce)||!Number.isFinite(utc(deadlineUtc))||utc(deadlineUtc)<=Date.now()
-    ||(offlineFixture?bindingSha256!=='0'.repeat(64):bindingSha256==='0'.repeat(64)))
+    ||(offlineFixture?bindingSha256!=='0'.repeat(64):bindingSha256==='0'.repeat(64))
+    ||signal&&(typeof signal.addEventListener!=='function'||signal.aborted))
     return Promise.reject(Error('D_HEAD_PRIVATE_INPUT_INVALID'));
   return new Promise((resolve,reject)=>{
     const prefix=offlineFixture?'OGHR2HeadCredentials-Fixture-':'OGHR2HeadCredentials-';
     const chunks=[];let length=0,settled=false;
     const socket=connect({path:'\\\\.\\pipe\\'+prefix+nonce});
     const finish=(error,value)=>{
-      if(settled)return;settled=true;clearTimeout(timer);socket.destroy();
+      if(settled)return;settled=true;clearTimeout(timer);signal?.removeEventListener('abort',onAbort);socket.destroy();
       for(const chunk of chunks)chunk.fill(0);
       error?reject(Error('D_HEAD_PRIVATE_INPUT_INVALID')):resolve(value);
     };
     const timer=setTimeout(()=>finish(true),Math.min(120000,utc(deadlineUtc)-Date.now()));
+    const onAbort=()=>finish(true);
+    signal?.addEventListener('abort',onAbort,{once:true});
     // The capture host must see a bound native receiver before prompting for secrets.
     socket.on('connect',()=>socket.write(`OGH_HEAD_RECEIVER_V1 ${bindingSha256} ${nonce}\n`));
     socket.on('error',()=>finish(true));
-    socket.on('data',chunk=>{chunks.push(chunk);length+=chunk.length;if(length>16384)finish(true);});
+    socket.on('data',chunk=>{if(settled){chunk.fill(0);return;}chunks.push(chunk);length+=chunk.length;if(length>16384)finish(true);});
     socket.on('end',()=>{
+      if(settled)return;
       let raw;
       try {
         raw=Buffer.concat(chunks);
