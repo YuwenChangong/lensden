@@ -49,19 +49,22 @@ try {
     else {
         $Host.UI.RawUI.WindowTitle='OpenGlass Hub - R2 HEAD Credentials (LOCAL PRIVATE ONLY)'
         Write-Host 'Target: dcb374166b39234a499985145c075f50 / default / openglasshub-media'
-        Write-Host 'Only separately authorized, short-lived Object Read Only S3 credentials.'
+        Write-Host 'Only separately authorized, expiring Object Read Only bucket S3 credentials; two fields only.'
         Write-Host 'Do not enter an OAuth token, parent API token, account password or TOTP.'
-        foreach($label in @('S3 Access Key ID','S3 Secret Access Key','S3 Session Token (blank only for an expiring bucket token)')) {
+        foreach($label in @('S3 Access Key ID','S3 Secret Access Key')) {
             $secret=Read-Host $label -AsSecureString;$secrets+=,$secret
             $ptr=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);$pointers+=,$ptr
             $plain+=,[Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
         }
     }
     if($plain[0] -cnotmatch '^[a-zA-Z0-9]{16,128}$' -or $plain[1] -cnotmatch '^[a-zA-Z0-9/+=]{32,256}$' -or
-        $plain[2].Length -gt 8192 -or $plain[2] -match '[^\x21-\x7e]' -or [DateTimeOffset]::UtcNow -ge $end){throw 'INVALID_CREDENTIAL_INPUT'}
+        (-not $OfflineFixture -and $plain.Count -ne 2) -or
+        ($OfflineFixture -and ($plain[2].Length -gt 8192 -or $plain[2] -match '[^\x21-\x7e]')) -or
+        [DateTimeOffset]::UtcNow -ge $end){throw 'INVALID_CREDENTIAL_INPUT'}
     if([DateTimeOffset]::UtcNow -ge $end){throw 'WINDOW_EXPIRED'}
     $frame=@{schemaVersion=1;binding=$Binding;nonce=$Nonce;accessKeyId=$plain[0];secretAccessKey=$plain[1]}
-    if($plain[2].Length){$frame.sessionToken=$plain[2]}
+    # The generic fixture may exercise session credentials, never the ordinary-token input.
+    if($OfflineFixture -and $plain[2].Length){$frame.sessionToken=$plain[2]}
     $bytes=[Text.Encoding]::UTF8.GetBytes(($frame|ConvertTo-Json -Compress))
     $pipe.Write($bytes,0,$bytes.Length);$pipe.Flush()
     Write-Output 'LOCAL_S3_CREDENTIAL_TRANSFER_COMPLETE_NO_PRODUCTION_REQUEST'
