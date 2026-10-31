@@ -20,6 +20,36 @@ const uuid=v=>typeof v==='string'&&/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}
 const digest=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 const timestamp=v=>typeof v==='string'&&Number.isFinite(Date.parse(v));
 const pin=file=>dHash(fs.readFileSync(file));
+export function verifyDPrivateInputHost(pid) {
+  if(process.platform!=='win32'||!Number.isSafeInteger(pid)||pid<=0)throw Error('D_PRIVATE_HOST_UNPROVEN');
+  try {
+    if(pin(pwsh)!==pwshSha)throw Error();
+    const script=`$ErrorActionPreference='Stop';
+      $p=Get-CimInstance Win32_Process -Filter ('ProcessId='+$args[0]);if($null -eq $p){throw 'PID'};
+      $o=Invoke-CimMethod -InputObject $p -MethodName GetOwnerSid;
+      if($o.ReturnValue -ne 0 -or [string]::IsNullOrEmpty($p.ExecutablePath)){throw 'OWNER'};
+      $actual=[IO.Path]::GetFullPath($p.ExecutablePath);$expected=[IO.Path]::GetFullPath($args[1]);
+      if(-not [string]::Equals($actual,$expected,[StringComparison]::OrdinalIgnoreCase) -or
+        $o.Sid -ne [Security.Principal.WindowsIdentity]::GetCurrent().User.Value){throw 'OWNER'};
+      'READY_HOST_MATCH'`;
+    const out=execFileSync(pwsh,['-NoProfile','-NonInteractive','-CommandWithArgs',script,String(pid),pwsh],
+      {encoding:'utf8',windowsHide:true,timeout:10000,stdio:['ignore','pipe','pipe']});
+    if(out.trim()!=='READY_HOST_MATCH')throw Error();
+  }catch{throw Error('D_PRIVATE_HOST_UNPROVEN');}
+}
+
+const loaderPhases=new Set(['RECOVERY_BINDING','PRIVATE_READY','PRIVATE_HOST','PRIVATE_RECEIVE',
+  'SUPPLIER_CONFIRMATION','FINAL_ADMISSION','PORTS_BINDING']);
+const loaderReasons=new Set(['D_ORIGINAL_RECOVERY_WINDOW_EXPIRED','D_PRIVATE_INPUT_NOT_READY',
+  'D_PRIVATE_HOST_UNPROVEN','D_HEAD_PRIVATE_INPUT_INVALID','D_ORDINARY_TOKEN_THIRD_FIELD_FORBIDDEN',
+  'D_SUPPLIER_CONFIRMATION_INVALID','D_SUPPLIER_CONFIRMATION_EXPIRED','D_SUPPLIER_HANDOFF_NOT_ADMITTED',
+  'D_SUPPLIER_LIFETIME_UNPROVEN','D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND','D_RUNTIME_GATES_NOT_ADMITTED',
+  'D_STANDARD_CONTEXT_STALE','D_RUNTIME_SOURCE_CHANGED','D_SOURCE_COMMIT_MISMATCH']);
+export function dLoaderFailureDetails(phase,error) {
+  // Never persist raw exceptions, command output or credential-derived values.
+  return {localPhase:loaderPhases.has(phase)?phase:'UNKNOWN',
+    localReason:loaderReasons.has(error?.message)?error.message:'D_LOCAL_FAILURE_UNCLASSIFIED'};
+}
 function readBound(ref,max=262144) {
   if(!ref||!path.isAbsolute(ref.path)||!digest(ref.sha256))throw Error('D_EVIDENCE_REFERENCE_INVALID');
   const stat=fs.lstatSync(ref.path);
@@ -259,7 +289,7 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
   const revocationDuty={kind:'TOKEN_REVOCATION_DUTY_BEFORE_PRIVATE_INPUT',runId:plan.runId,tokenLabel:plan.tokenLabel,
     account,bucket,status:'REQUIRES_OWNER_OFFICIAL_REVOCATION_ON_STOP',notObjectCleanup:true};
   if(!resume)sealDRecord(path.join(plan.directory,'TOKEN_REVOCATION_DUTY.before-input.safe.json'),revocationDuty);
-  let credentials=null,supplier=null,supplierEvidence=null,binding;
+  let credentials=null,supplier=null,supplierEvidence=null,binding,localPhase='RECOVERY_BINDING';
   try{
   if(resume){
     const startFile=path.join(plan.directory,'d-receipt-000001.json'),first=JSON.parse(fs.readFileSync(startFile,'utf8'));
@@ -267,17 +297,17 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     if(binding?.authorizationSha256!==plan.sourceAdoption.sha256||binding.runId!==plan.runId
       ||binding.sourceCommit!==checked.adoption.sourceCommit||Date.now()>=Date.parse(binding.deadlineUtc))throw Error('D_ORIGINAL_RECOVERY_WINDOW_EXPIRED');
   }else{
+  localPhase='PRIVATE_READY';
   const input=plan.credentialInput,ready=JSON.parse(readBound(input.readyRecord,4096));
   if(ready.status!=='LOCAL_CURRENT_USER_PIPE_READY'||ready.binding!==plan.sourceAdoption.sha256||ready.nonce!==input.nonce
     ||ready.pid!==input.expectedPid||!timestamp(input.deadlineUtc)||Date.now()>=Date.parse(input.deadlineUtc))throw Error('D_PRIVATE_INPUT_NOT_READY');
-  const procCheck=`$p=Get-CimInstance Win32_Process -Filter ('ProcessId='+$args[0]);if($null -eq $p){throw 'PID'};
-    $o=Invoke-CimMethod -InputObject $p -MethodName GetOwnerSid;
-    if($p.ExecutablePath -ine $args[1] -or $o.Sid -ne [Security.Principal.WindowsIdentity]::GetCurrent().User.Value){throw 'OWNER'};'READY_HOST_MATCH'`;
-  if(execFileSync(pwsh,['-NoProfile','-NonInteractive','-CommandWithArgs',procCheck,String(input.expectedPid),pwsh],
-    {encoding:'utf8',windowsHide:true,timeout:10000}).trim()!=='READY_HOST_MATCH')throw Error('D_PRIVATE_HOST_UNPROVEN');
+  localPhase='PRIVATE_HOST';
+  verifyDPrivateInputHost(input.expectedPid);
+  localPhase='PRIVATE_RECEIVE';
   ({credentials,supplier,supplierEvidence}=await receiveDConfirmedHeadCredentials({input,supplierConfirmation:plan.supplierConfirmation,
     directory:plan.directory,runId:plan.runId,bindingSha256:plan.sourceAdoption.sha256,tokenLabel:plan.tokenLabel,
-    onReceived:event=>process.stdout.write(JSON.stringify(event)+'\n')}));
+    onReceived:event=>{localPhase='SUPPLIER_CONFIRMATION';process.stdout.write(JSON.stringify(event)+'\n');}}));
+  localPhase='FINAL_ADMISSION';
   validateDPlan(plan);
   if(!manual.ready().ready||!bridge.ready().ready)throw Error('D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND');
   const start=Date.now(),deadlineUtc=new Date(start+10800000).toISOString();
@@ -288,6 +318,7 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     moderatorId:plan.moderatorId,moderatorContextReceiptSha256:plan.moderatorEvidence.sha256,
     frozenArtifactSha256:plan.frozenArtifactSha256,observerSourceSha256:plan.observerSourceSha256};
   }
+  localPhase='PORTS_BINDING';
   const deadlineUtc=binding.deadlineUtc;
   const journal=openDJournal({directory:plan.directory,binding,resume,admit:()=>Object.entries(checked.adoption.sourceHashes)
     .every(([relative,sha])=>pin(path.join(root,relative))===sha)});
@@ -377,12 +408,13 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
   };
   livePorts.add(ports);
   return {journal,ports,binding,targets:checked.t,resumeCleanup:resume};
-  }catch{
+  }catch(error){
     for(const k of Object.keys(credentials??{}))credentials[k]='';credentials=null;
     const failureFile=path.join(plan.directory,'LOADER_STOP.'+randomUUID()+'.safe.json');
     try{sealDRecord(failureFile,{kind:'D_LOADER_STOP_NO_RETRY',runId:plan.runId,
       authorizationSha256:plan.sourceAdoption.sha256,credentialInputMayBeConsumed:!resume,
-      ownerMustRevokeExactToken:!resume,tokenLabel:plan.tokenLabel,source:'LOCAL_LOADER_FAILURE_NOT_PROVIDER_RESULT'});}catch{}
+      ownerMustRevokeExactToken:!resume,tokenLabel:plan.tokenLabel,source:'LOCAL_LOADER_FAILURE_NOT_PROVIDER_RESULT',
+      ...dLoaderFailureDetails(localPhase,error)});}catch{}
     if(!resume)process.stdout.write(JSON.stringify({event:'OWNER_TOKEN_REVOCATION_REQUIRED',runId:plan.runId,
       tokenLabel:plan.tokenLabel,reason:'LOADER_STOP_NO_RETRY'})+'\n');
     throw Error('D_RUNTIME_LOADER_STOPPED_NO_RETRY');
