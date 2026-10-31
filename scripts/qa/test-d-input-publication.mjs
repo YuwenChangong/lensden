@@ -7,8 +7,8 @@ import {randomUUID} from 'node:crypto';
 import {execFileSync,spawn} from 'node:child_process';
 import {createServer} from 'node:net';
 import {dHash} from './d-execution-journal.mjs';
-import {startDInputCoordinator,publishDInputRecord,assertDInputAdmissionActive,publishDInputAdmission} from './d-input-coordination.mjs';
-import {receiveDConfirmedHeadCredentials} from './d-execution-runtime.mjs';
+import {startDInputCoordinator,superviseDInputCoordinator,publishDInputRecord,assertDInputAdmissionActive,publishDInputAdmission} from './d-input-coordination.mjs';
+import {receiveDConfirmedHeadCredentials,resolveDInputContextDeadline,dNativeProcessEnvironment} from './d-execution-runtime.mjs';
 
 function fixture(t,options={},root=os.tmpdir()) {
   const directory=fs.mkdtempSync(path.join(root,'ogh-input-publication-'));
@@ -34,6 +34,121 @@ function fixture(t,options={},root=os.tmpdir()) {
   return {directory,nonce,binding,runId,context,at,parameters,ready,terminal,ref};
 }
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+
+function readinessWindow(t,mutate=()=>{}) {
+  const f=fixture(t),start=Date.now();
+  const enterPath=f.at(`OWNER_ENTER.${f.nonce}.safe.json`);
+  const enter=JSON.parse(fs.readFileSync(enterPath));
+  enter.recordedUtc=new Date(start-1000).toISOString();fs.writeFileSync(enterPath,JSON.stringify(enter));
+  const readyRef={path:enterPath,sha256:dHash(fs.readFileSync(enterPath))};
+  const gates=f.ref(f.at('window-gates.safe.json'),{ownerPreparationRef:readyRef});
+  const activation={kind:'ACTUAL_READINESS_CONTEXT_WINDOW_NOT_D_WINDOW',sourceAdoptionSha256:f.binding,
+    runId:f.runId,account:f.parameters.account,bucket:f.parameters.bucket,ownerPreparationRef:readyRef,
+    activatedUtc:new Date(start).toISOString(),deadlineUtc:new Date(start+3600000).toISOString()};
+  mutate(activation);
+  const contextActivation=f.ref(f.at(`CONTEXT_WINDOW.${f.binding}.safe.json`),activation);
+  const plan={directory:f.directory,runId:f.runId,sourceAdoption:{sha256:f.binding},
+    inputCoordination:{nonce:f.nonce},runtimeAdmission:gates,contextActivation};
+  const adoption={additionalContextReadsProposed:{newIndependentQuota:true,windowMinutes:60,
+    LockGET:1,BucketPropertiesGET:1,perCallMaxMs:30000,retries:0}};
+  return {...f,plan,adoption,start,activation};
+}
+
+test('readiness window: new approved60min contract resolves only from bound actual preparation',t=>{
+  const f=readinessWindow(t);
+  assert.equal(resolveDInputContextDeadline(f.plan,f.adoption),f.activation.deadlineUtc);
+  assert.throws(()=>resolveDInputContextDeadline({...f.plan,contextActivation:undefined},f.adoption));
+  fs.appendFileSync(f.plan.contextActivation.path,' ');
+  assert.throws(()=>resolveDInputContextDeadline(f.plan,f.adoption));
+});
+
+test('readiness window: expired legacy deadline cannot fall through to a new readiness window',t=>{
+  const f=readinessWindow(t),old='2026-10-31T03:45:31.300Z';
+  f.adoption.additionalContextReadsProposed.originalContextDeadlineUtc=old;
+  assert.equal(resolveDInputContextDeadline(f.plan,f.adoption),old);
+});
+
+test('readiness window: changed identity duration future readiness or expired activation fail closed',t=>{
+  const changes=[v=>{v.runId=randomUUID();},v=>{v.deadlineUtc=new Date(Date.parse(v.deadlineUtc)+1).toISOString();},
+    v=>{v.activatedUtc=new Date(Date.now()+60000).toISOString();v.deadlineUtc=new Date(Date.now()+3660000).toISOString();},
+    v=>{v.ownerPreparationRef={path:v.ownerPreparationRef.path,sha256:'0'.repeat(64)};}];
+  for(const change of changes){const f=readinessWindow(t,change);assert.throws(()=>resolveDInputContextDeadline(f.plan,f.adoption));}
+  const f=readinessWindow(t);
+  assert.throws(()=>resolveDInputContextDeadline(f.plan,f.adoption,{now:()=>f.start+3600000}));
+});
+
+for(const stop of [false,true])test('native supervisor: actual single child '+(stop?'is reaped on STOP':'closes with actual exit evidence'),async t=>{
+  const f=fixture(t);let launches=0,child;
+  const source=stop?'setInterval(()=>{},1000)':'setTimeout(()=>process.exit(0),100)';
+  admit(f);if(!stop)publishDInputRecord(f.at(`INPUT_TERMINAL.${f.nonce}.safe.json`),f.terminal);
+  const done=superviseDInputCoordinator(f.context,{launchNative:planPath=>{
+    launches++;
+    assert.equal(fs.existsSync(f.at(`NATIVE_LAUNCH_INTENT.${f.nonce}.safe.json`)),true);
+    assert.equal(JSON.parse(fs.readFileSync(planPath)).sourceAdoption.sha256,f.binding);
+    const names=['SystemRoot','WINDIR','TEMP','TMP'];
+    child=spawn(process.execPath,['--input-type=module','-e',source],{windowsHide:true,
+      env:Object.fromEntries(names.filter(k=>process.env[k]).map(k=>[k,process.env[k]])),stdio:'ignore'});
+    return child;
+  }});
+  t.after(()=>{if(child?.exitCode===null&&child.signalCode===null)child.kill();});
+  if(stop){await waitFor(()=>launches===1);publishDInputRecord(f.at(`INPUT_TERMINAL.${f.nonce}.safe.json`),{
+    ...f.terminal,status:'STOPPED'});}
+  const result=await done;
+  assert.equal(launches,1);assert.equal(result.nativeClosed,true);assert.equal(result.productionPass,false);
+  const exit=JSON.parse(fs.readFileSync(f.at(`WORKSPACE_NATIVE_EXIT.${f.nonce}.safe.json`)));
+  assert.equal(exit.supervisionUnknown,false);assert.equal(exit.pid,child.pid);
+  assert.equal(result.status,stop?'STOPPED':'LOCAL_NATIVE_EXIT');
+  if(!stop)assert.equal(exit.exitCode,0);
+});
+
+test('native supervisor: admitted cleanup child survives a later observer failure',async t=>{
+  const f=fixture(t);let child;
+  admit(f);publishDInputRecord(f.at(`INPUT_TERMINAL.${f.nonce}.safe.json`),f.terminal);
+  const done=superviseDInputCoordinator(f.context,{launchNative:()=>{
+    child=spawn(process.execPath,['-e','setTimeout(()=>process.exit(0),200)'],{
+      windowsHide:true,env:Object.fromEntries(['SystemRoot','WINDIR','TEMP','TMP']
+        .filter(k=>process.env[k]).map(k=>[k,process.env[k]])),stdio:'ignore'});
+    return child;
+  }});
+  t.after(()=>{if(child?.exitCode===null&&child.signalCode===null)child.kill();});
+  await waitFor(()=>Boolean(child));
+  const start=Date.now();
+  publishDInputAdmission({...f.context,entryDeadlineUtc:f.context.deadlineUtc,admittedUtc:new Date(start).toISOString(),
+    deadlineUtc:new Date(start+10800000).toISOString(),businessStopUtc:new Date(start+8100000).toISOString()});
+  publishDInputRecord(f.at(`INPUT_TERMINAL.${f.nonce}.safe.json.failure.safe.json`),{syntheticFailure:true});
+  const result=await done;
+  assert.equal(result.status,'ADMITTED_OBSERVER_STOPPED_NOT_D_PASS');
+  assert.equal(result.nativeClosed,true);assert.equal(child.exitCode,0);assert.equal(child.signalCode,null);
+});
+
+test('native supervisor: unreadable already-ADMIT decision never implies kill permission',async t=>{
+  const f=fixture(t);let child;
+  admit(f);publishDInputRecord(f.at(`INPUT_TERMINAL.${f.nonce}.safe.json`),f.terminal);
+  const done=superviseDInputCoordinator(f.context,{launchNative:()=>{
+    child=spawn(process.execPath,['-e','setTimeout(()=>process.exit(0),200)'],{windowsHide:true,
+      env:dNativeProcessEnvironment(Object.fromEntries(['SystemRoot','WINDIR','TEMP','TMP','PATH','PATHEXT']
+        .filter(k=>process.env[k]).map(k=>[k,process.env[k]]))),stdio:'ignore'});
+    return child;
+  }});
+  t.after(()=>{if(child?.exitCode===null&&child.signalCode===null)child.kill();});
+  await waitFor(()=>Boolean(child));
+  const start=Date.now();
+  publishDInputAdmission({...f.context,entryDeadlineUtc:f.context.deadlineUtc,admittedUtc:new Date(start).toISOString(),
+    deadlineUtc:new Date(start+10800000).toISOString(),businessStopUtc:new Date(start+8100000).toISOString()});
+  fs.writeFileSync(f.at(`INPUT_DECISION.${f.nonce}.safe.json`),'{unreadable');
+  const result=await done;
+  assert.equal(result.status,'LOCAL_DECISION_UNKNOWN');assert.equal(result.productionPass,false);
+  assert.equal(result.nativeClosed,true);assert.equal(child.exitCode,0);assert.equal(child.signalCode,null);
+});
+
+test('native supervisor: real child resolves Git with the exact production environment whitelist',async()=>{
+  const environment=dNativeProcessEnvironment({...Object.fromEntries(['SystemRoot','WINDIR','TEMP','TMP','PATH','PATHEXT']
+    .filter(k=>process.env[k]).map(k=>[k,process.env[k]])),NODE_OPTIONS:'FORBIDDEN',UNRELATED_SECRET:'FORBIDDEN'});
+  assert.equal(environment.NODE_OPTIONS,undefined);assert.equal(environment.UNRELATED_SECRET,undefined);
+  const source="require('node:child_process').execFileSync('git',['rev-parse','HEAD'],{stdio:'ignore'});";
+  const child=spawn(process.execPath,['-e',source],{env:environment,windowsHide:true,stdio:'ignore'});
+  assert.equal(await new Promise((resolve,reject)=>{child.once('error',reject);child.once('close',resolve);}),0);
+});
 async function waitFor(predicate) {const end=Date.now()+3000;while(!predicate()){if(Date.now()>end)throw Error('FIXTURE_TIMEOUT');await pause(5);}}
 function admit(f) {
   publishDInputRecord(f.at(`HEAD_INPUT.${f.nonce}.parameters.safe.json`),f.parameters);

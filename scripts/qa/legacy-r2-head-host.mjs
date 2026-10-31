@@ -34,7 +34,7 @@ function response(ref) {
 // Exact H metadata caller only. It owns a separate durable ledger and cloned signer;
 // neither the D six-HEAD budget nor the frozen B queries can be consumed here.
 export async function runLegacyR2HeadHost({plan,credentials,supplier,supplierEvidence,
-  mode='PRODUCTION',requestHandler,verifyPrivateDirectory,assertAdmissionActive,signal,now=Date.now}={}) {
+  mode='PRODUCTION',inspect=false,requestHandler,verifyPrivateDirectory,assertAdmissionActive,signal,now=Date.now}={}) {
   let verifier,guard,watch;
   const observations=[];
   try {
@@ -67,17 +67,17 @@ export async function runLegacyR2HeadHost({plan,credentials,supplier,supplierEvi
       if(target.ordinal!==i+1||typeof target.key!=='string')fail();return target.key;
     });
     const bucketEvidence=bound(plan.bucketEvidence),lockEvidence=bound(plan.lockEvidence),continuity=bound(plan.continuityEvidence);
-    const supplierRecord=bound(supplierEvidence,4096);
-    if(!supplier||supplier.account!==account||supplier.bucket!==bucket||supplier.permission!=='object-read-only'
+    const supplierRecord=inspect?null:bound(supplierEvidence,4096);
+    if(!inspect&&(!supplier||supplier.account!==account||supplier.bucket!==bucket||supplier.permission!=='object-read-only'
       ||supplier.ttlHours!==24||supplier.createdAfterVisiblePrompt!==true||!stamp(supplier.issuedUtc)||!stamp(supplier.expiresUtc)
       ||Date.parse(supplier.issuedUtc)>Date.parse(plan.notBeforeUtc)||Date.parse(supplier.expiresUtc)<Date.parse(plan.deadlineUtc)
       ||Date.parse(supplier.expiresUtc)-Date.parse(supplier.issuedUtc)>86400000
       ||['account','bucket','permission','ttlHours','tokenLabel','issuedUtc','expiresUtc','createdAfterVisiblePrompt']
-        .some(key=>supplierRecord[key]!==supplier[key]))fail();
+        .some(key=>supplierRecord[key]!==supplier[key])))fail();
     const ensureContext=()=>{
       if(signal?.aborted||assertAdmissionActive&&assertAdmissionActive()!==true)fail();
       // Re-read every pinned source before each irreversible debit/dispatch.
-      bound(plan.sourceAdoption);bound(plan.ownerApproval);bound(plan.targets);bound(supplierEvidence,4096);
+      bound(plan.sourceAdoption);bound(plan.ownerApproval);bound(plan.targets);if(!inspect)bound(supplierEvidence,4096);
       bound(plan.bucketEvidence);bound(plan.lockEvidence);bound(plan.continuityEvidence);
       if(sources.some(name=>adoption.sourceHashes['scripts/qa/'+name]!==hashFile(path.join(root,'scripts/qa',name))))fail();
       const time=now(),rawBucket=response(bucketEvidence.privateResponse),rawLock=response(lockEvidence.privateResponse);
@@ -106,6 +106,7 @@ export async function runLegacyR2HeadHost({plan,credentials,supplier,supplierEvi
       return true;
     };
     ensureContext();
+    if(inspect)return {status:'NONCREDENTIAL_LEGACY_BINDINGS_READY',productionPass:false,used:0};
     // Adoption-wide, not caller-selected run identity: reconstruction never resets HEAD2.
     publishDInputRecord(path.join(plan.directory,'LEGACY_HEAD_SCOPE.'+plan.sourceAdoption.sha256+'.used.safe.json'),{
       kind:'SINGLE_USE_LEGACY_HEAD_SCOPE_RESERVATION',authorizationSha256:plan.sourceAdoption.sha256,

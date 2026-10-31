@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import {execFileSync} from 'node:child_process';
+import {execFileSync,spawn} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {dHash,openDJournal,sealDRecord,D_LIMITS} from './d-execution-journal.mjs';
@@ -20,6 +20,10 @@ const uuid=v=>typeof v==='string'&&/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}
 const digest=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 const timestamp=v=>typeof v==='string'&&Number.isFinite(Date.parse(v));
 const pin=file=>dHash(fs.readFileSync(file));
+export function dNativeProcessEnvironment(environment=process.env) {
+  const names=['SystemRoot','WINDIR','TEMP','TMP','PATH','PATHEXT','QA_SUPABASE_URL','QA_SUPABASE_SERVICE_ROLE_KEY'];
+  return Object.fromEntries(names.filter(k=>environment[k]!==undefined).map(k=>[k,environment[k]]));
+}
 export function verifyDPrivateInputHost(pid) {
   if(process.platform!=='win32'||!Number.isSafeInteger(pid)||pid<=0)throw Error('D_PRIVATE_HOST_UNPROVEN');
   try {
@@ -80,6 +84,33 @@ function supplierHandoff({input,supplierConfirmation,directory}) {
 export function assertDSupplierDeadline(supplier,deadlineUtc) {
   if(!timestamp(supplier?.expiresUtc)||!timestamp(deadlineUtc)||Date.parse(supplier.expiresUtc)<Date.parse(deadlineUtc))
     throw Error('D_SUPPLIER_LIFETIME_UNPROVEN');
+}
+
+export function resolveDInputContextDeadline(plan,adoption,{now=Date.now}={}) {
+  const proposed=adoption.additionalContextReadsProposed??{};
+  if(Object.hasOwn(proposed,'originalContextDeadlineUtc'))return proposed.originalContextDeadlineUtc;
+  const fail=()=>{throw Error('D_ORIGINAL_RECOVERY_WINDOW_EXPIRED');};
+  if(proposed.newIndependentQuota!==true||proposed.windowMinutes!==60||proposed.LockGET!==1
+    ||proposed.BucketPropertiesGET!==1||proposed.perCallMaxMs!==30000||proposed.retries!==0
+    ||!digest(plan.sourceAdoption?.sha256)||!uuid(plan.inputCoordination?.nonce)
+    ||plan.contextActivation?.path!==path.join(plan.directory,'CONTEXT_WINDOW.'+plan.sourceAdoption.sha256+'.safe.json'))fail();
+  const activation=JSON.parse(readBound(plan.contextActivation,4096));
+  const gates=JSON.parse(readBound(plan.runtimeAdmission));
+  const readyRef=activation.ownerPreparationRef;
+  if(activation.kind!=='ACTUAL_READINESS_CONTEXT_WINDOW_NOT_D_WINDOW'
+    ||activation.sourceAdoptionSha256!==plan.sourceAdoption.sha256||activation.runId!==plan.runId
+    ||activation.account!==account||activation.bucket!==bucket
+    ||readyRef?.path!==path.join(plan.directory,'OWNER_ENTER.'+plan.inputCoordination.nonce+'.safe.json')
+    ||readyRef.path!==gates.ownerPreparationRef?.path||readyRef.sha256!==gates.ownerPreparationRef.sha256
+    ||!timestamp(activation.activatedUtc)||!timestamp(activation.deadlineUtc)
+    ||Date.parse(activation.deadlineUtc)!==Date.parse(activation.activatedUtc)+3600000
+    ||Date.parse(activation.activatedUtc)>now()||Date.parse(activation.deadlineUtc)<=now())fail();
+  const ready=JSON.parse(readBound(readyRef,4096));
+  if(ready.binding!==plan.sourceAdoption.sha256||ready.nonce!==plan.inputCoordination.nonce
+    ||ready.currentPreparationConfirmed!==true||ready.tokenNotYetCreated!==true||!timestamp(ready.recordedUtc)
+    ||Date.parse(ready.recordedUtc)>Date.parse(activation.activatedUtc)
+    ||Date.parse(activation.activatedUtc)-Date.parse(ready.recordedUtc)>600000)fail();
+  return activation.deadlineUtc;
 }
 
 // Credentials stay in this native process while the trusted owner-result importer
@@ -295,20 +326,46 @@ export async function coordinateDPrivateInput(planFile) {
   const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
   privateDirectory(plan.directory);
   const checked=validateDPlan(plan,{resume:true}),input=plan.inputCoordination;
-  const expectedEnd=checked.adoption.additionalContextReadsProposed?.originalContextDeadlineUtc;
+  const expectedEnd=resolveDInputContextDeadline(plan,checked.adoption);
   if(!uuid(input?.nonce)||input.deadlineUtc!==expectedEnd||!timestamp(expectedEnd)
     ||Date.now()>=Date.parse(expectedEnd)||Date.parse(expectedEnd)-Date.now()>3600000)
     throw Error('D_ORIGINAL_RECOVERY_WINDOW_EXPIRED');
-  const {startDInputCoordinator}=await import('./d-input-coordination.mjs');
-  const coordinator=startDInputCoordinator({directory:plan.directory,nonce:input.nonce,
+  const {superviseDInputCoordinator}=await import('./d-input-coordination.mjs');
+  return superviseDInputCoordinator({directory:plan.directory,nonce:input.nonce,
     binding:plan.sourceAdoption.sha256,runId:plan.runId,tokenLabel:plan.tokenLabel,deadlineUtc:expectedEnd,
-    verifyPrivateDirectory:directory=>{privateDirectory(directory);return true;}});
-  return coordinator.done;
+    verifyPrivateDirectory:directory=>{privateDirectory(directory);return true;}},{launchNative:nativePlan=>{
+      if(pin(process.execPath)!=='58e74bf02fc5bbacc41dcb8bef089961cd5bddd37830b87784e4fc624d145d1f')
+        throw Error('D_PRIVATE_HOST_UNPROVEN');
+      validateDPlan(JSON.parse(fs.readFileSync(nativePlan,'utf8')));
+      return spawn(process.execPath,[fileURLToPath(new URL('./d-execution-entrypoint.mjs',import.meta.url)),
+        '--execute-production','--plan',nativePlan],{cwd:root,windowsHide:true,
+        env:dNativeProcessEnvironment(),
+        stdio:['ignore','ignore','ignore']});
+    }});
+}
+
+function assertDLegacyHeadReferences(plan) {
+  const h=plan.legacyHeadPlan;
+  if(h?.sourceAdoption?.sha256!==plan.sourceAdoption.sha256||h.ownerApproval?.sha256!==plan.ownerApproval.sha256
+    ||h.targets?.sha256!==plan.targets.sha256||h.bucketEvidence?.sha256!==plan.bucketEvidence.sha256
+    ||h.connectionBindingSha256!==plan.connectionBindingSha256)throw Error('D_LEGACY_SCOPE_NOT_BOUND');
 }
 
 export async function loadDProductionRuntime(planFile,{inspect=false,resume=false}={}) {
   privateDirectory(path.dirname(planFile));const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
   privateDirectory(plan.directory);const checked=validateDPlan(plan,{inspect,resume});
+  const inputContextEnd=resume?null:resolveDInputContextDeadline(plan,checked.adoption);
+  if(!resume&&(!timestamp(inputContextEnd)||Date.now()>=Date.parse(inputContextEnd)
+    ||Date.parse(inputContextEnd)-Date.now()>3600000))throw Error('D_ORIGINAL_RECOVERY_WINDOW_EXPIRED');
+  let legacyPreflight={status:'NOT_REQUESTED'};
+  if(plan.legacyHeadPlan&&!resume) {
+    try {
+      assertDLegacyHeadReferences(plan);
+      const {runLegacyR2HeadHost}=await import('./legacy-r2-head-host.mjs');
+      legacyPreflight=await runLegacyR2HeadHost({plan:plan.legacyHeadPlan,inspect:true,
+        verifyPrivateDirectory:directory=>{privateDirectory(directory);return true;},assertAdmissionActive:()=>true});
+    }catch{legacyPreflight={status:'BLOCKED',productionPass:false,reason:'LEGACY_NONCREDENTIAL_BINDINGS_UNPROVEN'};}
+  }
   const {createDManualExecutionCarrier,createDMcpExecutionBridge}=await import('./d-execution-carriers.mjs');
   const {createProtectedActorCarrier}=await import('./d-protected-actor-carrier.mjs');
   const sourcePath=fileURLToPath(import.meta.url),sourceSha256=pin(sourcePath);
@@ -326,7 +383,7 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
       deadlineUtc:new Date(Date.now()+10000).toISOString()}),
     onReady:job=>process.stdout.write(JSON.stringify({event:'CODEX_MCP_TOOL_CALL_REQUIRED',requestId:job.requestId,requestPath:job.requestPath})+'\n')});
   if(!manual.ready().ready||!bridge.ready().ready)throw Error('D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND');
-  if(inspect)return {status:'NONCREDENTIAL_CARRIERS_BOUND_RUNTIME_ASSERTIONS_REMAIN',productionAuthority:false};
+  if(inspect)return {status:'NONCREDENTIAL_CARRIERS_BOUND_RUNTIME_ASSERTIONS_REMAIN',productionAuthority:false,legacyPreflight};
   if(!resume)supplierHandoff({input:plan.credentialInput,supplierConfirmation:plan.supplierConfirmation,directory:plan.directory});
   const claimDirectory=path.join(os.homedir(),'AppData/Local/OpenGlassHub/mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302/emergency-media-protection-v1/final-production-closure-v1');
   privateDirectory(claimDirectory);claimDExecution({claimDirectory,plan,resume});
@@ -341,7 +398,6 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
       ||binding.sourceCommit!==checked.adoption.sourceCommit||Date.now()>=Date.parse(binding.deadlineUtc))throw Error('D_ORIGINAL_RECOVERY_WINDOW_EXPIRED');
   }else{
   const {assertDInputAdmissionActive,publishDInputRecord}=await import('./d-input-coordination.mjs');
-  const inputContextEnd=checked.adoption.additionalContextReadsProposed?.originalContextDeadlineUtc;
   if(plan.inputCoordination?.nonce!==plan.credentialInput?.nonce||plan.inputCoordination?.deadlineUtc!==inputContextEnd)
     throw Error('D_INPUT_COORDINATOR_STOPPED');
   inputCoordination={directory:plan.directory,nonce:plan.credentialInput.nonce,binding:plan.sourceAdoption.sha256,
@@ -369,16 +425,13 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
     if(Date.now()>=Date.parse(plan.supplierConfirmation.deadlineUtc))throw Error('D_INPUT_COORDINATOR_STOPPED');
     await new Promise(resolve=>setTimeout(resolve,50));
   }
-  if(plan.legacyHeadPlan) {
+  if(plan.legacyHeadPlan&&legacyPreflight.status==='NONCREDENTIAL_LEGACY_BINDINGS_READY') {
     // Shared signer remains private to this process. H owns a cloned signer and
     // separate durable HEAD2 ledger; an H observation is never D or durable-H PASS.
     const legacyPlan=structuredClone(plan.legacyHeadPlan);
     let legacyResult;
     try {
-      if(legacyPlan.sourceAdoption?.sha256!==plan.sourceAdoption.sha256
-        ||legacyPlan.ownerApproval?.sha256!==plan.ownerApproval.sha256||legacyPlan.targets?.sha256!==plan.targets.sha256
-        ||legacyPlan.bucketEvidence?.sha256!==plan.bucketEvidence.sha256||legacyPlan.connectionBindingSha256!==plan.connectionBindingSha256)
-        throw Error();
+      assertDLegacyHeadReferences(plan);
       const start=Date.now();
       legacyPlan.notBeforeUtc=new Date(start).toISOString();
       legacyPlan.deadlineUtc=new Date(Math.min(start+3600000,Date.parse(inputCoordination.deadlineUtc),

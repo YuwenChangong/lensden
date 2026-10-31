@@ -78,12 +78,12 @@ const reasons=new Set(['INVALID_FILE','MALFORMED_JSON','INVALID_RECORD','IDENTIT
   'PUBLICATION_FAILED','LOCAL_STOP_REQUESTED','PUBLISHER_FAILED','NATIVE_EXIT_PREMATURE']);
 
 export function startDInputCoordinator(options) {
-  const {directory,nonce,binding,runId,tokenLabel,deadlineUtc,pollMs=100,mode='PRODUCTION',verifyPrivateDirectory}=options??{};
+  const {directory,nonce,binding,runId,tokenLabel,deadlineUtc,pollMs=100,mode='PRODUCTION',verifyPrivateDirectory,onNativePlan}=options??{};
   if(!path.isAbsolute(directory??'')||!fs.lstatSync(directory).isDirectory()
     ||!/^[a-f0-9-]{36}$/.test(nonce??'')||!/^[a-f0-9]{64}$/.test(binding??'')
     ||!/^[a-f0-9-]{36}$/.test(runId??'')||!/^[A-Za-z0-9_-]{1,96}$/.test(tokenLabel??'')
     ||!utc(deadlineUtc)||Date.parse(deadlineUtc)<=Date.now()||!Number.isInteger(pollMs)||pollMs<5||pollMs>1000
-    ||!['PRODUCTION','SYNTHETIC'].includes(mode)
+    ||!['PRODUCTION','SYNTHETIC'].includes(mode)||(onNativePlan!==undefined&&typeof onNativePlan!=='function')
     ||mode==='PRODUCTION'&&(typeof verifyPrivateDirectory!=='function'||verifyPrivateDirectory(directory)!==true))
     throw Error('LOCAL_COORDINATOR_NOT_ADMITTED');
   const at=name=>path.join(directory,name),end=Date.parse(deadlineUtc);
@@ -98,7 +98,8 @@ export function startDInputCoordinator(options) {
   let timer,settled=false,stage='WAITING',status='WAITING',planPublications=0,inputDeadline=null,supplierDeadline=null,transferred=false,admittedEnd=null;
   let resolveDone;
   const done=new Promise(resolve=>{resolveDone=resolve;});
-  const state=()=>({status,stage,planPublications,inputDeadline,supplierDeadline,providerRequests:0,productionPass:false});
+  const state=()=>({status,stage,planPublications,inputDeadline,supplierDeadline,
+    admittedDeadlineUtc:admittedEnd===null?null:new Date(admittedEnd).toISOString(),providerRequests:0,productionPass:false});
   const finish=(next,reason)=>{
     if(settled)return;
     settled=true;clearInterval(timer);status=next;
@@ -193,6 +194,8 @@ export function startDInputCoordinator(options) {
       stage='NATIVE_PLAN_PUBLICATION';
       try{publishDInputRecord(files.nativePlan,plan);}catch{throw Error('PUBLICATION_FAILED');}
       planPublications=1;
+      stage='NATIVE_LAUNCH';
+      onNativePlan?.(files.nativePlan);
     } catch(error) {
       const reason=reasons.has(error?.message)?error.message:
         ['EACCES','EBUSY','EPERM','ENOENT','EEXIST'].includes(error?.code)?error.code:'LOCAL_IO_UNCLASSIFIED';
@@ -201,4 +204,51 @@ export function startDInputCoordinator(options) {
   };
   timer=setInterval(tick,pollMs);tick();
   return {done,state,stop:()=>finish('STOPPED','LOCAL_STOP_REQUESTED')};
+}
+
+// Own the one real child handoff. A terminal/exit simulation cannot substitute
+// for this callback's actual process handle and close event.
+export async function superviseDInputCoordinator(options,{launchNative}={}) {
+  if(typeof launchNative!=='function')throw Error('LOCAL_NATIVE_LAUNCH_REQUIRED');
+  let child,closed,closeDone=false,launched=false,control;
+  const at=name=>path.join(options.directory,name);
+  control=startDInputCoordinator({...options,onNativePlan:planPath=>{
+    if(launched)throw Error('LOCAL_NATIVE_ALREADY_LAUNCHED');
+    launched=true;
+    publishDInputRecord(at(`NATIVE_LAUNCH_INTENT.${options.nonce}.safe.json`),{
+      kind:'LOCAL_SINGLE_NATIVE_LAUNCH_NOT_PROVIDER_DISPATCH',binding:options.binding,nonce:options.nonce,
+      runId:options.runId,planPath,planSha256:readRecord(planPath).sha256,recordedUtc:new Date().toISOString()});
+    child=launchNative(planPath);
+    if(typeof child?.once!=='function'||typeof child.kill!=='function')
+      throw Error('LOCAL_NATIVE_HANDLE_UNPROVEN');
+    closed=new Promise(resolve=>{
+      child.once('error',()=>control?.stop());
+      child.once('close',(code)=>{
+        closeDone=true;
+        try{publishDInputRecord(at(`WORKSPACE_NATIVE_EXIT.${options.nonce}.safe.json`),{
+          kind:'ACTUAL_NATIVE_EXIT_NOT_CLEANUP_PASS',binding:options.binding,nonce:options.nonce,
+          pid:child.pid??null,exitCode:Number.isInteger(code)?code:-1,supervisionUnknown:!Number.isSafeInteger(child.pid),
+          recordedUtc:new Date().toISOString()});}catch{control?.stop();}
+        resolve();
+      });
+    });
+    if(!Number.isSafeInteger(child.pid)||child.pid<=0)throw Error('LOCAL_NATIVE_HANDLE_UNPROVEN');
+  }});
+  const result=await control.done;
+  if(child&&!closeDone){
+    // Observer failure after ADMIT never kills the admitted cleanup path.
+    const decision=at(`INPUT_DECISION.${options.nonce}.safe.json`);
+    let admitted,provenStop=false;
+    try{const value=validDecision(readRecord(decision,4096).value,options);
+      if(value.decision==='ADMIT')admitted=value;else provenStop=true;}catch{}
+    const wait=async ms=>{let timer;try{return await Promise.race([closed.then(()=>true),
+      new Promise(resolve=>{timer=setTimeout(()=>resolve(false),Math.max(0,ms));})]);}finally{clearTimeout(timer);}};
+    // An unreadable decision is not STOP. Keep supervising until real exit or
+    // the latest already-authorized D end; this grants no extra child authority.
+    const hardEnd=Date.parse(admitted?.deadlineUtc??result.admittedDeadlineUtc??options.deadlineUtc)
+      +(admitted||result.admittedDeadlineUtc?0:10800000);
+    if(!provenStop&&result.status!=='LOCAL_D_WINDOW_EXPIRED')await wait(hardEnd-Date.now());
+    if(!closeDone){child.kill('SIGTERM');if(!await wait(3000))throw Error('LOCAL_NATIVE_EXIT_UNPROVEN');}
+  }
+  return {...result,nativeLaunched:launched,nativeClosed:closeDone,productionPass:false};
 }

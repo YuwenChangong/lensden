@@ -77,6 +77,16 @@ test('legacy host: exact SDK HEAD2 follows durable intents and keeps results pri
   assert.equal(fake.accessKeyId,'a'.repeat(32));
 });
 
+test('legacy preflight: all noncredential bindings checked without signer reservation or dispatch',async t=>{
+  const f=fixture(t);
+  const result=await runLegacyR2HeadHost({...f,credentials:undefined,supplier:undefined,supplierEvidence:undefined,
+    mode:'SYNTHETIC',inspect:true});
+  assert.equal(result.status,'NONCREDENTIAL_LEGACY_BINDINGS_READY');assert.equal(result.productionPass,false);
+  assert.equal(f.dispatches(),0);
+  assert.equal(fs.readdirSync(f.directory).some(n=>/\.used\./.test(n)),false);
+  await assert.rejects(runLegacyR2HeadHost({...f,plan:{...f.plan,runId:randomUUID()},mode:'SYNTHETIC',inspect:true}));
+});
+
 test('legacy host: UNKNOWN consumes one attempt and stops before the second key',async t=>{
   const f=fixture(t,[403,200]),result=await runLegacyR2HeadHost({...f,credentials:fake,mode:'SYNTHETIC'});
   assert.equal(result.status,'BLOCKED');assert.equal(f.dispatches(),1);
