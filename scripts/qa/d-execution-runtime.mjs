@@ -38,13 +38,13 @@ export function verifyDPrivateInputHost(pid) {
   }catch{throw Error('D_PRIVATE_HOST_UNPROVEN');}
 }
 
-const loaderPhases=new Set(['RECOVERY_BINDING','PRIVATE_READY','PRIVATE_HOST','PRIVATE_RECEIVE',
+const loaderPhases=new Set(['REVOCATION_DUTY','RECOVERY_BINDING','PRIVATE_READY','PRIVATE_HOST','PRIVATE_RECEIVE',
   'SUPPLIER_CONFIRMATION','FINAL_ADMISSION','PORTS_BINDING']);
 const loaderReasons=new Set(['D_ORIGINAL_RECOVERY_WINDOW_EXPIRED','D_PRIVATE_INPUT_NOT_READY',
   'D_PRIVATE_HOST_UNPROVEN','D_HEAD_PRIVATE_INPUT_INVALID','D_ORDINARY_TOKEN_THIRD_FIELD_FORBIDDEN',
   'D_SUPPLIER_CONFIRMATION_INVALID','D_SUPPLIER_CONFIRMATION_EXPIRED','D_SUPPLIER_HANDOFF_NOT_ADMITTED',
   'D_SUPPLIER_LIFETIME_UNPROVEN','D_ACTUAL_LOCAL_CARRIERS_NOT_BOUND','D_RUNTIME_GATES_NOT_ADMITTED',
-  'D_STANDARD_CONTEXT_STALE','D_RUNTIME_SOURCE_CHANGED','D_SOURCE_COMMIT_MISMATCH']);
+  'D_STANDARD_CONTEXT_STALE','D_RUNTIME_SOURCE_CHANGED','D_SOURCE_COMMIT_MISMATCH','D_REVOCATION_DUTY_UNPROVEN']);
 export function dLoaderFailureDetails(phase,error) {
   // Never persist raw exceptions, command output or credential-derived values.
   return {localPhase:loaderPhases.has(phase)?phase:'UNKNOWN',
@@ -209,6 +209,19 @@ export function claimDExecution({claimDirectory,plan,resume=false}) {
   }
   return file;
 }
+export function sealDRevocationDutyBeforeInput(plan) {
+  try {
+    if(!path.isAbsolute(plan.directory)||!uuid(plan.runId)||!digest(plan.sourceAdoption?.sha256)
+      ||typeof plan.tokenLabel!=='string'||!/^[A-Za-z0-9_-]{1,96}$/.test(plan.tokenLabel))throw Error();
+    // Superseded pre-business attempts share this directory. Never overwrite or
+    // reuse their duty record; bind the new append-only record to its approval.
+    const file=path.join(plan.directory,'TOKEN_REVOCATION_DUTY.before-input.'+plan.sourceAdoption.sha256+'.safe.json');
+    sealDRecord(file,{kind:'TOKEN_REVOCATION_DUTY_BEFORE_PRIVATE_INPUT',runId:plan.runId,
+      authorizationSha256:plan.sourceAdoption.sha256,tokenLabel:plan.tokenLabel,account,bucket,
+      status:'REQUIRES_OWNER_OFFICIAL_REVOCATION_ON_STOP',notObjectCleanup:true});
+    return file;
+  }catch{throw Error('D_REVOCATION_DUTY_UNPROVEN');}
+}
 function identityCode(p,t) {
   return `async()=>{
     const p=${JSON.stringify(p)},t=${JSON.stringify({alias:t.controlledAlias,circleId:t.existingCircleId,circleSlug:t.existingCircleSlug,namespace:t.namespace})};
@@ -286,11 +299,10 @@ export async function loadDProductionRuntime(planFile,{inspect=false,resume=fals
   if(!resume)supplierHandoff({input:plan.credentialInput,supplierConfirmation:plan.supplierConfirmation,directory:plan.directory});
   const claimDirectory=path.join(os.homedir(),'AppData/Local/OpenGlassHub/mailbox-e9f2a410-6cc1-4197-a5f3-256e9c157302/emergency-media-protection-v1/final-production-closure-v1');
   privateDirectory(claimDirectory);claimDExecution({claimDirectory,plan,resume});
-  const revocationDuty={kind:'TOKEN_REVOCATION_DUTY_BEFORE_PRIVATE_INPUT',runId:plan.runId,tokenLabel:plan.tokenLabel,
-    account,bucket,status:'REQUIRES_OWNER_OFFICIAL_REVOCATION_ON_STOP',notObjectCleanup:true};
-  if(!resume)sealDRecord(path.join(plan.directory,'TOKEN_REVOCATION_DUTY.before-input.safe.json'),revocationDuty);
-  let credentials=null,supplier=null,supplierEvidence=null,binding,localPhase='RECOVERY_BINDING';
+  let credentials=null,supplier=null,supplierEvidence=null,binding,localPhase='REVOCATION_DUTY';
   try{
+  if(!resume)sealDRevocationDutyBeforeInput(plan);
+  localPhase='RECOVERY_BINDING';
   if(resume){
     const startFile=path.join(plan.directory,'d-receipt-000001.json'),first=JSON.parse(fs.readFileSync(startFile,'utf8'));
     binding=first.fixed?.binding;
