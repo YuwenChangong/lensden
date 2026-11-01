@@ -1,5 +1,7 @@
 # Lensden — SEO 发布与监控清单
 
+> 当前本地 SEO/GEO 实现与待验证事项见 [GEO foundation](geo/README.md)。未部署；生产状态与发布门禁仍需按现有流程验证。
+
 > 历史记录：以下为 2026-05-17 的 Pages 上线检查结果与当时的操作步骤，不是当前生产指引。当前生产地址及 Sitemap 请参阅 [Search Console 上线检查清单](/about/search-console-launch-checklist/)。
 
 > 最后更新: 2026-05-17

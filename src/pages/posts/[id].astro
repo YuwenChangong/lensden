@@ -17,6 +17,8 @@ import { buildPostLikeCountMap, safeIncrementPostViewCount } from "../../lib/pos
 import { sanitizeBodyForDisplay } from "../../lib/post-body";
 import { buildProfileHref } from "../../lib/profile-links";
 import { resolveProfileAvatarUrl } from "../../lib/profile-media";
+import { discussionSchema, serializeJsonLd } from "../../lib/seo";
+import { resolveSiteOrigin } from "../../lib/site-origin";
 
 // The posts foreign keys target single profiles/circles rows; either join may be hidden by RLS.
 type PostDetailRow = {
@@ -109,6 +111,10 @@ const authorName = post
     || `${post.author_id.slice(0, 6)}…${post.author_id.slice(-4)}`
   : text.anonymous;
 const authorInitial = authorName.trim().charAt(0).toUpperCase() || "U";
+const schema = post ? discussionSchema({ post, text: displayBody ?? '',
+  url: new URL(`/posts/${post.id}/`, resolveSiteOrigin(Astro.site?.origin)).href,
+  authorName: post.profiles?.display_name?.trim() || post.profiles?.username?.trim() || undefined,
+}) : undefined;
 if (post) {
   await safeIncrementPostViewCount(supabase, post.id);
 }
@@ -130,6 +136,7 @@ if (post) {
     ogType="article"
     activeTab="feed"
   >
+    {schema && <script is:inline type="application/ld+json" set:html={serializeJsonLd({ '@context': 'https://schema.org', ...schema })} />}
     <nav class="community-breadcrumb" aria-label={text.breadcrumb}>
       <a href="/">{text.home}</a>
       <span class="community-breadcrumb__sep">/</span>
@@ -203,17 +210,6 @@ if (post) {
       <CommentsSection postId={post.id} postAuthorId={post.author_id} loginHref={commentLoginHref} localeContext={localeContext} client:visible />
     </section>
 
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": post.title,
-      "description": displayBody ? displayBody.substring(0, 160).replace(/[#*\n]/g, ' ').trim() : "",
-      "author": { "@type": "Person", "name": post.profiles?.display_name || text.anonymous },
-      "datePublished": post.created_at,
-      "dateModified": post.updated_at || post.created_at,
-      "url": canonicalUrl,
-      "publisher": { "@type": "Organization", "name": "Lensden" },
-    })} />
   </ForumLayout>
 )}
 

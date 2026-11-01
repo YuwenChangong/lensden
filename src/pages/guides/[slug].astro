@@ -3,17 +3,19 @@ export const prerender = false;
 
 import type { MDXInstance } from "astro";
 import CommunityLayout from "../../layouts/CommunityLayout.astro";
+import { articleSchema, breadcrumbSchema, validSeoDate } from "../../lib/seo";
+import { resolveSiteOrigin } from "../../lib/site-origin";
 import { resolveDocumentLocale } from "../../lib/i18n/document-locale";
 import { selectEditorialVariant } from "../../lib/i18n/editorial-variants";
 
-type GuideEntry = Pick<MDXInstance<{ title: string; description?: string }>, "default" | "frontmatter">;
+type GuideEntry = Pick<MDXInstance<{ title: string; description?: string; draft?: boolean; lastUpdated?: string | Date }>, "default" | "frontmatter">;
 
 const slug = Astro.params.slug ?? "";
 const modules = import.meta.glob<GuideEntry>("../../content/docs/guides/*.mdx");
 const loadEntry = modules[`../../content/docs/guides/${slug}.mdx`];
 
 if (!loadEntry) {
-  return Astro.redirect("/guides/");
+  return Astro.rewrite('/404/');
 }
 
 const documentLocale = resolveDocumentLocale(Astro.url.searchParams.get("lang"), Astro.locals.localeContext.locale);
@@ -24,10 +26,13 @@ const reviewedModules = {
 const reviewedLoader = Object.hasOwn(reviewedModules, selection.moduleKey)
   ? reviewedModules[selection.moduleKey as keyof typeof reviewedModules] : undefined;
 const entry = (await (reviewedLoader ? reviewedLoader() : loadEntry())) as GuideEntry;
+if (entry.frontmatter.draft) return Astro.rewrite('/404/');
 
 const Content = entry.default;
 import { getUiMessages } from "../../lib/i18n/catalog";
 const text = getUiMessages(Astro.locals.localeContext.locale).documents;
+const origin = resolveSiteOrigin(Astro.site?.origin);
+const updatedAt = validSeoDate(entry.frontmatter.lastUpdated);
 ---
 
 <CommunityLayout
@@ -35,11 +40,18 @@ const text = getUiMessages(Astro.locals.localeContext.locale).documents;
   description={entry.frontmatter.description}
   canonical={`/guides/${slug}/`}
   activeSection="products"
+  ogType="article"
+  updatedAt={updatedAt}
+  structuredData={[
+    articleSchema({ title: entry.frontmatter.title, description: entry.frontmatter.description, url: new URL(`/guides/${slug}/`, origin).href, updatedAt }),
+    breadcrumbSchema([{ name: text.guides, url: new URL('/guides/', origin).href }, { name: entry.frontmatter.title, url: new URL(`/guides/${slug}/`, origin).href }]),
+  ]}
 >
   <section class="community-page-head">
     <div>
       <h1>{entry.frontmatter.title}</h1>
       {entry.frontmatter.description && <p class="community-page-lead">{entry.frontmatter.description}</p>}
+      {updatedAt && <p class="community-meta"><time datetime={updatedAt}>{updatedAt.slice(0, 10)}</time></p>}
     </div>
   </section>
 

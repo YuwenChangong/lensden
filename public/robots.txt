@@ -1,5 +1,10 @@
 User-agent: *
-Allow: /
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: OAI-SearchBot
+# Shared search rules: specific agents must retain every private-path restriction.
+# GPTBot (model training) remains governed by the existing wildcard preference.
+# A future owner-approved training policy must be a separate group.
 Disallow: /admin/
 Disallow: /api/
 Disallow: /auth/callback/
@@ -11,6 +16,10 @@ Disallow: /posts/new/
 Disallow: /circles/new/
 Disallow: /search/
 Disallow: /users/
+Disallow: /u/
+Disallow: /settings/
+Disallow: /logout/
+Allow: /
 
 Sitemap: {{SITE_ORIGIN}}/sitemap.xml
 Sitemap: {{SITE_ORIGIN}}/sitemap-index.xml

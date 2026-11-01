@@ -4,6 +4,7 @@ import { LEGAL_POLICY_LINKS } from "../lib/legal-policy";
 import { resolveSiteOrigin } from "../lib/site-origin";
 import { resolveLocale } from "../lib/i18n/locale";
 import { getUiMessages } from "../lib/i18n/catalog";
+import { canonicalPageUrl, shouldNoindex, serializeJsonLd, validSeoDate, type SchemaNode } from "../lib/seo";
 import "../styles/community.css";
 
 export interface Props {
@@ -17,6 +18,9 @@ export interface Props {
   activeSection?: "home" | "forum" | "news" | "products" | "launcher";
   showHeaderSearch?: boolean;
   pageClass?: string;
+  structuredData?: SchemaNode[];
+  publishedAt?: string | null;
+  updatedAt?: string | null;
 }
 
 const {
@@ -30,13 +34,21 @@ const {
   activeSection,
   showHeaderSearch = true,
   pageClass = "",
+  structuredData = [],
+  publishedAt,
+  updatedAt,
 } = Astro.props;
 const siteName = "Lensden";
 const baseUrl = resolveSiteOrigin(Astro.site?.origin);
 const fullTitle = `${title} | ${siteName}`;
-const canonicalHref = canonical ? new URL(canonical, baseUrl).toString() : undefined;
+const excludeFromIndex = noindex || shouldNoindex(Astro.url.pathname, Astro.response.status);
+// Search intentionally keeps its established base canonical while noindex.
+const keepSearchCanonical = /^\/search\/?$/.test(Astro.url.pathname) && (Astro.response.status ?? 200) < 400;
+const canonicalHref = excludeFromIndex && !keepSearchCanonical ? undefined : canonicalPageUrl(canonical ?? Astro.url.pathname, baseUrl, { allowSearch: keepSearchCanonical });
 const ogImageHref = new URL(ogImage ?? "/brand/logo.jpg", baseUrl).toString();
-const robotsContent = noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large";
+const robotsContent = excludeFromIndex ? "noindex,nofollow" : "index,follow,max-image-preview:large";
+if (excludeFromIndex) Astro.response.headers.set("X-Robots-Tag", "noindex");
+const schemaGraph = [{ "@type": "WebSite", name: siteName, url: baseUrl, creator: { "@type": "Person", name: "Jayden" } }, { "@type": "Organization", name: siteName, url: baseUrl }, ...(!excludeFromIndex ? structuredData : [])];
 const localeContext = Astro.locals.localeContext ?? resolveLocale({});
 const messages = getUiMessages(localeContext.locale).shell;
 ---
@@ -48,7 +60,7 @@ const messages = getUiMessages(localeContext.locale).shell;
     <meta name="application-name" content="Lensden" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
-    <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "WebSite", name: siteName, url: baseUrl, creator: { "@type": "Person", name: "Jayden" } }, { "@type": "Organization", name: siteName, url: baseUrl }] }).replace(/</g, "\u003c")} />
+    <script is:inline type="application/ld+json" set:html={serializeJsonLd({ "@context": "https://schema.org", "@graph": schemaGraph })} />
     {description && <meta name="description" content={description} />}
     <meta name="robots" content={robotsContent} />
     {canonicalHref && <link rel="canonical" href={canonicalHref} />}
@@ -59,6 +71,8 @@ const messages = getUiMessages(localeContext.locale).shell;
     <meta property="og:locale" content={localeContext.locale === "zh-CN" ? "zh_CN" : "en_US"} />
     <meta property="og:image" content={ogImageHref} />
     {canonicalHref && <meta property="og:url" content={canonicalHref} />}
+    {ogType === "article" && validSeoDate(publishedAt) && <meta property="article:published_time" content={validSeoDate(publishedAt)} />}
+    {ogType === "article" && validSeoDate(updatedAt) && <meta property="article:modified_time" content={validSeoDate(updatedAt)} />}
     <meta name="twitter:card" content={twitterCard} />
     <meta name="twitter:title" content={fullTitle} />
     {description && <meta name="twitter:description" content={description} />}

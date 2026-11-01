@@ -94,3 +94,7 @@ Future work:
 - richer comparison table
 - image/media handling for devices
 - full sitemap and SEO audit
+
+## Lensden SEO and GEO foundation
+
+See [the local implementation and verification packet](geo/README.md), including unpublished drafts, monitoring templates, and owner-only launch actions.

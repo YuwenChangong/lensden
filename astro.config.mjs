@@ -10,6 +10,7 @@ import {
 } from './src/lib/gaze-launcher-visibility.ts';
 import remarkGazeLauncherVisibility from './src/plugins/remark-gaze-launcher-visibility.ts';
 import { resolveSiteOrigin, rewriteRobotsSitemapOrigins } from './src/lib/site-origin.ts';
+import { isStaticSitemapPage } from './src/lib/seo-sitemap.ts';
 import localeSsrRoutes from './src/plugins/locale-ssr-routes.mjs';
 import { r2WorkerSdkRuntime } from './scripts/lib/r2-worker-sdk-runtime.mjs';
 
@@ -62,7 +63,9 @@ export default defineConfig({
   }),
   integrations: [
     sitemap({
-      filter: isGazeLauncherSitemapEntryIncluded,
+      filter: (page) => isStaticSitemapPage(page) && isGazeLauncherSitemapEntryIncluded(page),
+      customPages: [new URL('/', siteOrigin).href],
+      customSitemaps: [new URL('/sitemap.xml', siteOrigin).href],
     }),
     react(),
     starlight({
