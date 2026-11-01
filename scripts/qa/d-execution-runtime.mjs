@@ -267,26 +267,31 @@ export function sealDRevocationDutyBeforeInput(plan) {
   }catch{throw Error('D_REVOCATION_DUTY_UNPROVEN');}
 }
 export function identityCode(p,t) {
+  const existing = p.actorMode === 'OWNER_EXISTING';
   return `async()=>{
     const p=${JSON.stringify(p)},t=${JSON.stringify({alias:t.controlledAlias,circleId:t.existingCircleId,circleSlug:t.existingCircleSlug,namespace:t.namespace})};
     if(window.top!==window||location.origin!=='https://openglasshub.ogh.workers.dev'||location.search||location.hash||Date.now()>=Date.parse(p.deadlineUtc))throw Error();
     const c=(await import('/_astro/supabase-browser.CbJzQpCJ.js')).n();
     const raw=await c.auth.storage.getItem('sb-xcbnxzjlsvtgzixurcof-auth-token');const s=JSON.parse(raw??'null');
-    if(s?.user?.id!==p.actorId||s.expires_at*1000<Date.now()+300000)throw Error();
+    ${existing ? "if(!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(s?.user?.id??'')||!s?.user?.email||p.actorId&&p.actorId!==s.user.id)throw Error();p.actorId=s.user.id;" : ''}
+    if(s?.user?.id!==p.actorId||!Number.isFinite(s.expires_at)||s.expires_at*1000<Date.now()+300000)throw Error();
     const headers={authorization:'Bearer '+s.access_token,apikey:c.supabaseKey};
     const get=async(url)=>{const r=await fetch(url,{headers,redirect:'error',cache:'no-store',signal:AbortSignal.timeout(10000)});
       if(r.status!==200||r.redirected)throw Error();const reader=r.body.getReader(),chunks=[];let size=0;
       try{while(true){const x=await reader.read();if(x.done)break;size+=x.value.length;if(size>65536)throw Error();chunks.push(x.value);}}
       finally{void reader.cancel().catch(()=>{});}const b=new Uint8Array(size);let o=0;for(const x of chunks){b.set(x,o);o+=x.length;}return JSON.parse(new TextDecoder().decode(b));};
     const u=await get('https://${project}.supabase.co/auth/v1/user');
-    if(u.id!==p.actorId||u.email!==t.alias||!u.email_confirmed_at||u.role!=='authenticated'||u.user_metadata?.qa_namespace!==t.namespace)throw Error();
+    if(u.id!==p.actorId||!u.email_confirmed_at||u.role!=='authenticated')throw Error();
+    ${existing
+      ? "if(u.email!==s.user.email||!Number.isFinite(Date.parse(u.created_at))||u.app_metadata?.role!==undefined&&u.app_metadata.role!=='user'||u.banned_until&&Date.parse(u.banned_until)>Date.now())throw Error();"
+      : "if(u.email!==t.alias||u.user_metadata?.qa_namespace!==t.namespace)throw Error();"}
     const profile=await get('https://${project}.supabase.co/rest/v1/profiles?select=id,role&id=eq.'+p.actorId);
     const circle=await get('https://${project}.supabase.co/rest/v1/circles?select=id,slug,name,status&id=eq.'+t.circleId);
     if(profile.length!==1||profile[0].id!==p.actorId||profile[0].role!=='user'||circle.length!==1
       ||circle[0].id!==t.circleId||circle[0].slug!==t.circleSlug||circle[0].status!=='active'
       ||['rls-test-circle','rls-test','test-circle'].includes(String(circle[0].slug).toLowerCase())
       ||String(circle[0].name).toLowerCase().includes('rls test'))throw Error();
-    return {actorId:p.actorId,confirmed:true,role:'user',circleMatches:true,observedUtc:new Date().toISOString()};
+    return {actorId:p.actorId,confirmed:true,role:'user',circleMatches:true,observedUtc:new Date().toISOString()${existing ? ",actorMode:'OWNER_EXISTING',createdByThisRun:false,createdAt:u.created_at" : ''}};
   }`;
 }
 export function approveCode(p) {
