@@ -111,7 +111,7 @@ function validatePayload(payload: NewsPayload) {
       content,
       category,
       status,
-      source_name: String(payload.source_name ?? "").trim() || "OpenGlass Hub",
+      source_name: String(payload.source_name ?? "").trim() || "Lensden",
       source_url: sourceUrl,
       cover_image_url: coverImageUrl,
       pinned: payload.pinned === true,

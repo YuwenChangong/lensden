@@ -76,7 +76,7 @@ export default function AdminNewsDashboard({ localeContext = resolveLocale({ acc
     summary: "",
     content: "",
     cover_image_url: "",
-    source_name: "OpenGlass Hub",
+    source_name: "Lensden",
     source_url: "",
     pinned: false,
     featured: false,
@@ -91,7 +91,7 @@ export default function AdminNewsDashboard({ localeContext = resolveLocale({ acc
     { value: "ar_glasses", label: text.copy.aRGlasses },
     { value: "developer", label: text.copy.developers },
     { value: "community", label: text.copy.community },
-    { value: "openglass", label: "OpenGlass" },
+    { value: "openglass", label: "Lensden" },
   ];
 
   const STATUS_OPTIONS: Array<{ value: "all" | NewsStatus; label: string }> = [
@@ -156,7 +156,7 @@ export default function AdminNewsDashboard({ localeContext = resolveLocale({ acc
       summary: article.summary ?? "",
       content: article.content ?? "",
       cover_image_url: article.cover_image_url ?? "",
-      source_name: article.source_name ?? "OpenGlass Hub",
+      source_name: article.source_name ?? "Lensden",
       source_url: article.source_url ?? "",
       pinned: article.pinned,
       featured: article.featured,
@@ -1004,7 +1004,7 @@ export default function AdminNewsDashboard({ localeContext = resolveLocale({ acc
             <div className="admin-news-form__grid">
               <label className="community-form-field">
                 <span>{text.copy.sourceName}</span>
-                <input value={form.source_name} onChange={(event) => patchForm("source_name", event.target.value)} placeholder="OpenGlass Hub" />
+                <input value={form.source_name} onChange={(event) => patchForm("source_name", event.target.value)} placeholder="Lensden" />
               </label>
               <label className="community-form-field">
                 <span>{text.copy.sourceURL}</span>

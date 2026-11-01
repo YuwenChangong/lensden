@@ -10,7 +10,7 @@ export interface CircleImageRow {
 
 function buildCircleFallbackImage(circle: CircleImageRow): string {
   const name = (circle.name ?? "OpenGlass Circle").trim();
-  const subtitle = (circle.description ?? "OpenGlass Hub community").trim();
+  const subtitle = (circle.description ?? "Lensden community").trim();
   const initials = name
     .split(/\s+/)
     .map((part) => part[0])

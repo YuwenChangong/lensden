@@ -2,7 +2,7 @@
   "name": "openglass-hub",
   "type": "module",
   "version": "0.1.0",
-  "description": "OpenGlass Hub by Gaze — An open AR/AI glasses community",
+  "description": "Lensden by Gaze — An open AR/AI glasses community",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

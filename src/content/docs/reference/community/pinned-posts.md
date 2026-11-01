@@ -24,23 +24,23 @@ description: GitHub Discussions 分类设置和置顶帖内容模板。
 
 ---
 
-## 置顶帖 1：欢迎来到 OpenGlass Hub
+## 置顶帖 1：欢迎来到 Lensden
 
-**标题：** 欢迎来到 OpenGlass Hub 社区
+**标题：** 欢迎来到 Lensden 社区
 
 **分类：** Announcements
 
 **内容：**
 
 ```
-欢迎来到 OpenGlass Hub 的社区讨论区。
+欢迎来到 Lensden 的社区讨论区。
 
-OpenGlass Hub 是一个 AR/AI 眼镜知识库，整理各品牌产品的规格参数、选购指南和开发者资源。
+Lensden 是一个 AR/AI 眼镜知识库，整理各品牌产品的规格参数、选购指南和开发者资源。
 
 社区讨论请遵守以下原则：
 
 - 部分产品参数标注「待核实」，如果你有准确信息，请提供来源
-- OpenGlass Hub 与任何 AR 眼镜厂商无关联关系
+- Lensden 与任何 AR 眼镜厂商无关联关系
 - Gaze Launcher 目前处于实验性阶段
 
 如有内容修正，建议直接提交 GitHub Issue 或 Pull Request。
@@ -146,7 +146,7 @@ Gaze Launcher 不是已完成的产品，请基于当前状态讨论，避免与
 **内容：**
 
 ```
-OpenGlass Hub 社区规则：
+Lensden 社区规则：
 
 1. 不发布虚假参数或无来源的规格数据
 2. 不人身攻击，尊重不同品牌和用户
@@ -157,7 +157,7 @@ OpenGlass Hub 社区规则：
 7. 尊重品牌商标，不恶意使用或修改品牌标识
 
 内容立场：
-- OpenGlass Hub 与任何 AR 眼镜厂商无关联
+- Lensden 与任何 AR 眼镜厂商无关联
 - Gaze Launcher 是实验性项目，不代表任何商业承诺
 - 所有产品信息基于公开资料，标注「待核实」的数据待验证
 

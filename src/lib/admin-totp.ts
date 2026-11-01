@@ -26,7 +26,7 @@ export async function enrollAdminTotp(client: SupabaseClient) {
   if (factors.some(factor => factor.status === "verified")) {
     await confirmAdminAal2(client);
   }
-  const { data, error } = await client.auth.mfa.enroll({ factorType: "totp", friendlyName: `OpenGlass ${crypto.randomUUID()}`, issuer: "OpenGlass Hub" });
+  const { data, error } = await client.auth.mfa.enroll({ factorType: "totp", friendlyName: `Lensden ${crypto.randomUUID()}`, issuer: "Lensden" });
   if (error || !data) throw new Error("MFA_ENROLL_FAILED");
   return data;
 }

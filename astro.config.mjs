@@ -69,7 +69,7 @@ export default defineConfig({
       pagefind: false,
       routeMiddleware: './src/starlightRouteData.ts',
       disable404Route: true,
-      title: 'OpenGlass Hub',
+      title: 'Lensden',
       description: 'AR/AI 眼镜知识库、选购指南与开发者资源',
       components: {
         Header: './src/components/starlight/Header.astro',
@@ -86,13 +86,15 @@ export default defineConfig({
       favicon: '/gaze-icon-v6.ico',
       logo: {
       src: './public/brand/openglass-nav-logo.png',
-        alt: 'OpenGlass Hub',
+        alt: 'Lensden',
         replacesTitle: false,
       },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/openglass-hub' },
       ],
       head: [
+        { tag: 'meta', attrs: { name: 'author', content: 'Jayden' } },
+        { tag: 'meta', attrs: { name: 'application-name', content: 'Lensden' } },
         {
           tag: 'link',
           attrs: {

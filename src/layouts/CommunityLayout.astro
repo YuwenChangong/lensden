@@ -31,7 +31,7 @@ const {
   showHeaderSearch = true,
   pageClass = "",
 } = Astro.props;
-const siteName = "OpenGlass Hub";
+const siteName = "Lensden";
 const baseUrl = resolveSiteOrigin(Astro.site?.origin);
 const fullTitle = `${title} | ${siteName}`;
 const canonicalHref = canonical ? new URL(canonical, baseUrl).toString() : undefined;
@@ -44,8 +44,11 @@ const messages = getUiMessages(localeContext.locale).shell;
 <html lang={localeContext.locale}>
   <head>
     <meta charset="utf-8" />
+    <meta name="author" content="Jayden" />
+    <meta name="application-name" content="Lensden" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
+    <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "WebSite", name: siteName, url: baseUrl, creator: { "@type": "Person", name: "Jayden" } }, { "@type": "Organization", name: siteName, url: baseUrl }] }).replace(/</g, "\u003c")} />
     {description && <meta name="description" content={description} />}
     <meta name="robots" content={robotsContent} />
     {canonicalHref && <link rel="canonical" href={canonicalHref} />}
@@ -80,7 +83,7 @@ const messages = getUiMessages(localeContext.locale).shell;
     </main>
     <footer class="community-site-footer" aria-label={messages.legalTrust}>
       <div class="community-site-footer__inner">
-        <p>{siteName}</p>
+        <p>{siteName} · Jayden</p>
         <nav class="community-site-footer__nav" aria-label={messages.legalLinks}>
           {
             LEGAL_POLICY_LINKS.map((link) => (

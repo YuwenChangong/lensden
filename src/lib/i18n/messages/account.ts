@@ -1,7 +1,7 @@
 export const accountMessages = {
   "zh-CN": {
-    loginTitle: "登录", loginHeading: "登录 / 注册", loginDescription: "登录 OpenGlass Hub。浏览内容无需登录，发帖和评论等互动操作需要认证。",
-    callbackTitle: "登录确认", callbackDescription: "处理 OpenGlass Hub 的邮箱确认与登录回调。", resetTitle: "重置密码", resetDescription: "通过邮箱恢复链接重置 OpenGlass Hub 密码。",
+    loginTitle: "登录", loginHeading: "登录 / 注册", loginDescription: "登录 Lensden。浏览内容无需登录，发帖和评论等互动操作需要认证。",
+    callbackTitle: "登录确认", callbackDescription: "处理 Lensden 的邮箱确认与登录回调。", resetTitle: "重置密码", resetDescription: "通过邮箱恢复链接重置 Lensden 密码。",
     myProfile: "我的主页", editProfile: "编辑资料", profileUnavailable: "当前用户还没有可用的个人资料。", member: "社区成员", notFound: "用户未找到", notFoundDetail: "该用户不存在，或用户链接无效。", backForum: "返回论坛",
     loading: "正在加载...", loadFailed: "加载失败", loginUnavailable: "当前环境未启用登录。", posts: "帖子", comments: "评论", circles: "圈子", liked: "喜欢", saved: "收藏", createdCircles: "创建的圈子", myLikes: "我的喜欢", mySaved: "我的收藏",
     publicProfile: "公开主页", reportUser: "举报用户", activity: "我的动态", noPosts: "还没有公开帖子", noComments: "还没有公开评论", noCircles: "还没有创建公开圈子", noLikes: "还没有喜欢的帖子", noSaved: "还没有收藏帖子", viewPost: "查看帖子", enterCircle: "进入圈子", bookmarked: "已收藏", preview: "{title} 预览", likes: "点赞",
@@ -10,8 +10,8 @@ export const accountMessages = {
     forbidden: "当前请求包含不允许修改的资料字段。", saveFailed: "保存资料失败，请稍后再试。", usernameTaken: "主页地址已被占用。", usernameInvalid: "主页地址仅支持小写英文、数字、下划线和短横线。", rateLimited: "上传过于频繁，请稍后再试。", uploadVerification: "当前上传需要额外安全验证，请稍后再试。", contentRejected: "资料内容需要调整后再保存。", imageRejected: "资料图片需要调整后再保存。", moderationUnavailable: "资料图片审核暂时不可用，请稍后再试。", bannerUnavailable: "当前环境尚未完成个人横幅 migration。", nameRequired: "用户名不能为空。", nameLong: "用户名不能超过 40 个字符。", bioLong: "个人简介不能超过 240 个字符。", profileLoading: "当前资料尚未加载完成。", imageType: "仅支持 jpg / png / webp / gif。", avatarSize: "头像不能超过 5MB。", bannerSize: "横幅不能超过 8MB。", avatarUploaded: "头像已上传，记得保存资料。", bannerUploaded: "横幅已上传，记得保存资料。", uploadFailed: "上传失败。", myDetails: "我的资料",
   },
   en: {
-    loginTitle: "Log in", loginHeading: "Log in / Sign up", loginDescription: "Log in to OpenGlass Hub. Browsing is public; posting and commenting require authentication.",
-    callbackTitle: "Confirming login", callbackDescription: "Completing OpenGlass Hub email verification and login.", resetTitle: "Reset password", resetDescription: "Reset your OpenGlass Hub password using your recovery email.",
+    loginTitle: "Log in", loginHeading: "Log in / Sign up", loginDescription: "Log in to Lensden. Browsing is public; posting and commenting require authentication.",
+    callbackTitle: "Confirming login", callbackDescription: "Completing Lensden email verification and login.", resetTitle: "Reset password", resetDescription: "Reset your Lensden password using your recovery email.",
     myProfile: "My profile", editProfile: "Edit profile", profileUnavailable: "No profile is available for this account.", member: "Community member", notFound: "User not found", notFoundDetail: "This user does not exist, or the profile link is invalid.", backForum: "Back to forum",
     loading: "Loading...", loadFailed: "Could not load", loginUnavailable: "Login is unavailable in this environment.", posts: "Posts", comments: "Comments", circles: "Circles", liked: "Likes", saved: "Bookmarks", createdCircles: "Created circles", myLikes: "My likes", mySaved: "My bookmarks",
     publicProfile: "Public profile", reportUser: "Report user", activity: "My activity", noPosts: "No public posts yet", noComments: "No public comments yet", noCircles: "No public circles created yet", noLikes: "No liked posts yet", noSaved: "No bookmarked posts yet", viewPost: "View post", enterCircle: "Open circle", bookmarked: "Bookmarked", preview: "Preview of {title}", likes: "Likes",

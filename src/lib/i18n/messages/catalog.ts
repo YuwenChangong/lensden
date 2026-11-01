@@ -101,7 +101,7 @@ export const catalogMessages = {
     "productEntry": "产品入口",
     "enter": "进入",
     "joinCommunity": "加入社区",
-    "communityEntries": "OpenGlass Hub 的社区入口：",
+    "communityEntries": "Lensden 的社区入口：",
     "githubPreparing": "GitHub Discussions（准备中）",
     "discordPreparing": "Discord（准备中）",
     "wechatPreparing": "微信群（准备中）",
@@ -137,8 +137,8 @@ export const catalogMessages = {
     "viewDevice": "查看设备页",
     "noDevices": "没有找到匹配设备",
     "noDevicesHint": "试试清除筛选，或用更宽泛的品牌、分类和用途关键词重新搜索。",
-    "searchTitle": "搜索 OpenGlass Hub",
-    "searchDescription": "搜索 OpenGlass Hub 的帖子、圈子、用户和设备。",
+    "searchTitle": "搜索 Lensden",
+    "searchDescription": "搜索 Lensden 的帖子、圈子、用户和设备。",
     "searchType": "搜索类型",
     "posts": "帖子",
     "circles": "圈子",
@@ -155,8 +155,8 @@ export const catalogMessages = {
     "user": "用户",
     "noSearchResults": "没有找到结果",
     "searching": "搜索中…",
-    "openGlassLaunch": "OpenGlass Hub 正式上线",
-    "openGlassLaunchDetail": "OpenGlass Hub MVP 版本发布，包含 12 款 AR/AI 眼镜产品详情页。",
+    "openGlassLaunch": "Lensden 正式上线",
+    "openGlassLaunchDetail": "Lensden MVP 版本发布，包含 12 款 AR/AI 眼镜产品详情页。",
     "launcherLaunch": "Gaze Launcher 启动",
     "launcherLaunchDetail": "Gaze Launcher 定位页面上线，说明面向 AR/AI 眼镜的主入口与交互方向。",
     "specLabels": {
@@ -182,7 +182,7 @@ export const catalogMessages = {
       "ar_glasses": "AR 眼镜",
       "developer": "开发者",
       "community": "社区",
-      "openglass": "OpenGlass"
+      "openglass": "Lensden"
     },
     "deviceCategory": {
       "ai_glasses": "AI 眼镜",
@@ -315,7 +315,7 @@ export const catalogMessages = {
     "productEntry": "Product entry",
     "enter": "Open",
     "joinCommunity": "Join community",
-    "communityEntries": "OpenGlass Hub community channels:",
+    "communityEntries": "Lensden community channels:",
     "githubPreparing": "GitHub Discussions (coming soon)",
     "discordPreparing": "Discord (coming soon)",
     "wechatPreparing": "WeChat group (coming soon)",
@@ -351,8 +351,8 @@ export const catalogMessages = {
     "viewDevice": "View device",
     "noDevices": "No matching devices",
     "noDevicesHint": "Clear filters or search with broader brand, category or use terms.",
-    "searchTitle": "Search OpenGlass Hub",
-    "searchDescription": "Search posts, circles, people, and devices across OpenGlass Hub.",
+    "searchTitle": "Search Lensden",
+    "searchDescription": "Search posts, circles, people, and devices across Lensden.",
     "searchType": "Search type",
     "posts": "Posts",
     "circles": "Circles",
@@ -369,8 +369,8 @@ export const catalogMessages = {
     "user": "User",
     "noSearchResults": "No results found",
     "searching": "Searching…",
-    "openGlassLaunch": "OpenGlass Hub launch",
-    "openGlassLaunchDetail": "The OpenGlass Hub MVP launched with 12 AR/AI glasses product pages.",
+    "openGlassLaunch": "Lensden launch",
+    "openGlassLaunchDetail": "The Lensden MVP launched with 12 AR/AI glasses product pages.",
     "launcherLaunch": "Gaze Launcher launch",
     "launcherLaunchDetail": "The Gaze Launcher page introduces its entry point and interaction direction for AR/AI glasses.",
     "specLabels": {
@@ -396,7 +396,7 @@ export const catalogMessages = {
       "ar_glasses": "AR glasses",
       "developer": "Developers",
       "community": "Community",
-      "openglass": "OpenGlass"
+      "openglass": "Lensden"
     },
     "deviceCategory": {
       "ai_glasses": "AI glasses",

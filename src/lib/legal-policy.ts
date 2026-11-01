@@ -5,7 +5,7 @@ import {
 } from "./public-legal-contacts.ts";
 
 export const LEGAL_POLICY = {
-  platformName: "OpenGlass Hub",
+  platformName: "Lensden",
   minimumAge: 16,
   bundleVersion: "2026-07",
   termsVersion: "2026-07",

@@ -1,6 +1,6 @@
-# OpenGlass Hub
+# Lensden
 
-OpenGlass Hub is an AR/AI glasses knowledge base built with Astro + Starlight.
+Lensden is an AR/AI glasses knowledge base built with Astro + Starlight.
 
 ## Run locally
 
