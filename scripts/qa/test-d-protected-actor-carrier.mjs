@@ -308,6 +308,19 @@ if (process.argv[2] === '--native-env-check') {
     }
   });
 
+  test('protected actor: sealed final alias is bound to its namespace suffix', () => {
+    const input = {executionBindingSha256, controlledAlias: 'fixture+ogh-r2-final-abcdef012345@gmail.com',
+      namespace: 'ogh-r2-final-01234567-89ab-4cde-8123-abcdef012345',
+      deadlineUtc: new Date(Date.now() + 20000).toISOString(), displaySourceSha256: 'a'.repeat(64)};
+    assert.deepEqual(dActorPayload('CREATE', input), input);
+    for (const patch of [
+      {namespace: 'ogh-r2-final-01234567-89ab-4cde-8123-abcdef012346'},
+      {namespace: 'unbound-abcdef012345'},
+      {controlledAlias: 'fixture+ogh-r2-final-abcdef012345@example.invalid'},
+      {controlledAlias: 'fixture+ogh-r2-final-abcdef0123456@gmail.com'},
+    ]) assert.throws(() => dActorPayload('CREATE', {...input, ...patch}));
+  });
+
   test('protected actor: request fields, receipt hash, alias and fixed display pin reject before child dispatch', async t => {
     let spawned = 0;
     const carrier = createProtectedActorCarrier({beforeDispatch: async () => true, childFactory: () => {spawned++;throw Error();}});

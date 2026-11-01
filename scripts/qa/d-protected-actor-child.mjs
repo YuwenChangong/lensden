@@ -27,9 +27,14 @@ export function dActorPayload(action, input) {
     ? ['executionBindingSha256', 'controlledAlias', 'namespace', 'deadlineUtc', 'displaySourceSha256']
     : ['binding', 'actorCreation', 'logoutEvidence']));
   if (action === 'CREATE') {
+    const finalAlias = typeof input.controlledAlias === 'string'
+      ? /^[a-zA-Z0-9._%+-]+\+ogh-r2-final-([a-f0-9]{12})@gmail\.com$/.exec(input.controlledAlias) : null;
+    const finalNamespace = typeof input.namespace === 'string'
+      ? /^ogh-r2-final-[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-([a-f0-9]{12})$/.exec(input.namespace) : null;
     need(digest(input.executionBindingSha256) && digest(input.displaySourceSha256)
       && typeof input.controlledAlias === 'string' && input.controlledAlias.length <= 254
-      && /^[a-zA-Z0-9._%+-]+\+ogh-d-[a-f0-9]{16}@gmail\.com$/.test(input.controlledAlias)
+      && (/^[a-zA-Z0-9._%+-]+\+ogh-d-[a-f0-9]{16}@gmail\.com$/.test(input.controlledAlias)
+        || finalAlias !== null && finalNamespace !== null && finalAlias[1] === finalNamespace[1])
       && input.controlledAlias === input.controlledAlias.toLowerCase()
       && typeof input.namespace === 'string' && /^[a-zA-Z0-9_-]{1,160}$/.test(input.namespace)
       && timestamp(input.deadlineUtc) && new Date(input.deadlineUtc).toISOString() === input.deadlineUtc);
