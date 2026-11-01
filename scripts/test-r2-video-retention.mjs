@@ -45,11 +45,30 @@ function storageFixture(options = {}) {
       if (options.missingSource) throw Error('NOT_FOUND');
       return { ContentLength: options.size ?? 12, ContentType: options.type ?? 'video/mp4', ETag: '"source-etag"' };
     }
+    if (options.destinationHeadFails) throw Error('PRIVATE_PROVIDER_ERROR');
     return { ContentLength: options.destinationSize ?? 12, ContentType: 'video/mp4', ETag: options.etagMismatch ? '"other-etag"' : '"copy-etag"' };
   } };
   return { client, calls, objects };
 }
 const retain = (s, overrides = {}) => r2.retainTemporaryR2Video({ env, userId: owner, postId: post, sourceKey, retainedKey, mimeType: 'video/mp4', sizeBytes: 12, ...overrides }, s.client);
+
+for (const [stage, options] of [
+  ['source_head', { missingSource: true }], ['source_metadata', { size: 11 }],
+  ['copy', { copyFails: true }], ['retained_head', { destinationHeadFails: true }],
+  ['retained_metadata', { etagMismatch: true }],
+]) test('retention safe stage: ' + stage, async () => {
+  const storage = storageFixture(options);
+  await assert.rejects(retain(storage), error => error.message === 'MEDIA_RETENTION_FAILED'
+    && error.retentionStage === stage && !JSON.stringify(error).includes('PRIVATE_PROVIDER_ERROR'));
+  assert.equal(storage.calls.some(c => c.constructor.name === 'DeleteObjectCommand'), false);
+});
+
+test('retention safe stage reaches the route without provider details', async () => {
+  const fixture = postFixture({ storage: storageFixture({ copyFails: true }) });
+  const response = await fixture.run();
+  assert.equal(response.status, 500);
+  assert.deepEqual(await response.json(), { error: 'MEDIA_RETENTION_FAILED', retention_stage: 'copy' });
+});
 
 test('retention copies a post-bound source, pins its ETag and verifies destination before returning', async () => {
   const s = storageFixture(), key = await retain(s);

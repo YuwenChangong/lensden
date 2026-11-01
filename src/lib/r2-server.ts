@@ -87,23 +87,29 @@ export async function retainTemporaryR2Video(params: {
   const storage = client ?? createR2Client(env);
   const bucket = getR2BucketName(env);
   const options = { abortSignal: AbortSignal.timeout(15000) };
+  let stage = "source_head";
   try {
     const source = await storage.send(new HeadObjectCommand({ Bucket: bucket, Key: sourceKey }), options);
+    stage = "source_metadata";
     if (!source.ETag || !Number.isSafeInteger(source.ContentLength) || !source.ContentLength || source.ContentLength <= 0 || source.ContentLength > 150 * 1024 * 1024 ||
       source.ContentType !== mimeType || (sizeBytes !== null && source.ContentLength !== sizeBytes)) throw new Error();
+    stage = "copy";
     const copied = await storage.send(new CopyObjectCommand({
       Bucket: bucket, Key: target,
       CopySource: [bucket, ...sourceKey.split("/")].map(encodeURIComponent).join("/"),
       CopySourceIfMatch: source.ETag, MetadataDirective: "COPY",
     }), options);
+    stage = "retained_head";
     const result = await storage.send(new HeadObjectCommand({ Bucket: bucket, Key: target }), options);
+    stage = "retained_metadata";
     if (!copied.CopyObjectResult?.ETag || result.ETag !== copied.CopyObjectResult.ETag ||
       result.ContentLength !== source.ContentLength || result.ContentType !== source.ContentType) throw new Error();
     return target;
   } catch {
     // A dispatched copy may finish after a lost reply/abort. Keep its claim and
     // destination for reconciliation; neither retry nor deletion is safe here.
-    throw new Error("MEDIA_RETENTION_FAILED");
+    // Only our fixed stage label crosses the API boundary, never provider errors.
+    throw Object.assign(new Error("MEDIA_RETENTION_FAILED"), { retentionStage: stage });
   }
 }
 

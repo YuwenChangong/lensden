@@ -565,8 +565,13 @@ export function createPostMediaPost(overrides: Partial<typeof productionDependen
       201,
     );
   } catch (err) {
+    const retentionStage = err instanceof Error && err.message === "MEDIA_RETENTION_FAILED"
+      && "retentionStage" in err && typeof err.retentionStage === "string"
+      && ["source_head", "source_metadata", "copy", "retained_head", "retained_metadata"].includes(err.retentionStage)
+      ? err.retentionStage : null;
     return json(
-      { error: err instanceof Error ? err.message : "Unexpected server error" },
+      { error: err instanceof Error ? err.message : "Unexpected server error",
+        ...(retentionStage ? { retention_stage: retentionStage } : {}) },
       500,
     );
   }
