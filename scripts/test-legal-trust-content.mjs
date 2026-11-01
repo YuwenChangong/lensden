@@ -92,7 +92,7 @@ async function main() {
     `),
   );
 
-  assert(configPayload.platformName === "OpenGlass Hub", "Platform name must remain OpenGlass Hub.");
+  assert(configPayload.platformName === "Lensden", "Platform name must remain Lensden.");
   assert(configPayload.minimumAge === 16, "Minimum age must stay exactly 16.");
   assert(Boolean(configPayload.bundleVersion), "Bundle version must be non-empty.");
   assert(Boolean(configPayload.termsVersion), "Terms version must be non-empty.");

@@ -10,10 +10,10 @@ export const PUBLIC_LEGAL_CONTACT_ENV = {
 
 export const PUBLIC_LEGAL_CONTACTS = {
   operator: "YuwenChangong",
-  support: "openglasshub@gmail.com",
-  abuse: "openglasshub@gmail.com",
-  privacy: "openglasshub@gmail.com",
-  intellectualProperty: "openglasshub@gmail.com",
+  support: "lensden.team@gmail.com",
+  abuse: "lensden.team@gmail.com",
+  privacy: "lensden.team@gmail.com",
+  intellectualProperty: "lensden.team@gmail.com",
 } as const;
 
 const PLACEHOLDER_PATTERN = /(?:example\.com|todo|tbd|pending|changeme|placeholder)/i;

@@ -63,6 +63,7 @@ const pairs = {
   publicContacts: ["公开联系渠道", "Public contacts"],
   operator: ["运营方：", "Operator:"],
   support: ["支持：", "Support:"],
+  publicContact: ["公开联系人：", "Public contact:"],
   abuse: ["滥用与安全：", "Abuse and safety:"],
   privacyRequests: ["隐私请求：", "Privacy requests:"],
   intellectualProperty: ["知识产权投诉：", "Intellectual property complaints:"],
