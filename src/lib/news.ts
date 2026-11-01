@@ -59,7 +59,7 @@ export const NEWS_FILTERS: Array<{ key: NewsFilterKey; label: string }> = [
   { key: "ar_glasses", label: "AR 眼镜" },
   { key: "developer", label: "开发者" },
   { key: "community", label: "社区" },
-  { key: "openglass", label: "OpenGlass" },
+  { key: "openglass", label: "Lensden" },
 ];
 
 export const FALLBACK_NEWS_ARTICLES: NewsArticle[] = [
@@ -146,7 +146,7 @@ export const FALLBACK_NEWS_ARTICLES: NewsArticle[] = [
   {
     id: "fallback-openglass-005",
     slug: "openglass-community-is-prioritizing-verifiable-coverage",
-    title: "OpenGlass 更新：热点页将优先呈现可验证、可复查的信息整理",
+    title: "Lensden 更新：热点页将优先呈现可验证、可复查的信息整理",
     summary: "对 Lensden 来说，热点不只是“快”，还要便于后来者快速建立判断。",
     content:
       "热点页的价值不在于把所有消息都堆出来，而在于让后来者能够快速建立判断。\n\n因此 Lensden 会把设备更新、开发边界、社区讨论和项目进展整理成更适合阅读的信息流，而不是公告墙。\n\n这也意味着每条内容都需要尽量做到可验证、可复查，而不是只追求情绪化表达。",
