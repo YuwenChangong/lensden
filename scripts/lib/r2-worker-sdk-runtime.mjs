@@ -8,6 +8,12 @@ export function resolveR2WorkerRuntime(source,importer) {
     normalized?.endsWith('/node_modules/@aws-sdk/xml-builder/dist-es/index.js')) {
     return path.posix.join(path.posix.dirname(normalized),'xml-parser.js');
   }
+  // S3's successful-response middleware replays even HEAD bodies. Its Node
+  // stream cannot be consumed by the Worker's browser stream collector.
+  if(/^\.\.\/to-stream\/toStream(?:\.js)?$/.test(source)&&
+    normalized?.endsWith('/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-throw-200-exceptions/throw-200-exceptions.js')) {
+    return path.posix.join(path.posix.dirname(normalized),'../to-stream/toStream.browser.js');
+  }
   if(!/^\.\/runtimeConfig(?:\.js)?$/.test(source)||
     !normalized?.endsWith('/node_modules/@aws-sdk/client-s3/dist-es/S3Client.js'))return null;
   return path.posix.join(path.posix.dirname(normalized),'runtimeConfig.browser.js');
