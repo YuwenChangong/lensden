@@ -11,7 +11,7 @@ try {
     if (($fields -join ',') -cne 'deadlineUtc,email,executionBindingSha256,password,purpose,schemaVersion' -or
         $p.schemaVersion -ne 1 -or $p.purpose -cne 'D_FIXTURE_ONLY' -or
         $p.executionBindingSha256 -cnotmatch '^[a-f0-9]{64}$' -or
-        $p.email.Length -gt 254 -or $p.email -cnotmatch '^[a-zA-Z0-9._%+-]+\+ogh-d-[a-f0-9]{16}@gmail\.com$' -or
+        $p.email.Length -gt 254 -or $p.email -cnotmatch '^[a-zA-Z0-9._%+-]+\+(?:ogh-d-[a-f0-9]{16}|ogh-r2-final-[a-f0-9]{12})@gmail\.com$' -or
         $p.password -cnotmatch '^[a-zA-Z0-9_-]{48}$') { throw 'INPUT_INVALID' }
     $end = [DateTimeOffset]::ParseExact($p.deadlineUtc, 'yyyy-MM-ddTHH:mm:ss.fffZ',
         [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]::AssumeUniversal)

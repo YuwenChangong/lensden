@@ -321,6 +321,21 @@ if (process.argv[2] === '--native-env-check') {
     ]) assert.throws(() => dActorPayload('CREATE', {...input, ...patch}));
   });
 
+  test('protected actor: sealed final alias reaches the actual private display', {skip: process.platform !== 'win32'}, () => {
+    const executable = process.env.SystemRoot + '/System32/WindowsPowerShell/v1.0/powershell.exe';
+    const display = fileURLToPath(new URL('./d-private-fixture-display.ps1', import.meta.url));
+    const payload = {schemaVersion: 1, purpose: 'D_FIXTURE_ONLY', executionBindingSha256,
+      email: 'fixture+ogh-r2-final-abcdef012345@gmail.com', password: 'A'.repeat(48),
+      deadlineUtc: new Date(Date.now() + 6000).toISOString()};
+    const env = Object.fromEntries(['SystemRoot', 'WINDIR', 'TEMP', 'TMP']
+      .filter(k => process.env[k]).map(k => [k, process.env[k]]));
+    const result = cp.spawnSync(executable, ['-NoProfile', '-NonInteractive', '-STA', '-File', display],
+      {input: JSON.stringify(payload), encoding: 'utf8', env, windowsHide: true, timeout: 10000});
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 0);
+    assert.equal(result.stdout, '');assert.equal(result.stderr, '');
+  });
+
   test('protected actor: request fields, receipt hash, alias and fixed display pin reject before child dispatch', async t => {
     let spawned = 0;
     const carrier = createProtectedActorCarrier({beforeDispatch: async () => true, childFactory: () => {spawned++;throw Error();}});
