@@ -4,12 +4,14 @@ const account = 'dcb374166b39234a499985145c075f50';
 const root = `/client/v4/accounts/${account}/workers`;
 
 // Used only around the official SDK's initialization calls, never object traffic.
-export function createR2RemoteRequestPolicy(workerName) {
+export function createR2RemoteRequestPolicy(workerName, {extraAccessReads = 0} = {}) {
+  if (![0, 2].includes(extraAccessReads)) throw Error('REMOTE_ACCESS_READ_ALLOWANCE_INVALID');
   if (!/^ogh-exact-head-[a-f0-9]{8}$/.test(workerName)) {
     throw Error('REMOTE_PREVIEW_NAME_NOT_ADMITTED');
   }
   const used = new Set();
   let exchangeUrl;
+  let exchangeRoot;
   let responseBound = false;
   const api = new Map([
     [`GET ${root}/subdomain/edge-preview`, 'PREVIEW_INIT'],
@@ -44,6 +46,7 @@ export function createR2RemoteRequestPolicy(workerName) {
           throw Error('REMOTE_PREVIEW_EXCHANGE_SCOPE_INVALID');
         }
         exchangeUrl = url.href;
+        exchangeRoot = url.origin + '/';
       } catch {
         exchangeUrl = undefined;
         throw Error('REMOTE_PREVIEW_RESPONSE_INVALID');
@@ -69,9 +72,21 @@ export function createR2RemoteRequestPolicy(workerName) {
       let operation;
       if (url.hostname === 'api.cloudflare.com' && !url.search) {
         operation = api.get(`${method} ${url.pathname}`);
-      } else if (method === 'GET' && exchangeUrl !== undefined && url.href === exchangeUrl) {
+      } else if (extraAccessReads === 2 && method === 'GET' && exchangeRoot !== undefined
+        && url.href === exchangeRoot && !used.has('EXCHANGE_HOST_ROOT_GET_1')) {
+        // Access discovery and token exchange can share the same root URL.
+        operation = 'EXCHANGE_HOST_ROOT_GET_1';
+      } else if (extraAccessReads === 2 && method === 'GET' && exchangeRoot === exchangeUrl
+        && url.href === exchangeRoot && used.has('EXCHANGE_HOST_ROOT_GET_1')
+        && !used.has('EXCHANGE_HOST_ROOT_GET_2')) {
+        operation = 'EXCHANGE_HOST_ROOT_GET_2';
+      } else if (method === 'GET' && exchangeUrl !== undefined && url.href === exchangeUrl
+        && !(extraAccessReads === 2 && exchangeRoot === exchangeUrl)) {
         // The transport binds the exact URL from its actual preview-init response.
         operation = 'OFFICIAL_PREVIEW_EXCHANGE';
+      } else if (extraAccessReads === 2 && method === 'GET' && used.has('PREVIEW_UPLOAD')
+        && url.href === `https://${workerName}.ogh.workers.dev/`) {
+        operation = 'ACCESS_PREVIEW_PROBE';
       }
       if (!operation || used.has(operation)) throw Error('REMOTE_REQUEST_NOT_ADMITTED_OR_ALREADY_USED');
       used.add(operation);

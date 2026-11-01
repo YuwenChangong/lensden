@@ -76,6 +76,36 @@ test('local SDK coordination does not consume provider allowances', () => {
   assert.deepEqual(policy.consumed(), []);
 });
 
+test('explicit extra Access allowance admits only the two bound root probes without restoring old quotas', () => {
+  const host = 'https://0123456789abcdef0123456789abcdef.ogh.workers.dev';
+  for (const suffix of ['/', '/exchange?opaque=synthetic']) {
+    const policy = createR2RemoteRequestPolicy(name, {extraAccessReads: 2});
+    assert.throws(() => policy.admit({origin: host, path: '/', method: 'GET'}));
+    policy.admit(request(`${root}/subdomain/edge-preview`));
+    policy.observePreviewResponse({operation: 'PREVIEW_INIT', status: 200,
+      body: Buffer.from(JSON.stringify({success: true, result: {exchange_url: host + suffix}}))});
+    assert.equal(policy.admit({origin: host, path: '/', method: 'GET'}).operation, 'EXCHANGE_HOST_ROOT_GET_1');
+    assert.equal(policy.admit({origin: host, path: suffix, method: 'GET'}).operation,
+      suffix === '/' ? 'EXCHANGE_HOST_ROOT_GET_2' : 'OFFICIAL_PREVIEW_EXCHANGE');
+    assert.throws(() => policy.admit({origin: host, path: suffix, method: 'GET'}));
+    assert.throws(() => policy.admit({origin: host, path: '/', method: 'GET'}));
+    assert.throws(() => policy.admit({origin: `https://${name}.ogh.workers.dev`, path: '/', method: 'GET'}));
+    policy.admit(request(`${root}/subdomain`));
+    policy.admit(request(`${root}/scripts/${name}/edge-preview`, 'POST'));
+    assert.equal(policy.admit({origin: `https://${name}.ogh.workers.dev`, path: '/', method: 'GET'}).operation, 'ACCESS_PREVIEW_PROBE');
+    assert.throws(() => policy.admit({origin: `https://${name}.ogh.workers.dev`, path: '/', method: 'GET'}));
+    assert.throws(() => policy.admit({origin: `https://${name}.ogh.workers.dev`, path: '/?unexpected=1', method: 'GET'}));
+    assert.equal(policy.consumed().length, 6);
+  }
+  assert.throws(() => createR2RemoteRequestPolicy(name, {extraAccessReads: 1}));
+});
+
+test('unapproved Access probes stay blocked by the original four-call default', () => {
+  const policy = createR2RemoteRequestPolicy(name);
+  policy.admit(request(`${root}/scripts/${name}/edge-preview`, 'POST'));
+  assert.throws(() => policy.admit({origin: `https://${name}.ogh.workers.dev`, path: '/', method: 'GET'}));
+});
+
 test('rejects other accounts, buckets, scripts, methods, hosts and insecure transport', () => {
   for (const input of [
     request(root.replace('dcb374166b39234a499985145c075f50', '00000000000000000000000000000000') + '/subdomain'),
