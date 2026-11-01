@@ -8,7 +8,7 @@ import { createSSRClient } from '../lib/supabase-server';
 import { isPublicVisibleCircle } from '../lib/site-navigation';
 import { isGazeLauncherPublicEnabled } from '../lib/gaze-launcher-visibility';
 import { resolveSiteOrigin } from '../lib/site-origin';
-import { canonicalNewsSitemapSlug, editorialSitemapPath, readSitemapRows, serializeSitemap, type SitemapEntry } from '../lib/seo-sitemap';
+import { canonicalNewsSitemapSlug, createSitemapTransport, editorialSitemapPath, readSitemapRows, serializeSitemap, type SitemapEntry } from '../lib/seo-sitemap';
 import { validSeoDate } from '../lib/seo';
 
 export const prerender = false;
@@ -16,11 +16,13 @@ export const prerender = false;
 export const GET: APIRoute = async ({ site }) => {
   const origin = resolveSiteOrigin(site?.origin);
   const absolute = (path: string) => new URL(path, origin).href;
+  let transport: ReturnType<typeof createSitemapTransport> | undefined;
   try {
     // Existing anonymous public client only. No session, administrative key,
     // specification reads, view-count RPCs, or community-post queries.
     if (!runtimeEnv.SUPABASE_URL || !runtimeEnv.SUPABASE_ANON_KEY) throw new Error('Sitemap data unavailable.');
-    const client = createSSRClient(runtimeEnv);
+    transport = createSitemapTransport(runtimeEnv.SUPABASE_URL);
+    const client = createSSRClient(runtimeEnv, transport.fetch);
     const [docs, devices, circles, news] = await Promise.all([
       getCollection('docs'), readSitemapRows(client, 'devices'),
       readSitemapRows(client, 'circles'), readSitemapRows(client, 'news_articles'),
@@ -57,5 +59,7 @@ export const GET: APIRoute = async ({ site }) => {
     return new Response('Sitemap temporarily unavailable.', {
       status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex', 'Retry-After': '3600' },
     });
+  } finally {
+    transport?.abort();
   }
 };

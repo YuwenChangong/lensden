@@ -2,6 +2,33 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { canonicalPageUrl, validSeoDate } from './seo';
 
 export type SitemapEntry = { loc: string; lastmod?: string };
+
+// One transport per sitemap invocation, shared by all table readers. Count
+// physical fetches, not logical pages; keep margin below Workers Free's 50
+// external subrequests. Never follow redirects or amplify failures with retries.
+export function createSitemapTransport(origin: string, implementation: typeof fetch = fetch): { fetch: typeof fetch; abort: () => void } {
+  const allowedOrigin = new URL(origin).origin;
+  const controller = new AbortController();
+  const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(10_000)]);
+  let attempts = 0;
+  return {
+    fetch: async (input, init) => {
+      const url = new URL(typeof input === 'string' || input instanceof URL ? input : input.url);
+      const method = (init?.method ?? (input instanceof Request ? input.method : 'GET')).toUpperCase();
+      if (signal.aborted || attempts >= 40 || url.origin !== allowedOrigin || url.username || url.password || method !== 'GET'
+        || !/^\/rest\/v1\/(?:devices|circles|news_articles)$/.test(url.pathname)) throw new Error('Sitemap data unavailable.');
+      attempts++;
+      // Workers supports manual/follow, not the browser's redirect:error mode.
+      const response = await implementation(input, { ...init, redirect: 'manual', signal });
+      if (response.status >= 300 && response.status < 400) {
+        await response.body?.cancel();
+        throw new Error('Sitemap data unavailable.');
+      }
+      return response;
+    },
+    abort: () => controller.abort(),
+  };
+}
 // Match the existing permanent redirect and legacy-record bridge in news/[slug].
 export function canonicalNewsSitemapSlug(slug: string): string {
   return slug === 'openglass-community-is-prioritizing-verifiable-coverage'
@@ -61,7 +88,7 @@ export async function readSitemapRows(client: SupabaseClient, table: Table): Pro
   const seen = new Set<string>();
   for (let page = 0; page < 20; page++) {
     const { data, error, count } = await client.from(table).select(projection.columns, { count: 'exact' })
-      .eq(projection.filter, projection.value).order('slug').range(rows.length, rows.length + 499);
+      .eq(projection.filter, projection.value).order('slug').retry(false).range(rows.length, rows.length + 499);
     if (error || !Array.isArray(data) || !Number.isInteger(count) || count === null || count < 0 || count > 5000
       || (expected !== undefined && count !== expected)) throw new Error('Sitemap data unavailable.');
     expected = count;

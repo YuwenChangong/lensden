@@ -645,5 +645,5 @@ export async function getAdminNewsArticleBySlug(client: SupabaseClient, slug: st
     throw new Error(result.error.message);
   }
 
-  return normalizeNewsRow((result.data as NewsArticleRow | null) ?? null);
+  return result.data ? normalizeNewsRow(result.data as NewsArticleRow) : null;
 }

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { test } from 'node:test';
+import { createClient } from '@supabase/supabase-js';
+import { createServer } from 'node:http';
 
 async function load(file) {
   const result = await build({ entryPoints: [file], bundle: true, write: false, platform: 'node', format: 'esm', logLevel: 'silent' });
@@ -87,7 +89,7 @@ function fakeClient(rows, { count = rows.length, error = null, cap = 2 } = {}) {
   let requestCount = 0;
   return { calls, from(table) {
     const call = { table, filters: [], columns: '', ranges: [] }; calls.push(call);
-    const query = { select(columns, options) { call.columns = columns; assert.equal(options.count, 'exact'); return query; }, eq(...filter) { call.filters.push(filter); return query; }, order() { return query; }, range(start, end) { call.ranges.push([start, end]); requestCount++; return Promise.resolve({ data: rows.slice(start, Math.min(start + cap, end + 1)), count: typeof count === 'function' ? count(requestCount) : count, error }); } };
+    const query = { select(columns, options) { call.columns = columns; assert.equal(options.count, 'exact'); return query; }, eq(...filter) { call.filters.push(filter); return query; }, order() { return query; }, retry(value) { assert.equal(value, false); return query; }, range(start, end) { call.ranges.push([start, end]); requestCount++; return Promise.resolve({ data: rows.slice(start, Math.min(start + cap, end + 1)), count: typeof count === 'function' ? count(requestCount) : count, error }); } };
     return query;
   } };
 }
@@ -108,4 +110,52 @@ test('sitemap reader survives REST caps and refuses errors, missing counts, exha
   const news = fakeClient([]);
   await sitemap.readSitemapRows(news, 'news_articles');
   assert.deepEqual(news.calls[0].filters, [['status', 'published']]);
+});
+
+test('sitemap physical fetch ceiling is shared across tables with the actual installed SDK', async () => {
+  let calls = 0;
+  const transport = sitemap.createSitemapTransport('http://127.0.0.1:54321', async (input, init) => {
+    calls++;
+    assert.equal(init.redirect, 'manual');
+    const url = new URL(input);
+    const start = Number(url.searchParams.get('offset') ?? 0);
+    return Response.json([{ slug: `row-${start}` }], { headers: { 'content-range': `${start}-${start}/20` } });
+  });
+  const client = createClient('http://127.0.0.1:54321', 'local-fixture-key', { auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: transport.fetch } });
+  try {
+    const results = await Promise.allSettled(['devices', 'circles', 'news_articles'].map(table => sitemap.readSitemapRows(client, table)));
+    assert.ok(results.some(result => result.status === 'rejected'));
+    assert.equal(calls, 40, 'aggregate physical GETs stop at 40, not 20 per table times 3');
+    await assert.rejects(transport.fetch('http://127.0.0.1:54321/rest/v1/devices'));
+    assert.equal(calls, 40);
+  } finally { transport.abort(); }
+});
+
+test('sitemap SDK transient failures do not retry or leak backend errors', async () => {
+  let calls = 0;
+  const transport = sitemap.createSitemapTransport('http://127.0.0.1:54321', async () => { calls++; return Response.json({ message: 'PRIVATE_BACKEND_SENTINEL' }, { status: 520 }); });
+  const client = createClient('http://127.0.0.1:54321', 'local-fixture-key', { auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: transport.fetch } });
+  try {
+    await assert.rejects(sitemap.readSitemapRows(client, 'devices'), { message: 'Sitemap data unavailable.' });
+    assert.equal(calls, 1);
+  } finally { transport.abort(); }
+});
+
+test('sitemap transport rejects redirects, unexpected targets and cancelled work without amplification', async () => {
+  let requests = 0;
+  const server = createServer((request, response) => { requests++; response.writeHead(302, { location: '/redirect-target' }); response.end(); });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  let transport;
+  try {
+    transport = sitemap.createSitemapTransport(origin);
+    await assert.rejects(transport.fetch(origin + '/rest/v1/devices'));
+    assert.equal(requests, 1);
+    await assert.rejects(transport.fetch(origin + '/auth/v1/user'));
+    await assert.rejects(transport.fetch('https://example.invalid/rest/v1/devices'));
+    await assert.rejects(transport.fetch(origin + '/rest/v1/devices', { method: 'POST' }));
+    transport.abort();
+    await assert.rejects(transport.fetch(origin + '/rest/v1/devices'));
+    assert.equal(requests, 1);
+  } finally { transport?.abort(); await new Promise(resolve => server.close(resolve)); }
 });

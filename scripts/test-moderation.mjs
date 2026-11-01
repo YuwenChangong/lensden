@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { createServer } from "vite";
 
 const {
   evaluateLocalSensitiveLexicon,
@@ -14,7 +16,17 @@ const {
 } = await import("../src/lib/moderation/sensitive-lexicon-loader.server.ts");
 const { moderateAsset } = await import("../src/lib/moderation/moderate-asset.server.ts");
 const { createSignedModerationUrls } = await import("../src/lib/moderation/moderation-media.server.ts");
-const { applyModerationAdminAction } = await import("../src/lib/server/moderation-admin.ts");
+// Node's type stripping does not resolve the extensionless imports used by
+// Astro server modules. Reuse the other admin tests' Vite SSR loader rather
+// than changing frozen production auth source or bypassing its dependency.
+const { applyModerationAdminAction } = await (async () => {
+  const loader = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false }, appType: "custom" });
+  try {
+    return await loader.ssrLoadModule(fileURLToPath(new URL("../src/lib/server/moderation-admin.ts", import.meta.url)));
+  } finally {
+    await loader.close();
+  }
+})();
 
 async function test(name, fn) {
   try {

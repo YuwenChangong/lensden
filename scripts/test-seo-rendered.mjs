@@ -30,7 +30,7 @@ const source = { id: 'source-1', publisher: 'Local source fixture', title: 'Loca
 const evidence = { spec_id: 'spec-1', key: spec.key, region: spec.region, variant: null, source_id: source.id, claimed_value: '50', is_primary: true, is_conflicting: false };
 const article = { id: 'fixture-news', slug: 'geo-fixture-news', title: 'Local GEO news fixture', summary: 'Visible local news summary.', content: 'Visible local news body.', category: 'industry', status: 'published', source_name: null, source_url: null, author_id: null, cover_image_url: null, pinned: false, featured: false, view_count: 0, published_at: '2026-10-01T00:00:00Z', created_at: '2026-10-01T00:00:00Z', updated_at: '2026-10-02T00:00:00Z' };
 const post = { id: '00000000-0000-4000-8000-000000000001', author_id: '00000000-0000-4000-8000-000000000002', title: 'Local discussion fixture', body: 'Visible discussion </script> body.', type: 'discussion', status: 'published', moderation_status: 'published', created_at: '2026-10-01T00:00:00Z', updated_at: '2026-10-02T00:00:00Z', profiles: null, circles: null };
-let externalAttempts = 0, interceptedReads = 0, interceptedViewRpcs = 0, outage = false, browser;
+let externalAttempts = 0, interceptedReads = 0, interceptedViewRpcs = 0, outage = false, browser, sitemapCase = 'normal';
 const checks = [];
 const worker = await unstable_startWorker({ config: configPath, envFiles: [], build: { bundle: false },
   dev: { remote: false, watch: false, liveReload: false, persist: false, inspector: false, registry: undefined,
@@ -46,6 +46,12 @@ const worker = await unstable_startWorker({ config: configPath, envFiles: [], bu
       assert.equal(request.method, 'GET');
       interceptedReads++;
       if (outage) return Response.json({ message: 'PRIVATE_BACKEND_SENTINEL' }, { status: 500 });
+      if (sitemapCase === 'transient') return Response.json({ message: 'PRIVATE_BACKEND_SENTINEL' }, { status: 520 });
+      if (sitemapCase === 'redirect') return new Response(null, { status: 302, headers: { location: url.origin + '/rest/v1/devices' } });
+      if (sitemapCase === 'budget') {
+        const start = Number(url.searchParams.get('offset') ?? 0);
+        return Response.json([{ slug: `row-${start}`, brand_key: 'xreal', status: 'active', name: 'Local budget fixture' }], { headers: { 'content-range': `${start}-${start}/20` } });
+      }
       const table = url.pathname.split('/').pop();
       let rows = table === 'devices' ? [fixture] : table === 'public_device_detail_specs' ? [spec]
         : table === 'public_device_detail_sources' ? [source] : table === 'public_device_detail_evidence' ? [evidence]
@@ -153,6 +159,19 @@ try {
   assert.equal(failed.response.headers.get('cache-control'), 'no-store');
   assert.ok(!failed.html.includes('PRIVATE_BACKEND_SENTINEL'));
   outage = false;
+  for (const mode of ['budget', 'transient', 'redirect']) {
+    sitemapCase = mode;
+    const before = interceptedReads;
+    const boundedFailure = await request('/sitemap.xml');
+    assert.equal(boundedFailure.response.status, 503);
+    assert.equal(boundedFailure.response.headers.get('cache-control'), 'no-store');
+    assert.ok(!boundedFailure.html.includes('PRIVATE_BACKEND_SENTINEL'));
+    const physical = interceptedReads - before;
+    if (mode === 'budget') assert.equal(physical, 40);
+    else assert.ok(physical >= 1 && physical <= 3, `${mode} must not amplify the three initial requests`);
+  }
+  sitemapCase = 'normal';
+  checks.push('aggregate-fetch-budget-and-no-sdk-retry-or-redirect-amplification');
   const robots = await request('/robots.txt');
   assert.equal(robots.response.status, 200);
   for (const agent of ['Googlebot', 'Bingbot', 'OAI-SearchBot']) assert.ok(robots.html.includes('User-agent: ' + agent));
