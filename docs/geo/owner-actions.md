@@ -2,14 +2,17 @@
 
 No manual action is needed to complete local development. Nothing in this packet authorizes deployment, DNS, WAF, database changes, article publication or a public-beta gate replay.
 
+Phase 2 status: [release decision packet](phase2-release-readiness.md). Default tests now pass (74); the import-resolution blocker is resolved without production auth changes. Full type checking still has 55 inherited errors, with zero new diagnostics. Read-only management evidence confirms the current Worker deployment/origin, while billing lookup returned 403 and current capacity/cost controls remain unverified. Recommendation: HOLD release pending the specific owner steps below.
+
 ## Next release and production verification
 
 - [ ] Review this branch from the current Lensden production source lineage, not the historical main/Pages checkout. Confirm any newer production commits and retain unrelated work. The code is a local candidate.
-- [ ] Resolve or explicitly disposition the inherited test-runner failure and type-check debt through normal release controls. Retain Public Beta/security/auth gates in docs/ops/PUBLIC_BETA_CURRENT_STATE.md; local GEO tests do not grant a release GO.
+- [x] Resolve the inherited test-runner failure locally; all 74 default checks and 20 signed-fixture MFA checks pass. Production auth source and security assertions are preserved.
+- [ ] Resolve or explicitly disposition the remaining 55 type diagnostics through normal release controls. Retain Public Beta/security/auth gates in docs/ops/PUBLIC_BETA_CURRENT_STATE.md; local GEO tests do not grant a release GO.
 - [ ] Authorize and perform one normal zero-cost release only after confirming the current account plan, limits and existing build budget. If billing risk is unknown, stop that operation while retaining the local work.
 - [ ] Rebuild through that normal release flow. The local verification dist contains synthetic loopback configuration and must never be deployed.
 - [ ] After the authorized release, verify root/robots/sitemap-index/sitemap and representative product/guide/news/about routes, response headers, canonical origin, JSON-LD and anonymous content eligibility. Product/news/post GETs can trigger existing view counters; obtain authorization for such verification before running requests. Local test doubles are not DB/RLS proof.
-- [ ] Validate sitemap identity sets against eligible records, server caps, stable ordering and cached response behavior. Watch for 503 (missing credentials, schema/grant mismatch, count instability, >5,000 rows/table, >20 pages/table, XML limit). Do not solve a 503 by widening grants or returning a cached partial map. Add bounded sharding/cache under a separate scoped change when data exceeds the envelope.
+- [ ] Validate sitemap identity sets against eligible records, server caps, stable ordering and cached response behavior. Watch for 503 (missing credentials, schema/grant mismatch, count instability, >5,000 rows/table, >20 pages/table, shared 40-fetch ceiling, 10-second deadline, XML limit). Retries and redirects are disabled. HTTP max-age alone does not establish edge caching. Do not solve a 503 by widening grants or returning a cached partial map. Add bounded sharding/cache under a separate scoped change when data exceeds the envelope.
 - [ ] Review three English drafts and verify model/region/source freshness before approval. Set publication/update metadata only at the actual editorial events; publish through the existing workflow.
 
 ## Google Search Console

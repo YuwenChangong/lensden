@@ -1,5 +1,7 @@
 # Lensden SEO and GEO foundation — local implementation
 
+Phase 2 update (2026-11-02): see the [release decision packet](phase2-release-readiness.md) and [Phase 2 manifest](phase2-changed-files.txt). The default test-runner blocker is resolved (74 checks pass); full type diagnostics decreased from 56 to 55 with zero new diagnostics. Sitemap requests now share a 40-physical-fetch ceiling and 10-second deadline with retries and redirects disabled. Deployment identity was read back, but billing/capacity remains unverified after a 403. Production release recommendation: HOLD. The Phase 1 assessment/results below are retained as historical evidence; current progress/release authority remains [PUBLIC_BETA_CURRENT_STATE](../ops/PUBLIC_BETA_CURRENT_STATE.md).
+
 Assessment date: 2026-11-02 (Pacific/Auckland). Source base: a00e7eb94e522c9aea2751e60f0233a34c372785. Candidate branch: codex/lensden-seo-geo-foundation. No deployment or publication was performed. Read [owner-actions.md](owner-actions.md) before any launch activity.
 
 The original `D:/OpenGlass Hub` checkout is an older OpenGlass UI branch with unrelated dirty files. Inspection identified the current Lensden lineage in the auth-a-containment-time-v2 worktree. This candidate uses a separate managed worktree from its committed HEAD; unrelated classifier and current-state-note edits were not copied. Earlier names remain in internal identifiers and historical records intentionally.
@@ -39,7 +41,7 @@ Labels apply to repository/local evidence unless explicitly stated otherwise. Pr
 
 ## Implementation and boundaries
 
-The new helpers derive metadata from existing visible content; public readers remain anonymous. Product pages make no additional public query. The sitemap avoids the former full device/spec read and requests only identity columns from published devices. It reads at most 5,000 rows and 20 pages per table (devices, circles, news); successful responses cache for one hour at the HTTP layer. This is bounded request work, not proof of a provider/edge cache hit or billing allowance. Do not raise limits or add infrastructure without review.
+The new helpers derive metadata from existing visible content; public readers remain anonymous. Product pages make no additional public query. The sitemap avoids the former full device/spec read and requests only identity columns from published devices. It reads at most 5,000 rows and 20 pages per table (devices, circles, news), subject to Phase 2's shared 40-fetch ceiling and 10-second deadline. Successful responses emit public max-age=3600; this does not prove a provider/edge cache hit or one database refresh per hour. This is bounded request work, not proof of a billing allowance. Do not raise limits or add infrastructure without review.
 
 `lastmod` is optional when a true significant-update time cannot be established. In particular, a view counter is not an editorial update, and normalized spec updates need not update the device row. [Google's guidance](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap) calls for accurate significant-modification dates; [its lastmod clarification](https://developers.google.com/search/blog/2023/06/sitemaps-lastmod-ping) permits omission when uncertain. Dates are never generated from this build or draft preparation.
 

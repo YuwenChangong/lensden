@@ -1,5 +1,51 @@
 # Public Beta Current State
 
+## 2026-11-02 Lensden GEO Phase 2 — local validation and release decision
+
+Candidate branch codex/lensden-seo-geo-foundation; foundation 354a99e4,
+source HEAD ffda077619f0dd9bf01b5e942aec6eca570ff96f. DONE: repaired the
+Node test loader using installed Vite without production auth edits; fixed the
+reproduced missing-admin-news-row null dereference; enforced a shared sitemap
+40-physical-fetch ceiling and 10-second deadline, no SDK retries or redirects,
+with existing anonymous queries/publication filters and redacted 503/no-store.
+No dependency, schema, content publication or UI design change.
+
+VERIFIED: default tests 74, signed-fixture MFA 20, GEO 12, admin-news 2;
+existing product/news regressions, local Worker build, 11 compiled-Worker check
+groups, XML and responsive checks pass. Full Astro check remains BLOCKED at 55
+inherited errors (56 before); frozen debt ratchet PASS, new 0, changed diagnostic
+source lines 0. All 55 exact diagnostics and risk categories are recorded.
+Independent review found no actionable Critical, Important or Minor findings;
+review limits and exact evidence are in ../geo/phase2-release-readiness.md.
+
+VERIFIED integration ancestry: producer branch still a00e7eb9, an ancestor with
+no divergent committed changes. Its unrelated dirty classifier and newer Nov 2
+status notes remain untouched. Those notes record brand/news and Public Beta LIVE;
+read-only management confirms deployment 98d3dd51-cf6c-46d7-ab57-de1b5c6a0859,
+active Worker version ce3581f7-d069-4fb9-ab72-e89363a1fc43 at 100%, enabled origin
+https://lensden.ogh.workers.dev. That is the existing release, not this candidate.
+The historical v11 entry below retains its original scope; it does not supersede
+the producer's newer LIVE evidence. Preserve that evidence during any later
+integration. No completed security/Public Beta acceptance was replayed.
+
+BLOCKED_COST_UNVERIFIED for production release/requests: the authorized billing
+GET returned 403 and was not retried. Current plan, consumption/headroom and
+cost hard-stop controls remain NOT_VERIFIED. Local fetch bounds and max-age are
+not capacity/edge-cache proof. WAF/crawler, production RLS and CPU remain
+NOT_VERIFIED. Five management GETs only; production application requests 0,
+production DB reads/writes 0, deployments/publications 0. No push/merge/rebase/
+cherry-pick/reset, DNS/WAF change, paid service or credential search.
+
+Recommendation HOLD production release. OWNER_ACTION_REQUIRED before release:
+review/authorize integration while retaining producer working changes; establish
+current applicable zero-cost allowance/headroom/hard stops through an existing
+owner-authorized source; disposition the 55 diagnostics under actual release
+policy; separately authorize a normal rebuild/release and bounded live checks.
+Never deploy the synthetic loopback dist. No manual action is needed to retain
+or continue safe local work. Minimal next action is owner review of the scoped
+[decision packet](../geo/phase2-release-readiness.md); its
+[exact Phase 2 manifest](../geo/phase2-changed-files.txt) records the local changes.
+
 ## v11 Local Enforcement Reconciliation and Actual Fixture Decode
 
 Starting HEAD15acc0b999ce2975bc5299e820801172d070e85f. v11 explicitly authorizes
