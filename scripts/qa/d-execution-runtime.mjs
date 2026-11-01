@@ -234,7 +234,7 @@ export function validateDPlan(plan,{inspect=false,resume=false}={}) {
   return {adoption,t,gates,videoTemplate,mod,bc,inspect};
 }
 
-function wrapDownload(code,params) {
+export function wrapDownload(code,params) {
   return `void (async()=>{const r=await (${code})();const out={...r,binding:${JSON.stringify(params.executionBindingSha256)},requestId:${JSON.stringify(params.requestId)}};
     const u=URL.createObjectURL(new Blob([JSON.stringify(out)],{type:'application/json'}));const a=document.createElement('a');
     a.href=u;a.download=${JSON.stringify('ogh-'+params.requestId+'.json')};document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);})();`;
@@ -266,7 +266,7 @@ export function sealDRevocationDutyBeforeInput(plan) {
     return file;
   }catch{throw Error('D_REVOCATION_DUTY_UNPROVEN');}
 }
-function identityCode(p,t) {
+export function identityCode(p,t) {
   return `async()=>{
     const p=${JSON.stringify(p)},t=${JSON.stringify({alias:t.controlledAlias,circleId:t.existingCircleId,circleSlug:t.existingCircleSlug,namespace:t.namespace})};
     if(window.top!==window||location.origin!=='https://openglasshub.ogh.workers.dev'||location.search||location.hash||Date.now()>=Date.parse(p.deadlineUtc))throw Error();
@@ -289,7 +289,7 @@ function identityCode(p,t) {
     return {actorId:p.actorId,confirmed:true,role:'user',circleMatches:true,observedUtc:new Date().toISOString()};
   }`;
 }
-function approveCode(p) {
+export function approveCode(p) {
   return `async()=>{const p=${JSON.stringify(p)};
     if(window.top!==window||location.origin!=='https://openglasshub.ogh.workers.dev'||location.search||location.hash
       ||!['/admin/security/','/admin/reports/'].includes(location.pathname)||Date.now()>=Date.parse(p.deadlineUtc))throw Error();
