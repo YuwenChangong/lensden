@@ -19,9 +19,13 @@ import {
   resolveNewsContentBlocks,
 } from "../../lib/news-content";
 
+const slug = String(Astro.params.slug ?? "").trim();
+if (slug === "openglass-community-is-prioritizing-verifiable-coverage") {
+  return Astro.redirect(`/news/lensden-community-is-prioritizing-verifiable-coverage/${Astro.url.search}`, 301);
+}
+
 const env = runtimeEnv as CloudflareEnv;
 const supabase = createSSRClient(env);
-const slug = String(Astro.params.slug ?? "").trim();
 const article = slug ? await getPublicNewsArticleBySlug(supabase, slug) : null;
 
 if (article) {

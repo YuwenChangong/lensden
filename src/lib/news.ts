@@ -145,7 +145,7 @@ export const FALLBACK_NEWS_ARTICLES: NewsArticle[] = [
   },
   {
     id: "fallback-openglass-005",
-    slug: "openglass-community-is-prioritizing-verifiable-coverage",
+    slug: "lensden-community-is-prioritizing-verifiable-coverage",
     title: "Lensden 更新：热点页将优先呈现可验证、可复查的信息整理",
     summary: "对 Lensden 来说，热点不只是“快”，还要便于后来者快速建立判断。",
     content:

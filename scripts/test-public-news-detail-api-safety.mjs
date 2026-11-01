@@ -158,6 +158,17 @@ async function main() {
     assert.ok(fallback);
     assert.equal(fallback.author_id, null, "missing-table fallback uses the same public normalizer");
 
+    const lensdenSlug = "lensden-community-is-prioritizing-verifiable-coverage";
+    const lensdenFallback = await getPublicNewsArticleBySlug(missingTableClient, lensdenSlug);
+    assert.ok(lensdenFallback, "the official fallback article resolves at its Lensden slug");
+    assert.equal(lensdenFallback.slug, lensdenSlug);
+    for (const field of ["title", "summary", "content", "source_name"]) {
+      assert.match(lensdenFallback[field], /Lensden/);
+      assert.doesNotMatch(lensdenFallback[field], /OpenGlass|Open Glass|YuwenChangong/i);
+    }
+    assert.equal(await getPublicNewsArticleBySlug(missingTableClient, "openglass-community-is-prioritizing-verifiable-coverage"), null,
+      "the old URL is handled by the permanent route redirect, not a second fallback article");
+
     const missingRelatedTableClient = {
       from() {
         return {
