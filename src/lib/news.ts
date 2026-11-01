@@ -42,7 +42,7 @@ export const NEWS_CATEGORY_LABELS: Record<NewsCategoryKey, string> = {
   ar_glasses: "AR 眼镜",
   developer: "开发者",
   community: "社区",
-  openglass: "OpenGlass",
+  openglass: "Lensden",
 };
 
 const NEWS_CATEGORY_KEYS = new Set<NewsCategoryKey>(Object.keys(NEWS_CATEGORY_LABELS) as NewsCategoryKey[]);
