@@ -137,7 +137,16 @@ export function installDVideoCreationObserver(p) {
         if(url.pathname===routes[2]&&(!Array.isArray(body.media)||body.media.length!==1||body.media[0].storage_path!==state.sourceKey))throw Error();
       }
       const response=await Promise.race([original.apply(this,arguments),stopped]);event.httpStatus=response.status;
-      if(done||response.redirected||!response.ok)throw Error();
+      if(done||response.redirected)throw Error();
+      if(!response.ok) {
+        if(site&&url.pathname===routes[2]&&response.status===500) {
+          const failure=await boundedJson(response);
+          if(failure?.error==='MEDIA_RETENTION_FAILED')state.retentionFailure={error:'MEDIA_RETENTION_FAILED',
+            stage:['source_head','source_metadata','copy','retained_head','retained_metadata'].includes(failure.retention_stage)
+              ?failure.retention_stage:null};
+        }
+        throw Error();
+      }
       if(put) {
         const etag=response.headers.get('etag');if(response.status!==200)throw Error();
         const validEtag=/^"[a-f0-9]{32}"$/i.test(etag??'');

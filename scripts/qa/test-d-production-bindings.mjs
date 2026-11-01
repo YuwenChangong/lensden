@@ -73,6 +73,37 @@ test('D runtime closure: actual SDK virtual-hosted PUT is observed while wrong t
   }
 });
 
+test('D retention diagnostic observer: captures only allowed failure stages without retry or provider disclosure',async()=>{
+  const names=['window','location','document','URL'],prior=Object.fromEntries(names.map(n=>[n,globalThis[n]]));
+  for(const stage of ['source_head','source_metadata','copy','retained_head','retained_metadata',undefined,'SECRET_PROVIDER_DETAIL']){
+    let blob,attachCalls=0;const w={};w.top=w;
+    w.fetch=async(input)=>{
+      const u=new prior.URL(input,'https://openglasshub.ogh.workers.dev');
+      if(u.pathname==='/api/forum/posts')return new Response(JSON.stringify({post:{id:postId}}),{status:201});
+      if(u.pathname==='/api/forum/external-video-upload')return new Response(JSON.stringify({storage_path:sourceKey}),{status:200});
+      attachCalls++;return new Response(JSON.stringify({error:'MEDIA_RETENTION_FAILED',retention_stage:stage,
+        provider:'SECRET_PROVIDER_DETAIL',key:'PRIVATE_OBJECT_KEY'}),{status:500});
+    };
+    const originalFetch=w.fetch;
+    globalThis.window=w;globalThis.location={origin:'https://openglasshub.ogh.workers.dev',pathname:'/posts/new/',search:'',hash:''};
+    globalThis.document={body:{appendChild(){}},createElement:()=>({click(){},remove(){}})};
+    class LocalURL extends prior.URL{}LocalURL.createObjectURL=b=>{blob=b;return 'blob:fixture';};LocalURL.revokeObjectURL=()=>{};globalThis.URL=LocalURL;
+    let observer;
+    try{
+      observer=api.installDVideoCreationObserver({...binding,verifiedContextReceiptSha256:'7'.repeat(64),
+        deadlineUtc:new Date(Date.now()+10000).toISOString(),title:'fixture',body:'synthetic',circleSlug:'fixture'});
+      await w.fetch('/api/forum/posts',{method:'POST',body:JSON.stringify({title:'fixture',body:'synthetic',circle_slug:'fixture',type:'feedback',has_media:true})});
+      await w.fetch('/api/forum/external-video-upload',{method:'POST',body:JSON.stringify({post_id:postId})});
+      await assert.rejects(w.fetch('/api/forum/post-media',{method:'POST',body:JSON.stringify({post_id:postId,media:[{storage_path:sourceKey}]})}),/D_OBSERVER_FAILED_NO_RETRY/);
+      const text=await blob.text(),result=JSON.parse(text);
+      assert.equal(attachCalls,1);assert.equal(result.events.at(-1).httpStatus,500);
+      assert.deepEqual(result.retentionFailure,{error:'MEDIA_RETENTION_FAILED',stage:stage==='SECRET_PROVIDER_DETAIL'?null:stage??null});
+      assert.equal(text.includes('SECRET_PROVIDER_DETAIL'),false);assert.equal(text.includes('PRIVATE_OBJECT_KEY'),false);
+      assert.equal(result.status,'STOPPED_UNKNOWN');assert.equal(w.fetch,originalFetch);
+    }finally{observer?.finish();for(const n of names)globalThis[n]=prior[n];}
+  }
+});
+
 test('D binding: actual creation observer and production checkpoints are implemented',()=>{
   assert.equal(typeof api?.buildDProductionCreation,'function');
   assert.equal(typeof api?.runDProductionCheckpoint,'function');
