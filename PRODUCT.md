@@ -5,10 +5,10 @@
 product
 
 ## Users
-OpenGlass Hub serves AR / AI glasses users, developers, early adopters, buyers doing research, and community builders. They usually arrive with a practical question: what device is worth trying, what real users are experiencing, what current limitations exist, or where to discuss a specific product, circle, or development path.
+Lensden serves AR / AI glasses users, developers, early adopters, buyers doing research, and community builders. They usually arrive with a practical question: what device is worth trying, what real users are experiencing, what current limitations exist, or where to discuss a specific product, circle, or development path.
 
 ## Product Purpose
-OpenGlass Hub is a forum-first community product for AR / AI glasses and spatial computing. Its job is to make discussion, discovery, and practical decision-making easier: users should quickly find posts, circles, news, device references, and product-specific conversations without feeling like they landed on a generic AI tool landing page.
+Lensden is a forum-first community product for AR / AI glasses and spatial computing. Its job is to make discussion, discovery, and practical decision-making easier: users should quickly find posts, circles, news, device references, and product-specific conversations without feeling like they landed on a generic AI tool landing page.
 
 ## Brand Personality
 Practical, credible, focused. The interface should feel like a real community product with strong information hierarchy, dark premium restraint, and zero fake hype. It should feel closer to a trusted forum or developer product than to a marketing-heavy SaaS homepage.

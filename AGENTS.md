@@ -1,4 +1,4 @@
-# OpenGlass Hub Task Continuity
+# Lensden Task Continuity
 
 Before every task, read `docs/ops/PUBLIC_BETA_CURRENT_STATE.md`. It is the only
 current release/progress baseline; other plans and reports are scoped evidence.

@@ -1,4 +1,4 @@
-# OpenGlass Hub Docs
+# Lensden Docs
 
 ## QA harness
 
@@ -50,7 +50,7 @@ Current direction:
 The following baseline records the earlier Device Library release; it is not the current production-origin guidance. See the public [Search Console checklist](/about/search-console-launch-checklist/) for the current site URL.
 
 Current production baseline:
-- Production URL: `https://openglasshub.pages.dev`
+- Production URL: `https://lensden.ogh.workers.dev`
 - Latest production/main commit: `475fd71eee66d62b8962323879158ba27169a652`
 - No DB migration has been added for the Device Library release stack so far.
 - No production data was touched by the Device Library releases so far.
