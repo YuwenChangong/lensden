@@ -46,6 +46,7 @@ export default defineConfig({
     remarkPlugins: [remarkGazeLauncherVisibility],
   },
   redirects: {
+    '/deletion': '/account-deletion/',
     '/gaze-os': '/gaze-launcher/',
     '/reference/guides-docs': '/guides/',
     '/reference/devices-docs': '/devices/',
@@ -85,12 +86,12 @@ export default defineConfig({
       },
       favicon: '/gaze-icon-v6.ico',
       logo: {
-      src: './public/brand/openglass-nav-logo.png',
+      src: './public/brand/lensden-nav-logo.png',
         alt: 'Lensden',
         replacesTitle: false,
       },
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/openglass-hub' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/YuwenChangong/lensden' },
       ],
       head: [
         { tag: 'meta', attrs: { name: 'author', content: 'Jayden' } },

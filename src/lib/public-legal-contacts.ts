@@ -9,7 +9,7 @@ export const PUBLIC_LEGAL_CONTACT_ENV = {
 } as const;
 
 export const PUBLIC_LEGAL_CONTACTS = {
-  operator: "YuwenChangong",
+  operator: "Jayden",
   support: "lensden.team@gmail.com",
   abuse: "lensden.team@gmail.com",
   privacy: "lensden.team@gmail.com",

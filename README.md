@@ -2,6 +2,10 @@
 
 Lensden is an AR/AI glasses knowledge base built with Astro + Starlight. Developed and maintained by Jayden.
 
+Website: [Lensden](https://lensden.ogh.workers.dev/)
+
+Repository: [Lensden](https://github.com/YuwenChangong/lensden)
+
 Contact: [lensden.team@gmail.com](mailto:lensden.team@gmail.com)
 
 ## Run locally

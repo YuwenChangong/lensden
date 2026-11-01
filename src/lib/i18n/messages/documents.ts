@@ -61,7 +61,7 @@ const pairs = {
   policyNavigation: ["法律政策导航", "Legal policy navigation"],
   version: ["版本 {version} · 生效日期 {date}", "Version {version} · Effective {date}"],
   publicContacts: ["公开联系渠道", "Public contacts"],
-  operator: ["运营方：", "Operator:"],
+  operator: ["运营者（公开身份）：", "Operator (public identity):"],
   support: ["支持：", "Support:"],
   publicContact: ["公开联系人：", "Public contact:"],
   abuse: ["滥用与安全：", "Abuse and safety:"],

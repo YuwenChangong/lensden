@@ -265,4 +265,4 @@ Before using output in production device docs:
 - verify factual fields against the current page
 - remove or correct weakly inferred values
 - decide whether an official image may be used
-- rewrite the device doc in OpenGlass Hub’s own voice
+- rewrite the device doc in Lensden’s own voice

@@ -1,4 +1,4 @@
-# OpenGlass Hub — SEO 发布与监控清单
+# Lensden — SEO 发布与监控清单
 
 > 历史记录：以下为 2026-05-17 的 Pages 上线检查结果与当时的操作步骤，不是当前生产指引。当前生产地址及 Sitemap 请参阅 [Search Console 上线检查清单](/about/search-console-launch-checklist/)。
 
@@ -191,4 +191,4 @@ URL: https://openglasshub.pages.dev/sitemap-index.xml
 
 ---
 
-*此文档由 OpenGlass Hub 项目维护。*
+*此文档由 Lensden 项目维护。*

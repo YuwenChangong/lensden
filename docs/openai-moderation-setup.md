@@ -2,7 +2,7 @@
 
 ## Default moderation stack:
 
-OpenGlass Hub default moderation for forum write paths is:
+Lensden default moderation for forum write paths is:
 
 1. Local sensitive lexicon + OpenGlass hard rules
 2. OpenAI Moderation API
@@ -115,7 +115,7 @@ Critical coverage note:
 ### OpenAI forum policy classifier
 
 - Runs server-side only
-- Uses a normal OpenAI model to classify OpenGlass Hub policy violations into strict JSON
+- Uses a normal OpenAI model to classify Lensden policy violations into strict JSON
 - Disabled by default
 - Provider errors, invalid JSON, missing model, and timeouts fail closed
 

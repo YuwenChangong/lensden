@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { resolveConfig } from "../../node_modules/astro/dist/core/config/config.js";
 
 import {
+  CURRENT_SITE_ORIGIN,
   LEGACY_PAGES_ORIGIN,
   resolveSiteOrigin,
   rewriteRobotsSitemapOrigins,
@@ -32,9 +33,9 @@ function walkFiles(directory, predicate) {
 }
 
 assert.equal(LEGACY_PAGES_ORIGIN, "https://openglasshub.pages.dev");
-assert.equal(resolveSiteOrigin(undefined), LEGACY_PAGES_ORIGIN);
-assert.equal(resolveSiteOrigin(""), LEGACY_PAGES_ORIGIN);
-assert.equal(resolveSiteOrigin("   "), LEGACY_PAGES_ORIGIN);
+assert.equal(resolveSiteOrigin(undefined), CURRENT_SITE_ORIGIN);
+assert.equal(resolveSiteOrigin(""), CURRENT_SITE_ORIGIN);
+assert.equal(resolveSiteOrigin("   "), CURRENT_SITE_ORIGIN);
 assert.equal(resolveSiteOrigin(`${LEGACY_PAGES_ORIGIN}/`), LEGACY_PAGES_ORIGIN);
 assert.equal(resolveSiteOrigin(`${WORKER_TEST_ORIGIN}/`), WORKER_TEST_ORIGIN);
 assert.equal(
@@ -72,7 +73,7 @@ const originalSiteOrigin = process.env.SITE_ORIGIN;
 try {
   delete process.env.SITE_ORIGIN;
   const defaultConfig = await loadAstroConfig();
-  assert.equal(defaultConfig.site, LEGACY_PAGES_ORIGIN);
+  assert.equal(defaultConfig.site, CURRENT_SITE_ORIGIN);
 
   process.env.SITE_ORIGIN = `${WORKER_TEST_ORIGIN}/`;
   const workerConfig = await loadAstroConfig();
@@ -256,7 +257,7 @@ assert.match(finalAuditResult.stderr, /absolute HTTPS origin/, "final audit must
 
 console.log(JSON.stringify({
   status: "PASS",
-  defaultOrigin: LEGACY_PAGES_ORIGIN,
+  defaultOrigin: CURRENT_SITE_ORIGIN,
   configurableOrigin: WORKER_TEST_ORIGIN,
   invalidOriginsRejected: 8,
   canonicalOriginsPerBuild: 1,

@@ -1,9 +1,10 @@
 export const LEGACY_PAGES_ORIGIN = "https://openglasshub.pages.dev";
+export const CURRENT_SITE_ORIGIN = "https://lensden.ogh.workers.dev";
 export const SITE_ORIGIN_TOKEN = "{{SITE_ORIGIN}}";
 
 export function resolveSiteOrigin(value?: unknown): string {
   if (value === undefined || value === null || (typeof value === "string" && value.trim() === "")) {
-    return LEGACY_PAGES_ORIGIN;
+    return CURRENT_SITE_ORIGIN;
   }
 
   if (typeof value !== "string") {

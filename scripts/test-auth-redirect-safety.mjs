@@ -23,7 +23,7 @@ const headerSource = readFileSync(new URL("../src/components/site/HeaderUserMenu
 assert.equal((headerSource.match(/href=\{buildSignupHref\(safeNext\)\} className="ogh-register-button"/g) ?? []).length, 2);
 
 const trustedOrigin = "https://openglasshub.pages.dev";
-const workerOrigin = "https://openglasshub.ogh.workers.dev";
+const workerOrigin = "https://lensden.ogh.workers.dev";
 const productionConfig = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8").split("[env.production.vars]")[1];
 assert.equal(productionConfig.match(/^SITE_ORIGIN\s*=\s*"([^"]+)"/m)?.[1], workerOrigin);
 const preparedWorkerOrigin = "https://openglass-hub-transition-test.workers.dev";

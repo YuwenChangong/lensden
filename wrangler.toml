@@ -1,4 +1,4 @@
-name = "openglasshub"
+name = "lensden"
 compatibility_date = "2026-05-17"
 compatibility_flags = ["nodejs_compat"]
 
@@ -14,7 +14,7 @@ id = "c6d05834ec1d4d3780d8495236496887"
 
 [env.preview.vars]
 AUTH_CAPTCHA_MODE = "off"
-SITE_ORIGIN = "https://openglasshub.ogh.workers.dev"
+SITE_ORIGIN = "https://lensden.ogh.workers.dev"
 PUBLIC_R2_PUBLIC_BASE_URL = "https://pub-b66cce026a6c458f86d56dc726eaacbd.r2.dev"
 SUPABASE_URL = "https://xcbnxzjlsvtgzixurcof.supabase.co"
 PUBLIC_SUPABASE_URL = "https://xcbnxzjlsvtgzixurcof.supabase.co"
@@ -56,7 +56,7 @@ id = "1aececb7c13140909c240bfafbd9d29d"
 [env.production.vars]
 AUTH_CAPTCHA_MODE = "required"
 PUBLIC_AUTH_TURNSTILE_SITE_KEY = "0x4AAAAAAFKnj0so9OWjyiCv"
-PUBLIC_LEGAL_OPERATOR_NAME = "YuwenChangong"
+PUBLIC_LEGAL_OPERATOR_NAME = "Jayden"
 PUBLIC_SUPPORT_EMAIL = "lensden.team@gmail.com"
 PUBLIC_ABUSE_EMAIL = "lensden.team@gmail.com"
 PUBLIC_PRIVACY_EMAIL = "lensden.team@gmail.com"
@@ -69,7 +69,7 @@ R2_ACCOUNT_ID = "dcb374166b39234a499985145c075f50"
 R2_BUCKET_NAME = "openglasshub-media"
 R2_PUBLIC_BASE_URL = "https://pub-b66cce026a6c458f86d56dc726eaacbd.r2.dev"
 PUBLIC_R2_PUBLIC_BASE_URL = "https://pub-b66cce026a6c458f86d56dc726eaacbd.r2.dev"
-SITE_ORIGIN = "https://openglasshub.ogh.workers.dev"
+SITE_ORIGIN = "https://lensden.ogh.workers.dev"
 MODERATION_PROVIDER = "local"
 MODERATION_PROVIDER_UNAVAILABLE_POLICY = "review_all"
 OPENAI_MODERATION_ENABLED = "true"
