@@ -1,5 +1,62 @@
 # Public Beta Current State
 
+## 2026-11-02 Lensden GEO Phase 3 — priority defects resolved, manual release boundary
+
+Candidate branch codex/lensden-seo-geo-foundation, starting1db87e70;
+source HEAD b78c6caa1d1612de64bb6e95c3eb4edd68c39cbe. DONE: checked object-only
+forward-FK JOIN previews in admin/report paths; actual target discriminator for
+comment notifications; existing consent dependency/dormant adapter typing;
+lexicon/finite-score narrowing and actual emitted reason union; signed-media
+relative URL compatibility through the SDK's public local builder. Queries,
+filters, authentication enforcement, RLS/schema, catalog data and drafts remain
+unchanged. Producer a00e7eb9 stays an ancestor; its dirty notes/classifier untouched.
+
+VERIFIED:38 priority diagnostics removed,55 ->17. Authentication/authorization0,
+security/moderation0; legacy catalog13 and other4 remain. The established type gate
+is the frozen historical-debt ratchet, NOT mandatory zero-error Astro. Ratchet
+PASS baseline177/current17/new0/changed diagnostic anchors0; no policy/manifest/
+toolchain change and no invented new owner waiver. Full Astro still exits1.
+Default74, signed-fixture MFA20, GEO12, new actual-handler/SDK7 checks PASS;
+existing report authorization and report/consent GET/POST regressions PASS.
+Final local pipeline UNIT/BUILD/RENDERED PASS,12 compiled groups; XML parser and
+390/430/1280 responsive checks PASS.15,000 synthetic rows ->30reads,15,031 URLs,
+967,028 XML bytes;4 concurrent maps120reads;3 exhausted maps118<=120,all503,
+no partial success. Host wall times are not production CPU/heap proof.
+Independent read-only review: no outstanding Critical/Important/Minor issues;
+one timing-receipt ambiguity clarified and read back. No completed production
+security/Public Beta acceptance replay; no new production GO.
+
+Owner's November2 dashboard readback: Workers Free Active,Workers Paid not
+subscribed,today0/100000 requests,observability0/200000. Supabase organization
+Free; UI Spend Cap enabled; project DB0.037GB/storage0.006GB/egress0.005GB/MAU8.
+Project figures do not prove organization aggregate usage; historical invoices
+are not current account-wide charge proof. Official docs state Free usage is
+not charged and describe Spend Cap as a Pro feature for selected items.
+Three management GETs confirm same pre-GEO deployment/version,Logpush false,
+no tails. Billing403 reused,not retried; no credentials sought.
+
+VERIFIED_ZERO_COST_BOUNDARY is scoped to local execution and the reported
+Free Worker/Free Supabase public sitemap path,no paid fallback/R2/provider use.
+It is NOT a total-account USD0 assertion. R2 Paid usage/charges/hard stops remain
+NOT_VERIFIED; R2 operations BLOCKED_COST_UNVERIFIED. They do not globally block
+local GEO work or a manual plan with no R2 operations. GitHub main auto-builds
+are enabled: no push/merge. Hosted build minutes/paid Builds status unknown,
+NOT_APPLICABLE to a local-build/manual activation path that triggers none.
+Production CPU/heap/RLS/crawler/cache behavior remains NOT_VERIFIED.
+
+Recommendation HOLD until a separately authorized manual normal release and
+bounded live validation; this task does not grant either. Minimal owner action:
+review exact candidate/producer preservation,authorize local production rebuild,
+manual Worker release and narrowly scoped HTTP/available CPU-error readback,
+excluding R2/media and any ungranted view-counter effects. No additional billing
+dashboard task/debt waiver is required for local closeout. Never deploy loopback
+dist. Production application/DB/R2 requests0,deployments/publications0,push/merge0;
+no DNS/WAF,paid-service or producer-file change. Current producer LIVE evidence
+continues to describe the already-deployed brand/news release,not GEO.
+
+[Phase 3 decision/evidence packet](../geo/phase3-release-readiness.md) and
+[exact changed-file manifest](../geo/phase3-changed-files.txt) are scoped evidence.
+
 ## 2026-11-02 Lensden GEO Phase 2 — local validation and release decision
 
 Candidate branch codex/lensden-seo-geo-foundation; foundation 354a99e4,
