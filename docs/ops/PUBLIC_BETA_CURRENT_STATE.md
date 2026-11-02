@@ -1,5 +1,44 @@
 # Public Beta Current State
 
+## 2026-11-02 Public discovery v1 — final local review, cost admission HOLD
+
+[Release Readiness Packet](../geo/public-discovery-v1-release-readiness-2026-11-02.md)
+reviews input4843559f6c5f921b12c453e18ad81363cc897a36 against saved deployed
+c9acc845/Worker43ac9bb4; inherited4e636573 remains an ancestor.
+One actual blocker corrected in acf9d1560f9fb3bec52d83545852536655ad6c72:
+comment continuation pages now have their own HTML canonical/og:url, while the
+DiscussionForumPosting entity retains the first-page URL; page2 previous link
+returns to the root. Sitemap query policy/auth/RLS/CSP/write branches unchanged.
+
+Reused prior27/27 evidence; new regression RED1, related SEO tests GREEN10/10,
+final loopback build/rendered11 groups PASS (24 bounded local requests,
+SSR/hydration/XSS,390/430px, old content/feed and bounded capacity). Ratchet PASS:
+15 retained/new0. Evidence artifacts/qa/public-discovery-readiness/ and
+public-discovery-v1/canonical-{red,green}.log. Current dist is loopback-only,
+not a Production release artifact; no Production build was run.
+
+DECISION=HOLD_MISSING_COST_EVIDENCE. Known Free plan snapshots apply to their
+recorded times, not current shared usage or new route CPU. Forum candidate count,
+current row-cap/capacity and CPU headroom NOT_VERIFIED; Cache-Control alone is
+not proven runtime caching. Supabase Free is not inventing paid overage; missing
+organization totals affect availability. Unrelated R2/Builds billing does not
+block local work or a plan doing neither. Unknown fixtures/live RLS/crawler/
+indexing/citations remain scoped NOT_VERIFIED, not standalone code failures.
+
+No fresh active/source read: later Production changes must be reconciled before
+any activation. Existing version rollback mechanism applies; verify immediate
+pre-release target metadata, do not blindly reuse an older rollback version.
+Post detail GETs retain view-counter RPC side effects (including comment pages);
+future verification must explicitly authorize these or omit those requests.
+
+Next single action: Owner provide or separately authorize one bounded read-only
+release-window admission snapshot (plans/shared usage, active/source/rollback,
+existing forum candidate total; no new billing API retries). New route CPU cannot
+be proven by reading an undeployed route: any controlled activation/measurement
+window needs separate approval, with stop/rollback bounds in the packet.
+Production requests/writes0, deployments0, remote push0, R2/media operations0.
+No production configuration, plan, DNS/WAF, infrastructure or database change.
+
 ## 2026-11-02 Public discovery coverage v1 — implemented locally, not deployed
 
 [Implementation/evidence matrix](../geo/public-discovery-coverage-v1-2026-11-02.md)
