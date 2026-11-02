@@ -290,11 +290,14 @@ async function loadLatestPostsPage(
     throw new Error(error.message);
   }
 
-  const loadedPosts = filterPublicVisibleFeedPosts((data as FeedPostRecord[] | null) ?? []);
+  const candidates = (data as FeedPostRecord[] | null) ?? [];
+  // Pagination offsets refer to database rows. Filter only this page's rows;
+  // the extra row is a continuation sentinel, never part of the visible page.
+  const loadedPosts = filterPublicVisibleFeedPosts(candidates.slice(0, limit));
   return {
     posts: loadedPosts.slice(0, limit),
     supportsViewCount,
-    hasMore: loadedPosts.length > limit,
+    hasMore: candidates.length > limit,
   };
 }
 

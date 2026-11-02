@@ -13,7 +13,7 @@ import { validSeoDate } from '../lib/seo';
 
 export const prerender = false;
 
-const englishGuides = import.meta.glob<{ draft?: boolean; published_at?: string }>(
+const englishGuides = import.meta.glob<{ draft?: boolean; published_at?: string; lastUpdated?: string | Date }>(
   '../content/editorial-translations/en/guides/*.mdx', { eager: true, import: 'frontmatter' },
 );
 
@@ -50,11 +50,13 @@ export const GET: APIRoute = async ({ site }) => {
       if (data.draft || !validSeoDate(data.published_at)) continue;
       const slug = file.split('/').pop()?.replace(/\.mdx$/, '');
       if (!slug || !isValidProductSegment(slug) || slug === 'index') continue;
-      entries.push({ loc: absolute(`/guides/${slug}/`) });
+      entries.push({ loc: absolute(`/guides/${slug}/`), lastmod: validSeoDate(data.lastUpdated) });
     }
     for (const circle of circles.filter(isPublicVisibleCircle)) {
       if (!isValidProductSegment(circle.slug)) throw new Error('Sitemap data unavailable.');
-      entries.push({ loc: absolute(`/circles/${circle.slug}/`), lastmod: validSeoDate(circle.updated_at ?? circle.created_at) });
+      // The page also lists posts; circle.updated_at does not track those changes.
+      // Omit lastmod until a timestamp covers meaningful updates to the full page.
+      entries.push({ loc: absolute(`/circles/${circle.slug}/`) });
     }
     for (const article of news) {
       if (!isValidProductSegment(article.slug)) throw new Error('Sitemap data unavailable.');

@@ -1,5 +1,34 @@
 # Public Beta Current State
 
+## 2026-11-02 Automatic discovery audit — local fixes, not deployed
+
+[Scoped PASS/FAIL report](../geo/discovery-workflow-audit-2026-11-02.md).
+Existing sitemap/SSR links automate discovery; no routine manual URL-indexing
+requests required by the publishing workflow. Source-guides use normal releases;
+published database inventory updates dynamically. No indexing guarantee inferred.
+
+Three demonstrated local corrections: English guide explicit lastUpdated now
+reaches sitemap; misleading circle-record lastmod omitted because page posts
+change independently; latest-feed filtering no longer consumes the lookahead row
+or hides continuation on an empty filtered page. Existing controls/design retained.
+Pagination regressions RED2 before/GREEN3 after; focused SEO/measurement/feed15/15,
+synthetic sitemap handler and updated compiled feed PASS. JS-off390/430px no
+overflow; build PASS; diagnostic ratchet17 retained/new0. Evidence under ignored
+artifacts/qa/discovery-audit/. No production website requests, writes or R2 calls.
+Current ignored dist is the loopback test build, not an approved release artifact.
+
+Fresh read-only Cloudflare configuration: crawler/AI blocking protections off,
+Fight Mode off, zone IP rules empty, canonical redirect; security medium/browser
+check on. Real verified crawler passage NOT_VERIFIED, no WAF change. No IndexNow
+implementation found; proposal only, disabled. Universal fixture exclusion and
+reliable semantic revision timestamps remain missing. No new service, paid
+fallback, indexing notification, deployment, push or merge.
+
+Minimal next action: separately authorize a later deployment of these local fixes
+if desired. Confirm existing console/sitemap setup only if not already established;
+keep future fixtures nonpublic using existing workflows. IndexNow optional.
+Production remains on the previously recorded43ac9bb4 release; not redeployed.
+
 ## 2026-11-02 QA cleanup DONE and VERIFIED after staff MFA
 
 Supersedes the MFA-blocked checkpoint below. Owner completed normal MFA; exact
