@@ -4,6 +4,12 @@ export const prerender = false;
 import CommunityLayout from "../../layouts/CommunityLayout.astro";
 import ProductCard from "../../components/community/ProductCard.astro";
 
+const englishGuides = Object.entries(import.meta.glob<{ title: string; description: string; draft?: boolean; published_at?: string }>(
+  "../../content/editorial-translations/en/guides/*.mdx", { eager: true, import: "frontmatter" },
+)).filter(([, data]) => !data.draft && data.published_at).map(([file, data]) => ({
+  ...data, href: `/guides/${file.split('/').pop()?.replace(/\.mdx$/, '')}/`,
+}));
+
 const decisionPaths = [
   {
     key: "display",
@@ -120,6 +126,15 @@ const text = getUiMessages(Astro.locals.localeContext.locale).documents;
       </div>
     </div>
   </section>
+
+  {englishGuides.length > 0 && <section class="community-surface community-surface--primary" lang="en" style="margin-top: 1rem;">
+    <h2>Evidence guides · English</h2>
+    <div class="community-list">
+      {englishGuides.map(guide => <a class="community-list-item community-link-row" href={guide.href}>
+        <strong>{guide.title}</strong><span>{guide.description}</span>
+      </a>)}
+    </div>
+  </section>}
 
   <section class="community-grid" style="margin-top: 1rem;">
     <section class="community-surface community-surface--primary">

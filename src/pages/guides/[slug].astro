@@ -8,11 +8,13 @@ import { resolveSiteOrigin } from "../../lib/site-origin";
 import { resolveDocumentLocale } from "../../lib/i18n/document-locale";
 import { selectEditorialVariant } from "../../lib/i18n/editorial-variants";
 
-type GuideEntry = Pick<MDXInstance<{ title: string; description?: string; draft?: boolean; lastUpdated?: string | Date }>, "default" | "frontmatter">;
+type GuideEntry = Pick<MDXInstance<{ title: string; description?: string; draft?: boolean; language?: "en" | "zh-CN"; published_at?: string; lastUpdated?: string | Date }>, "default" | "frontmatter">;
 
 const slug = Astro.params.slug ?? "";
 const modules = import.meta.glob<GuideEntry>("../../content/docs/guides/*.mdx");
-const loadEntry = modules[`../../content/docs/guides/${slug}.mdx`];
+const englishModules = import.meta.glob<GuideEntry>("../../content/editorial-translations/en/guides/*.mdx");
+const loadEntry = modules[`../../content/docs/guides/${slug}.mdx`]
+  ?? englishModules[`../../content/editorial-translations/en/guides/${slug}.mdx`];
 
 if (!loadEntry) {
   return Astro.rewrite('/404/');
@@ -33,6 +35,8 @@ import { getUiMessages } from "../../lib/i18n/catalog";
 const text = getUiMessages(Astro.locals.localeContext.locale).documents;
 const origin = resolveSiteOrigin(Astro.site?.origin);
 const updatedAt = validSeoDate(entry.frontmatter.lastUpdated);
+const publishedAt = validSeoDate(entry.frontmatter.published_at);
+const contentLocale = entry.frontmatter.language ?? selection.locale;
 ---
 
 <CommunityLayout
@@ -41,9 +45,10 @@ const updatedAt = validSeoDate(entry.frontmatter.lastUpdated);
   canonical={`/guides/${slug}/`}
   activeSection="products"
   ogType="article"
+  publishedAt={publishedAt}
   updatedAt={updatedAt}
   structuredData={[
-    articleSchema({ title: entry.frontmatter.title, description: entry.frontmatter.description, url: new URL(`/guides/${slug}/`, origin).href, updatedAt }),
+    articleSchema({ title: entry.frontmatter.title, description: entry.frontmatter.description, url: new URL(`/guides/${slug}/`, origin).href, publishedAt, updatedAt }),
     breadcrumbSchema([{ name: text.guides, url: new URL('/guides/', origin).href }, { name: entry.frontmatter.title, url: new URL(`/guides/${slug}/`, origin).href }]),
   ]}
 >
@@ -51,13 +56,14 @@ const updatedAt = validSeoDate(entry.frontmatter.lastUpdated);
     <div>
       <h1>{entry.frontmatter.title}</h1>
       {entry.frontmatter.description && <p class="community-page-lead">{entry.frontmatter.description}</p>}
+      {publishedAt && <p class="community-meta">{contentLocale === "en" ? "Published" : "发布于"} <time datetime={publishedAt}>{publishedAt.slice(0, 10)}</time></p>}
       {updatedAt && <p class="community-meta"><time datetime={updatedAt}>{updatedAt.slice(0, 10)}</time></p>}
     </div>
   </section>
 
   <section class="community-grid">
-    <article class="community-surface community-surface--padded detail-main" lang={selection.locale}>
-      {selection.locale !== documentLocale && <p class="community-meta" role="note">{text.originalChinese}</p>}
+    <article class="community-surface community-surface--padded detail-main" lang={contentLocale}>
+      {contentLocale === "zh-CN" && contentLocale !== documentLocale && <p class="community-meta" role="note">{text.originalChinese}</p>}
       <Content />
     </article>
     <aside class="community-sidebar">

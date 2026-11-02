@@ -13,6 +13,10 @@ import { validSeoDate } from '../lib/seo';
 
 export const prerender = false;
 
+const englishGuides = import.meta.glob<{ draft?: boolean; published_at?: string }>(
+  '../content/editorial-translations/en/guides/*.mdx', { eager: true, import: 'frontmatter' },
+);
+
 export const GET: APIRoute = async ({ site }) => {
   const origin = resolveSiteOrigin(site?.origin);
   const absolute = (path: string) => new URL(path, origin).href;
@@ -41,6 +45,12 @@ export const GET: APIRoute = async ({ site }) => {
     for (const entry of docs) {
       const path = editorialSitemapPath(entry);
       if (path) entries.push({ loc: absolute(path), lastmod: validSeoDate(entry.data.lastUpdated) });
+    }
+    for (const [file, data] of Object.entries(englishGuides)) {
+      if (data.draft || !validSeoDate(data.published_at)) continue;
+      const slug = file.split('/').pop()?.replace(/\.mdx$/, '');
+      if (!slug || !isValidProductSegment(slug) || slug === 'index') continue;
+      entries.push({ loc: absolute(`/guides/${slug}/`) });
     }
     for (const circle of circles.filter(isPublicVisibleCircle)) {
       if (!isValidProductSegment(circle.slug)) throw new Error('Sitemap data unavailable.');
