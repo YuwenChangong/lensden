@@ -25,6 +25,8 @@ import { createLegalConsentReadRepository } from "../../../lib/server/legal-cons
 import { enforceUserRateLimit, hashRateLimitIp } from "../../../lib/server/rate-limit";
 import { assertUserCanWrite, getSafetyWriteBlockResponse } from "../../../lib/server/user-safety.server";
 import { isPublicVisibleCircle } from "../../../lib/site-navigation";
+import { isDiscoveryExcluded } from "../../../lib/discovery-exclusions";
+import { parsePublicCommentPage, PUBLIC_COMMENT_PAGE_SIZE } from "../../../lib/forum-discovery";
 
 export const prerender = false;
 
@@ -74,7 +76,7 @@ interface EnrichedComment {
   } | null;
   like_count: number;
   liked_by_me: boolean;
-  reply_count: number;
+  reply_count: number | null;
   can_delete: boolean;
   delete_as_staff: boolean;
 }
@@ -369,10 +371,13 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
     const url = new URL(request.url);
     const postId = url.searchParams.get("post_id");
+    const publicPage = url.searchParams.has('public_page') ? parsePublicCommentPage(url.searchParams.get('public_page')) : null;
+    if (publicPage === undefined) return json({ error: 'Invalid comment page' }, 400);
 
     if (!postId || !UUID_REGEX.test(postId)) {
       return json({ error: "post_id is required (valid UUID)" }, 400);
     }
+    if (isDiscoveryExcluded('posts', postId)) return json({ error: 'Post not found' }, 404);
 
     const token = getBearerToken(request);
     let client = createAnonClient(env);
@@ -392,20 +397,29 @@ export const GET: APIRoute = async ({ request, locals }) => {
     }
 
     // Fetch comments (published + owner pending + deleted placeholders for published replies)
-    const { data: allComments, error: commentsError } = await client
+    let commentsQuery = client
       .from("comments")
       .select("id, post_id, author_id, parent_id, body, status, moderation_status, created_at, updated_at")
       .eq("post_id", readTarget.postId)
-      .in("status", ["published", "deleted", "pending"])
       .order("created_at", { ascending: true })
-      .limit(1000);
+      .order("id", { ascending: true });
+    // Anonymous hydration mirrors the public SSR page. Authenticated viewers
+    // retain the existing owner-pending/staff projection and permission filters.
+    commentsQuery = publicPage && !viewerUserId
+      ? commentsQuery.eq('status', 'published').eq('moderation_status', 'published')
+      : commentsQuery.in('status', ['published', 'deleted', 'pending']);
+    commentsQuery = publicPage
+      ? commentsQuery.range((publicPage - 1) * PUBLIC_COMMENT_PAGE_SIZE, publicPage * PUBLIC_COMMENT_PAGE_SIZE - 1)
+      : commentsQuery.limit(1000);
+    const { data: allComments, error: commentsError } = await commentsQuery;
 
     if (commentsError) {
+      if (publicPage) return json({ error: 'Comments temporarily unavailable.' }, 503);
       if (isMigrationMissingError(commentsError)) return migrationRequiredResponse();
       return json({ error: commentsError.message }, 500);
     }
 
-    const rows = (allComments ?? []) as CommentRow[];
+    const rows = ((allComments ?? []) as CommentRow[]).filter(row => !isDiscoveryExcluded('comments', row.id));
 
     const publishedComments = rows.filter(
       (c) => c.status === "published" && (c.moderation_status ?? "published") === "published",
@@ -427,7 +441,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
       if (placeholderError) return json({ error: "COMMENT_PLACEHOLDER_READ_FAILED" }, 500);
       deletedWithReplies = (placeholders ?? []).map((c: Pick<CommentRow, "id" | "post_id" | "parent_id" | "created_at" | "updated_at">) => ({
         ...c, author_id: null, body: "", status: "deleted", moderation_status: "published",
-      }));
+      })).filter((c: CommentRow) => !isDiscoveryExcluded('comments', c.id));
     }
 
     // Final comment set: all published + deleted placeholders with replies
@@ -446,6 +460,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
       .in("id", authorIds);
 
     if (profilesError) {
+      if (publicPage) return json({ error: 'Comments temporarily unavailable.' }, 503);
       if (isMigrationMissingError(profilesError)) return migrationRequiredResponse();
       return json({ error: profilesError.message }, 500);
     }
@@ -463,6 +478,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
       .in("comment_id", commentIds);
 
     if (reactionsError) {
+      if (publicPage) return json({ error: 'Comments temporarily unavailable.' }, 503);
       return json({ error: reactionsError.message }, 500);
     }
 
@@ -502,6 +518,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
     const isStaff = isModeratorRole(myRole);
 
     // Enrich comments
+    const visibleIds = new Set(visibleComments.map(c => c.id));
     const enriched: EnrichedComment[] = visibleComments.map((c) => {
       const profile = c.author_id ? profileMap.get(c.author_id) : null;
       const isDeleted = c.status === "deleted";
@@ -509,7 +526,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
         id: c.id,
         post_id: c.post_id,
         author_id: c.author_id,
-        parent_id: c.parent_id,
+        parent_id: publicPage && c.parent_id && !visibleIds.has(c.parent_id) ? null : c.parent_id,
         body: isDeleted ? "" : c.body,
         status: isDeleted ? "deleted" : c.status,
         created_at: c.created_at,
@@ -524,7 +541,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
           : null,
         like_count: likeCountMap.get(c.id) ?? 0,
         liked_by_me: likedSet.has(c.id),
-        reply_count: replyCountMap.get(c.id) ?? 0,
+        reply_count: publicPage ? null : replyCountMap.get(c.id) ?? 0,
         can_delete: !isDeleted && Boolean(myUserId && (myUserId === c.author_id || isStaff)),
         delete_as_staff: !isDeleted && isStaff && myUserId !== c.author_id,
       };
@@ -532,6 +549,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
     return json({ comments: enriched, total: enriched.length });
   } catch (err) {
+    if (new URL(request.url).searchParams.has('public_page')) return json({ error: 'Comments temporarily unavailable.' }, 503);
     if (isMigrationMissingError(err)) return migrationRequiredResponse();
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },

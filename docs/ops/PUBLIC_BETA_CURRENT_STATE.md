@@ -1,5 +1,40 @@
 # Public Beta Current State
 
+## 2026-11-02 Public discovery coverage v1 — implemented locally, not deployed
+
+[Implementation/evidence matrix](../geo/public-discovery-coverage-v1-2026-11-02.md)
+on codex/public-discovery-coverage-v1, inherits4e636573 pagination/date fixes.
+Independent bounded forum sitemap added to existing index:5000 candidates,
+20 physical GETs/5s/1MB per response, strict anonymous published/moderated/public
+circle scope; failures503/no partial map. Existing dynamic sitemap budget unchanged.
+
+Public post details now validate parent circle and known fixture identities;
+comments have50-row anonymous SSR pages and crawlable continuation. Existing
+React client:visible interaction island hydrates the same page without duplicate
+content. Factual conditional DiscussionForumPosting/current-page Comment markup,
+no invented author/dates/interaction counts; no QAPage/news-type mislabeling.
+Exact source-controlled fixture identities from existing receipts, no new keyword
+rule or migration. Public/private/removed fields remain governed by RLS/status.
+
+Focused tests27/27, comment public-chain regression, compiled Worker, JS-off
+390/430px, hydration/XSS/canonical, existing content types,5000-post max/overflow,
+build PASS. Type ratchet15 retained/new0 (two feed fallback types resolved).
+Evidence artifacts/qa/public-discovery-v1/; current dist is loopback-only.
+Offline inventory-vs-sitemap tool added; existing20-query framework preserved.
+
+Production remains at the previously recorded43ac9bb4/c9acc845; no new Production
+requests/writes, deployment, remote push, paid dependency/service, migration,
+R2 operation, notification or security change. Real bot passage, production
+eligible totals/indexing/AI citations, unknown fixtures and new runtime CPU/usage
+headroom NOT_VERIFIED. Historical dynamic snapshot70 URLs is inventory, not
+indexing or all eligible content. Account ban semantics unchanged: write restriction
+does not itself retract every historical public post.
+
+Next single owner action: review the local commit/release packet and zero-charge
+admission for added runtime reads, then decide whether to authorize a controlled
+release. No per-URL indexing request or repeat console registration required.
+Only that Production activation remains on HOLD; local implementation completed.
+
 ## 2026-11-02 Automatic discovery audit — local fixes, not deployed
 
 [Scoped PASS/FAIL report](../geo/discovery-workflow-audit-2026-11-02.md).

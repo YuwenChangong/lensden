@@ -37,7 +37,7 @@ const [feed, { data: circles, error: circlesError }] = await Promise.all([
   }),
   supabase
     .from("circles")
-    .select("slug, name, description, status")
+    .select("id, slug, name, description, status")
     .eq("status", "active")
     .order("name", { ascending: true }),
 ]);

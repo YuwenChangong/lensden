@@ -1,0 +1,29 @@
+---
+import type { PublicComment } from '../../lib/forum-discovery';
+import { validSeoDate } from '../../lib/seo';
+import { getUiMessages } from '../../lib/i18n/catalog';
+import type { LocaleContext } from '../../lib/i18n/locale';
+interface Props { comments: PublicComment[]; unavailable: boolean; loginHref: string; localeContext: LocaleContext }
+const { comments, unavailable, loginHref, localeContext } = Astro.props;
+const text = getUiMessages(localeContext.locale).community;
+---
+<section class="comment-shell" aria-label={text.commentsArea} data-public-comments>
+  <a href={loginHref} class="community-action-button">{text.signInComment}</a>
+  <h2>{text.commentsArea}</h2>
+  {unavailable ? <p class="comment-empty">{text.commentsFailed}</p>
+    : comments.length === 0 ? <p class="comment-empty">{text.noComments}</p>
+    : <div class="comment-list">{comments.map(comment => (
+      <div class:list={['comment-thread', { 'comment-thread--reply': !!comment.parent_id }]}>
+        <article id={`comment-${comment.id}`} class="glass-card comment-card comment-item">
+          <div class="comment-item-main">
+            <div class="comment-meta">
+              <span class="comment-author">{comment.author?.display_name?.trim() || comment.author?.username?.trim() || text.member}</span>
+              {validSeoDate(comment.created_at) && <time class="comment-time" datetime={validSeoDate(comment.created_at)}>{new Date(comment.created_at).toLocaleString(localeContext.locale)}</time>}
+              {comment.parent_id && <a href={`#comment-${comment.parent_id}`} class="community-link">{text.reply}</a>}
+            </div>
+            <div class="comment-body">{comment.body}</div>
+          </div>
+        </article>
+      </div>
+    ))}</div>}
+</section>

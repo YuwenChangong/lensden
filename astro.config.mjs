@@ -65,7 +65,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => isStaticSitemapPage(page) && isGazeLauncherSitemapEntryIncluded(page),
       customPages: [new URL('/', siteOrigin).href],
-      customSitemaps: [new URL('/sitemap.xml', siteOrigin).href],
+      customSitemaps: [new URL('/sitemap.xml', siteOrigin).href, new URL('/sitemap-forum.xml', siteOrigin).href],
     }),
     react(),
     starlight({

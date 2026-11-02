@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import type { ReactNode } from "react";
 import GlassConfirmDialog from "../common/GlassConfirmDialog";
 import { createBrowserSupabaseClient, syncBrowserRealtimeAuth } from "../../lib/supabase-browser";
 import CommentForm from "./CommentForm";
@@ -26,7 +27,7 @@ interface Comment {
   author: Author | null;
   like_count: number;
   liked_by_me: boolean;
-  reply_count: number;
+  reply_count: number | null;
   can_delete: boolean;
   delete_as_staff?: boolean;
 }
@@ -37,6 +38,8 @@ interface CommentsSectionProps {
   postAuthorId?: string;
   refreshKey?: number;
   loginHref?: string;
+  publicPage?: number;
+  children?: ReactNode;
 }
 
 const LIKE_ANIMATION_MS = 240;
@@ -59,7 +62,7 @@ function authorDisplayName(author: Author | null, fallback: string): string {
   return author?.display_name || author?.username || fallback;
 }
 
-export default function CommentsSection({ postId, postAuthorId, refreshKey, loginHref, localeContext = resolveLocale({ acceptLanguage: "zh-CN" }) }: CommentsSectionProps) {
+export default function CommentsSection({ postId, postAuthorId, refreshKey, loginHref, publicPage, children, localeContext = resolveLocale({ acceptLanguage: "zh-CN" }) }: CommentsSectionProps) {
   const { context, messages } = useLocale(localeContext);
   const text = messages.community;
   const supabase = useMemo(() => createBrowserSupabaseClient(), []);
@@ -98,7 +101,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
           headers.authorization = `Bearer ${data.session.access_token}`;
         }
       }
-      const res = await fetch(`/api/forum/comments?post_id=${encodeURIComponent(postId)}`, { headers });
+      const res = await fetch(`/api/forum/comments?post_id=${encodeURIComponent(postId)}${publicPage ? `&public_page=${publicPage}` : ''}`, { headers });
       const data = (await res.json().catch(() => null)) as { comments?: Comment[]; error?: string } | null;
       if (!res.ok) {
         if (data?.error === "COMMENTS_INTERACTIONS_MIGRATION_REQUIRED") {
@@ -119,7 +122,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
     } finally {
       setLoading(false);
     }
-  }, [hasLoadedOnce, postId, supabase]);
+  }, [hasLoadedOnce, postId, publicPage, supabase]);
 
   useEffect(() => {
     let cancelled = false;
@@ -510,6 +513,9 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
     );
   };
 
+  // The anonymous server snapshot remains visible until the existing island
+  // hydrates and obtains interaction permissions. No invented reaction counts.
+  if (loading && children) return <div data-public-comment-snapshot>{children}</div>;
   return (
     <section className="comment-shell" aria-label={text.commentsArea}>
       <CommentForm

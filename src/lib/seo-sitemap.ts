@@ -72,10 +72,10 @@ export function editorialSitemapPath(entry: { id?: string; slug?: string; data: 
 }
 
 type Table = 'devices' | 'circles' | 'news_articles';
-export type SitemapRow = { slug: string; brand_key?: string; status?: string; name?: string; published_at?: string; updated_at?: string; created_at?: string };
+export type SitemapRow = { id?: string; slug: string; brand_key?: string; status?: string; name?: string; published_at?: string; updated_at?: string; created_at?: string };
 const projections = {
   devices: { columns: 'slug,brand_key', filter: 'publication_status', value: 'published' },
-  circles: { columns: 'slug,status,name,updated_at,created_at', filter: 'status', value: 'active' },
+  circles: { columns: 'id,slug,status,name,updated_at,created_at', filter: 'status', value: 'active' },
   news_articles: { columns: 'slug,published_at,updated_at', filter: 'status', value: 'published' },
 };
 

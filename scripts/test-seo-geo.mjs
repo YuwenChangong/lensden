@@ -59,10 +59,11 @@ test('Article dates and attribution use only supplied visible publication facts'
 test('discussion markup requires published moderation and omits private identity and unrendered updates', () => {
   const post = { title: 'Visible question', status: 'published', moderation_status: 'published', created_at: '2026-10-01T00:00:00Z' };
   assert.equal(seo.discussionSchema({ post: { ...post, moderation_status: 'pending' }, text: 'Visible text', url: origin + '/posts/example/' }), undefined);
-  const schema = seo.discussionSchema({ post, text: 'Visible text', url: origin + '/posts/example/' });
+  assert.equal(seo.discussionSchema({ post, text: 'Visible text', url: origin + '/posts/example/' }), undefined);
+  const schema = seo.discussionSchema({ post, text: 'Visible text', url: origin + '/posts/example/', authorName: 'Visible public author' });
   assert.equal(schema['@type'], 'DiscussionForumPosting');
   assert.equal(schema.text, 'Visible text');
-  assert.equal(schema.author, undefined);
+  assert.deepEqual(schema.author, { '@type': 'Person', name: 'Visible public author' });
   assert.equal(schema.dateModified, undefined);
 });
 

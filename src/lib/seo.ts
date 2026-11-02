@@ -59,13 +59,34 @@ type SchemaSpec = {
   measurementContext: string | null;
 };
 export function discussionSchema(input: {
-  post: { title: string; status: string; moderation_status: string | null; created_at: string };
-  text: string; url: string; authorName?: string;
+  post: { title: string; status: string; moderation_status: string | null; created_at: string; type?: string };
+  text: string; url: string; authorName?: string; commentPage?: number;
+  comments?: { id: string; parent_id: string | null; body: string; status: string;
+    moderation_status: string | null; created_at: string;
+    author: { display_name: string | null; username: string | null } | null }[];
 }): SchemaNode | undefined {
-  if (input.post.status !== 'published' || input.post.moderation_status !== 'published') return undefined;
+  // Google requires a real public author, publication date and visible text or
+  // media. Do not invent an author or claim text-only eligibility for media-only
+  // pages. Missing markup never disqualifies the page from ordinary discovery.
+  if (input.post.type === 'news' || input.post.status !== 'published' || input.post.moderation_status !== 'published'
+    || !input.authorName?.trim() || !validSeoDate(input.post.created_at) || !input.text.trim()) return undefined;
+  const visible = (input.comments ?? []).filter(comment => comment.status === 'published'
+    && comment.moderation_status === 'published' && comment.body.trim()
+    && validSeoDate(comment.created_at) && (comment.author?.display_name?.trim() || comment.author?.username?.trim()));
+  const commentUrl = (id: string) => input.url + ((input.commentPage ?? 1) > 1 ? `?comments_page=${input.commentPage}` : '') + `#comment-${id}`;
+  const marked = new Set(visible.map(comment => comment.id));
+  // Flat page order matches the visible SSR list. inReplyTo is included only
+  // when that exact parent is visible and eligible for markup on this page.
+  const comments = visible.map(comment => ({ '@type': 'Comment', text: comment.body,
+    url: commentUrl(comment.id), datePublished: validSeoDate(comment.created_at),
+    author: { '@type': 'Person', name: comment.author?.display_name?.trim() || comment.author?.username?.trim() },
+    ...(comment.parent_id && marked.has(comment.parent_id) ? { inReplyTo: { '@id': commentUrl(comment.parent_id) } } : {}),
+    '@id': commentUrl(comment.id),
+  }));
   return { '@type': 'DiscussionForumPosting', headline: input.post.title, text: input.text, url: input.url,
-    ...(validSeoDate(input.post.created_at) ? { datePublished: validSeoDate(input.post.created_at) } : {}),
-    ...(input.authorName ? { author: { '@type': 'Person', name: input.authorName } } : {}),
+    datePublished: validSeoDate(input.post.created_at),
+    author: { '@type': 'Person', name: input.authorName.trim() },
+    ...(comments.length ? { comment: comments } : {}),
   };
 }
 export function productSchema(input: {

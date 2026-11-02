@@ -17,8 +17,11 @@ const { listForumFeed } = await import('data:text/javascript;base64,' + Buffer.f
 const hidden = { id: 'hidden', circles: { slug: 'rls-test', status: 'active' } };
 const publicPost = id => ({ id, circles: { slug: 'public-circle', status: 'active' } });
 function clientFor(rows) {
+  let result;
   const query = { select() { return query; }, eq() { return query; }, order() { return query; },
-    range(start, end) { return Promise.resolve({ data: rows.slice(start, end + 1), error: null }); } };
+    overrideTypes() { return query; },
+    range(start, end) { result = { data: rows.slice(start, end + 1), error: null }; return query; },
+    then(resolve, reject) { return Promise.resolve(result).then(resolve, reject); } };
   return { from(table) { assert.equal(table, 'posts'); return query; } };
 }
 const page = (rows, number) => listForumFeed({ client: clientFor(rows), sort: 'latest', limit: 2, page: number });
