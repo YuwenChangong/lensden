@@ -1,5 +1,74 @@
 # Public Beta Current State
 
+## 2026-11-02 Lensden GEO controlled manual release LIVE — RELEASE_VERIFIED
+
+Owner separately authorized one controlled manual release of exact reviewed
+HEAD bb2bb5ff791b9397c42f0f5eebb268e50f23eb2a,application source
+b78c6caa1d1612de64bb6e95c3eb4edd68c39cbe. All mandatory preflight conditions
+passed: producer a00e7eb9 still ancestor,no committed divergence; its dirty notes
+and classifier retained unchanged by hash. Current owner November2 Worker/Supabase
+Free-plan evidence applicable; no plan/service upgrade or paid fallback. Fresh
+original type ratchet PASS,current17/new0/changed diagnostic anchors0. Existing
+source-applicable security/Public Beta evidence reused,no H/B1/D/E_VERIFY/DB AAL2
+replay. Exact candidate clean before build/deploy; dependency/auth core unchanged.
+
+One normal production build PASS using the existing build-workers process;
+external Node fetch/HTTP attempts0 under local-only guard. Initial preload-path
+escaping failed before application build start; corrected path then successful
+normal build,not an undisclosed application failure. Actual production artifact
+checked locally with synthetic transport: root/About/guide/sitemap200,production
+canonicals/schema,external0/writes0/R2=0.368 files/8601315bytes,artifact manifest
+SHA256 e1dc89658b418b06cdd54bf47b90e7c45725af3b35aaf7bf1d7c8660328a7b87.
+Generated vars emptied; manual generated-artifact Wrangler deploy --keep-vars,
+no push/merge/hosted build/migration. Three changed Workers Assets files uploaded;
+these are not R2 objects. Rollback target prepared before activation and retained.
+
+At2026-11-02T00:25:24.240024Z (13:25:24NZDT),deployment
+733c49ac-2e70-4122-84c0-480a453fd1f6 activated version166
+63a5910c-0414-46e9-88cf-38b5a9ec65cb at100%,origin
+https://lensden.ogh.workers.dev. Annotation recordsbb2bb5ff/sourceb78c6caa.
+Readback: zero binding differences,all15 plaintext settings equal,secret binding
+names retained; compatibility2026-05-17/nodejs_compat,SESSION/R2/ASSETS/IMAGES,
+workers.dev/preview settings preserved; Logpush false,no tails/new services.
+Secret values neither read nor printed. Final management readback still100%.
+
+Exactly6 sequential live GETs,all200: root,robots,sitemap-index,one dynamic
+sitemap,About and one existing guide. No redirects followed or browser media
+subresources loaded. Root/About/guide have correct canonicals and JSON-LD;
+robots named search-bot rules/admin restriction retained. XML parser confirms
+index2 references,dynamic70 unique public HTTPS URLs (products/brands33,news8,
+circles9,guides7 plus other public routes),no private/auth/admin/API/user/post
+paths,queries/fragments,loopback or old official news permalink. Dynamic response
+6149bytes,max-age3600; actual edge hits remain NOT_VERIFIED. No extra sitemap
+refresh/stress/crawler spoof/news or post GET/view-counter effect performed.
+
+One read-only Worker GraphQL metrics query for00:25:24–00:27:29.277UTC reports
+5requests,0errors,17subrequests,success status. Live schema-only introspection
+confirms CPU fields are microseconds:P50=26784us/26.784ms,P99=53071us/53.071ms.
+These aggregate values exceed nominal Free10ms; sustained/sitemap-specific CPU
+headroom remains NOT_VERIFIED. Cloudflare documents rollover and reporting lag;
+this is not a per-URL trace,billing statement or six-request exact correlation.
+No exceeded-resource/5xx response or critical regression observed. Startup16ms
+and sitemap client wall222ms are not request CPU. No extra app requests,limits
+increase,paid fallback or repeated metrics polling to improve the result.
+
+RELEASE_VERIFIED applies to the authorized bounded release,not indexing/AI
+citation or new production security acceptance. Full RLS/crawler/WAF/heap/cache,
+Search Console/Bing ownership/submission/indexing and global account charges
+remain NOT_VERIFIED. No R2 data read/write/list,DB mutation,DNS/WAF change,article
+publication,Git push/merge or hosted build. Unrelated R2 billing unknowns unchanged.
+Rollback NOT_EXECUTED:no criterion met; previous version
+ce3581f7-d069-4fb9-ab72-e89363a1fc43 remains the prepared rollback target.
+No immediate owner action to close release. Next optional actions: review existing
+CPU/Errors metrics during ordinary traffic,then separately choose verified-property
+sitemap submission/editorial review. No load test or further deployment implied.
+
+[Controlled production release receipt](../geo/controlled-release-2026-11-02.md)
+contains exact source/deployment/artifact,smoke,CPU,cost and rollback evidence.
+Earlier HOLD entries retain their pre-authorization scope. Producer's separate
+uncommitted baseline was not overwritten; deployed source is now this reviewed
+GEO candidate,not historical main or a00e7eb9 alone.
+
 ## 2026-11-02 Lensden GEO Phase 3 — priority defects resolved, manual release boundary
 
 Candidate branch codex/lensden-seo-geo-foundation, starting1db87e70;
