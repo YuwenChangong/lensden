@@ -1,5 +1,36 @@
 # Public Beta Current State
 
+## 2026-11-02 Three GEO articles LIVE; QA cleanup blocked on staff MFA
+
+Owner explicitly authorized the exact four QA targets and publication of all
+three existing drafts. [Execution receipt](../geo/production-content-2026-11-02.md).
+One manual generated-artifact deployment from c9acc845, no push/hosted build.
+Active version43ac9bb4-f336-4f37-a917-6639acc0ec82 at100%; deployment
+35ed60e2-0390-41a5-98ae-443db14c9a1c, activated06:47:59.621488Z. All27 bindings
+equal to prior f5ab8d21; rollback version retained and not invoked. No R2 operation,
+schema/security change, new resource or paid fallback.
+
+All three English guide canonicals returned200 with descriptions, publication
+metadata and English content labeling; original drafts retained unchanged.
+Editorial publication timestamp06:43:07Z; activation time recorded separately.
+Sitemap73 unique URLs, each article once. Fourteen bounded HTML/XML checks pass,
+including existing device detail/forum/news list. Local build, SEO12, compiled
+artifact8 routes and390/430px checks pass; type ratchet17 retained/new0. Existing
+dashboard sample: new version15 invocations/errors0, exceeded CPU/memory0;
+median CPU10.03ms, sustained/sitemap headroom not established.
+
+QA identities/counts reconfirmed by exact authorized reads. No target was
+mutated: the post remains published and three circles active at07:05:04Z.
+Owner signed in, but staff API still403 with "Verify your authenticator at
+/admin/security/ before continuing." One circle-report attempt failed target
+validation; no report row created. Hidden QA video retains one media reference,
+four audit rows and unchanged metadata fingerprint; three already-deleted
+related posts untouched. No privileged SQL write/permission bypass attempted.
+
+Only remaining input: successfully complete existing staff MFA, then resume the
+already-authorized exact cleanup and its bounded readback. Do not republish or
+rebuild the completed articles. No new general GEO/release approval is needed.
+
 ## 2026-11-02 GEO content finalization — local candidate and import instructions
 
 Continues the completed post-launch review without release/domain checks.
