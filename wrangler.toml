@@ -1,6 +1,10 @@
 name = "lensden"
 compatibility_date = "2026-05-17"
 compatibility_flags = ["nodejs_compat"]
+routes = [
+  { pattern = "lensden.net", custom_domain = true },
+  { pattern = "www.lensden.net", custom_domain = true },
+]
 
 [[r2_buckets]]
 binding = "MODERATION_ASSETS"
@@ -11,6 +15,7 @@ binding = "SESSION"
 id = "c6d05834ec1d4d3780d8495236496887"
 
 [env.preview]
+routes = []
 
 [env.preview.vars]
 AUTH_CAPTCHA_MODE = "off"
@@ -69,7 +74,7 @@ R2_ACCOUNT_ID = "dcb374166b39234a499985145c075f50"
 R2_BUCKET_NAME = "openglasshub-media"
 R2_PUBLIC_BASE_URL = "https://pub-b66cce026a6c458f86d56dc726eaacbd.r2.dev"
 PUBLIC_R2_PUBLIC_BASE_URL = "https://pub-b66cce026a6c458f86d56dc726eaacbd.r2.dev"
-SITE_ORIGIN = "https://lensden.ogh.workers.dev"
+SITE_ORIGIN = "https://lensden.net"
 MODERATION_PROVIDER = "local"
 MODERATION_PROVIDER_UNAVAILABLE_POLICY = "review_all"
 OPENAI_MODERATION_ENABLED = "true"

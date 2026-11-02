@@ -1,5 +1,58 @@
 # Public Beta Current State
 
+## 2026-11-02 Lensden custom domain cutover - prepared, activation next
+
+Owner authorized migration to https://lensden.net, one necessary application
+build/deployment, targeted live checks, existing resources only, no H/B1/D replay,
+schema changes, new QA framework, paid services or GitHub history rewrite.
+Fresh Cloudflare API found existing Free Website zone
+d976bbb067032e4ac707c6e7c8eca63f ($0), initially pending. Assigned nameservers
+dana.ns.cloudflare.com/graham.ns.cloudflare.com already publicly delegated;
+one activation check requested, active at2026-11-02T05:08:26.255376Z. No registrar
+action or duplicate zone needed. Apex and www attached to existing lensden Worker;
+automatic Custom Domain certificates active, actual apex HTTPS200 and www301
+with exact path/query verified before any application deployment. New Free zone
+redirect rule6ee60082de6e4e9ca4ce5ee5205fd9c0 handles WWW and HTTP->HTTPS apex.
+No separate ACM subscription, plan upgrade or paid add-on ordered.
+
+Source is latest deployed GEO6aa6e9df/b78c6caa, not historical main or producer
+a00e7eb9 alone. Independent branch codex/lensden-custom-domain-20261102 in existing
+isolated GEO worktree; producer dirty files untouched. Minimal plan: preserve
+GEO/security, switch production origin and auth origin allowlist, preserve old
+callback/API context, release once after route readiness, then bounded live readback.
+Auth and Forum Turnstile existing widgets now additionally allow lensden.net;
+all previous domains/modes retained. Supabase existing10 redirect URLs retained
+and3 new apex/callback/recovery URLs saved/read back. Site URL still old until
+application activation. Email provider only enabled, all OAuth providers disabled.
+Confirmation/recovery/change-email templates use ConfirmationURL, no hardcoded
+old host. Brevo SMTP enabled smtp-relay.brevo.com:587, Lensden sender preserved;
+existing Brevo sender Lensden <lensden.team@gmail.com> visibly Verified. No SMTP
+credentials read, no sender/SMTP/Reply-To change, email send or user mutation.
+Brevo connector guide/template listing returned internal errors; no claim that
+all Brevo stored template links or delivered emails have been verified.
+
+Existing auth redirect test extended: RED for new origin and then legacy callback
+continuation, GREEN after scoped fixes; actual middleware callback->routing
+cookie->feed and no-store checks PASS. Cookie is only a host-local routing hint,
+never authentication, Secure/HttpOnly/SameSite=Lax30days. No tokens transferred.
+Existing GEO12 tests PASS; git diff check PASS. Exactly one normal production
+build PASS under local-only network guard, external attempts0. Actual artifact
+home/About/guide/sitemap local check PASS with synthetic REST, writes0/R2=0.
+Extra throwaway legacy-host check encountered Wrangler dev URL rewriting, not a
+production-source failure; direct middleware integration covers that flow and
+actual live readback remains mandatory. Independent final code review: no P1/P2.
+
+Pending at this checkpoint: one manual generated-artifact app deployment with
+--keep-vars and explicit SITE_ORIGIN=https://lensden.net, Supabase Site URL change,
+live app/SEO/auth-route validation. End-to-end real login/delivered confirmation
+email remains unverified without owner-controlled test. Historical openglasshub
+Worker is separate hardcoded308->lensden.ogh.workers.dev; removing its later
+two-hop chain needs another Worker publish, excluded by the single app release
+limit. Historical Pages root already404 before this task; it is not a live
+compatibility homepage and was not changed. Do not report complete legacy-domain
+cleanup or email/auth end-to-end PASS based on config alone.
+
+
 ## 2026-11-02 Lensden GEO controlled manual release LIVE — RELEASE_VERIFIED
 
 Owner separately authorized one controlled manual release of exact reviewed

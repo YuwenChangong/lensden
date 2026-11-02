@@ -13,13 +13,13 @@ sidebar:
 ## 1. Property 设置
 
 - 打开 Google Search Console
-- 当前 workers.dev 地址使用 `URL prefix`；不要验证不属于你的共享父域名
-- 当前生产地址使用 `https://lensden.ogh.workers.dev`
+- 主域名使用 `Domain` 属性并通过 DNS 验证；也可使用精确的 `URL prefix`
+- 当前生产地址使用 `https://lensden.net`
 - 如果后续切换独立域名，需要重新补做域名级验证或新增 property
 
 ## 2. Sitemap 提交
 
-- 站点上线后确认 `https://lensden.ogh.workers.dev/sitemap-index.xml` 可访问
+- 站点上线后确认 `https://lensden.net/sitemap-index.xml` 可访问
 - 索引中的 `/sitemap.xml` 提供 SSR 动态页面；不要只检查构建生成的固定页面清单
 - 在 Search Console 的 `Sitemaps` 页面提交该地址
 - 等待 Google 抓取并记录成功、失败或警告状态

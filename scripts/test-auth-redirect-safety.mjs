@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { createServer } from "vite";
 import { buildAuthCallbackRedirect, buildResetPasswordRedirect, getSafeNext } from "../src/lib/auth-redirect.ts";
 import * as authRedirect from "../src/lib/auth-redirect.ts";
+import * as siteOrigin from "../src/lib/site-origin.ts";
 import { getSafeConsentNext } from "../src/lib/legal-consent-navigation.ts";
 
 function consentNextRejectsLoops() {
@@ -23,7 +24,25 @@ const headerSource = readFileSync(new URL("../src/components/site/HeaderUserMenu
 assert.equal((headerSource.match(/href=\{buildSignupHref\(safeNext\)\} className="ogh-register-button"/g) ?? []).length, 2);
 
 const trustedOrigin = "https://openglasshub.pages.dev";
-const workerOrigin = "https://lensden.ogh.workers.dev";
+const workerOrigin = "https://lensden.net";
+assert.equal(buildAuthCallbackRedirect(workerOrigin, "/feed/"), `${workerOrigin}/auth/callback/?next=%2Ffeed%2F`);
+assert.equal(buildResetPasswordRedirect(workerOrigin), `${workerOrigin}/auth/reset-password/`);
+for (const legacy of ["https://lensden.ogh.workers.dev", "https://openglasshub.ogh.workers.dev", trustedOrigin]) {
+  assert.equal(buildAuthCallbackRedirect(legacy, "/feed/"), `${legacy}/auth/callback/?next=%2Ffeed%2F`);
+  assert.equal(buildResetPasswordRedirect(legacy), `${legacy}/auth/reset-password/`);
+}
+assert.equal(siteOrigin.CURRENT_SITE_ORIGIN, workerOrigin);
+assert.equal(typeof siteOrigin.canonicalDomainRedirect, "function");
+const redirect = (value, method = "GET") => siteOrigin.canonicalDomainRedirect(new URL(value), method);
+assert.equal(redirect("https://lensden.ogh.workers.dev/news/?ref=a%2Bb&lang=en"), "https://lensden.net/news/?ref=a%2Bb&lang=en");
+assert.equal(redirect("https://lensden.ogh.workers.dev/news/openglass-community-is-prioritizing-verifiable-coverage/?ref=a%2Bb"), "https://lensden.net/news/lensden-community-is-prioritizing-verifiable-coverage/?ref=a%2Bb");
+assert.equal(redirect("https://www.lensden.net/a%2Fb/?a=1&a=2", "HEAD"), "https://lensden.net/a%2Fb/?a=1&a=2");
+assert.equal(siteOrigin.canonicalDomainRedirect(new URL("https://lensden.ogh.workers.dev/feed/"), "GET", true), undefined, "legacy callback session must survive its next navigation");
+for (const path of ["/auth/callback/?code=synthetic", "/auth/reset-password/", "/api/auth/resend-confirmation", "/api/me"]) {
+  assert.equal(redirect(`https://lensden.ogh.workers.dev${path}`), undefined, `preserve legacy auth context: ${path}`);
+}
+for (const method of ["POST", "PUT", "DELETE", "OPTIONS"]) assert.equal(redirect("https://lensden.ogh.workers.dev/feed/", method), undefined);
+for (const origin of [workerOrigin, "https://evil.invalid", "http://localhost:4321", "https://preview.lensden.ogh.workers.dev"]) assert.equal(redirect(`${origin}/news/`), undefined);
 const productionConfig = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8").split("[env.production.vars]")[1];
 assert.equal(productionConfig.match(/^SITE_ORIGIN\s*=\s*"([^"]+)"/m)?.[1], workerOrigin);
 const preparedWorkerOrigin = "https://openglass-hub-transition-test.workers.dev";
@@ -116,6 +135,28 @@ const vite = await createServer({
 });
 
 try {
+  const { onRequest } = await vite.ssrLoadModule("/src/middleware.ts");
+  const cookieState = new Map();
+  let markerOptions;
+  const cookies = {
+    get: name => cookieState.has(name) ? { value: cookieState.get(name) } : undefined,
+    set: (name, value, options) => { cookieState.set(name, value); markerOptions = options; },
+  };
+  const legacyRequest = async path => {
+    const url = new URL(path, "https://lensden.ogh.workers.dev");
+    return onRequest({ request: new Request(url), url, locals: {}, cookies }, async () => new Response("legacy callback application", { headers: { "content-type": "text/html" } }));
+  };
+  let response = await legacyRequest("/feed/?ref=a%2Bb");
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get("location"), "https://lensden.net/feed/?ref=a%2Bb");
+  assert.equal(response.headers.get("cache-control"), "private, no-store");
+  response = await legacyRequest("/auth/callback/?code=synthetic&next=%2Ffeed%2F");
+  assert.equal(response.status, 200);
+  assert.equal(cookieState.get(siteOrigin.LEGACY_AUTH_ROUTING_COOKIE), "1");
+  assert.deepEqual(markerOptions, { path: "/", secure: true, httpOnly: true, sameSite: "lax", maxAge: 2592000 });
+  response = await legacyRequest("/feed/");
+  assert.equal(response.status, 200, "callback continuation keeps its original browser session");
+  assert.match(response.headers.get("cache-control"), /private.*no-store/);
   const { browserNavigationAdapter } = await vite.ssrLoadModule("/src/lib/legal-consent-adapters.ts");
   const navigation = browserNavigationAdapter();
   navigation.replace(callbackNext ?? "/\\\\evil.example");

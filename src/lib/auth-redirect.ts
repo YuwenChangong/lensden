@@ -1,4 +1,4 @@
-import { CURRENT_SITE_ORIGIN, LEGACY_PAGES_ORIGIN } from "./site-origin.ts";
+import { CURRENT_SITE_ORIGIN, LEGACY_PAGES_ORIGIN, LEGACY_LENSDEN_WORKER_ORIGIN } from "./site-origin.ts";
 
 const FALLBACK_PATH = "/";
 const TRUSTED_APPLICATION_ORIGIN = LEGACY_PAGES_ORIGIN;
@@ -92,7 +92,9 @@ function getTrustedApplicationOrigin(origin: string | undefined, options?: AuthR
     const isLegacyOrLocalHost =
       SAFE_ORIGIN_HOSTS.has(originUrl.hostname) || originUrl.hostname.endsWith(`.${LEGACY_PAGES_HOSTNAME}`);
     const isApprovedTransition = isApprovedTransitionOrigin(originUrl, options);
-    const isCurrentWorker = originUrl.origin === CURRENT_WORKER_ORIGIN || originUrl.origin === LEGACY_WORKER_ORIGIN;
+    const isCurrentWorker = originUrl.origin === CURRENT_WORKER_ORIGIN
+      || originUrl.origin === LEGACY_LENSDEN_WORKER_ORIGIN
+      || originUrl.origin === LEGACY_WORKER_ORIGIN;
 
     if (
       !["http:", "https:"].includes(originUrl.protocol)
