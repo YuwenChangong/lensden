@@ -1,5 +1,25 @@
 # Public Beta Current State
 
+## 2026-11-02 QA cleanup DONE and VERIFIED after staff MFA
+
+Supersedes the MFA-blocked checkpoint below. Owner completed normal MFA; exact
+post fba0a005-1008-4fe5-8899-52c23efd2bfb logically deleted through existing
+admin DELETE (media0/comments0). Three exact authorized circles logically
+deleted through audited report hide_target actions; three reports actioned with
+staff resolver/notes and created/hide_target events verified. No direct SQL
+write, role change, bypass, purge, cascade or R2 operation. Existing post-delete
+handler appends no moderation_actions row; its count remains0 and local
+before/after UI/readback evidence is retained, not replaced by a synthetic audit.
+
+At21:19 NZDT, eight anonymous checks pass: listings/sitemap200 without targets;
+all four exact details404. Sitemap70 unique URLs, only three QA-circle URLs
+removed versus prior73, all three published articles retained once. Brilliant
+Labs/Rokid remain eligible. Hidden QA video still hidden, media1, audit4 and
+unchanged metadata fingerprint; three already-deleted child posts untouched.
+No legitimate content/account/profile removed. No deployment/rebuild/push/paid
+service. [Updated execution receipt](../geo/production-content-2026-11-02.md).
+No remaining owner action for this exact authorized cleanup/publication scope.
+
 ## 2026-11-02 Three GEO articles LIVE; QA cleanup blocked on staff MFA
 
 Owner explicitly authorized the exact four QA targets and publication of all

@@ -1,6 +1,61 @@
 # Authorized GEO publication and QA cleanup — execution receipt
 
-November 2, 2026. **Publication VERIFIED; QA cleanup BLOCKED by the application's staff MFA check.** This receipt covers the owner's exact four cleanup targets and three original drafts. [PUBLIC_BETA_CURRENT_STATE](../ops/PUBLIC_BETA_CURRENT_STATE.md) remains the current progress authority.
+November 2, 2026. **Publication VERIFIED; QA cleanup DONE and VERIFIED after the owner completed normal staff MFA.** This receipt covers the owner's exact four cleanup targets and three original drafts. [PUBLIC_BETA_CURRENT_STATE](../ops/PUBLIC_BETA_CURRENT_STATE.md) remains the current progress authority.
+
+## Cleanup completion — November 2, 2026, 21:19 NZDT
+
+This completion supersedes the historical MFA-blocked checkpoint below. The
+existing staff endpoint accepted the moderator session after normal MFA. No
+role, assurance, legal-consent or permission checks were bypassed.
+
+| Exact target | Before | Verified after | Logical deletion time, NZDT |
+|---|---|---|---|
+| Post `fba0a005-1008-4fe5-8899-52c23efd2bfb` | published, comments0, media0 | deleted; title, author and circle IDs retained |21:11:20 |
+| Circle `a2aecbee-6b9b-48c8-a5c7-7597bb9a53b3` / `fullopenai-677480-daily` | active, posts0, comments0 | deleted, report actioned |21:15:00 |
+| Circle `ed595c9f-75fc-4b82-ada8-f5e38c596063` / `cv-677480-circle` | active, posts0, comments0 | deleted, report actioned |21:15:37 |
+| Circle `06b4eb20-07fa-417e-b62b-e87eb0087381` / `qa0a39aa70-f4d5-40e1` | active,4 nonpublic QA posts, comments0 | deleted; all4 child rows retained |21:16:24 |
+
+Post: used the existing exact-post admin logical DELETE after confirming zero
+media/comments. The cleanup helper therefore had no objects or media rows to
+remove; no R2 operation was performed. This handler changes status only and does
+not append `moderation_actions`: the post's count remains0, not a fabricated
+new audit event. Existing author identity and history are preserved. Its
+before/after staff UI snapshots, result screenshot and database readbacks are
+retained in the ignored evidence directory. No extra audit-repair write was made.
+
+Circles: used existing report creation followed by staff `hide_target`, whose
+established circle behavior is logical `status=deleted`. Exact report IDs:
+`925d476b-4b22-4b68-ab3c-91ef832e137d` (FULLOPENAI),
+`a5395748-a667-4049-86b3-faf61a6910a4` (CV), and
+`33be0379-ee68-468e-944c-6b94ac5a6579` (QA). Each is actioned with the staff
+resolver, handling note, creation event and `hide_target` event verified in
+`report_events`. No notification, media cleanup, purge or cascade occurs in this
+circle action. Only these targets and their scoped report/audit records were
+mutated through the application; no direct production SQL write was used.
+
+Retained-video readback matches the earlier receipt exactly: hidden /
+hidden_by_admin, media1, audit rows4, media metadata fingerprint
+`7b1ad4d268813f7d69eab7044b159cbe`. The three already-deleted child posts retain
+their deleted states; no repeated action. Full deletion/purge was deliberately
+not performed, preserving the hidden video and its evidence. No user/profile
+or legitimate community was removed; Brilliant Labs and Rokid remain eligible.
+
+Eight sequential anonymous verification requests at21:19:27–21:19:29 NZDT:
+homepage/feed/circle list/sitemap200 and each of the four removed details404.
+All targets absent from listings. Sitemap70 unique URLs; compared with the
+post-publication map, the only differences are exactly the three removed circle
+URLs (added0). All three published article canonicals remain exactly once.
+These deleted-detail requests cannot enter the published-post view-count path.
+No media was fetched by this verification script. Staff UI reads were limited
+to the exact target pages and existing console; the CV page displayed its
+existing cover, without any R2 object or lifecycle operation by this task.
+
+Evidence: `artifacts/qa/geo-publish/cleanup-completed.json`,
+`cleanup-live-receipt.json`, eight `cleanup-live-*.txt` responses, before/after
+staff snapshots, `post-deleted.jpg` and `qa-circle-deleted.jpg`. No additional
+build/deployment, Git push/merge, schema/security change or paid service.
+Publication's existing deployment and tests below remain applicable.
+**No further owner action is required for this authorized scope.**
 
 ## Published articles — VERIFIED
 
@@ -33,7 +88,7 @@ Each article returned200 with one matching canonical, a distinct title/descripti
 
 The normal production build passed with an external-network guard. An initial attempt was stopped before dispatch when Astro telemetry tried to send; telemetry was then disabled for the successful build. No guard was weakened. The guard log preserves that failed attempt rather than calling it a clean first build.
 
-## QA targets — BLOCKED, none removed
+## Historical checkpoint before MFA completion — BLOCKED, none removed
 
 Fresh authorized database reads reconfirmed the owner's exact IDs, slugs, statuses and counts. After the owner signed in, the existing staff endpoint still returned **403, “Verify your authenticator at /admin/security/ before continuing.”** No permission, role, MFA factor or policy was changed to bypass it. The remaining input is a successfully verified existing staff session, not renewed cleanup approval.
 
@@ -63,4 +118,4 @@ Resume only the remaining cleanup after the normal MFA session succeeds. Prefer 
 
 Local evidence: `artifacts/qa/geo-publish/` contains build/test logs, unchanged-draft hashes, compiled/runtime and responsive receipts,14 live responses, deployment manifest/readback, existing metrics UI snapshot and exact cleanup readbacks. These ignored artifacts are local evidence, not public article content.
 
-**Minimal remaining owner action:** select an existing verified authenticator at https://lensden.net/admin/security/, enter its current code in the site, and click **Verify session**. Do not send the code in chat. The existing authorization remains sufficient for the exact cleanup once authentication succeeds; no new general release/GEO approval is needed.
+**Historical required action (now completed):** select an existing verified authenticator at https://lensden.net/admin/security/, enter its current code in the site, and click **Verify session**. Do not send the code in chat. The existing authorization remains sufficient for the exact cleanup once authentication succeeds; no new general release/GEO approval is needed.
