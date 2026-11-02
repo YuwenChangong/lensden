@@ -1,5 +1,74 @@
 # Public Beta Current State
 
+## 2026-11-02 Lensden custom domain LIVE - bounded production checks verified
+
+This supersedes the preparation checkpoint below. DOMAIN=lensden.net, zone
+ACTIVE, existing lensden Worker apex/www Custom Domains ACTIVE, actual HTTPS
+PASS, WWW redirect PASS, SEO canonical PASS. PUBLIC_BETA remains LIVE. Exactly
+one application build and one application deployment; no H/B1/D replay, schema
+change, new framework, GitHub push/merge, paid plan/add-on or R2 operation.
+
+Deployed application source0a1b3e01 (latest GEO6aa6e9df ancestor retained),
+Worker version f5ab8d21-8aa6-4b32-a33f-22899c73d3cf at100%, deployment
+ac382008-1732-4f38-bec6-f00c2afb7269. Generated-artifact --keep-vars with explicit
+SITE_ORIGIN=https://lensden.net; both already attached custom domains declared
+in route metadata. Before/after27-binding fingerprint excluding only SITE_ORIGIN
+matches exactly0c05cfa9cff2bb703e822827536114bea234a8916fe8a27cfb86619870fc6331.
+No credential values printed. Database/R2/KV identities and other settings retained.
+
+Wrangler unexpectedly defaulted workers.dev/preview URLs off once custom routes
+were explicit. Immediately restored via subdomain settings POST enabled=true,
+readback enabled=true/previews_enabled=true, same application version/100%.
+No second Worker upload/deploy. Actual legacy301 and callback200 then verified.
+Added workers_dev=true/preview_urls=true to source and generated metadata for
+future releases; no rebuild needed for this metadata-only correction. Preview
+config routes=[] verified so it cannot take over production domains. This is an
+explicit corrected deployment side effect, not a claim of uninterrupted routing.
+
+Supabase Site URL https://lensden.net saved and independently reloaded/read back;
+existing10 URLs unchanged,3 new URLs present, total13. All OAuth disabled, Email
+enabled/confirmation required unchanged. Production Auth and Forum Turnstile
+widget domain readbacks include lensden.net and every preexisting domain/mode.
+Supabase confirmation/reset/change-email/invite templates use ConfirmationURL;
+existing Brevo SMTP enabled, Lensden verified sender preserved. Brevo browser
+transactional template list shows no templates; Supabase supplies the SMTP HTML.
+Brevo connector internal error was bypassed only for read-only browser inspection.
+No mail was sent, no password/credential changed and no test user was created.
+
+Single-use bounded live runner made18 sequential requests, no redirects followed,
+20second deadlines/2MB ceilings, no browser media or R2 fetches. Verified:
+- Apex homepage/news index/one existing news article/feed/login/callback/recovery
+  all200; callback/recovery noindex and existing security headers retained.
+- Homepage/news/article/feed each exact new canonical and Open Graph URL,
+  WebSite/Organization structured-data origin new, no old first-party anchor URLs.
+- Robots200, sitemap index/static/dynamic200; XML parsers pass, index2 references,
+  dynamic70 unique URLs all https://lensden.net, old host absent.
+- HTTPS www and HTTP www each301 directly to new HTTPS apex with exact full
+  pathname/query. Legacy Lensden news301 directly new, including combined old
+  article-slug/domain migration in one hop and encoded query retained.
+- Old callback/recovery200 set host-local Secure/HttpOnly/SameSite=Lax routing
+  marker; marked subsequent feed200/no-store. No token/session was transferred.
+  News detail GET can increment its preexisting normal view counter; no direct
+  database write, content change or other business mutation was performed.
+
+Evidence is ignored artifacts/qa/domain-cutover/: production-build.log,
+artifact-local-receipt.json, seo-tests.log, deploy.log and live-check.json.
+Existing focused auth/middleware test and GEO12 tests passed; local actual artifact
+canonical/schema/sitemap checks passed with synthetic REST external0/writes0/R2=0.
+Independent review no remaining P1/P2. No broad acceptance or load test replay.
+
+Remaining PENDING is explicit: real user login/signup/confirmation/recovery and
+delivered-email link click were not executed. Config/routes PASS is not a real
+authenticated or delivered-mail PASS. Owner-controlled new-domain account/mail
+test is needed to close SUPABASE_AUTH and EMAIL_LINKS. Historical openglasshub
+Worker still hardcodes308 to lensden.ogh.workers.dev, then301 apex; removing this
+two-hop compatibility chain requires a separately allowed legacy Worker publish,
+not a second app release hidden in this task. Historical Pages root was already404
+and remains unchanged. OLD_DOMAIN_REDIRECT overall PENDING, while the requested
+immediate old Lensden domain301 is live and verified. No registrar/Nameserver
+action needed. No further application deployment is required for the new domain.
+
+
 ## 2026-11-02 Lensden custom domain cutover - prepared, activation next
 
 Owner authorized migration to https://lensden.net, one necessary application
