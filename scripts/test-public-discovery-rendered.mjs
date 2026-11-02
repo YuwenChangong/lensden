@@ -104,9 +104,16 @@ try {
   const second = await request(`/posts/${main.id}/?comments_page=2&lang=zh-CN`);
   const secondSchema = schemas(second.html).find(node => node['@type'] === 'DiscussionForumPosting'); assert.equal(secondSchema.comment.length, 2);
   assert.equal(secondSchema.comment[0].text, comments[50].body);
-  assert.equal(nodes(second.html, 'link').find(node => attr(node, 'rel') === 'canonical').attrs.find(value => value.name === 'href').value, `https://127.0.0.1/posts/${main.id}/`);
+  const secondCanonical = `https://127.0.0.1/posts/${main.id}/?comments_page=2`;
+  assert.equal(nodes(second.html, 'link').find(node => attr(node, 'rel') === 'canonical').attrs.find(value => value.name === 'href').value, secondCanonical);
+  assert.equal(attr(nodes(second.html, 'meta').find(node => attr(node, 'property') === 'og:url'), 'content'), secondCanonical);
+  assert.equal(secondSchema.url, `https://127.0.0.1/posts/${main.id}/`, 'Discussion entity retains the first-page URL');
+  assert.ok(nodes(second.html, 'a').some(node => attr(node, 'href') === `/posts/${main.id}/#comments`));
+  for (const comment of secondSchema.comment) {
+    assert.equal(nodes(second.html, 'article').filter(node => attr(node, 'id') === new URL(comment.url).hash.slice(1)).length, 1);
+  }
   assert.ok(secondSchema.comment[0].url.includes('?comments_page=2#comment-'));
-  checks.push('comment continuation and locale variants retain first-page post canonical and public comment permalinks');
+  checks.push('comment continuation self canonical/og:url, first-page discussion entity URL, visible comment anchors and normalized previous link; locale stripped');
   const apiPage = await request(`/api/forum/comments?post_id=${main.id}&public_page=1`);
   assert.equal(apiPage.response.status, 200);
   const apiComments = JSON.parse(apiPage.html).comments;

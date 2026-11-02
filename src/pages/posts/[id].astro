@@ -98,7 +98,7 @@ if (error || !post) {
 const postTypeLabels: Record<string, string> = text.types;
 
 const circle = post?.circles ?? null;
-const canonicalUrl = post ? `/posts/${post.id}/` : undefined;
+const canonicalUrl = post ? `/posts/${post.id}/${commentPage > 1 ? `?comments_page=${commentPage}` : ''}` : undefined;
 const commentLoginHref = buildLoginHref(post ? `/posts/${post.id}/#comments` : "/feed/?sort=latest");
 const postMedia = await resolveSignedPostMedia(
   supabase,
@@ -224,7 +224,7 @@ if (post) {
         <PublicComments comments={publicComments} unavailable={commentsUnavailable} loginHref={commentLoginHref} localeContext={localeContext} />
       </CommentsSection>
       {(commentPage > 1 || moreComments) && <nav class="community-feed-pagination" aria-label={text.commentsArea}>
-        {commentPage > 1 && <a class="community-action-button" href={`/posts/${post.id}/?comments_page=${commentPage - 1}#comments`}>{text.previous}</a>}
+        {commentPage > 1 && <a class="community-action-button" href={`/posts/${post.id}/${commentPage > 2 ? `?comments_page=${commentPage - 1}` : ''}#comments`}>{text.previous}</a>}
         {moreComments && <a class="community-action-button" href={`/posts/${post.id}/?comments_page=${commentPage + 1}#comments`}>{text.next}</a>}
       </nav>}
     </section>

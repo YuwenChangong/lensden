@@ -12,14 +12,21 @@ export function shouldNoindex(pathname: string, status = 200): boolean {
   return status >= 400 || isPrivateDiscoveryPath(pathname);
 }
 
-export function canonicalPageUrl(value: string, origin: string, options: { allowSearch?: boolean } = {}): string | undefined {
+export function canonicalPageUrl(value: string, origin: string, options: { allowSearch?: boolean; allowCommentPage?: boolean } = {}): string | undefined {
   try {
     const url = new URL(value, origin);
     if (url.origin !== new URL(origin).origin || url.username || url.password
       || /%(?:2e|2f|5c)|\\/i.test(value)
       || (isPrivateDiscoveryPath(url.pathname) && !(options.allowSearch && /^\/search\/?$/.test(url.pathname)))) return undefined;
     if (options.allowSearch && url.pathname === '/search') url.pathname = '/search/';
+    // Only visible public-thread continuation is a distinct canonical page.
+    // Sitemap callers do not opt in; locale/tracking and other queries still drop.
+    const page = url.searchParams.get('comments_page') ?? '';
+    const keepCommentPage = options.allowCommentPage
+      && /^\/posts\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/$/.test(url.pathname)
+      && /^[1-9]\d*$/.test(page) && Number(page) >= 2 && Number(page) <= 1000;
     url.search = '';
+    if (keepCommentPage) url.searchParams.set('comments_page', page);
     url.hash = '';
     return url.href;
   } catch { return undefined; }

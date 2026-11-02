@@ -44,7 +44,7 @@ const fullTitle = `${title} | ${siteName}`;
 const excludeFromIndex = noindex || shouldNoindex(Astro.url.pathname, Astro.response.status);
 // Search intentionally keeps its established base canonical while noindex.
 const keepSearchCanonical = /^\/search\/?$/.test(Astro.url.pathname) && (Astro.response.status ?? 200) < 400;
-const canonicalHref = excludeFromIndex && !keepSearchCanonical ? undefined : canonicalPageUrl(canonical ?? Astro.url.pathname, baseUrl, { allowSearch: keepSearchCanonical });
+const canonicalHref = excludeFromIndex && !keepSearchCanonical ? undefined : canonicalPageUrl(canonical ?? Astro.url.pathname, baseUrl, { allowSearch: keepSearchCanonical, allowCommentPage: Astro.url.pathname.startsWith('/posts/') });
 const ogImageHref = new URL(ogImage ?? "/brand/logo.jpg", baseUrl).toString();
 const robotsContent = excludeFromIndex ? "noindex,nofollow" : "index,follow,max-image-preview:large";
 if (excludeFromIndex) Astro.response.headers.set("X-Robots-Tag", "noindex");

@@ -27,6 +27,20 @@ test('canonical drops tracking and fragments and rejects off-origin or private t
   assert.equal(seo.canonicalPageUrl('/admin/', origin, { allowSearch: true }), undefined);
 });
 
+test('comment pagination has a narrowly opted-in self canonical without changing sitemap URL policy', () => {
+  const post = '/posts/00000000-0000-4000-8000-000000000001/';
+  const options = { allowCommentPage: true };
+  assert.equal(seo.canonicalPageUrl(post + '?comments_page=2&lang=zh-CN&utm_source=x#comments', origin, options), origin + post + '?comments_page=2');
+  assert.equal(seo.canonicalPageUrl(post + '?comments_page=1000', origin, options), origin + post + '?comments_page=1000');
+  assert.equal(seo.canonicalPageUrl(post + '?comments_page=2&comments_page=3', origin, options), origin + post + '?comments_page=2', 'Match the route using the first query value');
+  for (const query of ['1', '0', '-1', '02', '1001', 'abc']) {
+    assert.equal(seo.canonicalPageUrl(post + '?comments_page=' + query, origin, options), origin + post, query);
+  }
+  assert.equal(seo.canonicalPageUrl('/guides/example/?comments_page=2', origin, options), origin + '/guides/example/');
+  assert.equal(seo.canonicalPageUrl(post + '?comments_page=2', origin), origin + post);
+  assert.throws(() => sitemap.serializeSitemap([{ loc: origin + post + '?comments_page=2' }], origin));
+});
+
 test('Product schema never promotes conflict, legacy or unsupported offers and safely serializes scripts', () => {
   const item = { key: 'display.fov', label: 'Field of view', value: '50', displayValue: '50 deg', state: 'KNOWN', provenance: 'STRUCTURED_VERIFIED', region: 'Global', variant: null, unit: 'deg', measurementContext: 'diagonal', verifiedAt: null };
   const product = { name: 'Fixture </script>', brandName: 'Fixture Brand', shortDescription: 'Visible summary' };
