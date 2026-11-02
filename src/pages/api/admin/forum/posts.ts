@@ -1,4 +1,5 @@
 import { env as runtimeEnv } from "cloudflare:workers";
+import { joinedRecord } from "../../../../lib/server/joined-record";
 import type { APIRoute } from "astro";
 import { sanitizeBodyForDisplay } from "../../../../lib/post-body";
 import { deletePostMediaObjects } from "../../../../lib/server/media-cleanup";
@@ -76,6 +77,8 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
     const items = (posts ?? [])
       .map((post) => {
+        const profile = joinedRecord(post.profiles);
+        const circle = joinedRecord(post.circles);
         const media = Array.isArray(post.post_media) ? post.post_media : [];
         const videoCount = media.filter((item) => item.kind === "video").length;
         const mediaCount = media.length;
@@ -87,18 +90,18 @@ export const GET: APIRoute = async ({ request, locals }) => {
           body_excerpt: excerpt(post.body),
           status: post.status,
           author_id: post.author_id,
-          author_profile: post.profiles
+          author_profile: profile
             ? {
-                id: post.profiles.id ?? post.author_id,
-                username: post.profiles.username ?? null,
-                display_name: post.profiles.display_name ?? null,
-                avatar_url: post.profiles.avatar_url ?? null,
-                role: post.profiles.role ?? null,
+                id: profile.id ?? post.author_id,
+                username: profile.username ?? null,
+                display_name: profile.display_name ?? null,
+                avatar_url: profile.avatar_url ?? null,
+                role: profile.role ?? null,
               }
             : null,
           circle_id: post.circle_id,
-          circle_name: post.circles?.name ?? null,
-          circle_slug: post.circles?.slug ?? null,
+          circle_name: circle?.name ?? null,
+          circle_slug: circle?.slug ?? null,
           created_at: post.created_at,
           updated_at: post.updated_at,
           media_count: mediaCount,

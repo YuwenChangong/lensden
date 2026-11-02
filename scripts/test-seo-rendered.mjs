@@ -32,6 +32,7 @@ const article = { id: 'fixture-news', slug: 'geo-fixture-news', title: 'Local GE
 const post = { id: '00000000-0000-4000-8000-000000000001', author_id: '00000000-0000-4000-8000-000000000002', title: 'Local discussion fixture', body: 'Visible discussion </script> body.', type: 'discussion', status: 'published', moderation_status: 'published', created_at: '2026-10-01T00:00:00Z', updated_at: '2026-10-02T00:00:00Z', profiles: null, circles: null };
 let externalAttempts = 0, interceptedReads = 0, interceptedViewRpcs = 0, outage = false, browser, sitemapCase = 'normal';
 const checks = [];
+const capacityEvidence = {};
 const worker = await unstable_startWorker({ config: configPath, envFiles: [], build: { bundle: false },
   dev: { remote: false, watch: false, liveReload: false, persist: false, inspector: false, registry: undefined,
     server: { hostname: '127.0.0.1', port: 0 },
@@ -51,6 +52,16 @@ const worker = await unstable_startWorker({ config: configPath, envFiles: [], bu
       if (sitemapCase === 'budget') {
         const start = Number(url.searchParams.get('offset') ?? 0);
         return Response.json([{ slug: `row-${start}`, brand_key: 'xreal', status: 'active', name: 'Local budget fixture' }], { headers: { 'content-range': `${start}-${start}/20` } });
+      }
+      if (sitemapCase === 'capacity') {
+        assert.ok(['/rest/v1/devices', '/rest/v1/circles', '/rest/v1/news_articles'].includes(url.pathname));
+        const start = Number(url.searchParams.get('offset') ?? 0);
+        const count = Number(url.searchParams.get('limit'));
+        assert.equal(count, 500);
+        const rows = Array.from({ length: Math.min(count, 5000 - start) }, (_, i) => ({
+          slug: `capacity-${String(start + i).padStart(5, '0')}`, brand_key: 'xreal', status: 'active', name: 'Capacity fixture',
+        }));
+        return Response.json(rows, { headers: { 'content-range': `${start}-${start + rows.length - 1}/5000` } });
       }
       const table = url.pathname.split('/').pop();
       let rows = table === 'devices' ? [fixture] : table === 'public_device_detail_specs' ? [spec]
@@ -172,6 +183,35 @@ try {
   }
   sitemapCase = 'normal';
   checks.push('aggregate-fetch-budget-and-no-sdk-retry-or-redirect-amplification');
+  // Exercise the bounded row envelope and concurrency in the actual Worker.
+  // Wall time is end-to-end on this host, never a Worker CPU-time measurement.
+  sitemapCase = 'capacity';
+  let beforeCapacity = interceptedReads;
+  const started = performance.now();
+  const largeMap = await request('/sitemap.xml');
+  assert.equal(largeMap.response.status, 200);
+  assert.equal(interceptedReads - beforeCapacity, 30);
+  assert.equal(largeMap.response.headers.get('cache-control'), 'public, max-age=3600');
+  assert.equal(largeMap.response.headers.get('set-cookie'), null);
+  const largeLocs = [...largeMap.html.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
+  assert.equal(largeLocs.length, 15000 + (map.html.match(/<url>/g)?.length ?? 0) - 2);
+  assert.equal(new Set(largeLocs).size, largeLocs.length);
+  for (const part of ['/products/xreal/capacity-', '/circles/capacity-', '/news/capacity-']) assert.equal(largeLocs.filter(loc => loc.includes(part)).length, 5000);
+  capacityEvidence.maximum = { records: 15000, physicalReads: 30, urls: largeLocs.length, xmlBytes: Buffer.byteLength(largeMap.html), hostWallMs: Math.round(performance.now() - started) };
+  const concurrentStarted = performance.now();
+  beforeCapacity = interceptedReads;
+  const concurrent = await Promise.all(Array.from({ length: 4 }, () => request('/sitemap.xml')));
+  assert.ok(concurrent.every(result => result.response.status === 200 && result.html === largeMap.html));
+  assert.equal(interceptedReads - beforeCapacity, 120);
+  capacityEvidence.concurrentMaximum = { invocations: 4, physicalReads: 120, hostWallMs: Math.round(performance.now() - concurrentStarted) };
+  sitemapCase = 'budget'; beforeCapacity = interceptedReads;
+  const exhausted = await Promise.all(Array.from({ length: 3 }, () => request('/sitemap.xml')));
+  assert.ok(exhausted.every(result => result.response.status === 503 && result.response.headers.get('cache-control') === 'no-store' && !result.html.includes('<urlset')));
+  const exhaustedReads = interceptedReads - beforeCapacity;
+  assert.ok(exhaustedReads >= 3 && exhaustedReads <= 120, 'failure cancellation can stop before the shared per-invocation ceiling');
+  capacityEvidence.concurrentExhaustion = { invocations: 3, physicalReads: exhaustedReads, maximumPhysicalReads: 120, status: 503, partialSuccesses: 0 };
+  sitemapCase = 'normal';
+  checks.push('maximum-15000-record-sitemap-and-concurrent-success-and-exhaustion');
   const robots = await request('/robots.txt');
   assert.equal(robots.response.status, 200);
   for (const agent of ['Googlebot', 'Bingbot', 'OAI-SearchBot']) assert.ok(robots.html.includes('User-agent: ' + agent));
@@ -193,7 +233,7 @@ try {
   }
   checks.push('no-javascript-content-and-layout-390-430-1280');
   assert.equal(externalAttempts, 0);
-  const receipt = { status: 'PASS', checks, externalAttempts, productionRequests: 0, databaseWrites: 0, interceptedReads, interceptedViewRpcs, evidenceClass: 'COMPILED_WORKER_WITH_SYNTHETIC_PUBLIC_REST_RESPONSES' };
+  const receipt = { status: 'PASS', checks, capacityEvidence, externalAttempts, productionRequests: 0, databaseWrites: 0, interceptedReads, interceptedViewRpcs, evidenceClass: 'COMPILED_WORKER_WITH_SYNTHETIC_PUBLIC_REST_RESPONSES' };
   await writeFile(path.join(output, 'rendered-receipt.json'), JSON.stringify(receipt, null, 2) + '\n');
   console.log(JSON.stringify(receipt));
 } finally {

@@ -834,7 +834,7 @@ await test("createSignedModerationUrls returns absolute signed URLs", async () =
       storage: {
         from() {
           return {
-            url: "https://example.supabase.co/storage/v1",
+            getPublicUrl() { return { data: { publicUrl: "https://example.supabase.co/storage/v1/object/public/post-media/" } }; },
             async createSignedUrls() {
               return {
                 data: [{ signedUrl: "/storage/v1/object/sign/post-media/private/path.png?token=test" }],
@@ -858,7 +858,7 @@ await test("createSignedModerationUrls can convert signed images to data URLs", 
       storage: {
         from() {
           return {
-            url: "https://example.supabase.co/storage/v1",
+            getPublicUrl() { return { data: { publicUrl: "https://example.supabase.co/storage/v1/object/public/post-media/" } }; },
             async createSignedUrls() {
               return {
                 data: [{ signedUrl: "/storage/v1/object/sign/post-media/private/path.png?token=test" }],

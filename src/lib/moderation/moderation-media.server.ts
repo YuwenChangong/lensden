@@ -100,7 +100,12 @@ export async function createSignedModerationUrls(params: {
   }
 
   const signed = (data ?? [])
-    .map((entry) => absolutizeSignedUrl(entry?.signedUrl ?? "", bucketApi.url))
+    .map((entry) => {
+      const url = entry?.signedUrl ?? "";
+      // Current SDK returns absolute signed URLs. Retain relative compatibility
+      // using its public, local URL builder; never read protected client state.
+      return !url.startsWith("/") ? url : absolutizeSignedUrl(url, bucketApi.getPublicUrl("").data.publicUrl);
+    })
     .filter(Boolean);
 
   if (!params.preferDataUrls) {

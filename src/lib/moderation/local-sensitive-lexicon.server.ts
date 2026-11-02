@@ -212,11 +212,12 @@ function matchesTerm(entry: SensitiveLexiconTerm, normalizedText: string, conden
 }
 
 function allowlistSuppresses(entry: SensitiveLexiconTerm, allowHits: SensitiveLexiconTerm[]) {
-  if (!entry.normalized || allowHits.length === 0) return false;
+  const normalized = entry.normalized;
+  if (!normalized || allowHits.length === 0) return false;
   return allowHits.some((allowHit) => {
     if (!allowHit.normalized) return false;
-    if (allowHit.normalized === entry.normalized) return true;
-    return allowHit.normalized.includes(entry.normalized) || (allowHit.condensed?.includes(entry.condensed ?? "") ?? false);
+    if (allowHit.normalized === normalized) return true;
+    return allowHit.normalized.includes(normalized) || (allowHit.condensed?.includes(entry.condensed ?? "") ?? false);
   });
 }
 

@@ -1,4 +1,5 @@
 import { env as runtimeEnv } from "cloudflare:workers";
+import { joinedRecord } from "../../../../lib/server/joined-record";
 import type { APIRoute } from "astro";
 import { buildUniqueCircleSlug, slugifyCircleName } from "../../../../lib/circle-slug";
 import { buildCircleCoverUrlMap, CIRCLE_COVER_PREFIX, resolveCircleCoverUrl } from "../../../../lib/circle-cover";
@@ -100,7 +101,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
         .from("circles")
         .select(selectWithoutStatus)
         .order("created_at", { ascending: false });
-      circles = fallback.data;
+      circles = fallback.data?.map(circle => ({ ...circle, status: undefined })) ?? null;
       error = fallback.error;
     }
 
@@ -138,30 +139,33 @@ export const GET: APIRoute = async ({ request, locals }) => {
     );
 
     return jsonResponse({
-      circles: (circles ?? []).map((circle) => ({
-        id: circle.id,
-        slug: circle.slug,
-        name: circle.name,
-        description: circle.description ?? "",
-        type: circle.type,
-        status: "status" in circle ? circle.status ?? "active" : "active",
-        created_at: circle.created_at,
-        updated_at: circle.updated_at,
-        image_path: circle.image_path ?? null,
-        cover_url: coverUrlMap.get(circle.id) ?? null,
-        owner_id: circle.owner_id ?? null,
-        post_count: postCountMap.get(circle.id) ?? 0,
-        comment_count: commentCountMap.get(circle.id) ?? 0,
-        owner_profile: circle.profiles
-          ? {
-              id: circle.profiles.id ?? circle.owner_id ?? null,
-              username: circle.profiles.username ?? null,
-              display_name: circle.profiles.display_name ?? null,
-              avatar_url: circle.profiles.avatar_url ?? null,
-              role: circle.profiles.role ?? null,
-            }
-          : null,
-      })),
+      circles: (circles ?? []).map((circle) => {
+        const profile = joinedRecord(circle.profiles);
+        return {
+          id: circle.id,
+          slug: circle.slug,
+          name: circle.name,
+          description: circle.description ?? "",
+          type: circle.type,
+          status: "status" in circle ? circle.status ?? "active" : "active",
+          created_at: circle.created_at,
+          updated_at: circle.updated_at,
+          image_path: circle.image_path ?? null,
+          cover_url: coverUrlMap.get(circle.id) ?? null,
+          owner_id: circle.owner_id ?? null,
+          post_count: postCountMap.get(circle.id) ?? 0,
+          comment_count: commentCountMap.get(circle.id) ?? 0,
+          owner_profile: profile
+            ? {
+                id: profile.id ?? circle.owner_id ?? null,
+                username: profile.username ?? null,
+                display_name: profile.display_name ?? null,
+                avatar_url: profile.avatar_url ?? null,
+                role: profile.role ?? null,
+              }
+            : null,
+        };
+      }),
     });
   } catch (error) {
     if (error instanceof Response) return error;

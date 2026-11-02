@@ -8,6 +8,7 @@ import type {
   ModerationProviderInput,
   ModerationProviderStatus,
   OpenAIModerationResult,
+  OpenAIModerationReasonCode,
 } from "./moderation-types.ts";
 
 const OPENAI_MODERATION_ENDPOINT = "https://api.openai.com/v1/moderations";
@@ -48,7 +49,7 @@ function redactSignedUrl(url: string): string {
 }
 
 function summarizeScore(value: number | undefined): "low" | "medium" | "high" | undefined {
-  if (!Number.isFinite(value)) return undefined;
+  if (typeof value !== "number" || !Number.isFinite(value)) return undefined;
   if (value >= 0.8) return "high";
   if (value >= 0.35) return "medium";
   return "low";
@@ -138,7 +139,7 @@ function buildOpenAIDecision(input: ModerationProviderInput, result: Record<stri
 }
 
 function buildErrorResult(
-  reasonCode: OpenAIModerationResult["reasonCode"],
+  reasonCode: OpenAIModerationReasonCode,
   providerStatus: ModerationProviderStatus,
   safeSummary: string,
 ): OpenAIModerationResult {

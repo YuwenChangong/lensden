@@ -29,7 +29,7 @@ export default function LegalConsentGate({ pathname, authAdapter, consentAdapter
     async function check() {
       setState("loading"); setError("");
       const adapterSession = authAdapter ? await authAdapter.getSession() : null;
-      const sessionResult = authAdapter ? { token: adapterSession?.accessToken ?? null, error: null } : (() => null);
+      const sessionResult = { token: adapterSession?.accessToken ?? null, error: null };
       const nativeSession = authAdapter ? null : await supabase!.auth.getSession();
       const token = authAdapter ? sessionResult.token : nativeSession?.data.session?.access_token ?? null;
       const sessionError = authAdapter ? sessionResult.error : nativeSession?.error;
