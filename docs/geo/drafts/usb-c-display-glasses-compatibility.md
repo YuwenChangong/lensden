@@ -1,5 +1,10 @@
 ---
-title: "Will USB-C display glasses work with your phone? Check the port, not just the connector"
+title: "USB-C display glasses compatibility: XREAL One and One Pro"
+description: "Check DisplayPort Alt Mode, host power and adapter direction before connecting XREAL One or One Pro glasses to a phone, computer or console."
+canonical_path: /guides/usb-c-display-glasses-compatibility/
+language: en
+author: null
+reviewer: null
 draft: true
 published_at: null
 updated_at: null
@@ -7,29 +12,45 @@ approval: pending
 source_review_date: 2026-11-02
 ---
 
-## Does a USB-C connector guarantee compatibility?
+## Will a USB-C plug give you a picture?
 
-No. For the XREAL One series, the manufacturer specifies DisplayPort video output and sufficient host power for a direct connection. A matching connector alone does not establish that the host provides those capabilities. This is a source-based explanation, not a report of Lensden hands-on testing. [XREAL connection instructions](https://tutorials.xreal.com/docs/glasses/one-series/first-use/connect-device/)
+A matching plug is only the first check. You need to establish three things separately: whether the host sends video through that port, whether the connection supplies the glasses' required power, and whether every cable or adapter supports the intended signal path.
 
-## A short compatibility decision table
+This guide covers **XREAL One and XREAL One Pro**. XREAL lists them as distinct models in its [One-series specifications](https://tutorials.xreal.com/docs/glasses/one-series/spec/). It is a source-based compatibility checklist, not Lensden hands-on testing or certification of a particular setup. Other XREAL models and other brands need their own documentation.
 
-| What you know | What to establish next |
-|---|---|
-| Your phone has a USB-C port | Whether that exact model and port support the required video output |
-| Your computer has several USB-C ports | Which port supplies the relevant display signal and power |
-| Your source has HDMI | Whether the manufacturer's supported adapter path covers that source |
-| You saw another person's successful setup | Whether their glasses model, host and accessory chain match yours |
+## USB-C describes the connector; DisplayPort Alt Mode carries video
 
-These are verification steps, not guarantees about an unnamed device. Keep the exact host model, operating-system version, glasses generation, cable and accessory configuration together in your notes. If one part is unknown, keep the compatibility result unknown rather than filling the gap with a brand-level assumption.
+DisplayPort Alt Mode lets a compatible USB-C connection carry DisplayPort audio and video by using the connector's alternate-mode capability. It is a capability of the connection, not something established by the plug's shape. VESA directs users to device documentation to establish support. [VESA DisplayPort FAQ](https://www.displayport.org/faq/)
 
-## What the manufacturer establishes
+Look up the **exact host model and port**, not just a product family's USB-C specification. On a computer with several ports, check each port's documented functions. Charging or USB data support alone does not establish display output. A higher-wattage charger is not evidence that the host sends video.
 
-XREAL's guide distinguishes direct DisplayPort-capable USB-C connections from HDMI setups using adapters. It also states that One-series glasses receive power from the connected device and do not have their own battery. Those conditions belong in the compatibility record, not in a blanket claim that all phones work. The guide warns that feature availability varies by device model and system version. [Manufacturer guide](https://tutorials.xreal.com/docs/glasses/one-series/first-use/connect-device/)
+## Check power as well as video
 
-## Limits and next checks
+For its direct connection, XREAL specifies DP output and **5 V / 1 A** power, using the supplied cable. Its guide says the glasses have no internal battery and depend on connected-device power. [XREAL connection guide](https://tutorials.xreal.com/docs/glasses/one-series/first-use/connect-device/)
 
-This draft does not validate a particular phone, cable, adapter or firmware version. It does not establish that every video application supports every display mode. Before purchase, obtain documentation for your exact setup, and retain any unresolved conditions alongside the source. Recheck the live manufacturer page before approving publication.
+Treat that power figure as a documented supply requirement, not a measured continuous consumption or battery-life result. If documentation confirms video but leaves power delivery to the glasses unclear, the setup remains unconfirmed. Record the power source and any required power input on an adapter separately.
 
-Continue with the [product library](/products/) and [developer requirement checklist](/guides/developer-limit-checklist-before-choosing-ar-ai-glasses/). A product page should preserve its model-specific evidence instead of inheriting this article as a compatibility certification.
+## An adapter must match the signal direction
 
-Editorial claim ledger: DP/power condition, adapter distinction and battery statement are manufacturer disclosures in the linked guide, accessed 2026-11-02. The decision table is Lensden's proposed verification method. No product verification date, price, review or purchase recommendation is asserted.
+XREAL describes an HDMI-to-USB-C path for HDMI sources, including computers and PlayStation/Xbox, and a specific XREAL Hub path for Switch-family consoles. Feature availability depends on the host model and system version. [XREAL connection guide](https://tutorials.xreal.com/docs/glasses/one-series/first-use/connect-device/)
+
+A USB-C-to-HDMI adapter intended for a USB-C computer and HDMI monitor is a different path; do not assume it works in reverse. VESA describes that source-to-display direction in its [adapter guidance](https://www.displayport.org/faq/). Check the exact accessory's input, output, power connection and supported source before relying on it.
+
+A USB-C hub also needs explicit video support. VESA distinguishes USB-only hubs from docks that support DisplayPort; adding ports does not by itself add a display path. [VESA connection help](https://vesa.org/dp-usb-type-c/)
+
+## Build a compatibility record before choosing accessories
+
+Use this checklist to keep an unresolved condition visible:
+
+| Item | Evidence to record | If missing |
+|---|---|---|
+| Glasses | Exact One or One Pro model and relevant firmware | Do not transfer another model's result |
+| Host | Exact model, OS version and chosen physical port | Ask the host manufacturer for port-specific documentation |
+| Video | Documented DP output over the intended USB-C connection | Keep direct connection unconfirmed |
+| Power | Required supply available at the glasses connection | Keep power compatibility unconfirmed |
+| Cable and adapter | Exact part, signal direction and any external power input | Do not substitute a look-alike accessory |
+| Intended use | Required app, display mode and documented restrictions | Do not treat a picture as proof of every feature |
+
+The checklist is Lensden's editorial method, not a manufacturer compatibility list. A useful result names the complete chain and its sources, rather than saying that an entire phone brand works. This article does not establish app-specific playback, protected-content compatibility or every display mode. If those matter to your setup, obtain separate documentation rather than treating basic video output as the answer.
+
+Continue with the [product library](/products/) and [developer requirement checklist](/guides/developer-limit-checklist-before-choosing-ar-ai-glasses/). The latter is currently a Chinese-language guide. Product records need their own model-specific evidence; this article does not certify them.

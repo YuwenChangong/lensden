@@ -1,5 +1,27 @@
 # Public Beta Current State
 
+## 2026-11-02 GEO content finalization — local candidate and import instructions
+
+Continues the completed post-launch review without release/domain checks.
+[Owner packet](../geo/content-finalization-2026-11-02.md): one exact QA-post
+conditional hide candidate using the existing audited staff action; fixture
+ownership/current discussion still require confirmation. Three circle slugs are
+known, but UUID/ownership/history are NOT_VERIFIED, so no circle mutation is
+approval-ready. No Production reads, moderation/database writes or media calls.
+
+Existing USB-C draft finalized locally for XREAL One/One Pro, with primary-source
+attribution, DP Alt Mode/power/adapter explanation, description and proposed
+canonical. Still unpublished/pending, author/reviewer/publication dates null. Other drafts
+unchanged. Existing guide loader's English labeling must be handled through its
+reviewed-edition pattern at separately approved publication; no UI/code change.
+
+Real console CSV normalization documented in the existing monitoring folder;
+20 queries, observations and validator preserved. No real exports supplied,
+import NOT_PERFORMED and metrics NOT_COLLECTED. No monitoring retry, deployment,
+Git push/merge, paid service or infrastructure development. Minimal next steps:
+owner confirms exact QA fixture before any hide, approves article/real byline
+and later publication, supplies finalized console exports with report context.
+
 ## 2026-11-02 GEO post-launch content and measurement review
 
 Documentation only; no completed release/Phase 1-3 replay. Current origin and

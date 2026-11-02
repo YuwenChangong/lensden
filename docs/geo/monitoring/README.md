@@ -6,6 +6,8 @@ Current baseline scope: **https://lensden.net/** following the authorized domain
 
 ## Workflow
 
+For real dashboard files, follow [the local export/import instructions](import-exports.md), including Google's unavailable-value-to-zero caveat, exact field mapping and source reconciliation. Provider CSVs cannot be passed directly to the normalized parser. No export or metric has been fabricated.
+
 1. Export authorized Google Search Console, Bing Webmaster Tools, or existing analytics data manually. Keep raw exports outside public directories; remove account identifiers and sensitive query strings. Do not commit raw exports.
 2. Map each measurement to one row in observations.csv. This is a normalized input format, not a claim that all providers export identical columns. Preserve report name, date, measurement scope and local evidence reference. Use HTTPS canonical page URLs without query strings; leave url blank for property-wide observations.
 3. Run `node scripts/geo-monitor.mjs --input docs/geo/monitoring/observations.csv`. It reads a local file up to 2 MB, validates, and prints distinct observations; it makes no request or write. It intentionally does not sum overlapping reports or treat missing values as zero.
