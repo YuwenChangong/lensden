@@ -1,0 +1,78 @@
+# Lensden post-launch visibility and content actions
+
+November 2, 2026, Pacific/Auckland. Priority: remove confirmed QA noise through owner review, establish real search measurements, then approve the existing drafts. No new GEO feature is proposed.
+
+The later authorized domain cutover supersedes the prompt's historical Worker origin/version: current production is **https://lensden.net**, recorded version `f5ab8d21-8aa6-4b32-a33f-22899c73d3cf`, source `0a1b3e01`, current local HEAD at assessment `d426518c`. This is reused current-state evidence, not a new release check. This task made no application requests, content/database changes, deployments, DNS/WAF changes, R2 operations or paid tests. [PUBLIC_BETA_CURRENT_STATE](../ops/PUBLIC_BETA_CURRENT_STATE.md) remains the progress authority.
+
+## 1. Search registration — technically prepared; account status NOT_VERIFIED
+
+Saved domain-cutover evidence already confirms the new canonical origin, robots and sitemap delivery. A real Google verification file exists in tracked source and the current build: `/google1930fde39281e043.html` (original commit e5fbb039). Its content matches between source/build; preserve it. This does **not** prove that the current owner's account has verified the new property. No Search Console/Bing connector or account readback is available here; no ownership or submission success is invented.
+
+Owner steps, in order:
+
+1. Open [Google Search Console](https://search.google.com/search-console). Select existing `https://lensden.net/` URL-prefix property, or an already verified parent Domain property if present. If access/ownership is already verified, skip verification. Do not repeat old workers.dev verification for the new origin.
+2. Only if needed, add the exact **URL-prefix** `https://lensden.net/`. In Settings > Ownership verification use an offered method. For HTML-file verification, confirm Google's account-specific required filename/content matches the existing file and that its required new-origin URL is publicly available before clicking Verify. Do not replace another owner's token. If the account needs a different file/tag, stop that step and supply the real requirement for separately authorized installation; no DNS or deployment is authorized here. Google's [verification instructions](https://support.google.com/webmasters/answer/9008080) require the actual account-associated file; file presence alone is not account verification.
+3. In Sitemaps, first inspect submission history. If the exact index is already successfully submitted, retain it; otherwise submit **https://lensden.net/sitemap-index.xml** once. Record status, last read, discovered-page count and errors; do not repeatedly resubmit. Submission/discovery is not indexing. See [Sitemaps report](https://support.google.com/webmasters/answer/7451001).
+4. In [Bing Webmaster Tools](https://www.bing.com/webmasters/), first select any existing verified `lensden.net` property. Otherwise prefer [importing the verified Google property](https://www2.bing.com/webmasters/help/add-and-verify-site-12184f8b) and review the requested access; select only this site. Import verifies the selected site. Check whether its sitemap was imported before submitting the same index again. If not importing, use the offered real XML/tag method only after separate installation authorization; no invented token or DNS step.
+5. Use Google Page indexing and Bing Site Explorer/URL Inspection for coverage. Inspect existing report data for `/`, `/products/`, one published device and one useful guide first; hold promotion of the QA post/circles below pending review. Record indexed, excluded and failure reasons and selected canonical. Use live inspection only if necessary, since it generates a crawl; avoid news/post pages with known view-count side effects under this task's no-write constraint. Keep old-host data separate when comparing across the domain move.
+
+Google Web impressions already include AI surfaces. Where visible, export the separate Search Generative AI Search/Discover reports without adding them to Web totals; the [official announcement](https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports) describes overlapping views. Bing's [AI Performance](https://blogs.bing.com/webmaster/2026/2/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview/) reports citations/cited pages, not visits or rankings. Its [Topics Portfolio beta](https://blogs.bing.com/webmaster/2026/10/introducing-topics-portfolio-beta-in-ai-performance/) is optional and requires sufficient data; do not interpret a missing tab as zero citations. Actual property availability and all metrics remain NOT_VERIFIED.
+
+## 2. Homepage quality — concrete owner-review proposal
+
+Evidence is the saved new-domain homepage `artifacts/qa/domain-cutover/live-1.txt`, from the bounded runner beginning **2026-11-02T05:21:15Z** (18:21 NZDT). Audit receipt: `artifacts/qa/geo-post-launch/homepage-audit.json`. No new homepage/detail/media fetch was made. Findings describe that snapshot, not a fresh census of all public content.
+
+| Visible finding | Evidence classification | Minimal proposed disposition, not executed |
+|---|---|---|
+| Post `fba0a005-1008-4fe5-8899-52c23efd2bfb`, title and excerpt both “QA 验收测试，请忽略”, in Brilliant Labs | **Confirmed public QA-labelled, low-information content.** Its sole visible post card repeats the title as excerpt. | Owner confirms it is a fixture; then separately authorize reversible **hide** of this exact post through existing staff moderation. Retain body, identity and history; do not delete or rewrite it. |
+| `/circles/qa0a39aa70-f4d5-40e1/`, label `QA0a39aa70-f4d5-40e1`, generic discussion prompt | **Strong test-name signal**, not proof of who owns it or whether genuine discussions exist. Also present in the saved dynamic sitemap. | Review exact circle identity, provenance and member discussions in the existing admin workflow. If fixture-only, propose status `hidden`; otherwise retain and improve description only with separate content approval. |
+| `/circles/cv-677480-circle/` and `/circles/fullopenai-677480-daily/` | **Possible test fixtures / generic templated descriptions**, ownership/purpose unverified. Similar daily-use descriptions are weak evidence, not confirmed duplicate articles. Both appear in the saved sitemap. | Same identity/discussion review; no automatic bulk hiding based on names. Resolve their UUIDs in the existing dashboard before approving any exact-row action. |
+| Brilliant Labs and Rokid labels; numeric profile handle `3642581840` | **No demonstrated content violation.** The numeric string is an author handle, not a meaningless post title. | Leave unchanged. No evidence supports moderating these communities or the account. |
+
+No other post cards appear in this homepage snapshot; site-wide duplicates/placeholder posts are NOT_VERIFIED. Search-quality impact is a reasonable concern, not a measured ranking penalty. Do not apply a site-wide QA regex, robots change or content filter.
+
+Existing mechanisms: post PATCH accepts exact UUID plus `action=hide` (reversible with restore); circle PATCH supports exact UUID plus `status=hidden`. Existing staff/MFA/consent controls remain required. This is an owner-reviewable proposal, not authority to call either endpoint. Avoid delete, purge, media cleanup, rename/description moderation or provider calls. After a separately approved hide, existing public filters exclude hidden items; check that specific result within that later grant rather than recrawling the site now.
+
+## 3. Three drafts — source checks PASS; editorial approval still pending
+
+All three files remain byte-for-byte unchanged, `draft:true`, `approval:pending`, dates null, outside the publishing collection. All six internal-link occurrences resolve to existing source routes and the saved new-origin sitemap. No fresh live link probes or publication occurred.
+
+| Draft / priority | Source and usefulness review | Approval checks |
+|---|---|---|
+| USB-C compatibility — **first**; Q04/Q15–17 | [XREAL primary guide](https://tutorials.xreal.com/docs/glasses/one-series/first-use/connect-device/) supports DP output plus host power, adapter distinction, no built-in battery and model/system restrictions. The connector-versus-capability decision table is useful; no universal-phone compatibility or hands-on claim. | Confirm exact One-series scope and accessory chain. If adding a number, current source says5V/1A; do not generalize to all glasses. Do not imply every HDMI adapter is suitable. |
+| XR display specifications — **second**; Q11–13 | [Apple's 2023 introduction](https://www.apple.com/newsroom/2023/06/introducing-apple-vision-pro/) supports23million pixels across two displays; [current specs](https://www.apple.com/apple-vision-pro/specs/) still support23million/micro-OLED. The context/unknown-value table avoids false per-eye conversions. | Label historical2023 and current M5-generation sources explicitly when approving; never combine other generation-dependent fields. No missing per-eye dimensions, FOV or brightness are to be invented. |
+| 3DoF/6DoF — **third**; Q14 | [Microsoft's tracking guide](https://learn.microsoft.com/en-us/previous-versions/mixed-reality/enthusiast-guide/tracking-system) supports rotation versus translation and orientation-only apps on positional hardware. [Coordinate-system guidance](https://learn.microsoft.com/en-us/windows/mixed-reality/design/coordinate-systems) supports distinct orientation/position/floor/bounds/anchor requirements. | The tracking link redirects to archived documentation; retain this platform/date context. Do not transfer Windows Mixed Reality implementation details to named glasses without their own source. |
+
+The explanation/table framing is useful editorial synthesis; no obvious long copied passage was found against the cited sources. This is not a web-wide plagiarism or original-research certification. Before approving any draft, an editor must confirm audience/language, final title/summary, real author/reviewer, scope/limitations, canonical publishing route and current source date. Set publication time only at actual publication; set update time only for a meaningful revision. No new article, fake author, review/price claim or English translation rollout is proposed. Approve the USB-C draft first only after that checklist, then measure before increasing output.
+
+## 4. CPU/errors — current trend NOT_VERIFIED
+
+An existing read-only management/GraphQL attempt returned **“Rate limiter budget depleted … try again after5minutes”** before any current ordinary-traffic metrics were returned. No quota/permission escalation, new logging, paid analytics, test traffic, stress probe or retry loop followed. This rate-limit response is not evidence of a Worker runtime/resource failure.
+
+The only saved CPU receipt is historical release-window data for the superseded version63a5910c:5 requests,0errors, P50/P99=26.784/53.071ms, window00:25:24–00:27:29.277UTC. It is not a post-cutover trend or sitemap trace. Current Worker error counts, CPU trend, sitemap-specific CPU and resource-limit incidents therefore remain NOT_VERIFIED, not zero. The saved new-domain dynamic map returned200, but that proves neither current heap/CPU margin nor ordinary-traffic capacity.
+
+Use the existing `lensden` Worker Metrics > CPU/Errors dashboard for ordinary traffic, comparing equivalent windows and noting the domain-cutover marker. Record request counts and `exceededResources`/CPU/memory errors separately from HTTP failures. If present, use existing URL-level evidence; aggregate CPU cannot identify the sitemap. Do not refresh the sitemap to manufacture samples or change Free limits. No CPU-driven implementation change is justified by the evidence obtained today.
+
+## 5. Measurement baseline — process ready; measurements NOT_COLLECTED
+
+Reuse [monitoring/README](monitoring/README.md), the unchanged [20 queries](monitoring/test-queries.csv) and [observations.csv](monitoring/observations.csv). The local validator passes with0observations and makes0requests/0writes; “0 observations” is not zero traffic, impressions, indexed pages or citations. The old70-URL sitemap count is discovery inventory, never an indexed-page baseline.
+
+At the first available finalized reporting window, export the following from existing free owner interfaces. Keep raw exports local/ignored, normalize only real observations and retain the source report/evidence path. Record period start/end, provider timezone, country/device filters, new-domain property and page/property scope in notes. Use canonical `https://lensden.net/...` URLs without tracking queries; leave missing values blank. Export page rows plus property totals separately; never sum a total together with its constituent pages.
+
+| Measurement | Existing input / recording |
+|---|---|
+| Indexed URLs | Google Page indexing / Bing Site Explorer snapshots; `indexed_pages`, property/report scope preserved |
+| Organic visibility | Google Web and Bing Search Performance impressions; `organic_impressions`, page URL for content-level rows |
+| AI-search impressions | Separate available Google generative Search/Discover views; `ai_search_impressions`, no addition to overlapping Web totals |
+| AI citations | Bing AI Performance totals and cited-page rows; `ai_citations`, citations are not visits |
+| AI referrals | Only an existing authorized analytics referral report; `ai_referral_visits`, preserve actual visit/session definition and page if available. No analytics tag is evident in the inspected source/saved homepage; dashboard-side availability is unknown. Do not install anything or infer AI traffic from direct visits. |
+| Manual discovery | Keep Q01–Q20 exactly as written; one free-interface answer/query/platform per cycle, no regenerative retries or leading “cite Lensden” additions. Record model/interface, locale/location/sign-in context, time and visible cited URL. Use cited/not_cited/inconclusive only for an actual attempted result; unrun queries stay outside observations. No AI tests were executed in this task. |
+
+Use the first complete7-day window as the comparable performance baseline, then compare weekly with the same scope; indexed URLs remain dated snapshots. Add one manual20-query cycle after substantive content/indexing changes or monthly, within existing free limits. Draft-linked topics are coverage opportunities, not published URLs. For page decisions, compare actual impressions/citations/referrals and content changes over time, without claiming causality from one answer. No paid API, new crawler or automatic schedule is needed.
+
+## 6. Exact remaining owner actions
+
+1. Confirm access to the **new-origin** Search Console/Bing properties; skip any verification already satisfied. Reuse the matching existing Google file if needed, then submit/check the existing sitemap index once. Provide only real requirements if another token is needed.
+2. Review the one exact QA post and three candidate circle identities/discussion histories; separately approve any precise reversible hides. No legitimate user content changes are authorized here.
+3. Complete the three draft checklists; prioritize USB-C and grant publication separately when ready. Drafts and dates remain unchanged now.
+4. Export the first available console/analytics baseline and inspect existing ordinary-traffic CPU/errors when access is available. Missing reports/metrics stay unknown. No release gate, deployment, new paid service or additional article is needed to proceed with these visibility/content decisions.

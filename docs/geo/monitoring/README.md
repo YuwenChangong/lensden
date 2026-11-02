@@ -2,6 +2,8 @@
 
 No metrics have been collected. observations.csv intentionally contains only its header. Blank value means unavailable, never zero. The 20 queries are test prompts, not claims that Lensden ranks or is cited. Run tests manually in existing free interfaces, within their limits; no paid AI API or automated scheduled requests.
 
+Current baseline scope: **https://lensden.net/** following the authorized domain cutover. Keep old-host observations separate. See the [post-launch report](../post-launch-2026-11-02.md) for owner registration steps, content findings and the six-measurement baseline. Use the first complete finalized 7-day reporting window, then compare equivalent weekly windows. Record page-level rows separately from property totals; do not sum both. Unrun queries produce no observation rows.
+
 ## Workflow
 
 1. Export authorized Google Search Console, Bing Webmaster Tools, or existing analytics data manually. Keep raw exports outside public directories; remove account identifiers and sensitive query strings. Do not commit raw exports.

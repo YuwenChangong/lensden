@@ -1,4 +1,6 @@
-# Owner steps before a GEO release
+# Owner search and editorial actions
+
+Post-launch update (November 2, 2026): the later authorized domain cutover is LIVE at **https://lensden.net/**. Use the [post-launch report](post-launch-2026-11-02.md) for current registration, content-review and measurement actions. The completed GEO release and historical gates below must not be replayed. No deployment or publication is authorized by this update.
 
 No manual action is needed to complete local development. Nothing in this packet authorizes deployment, DNS, WAF, database changes, article publication or a public-beta gate replay.
 
@@ -19,18 +21,18 @@ Phase 3: [release decision packet](phase3-release-readiness.md). Default74/MFA20
 
 ## Google Search Console
 
-Actual property ownership, verification tokens and existing submission status are NOT_VERIFIED. Use the current configured origin `https://lensden.ogh.workers.dev` unless production evidence establishes a different approved origin.
+Current origin: **https://lensden.net/**. Account ownership and existing submission status are NOT_VERIFIED. The tracked Google file `/google1930fde39281e043.html` also exists in the current build; preserve it. File presence does not prove account verification.
 
-1. Sign in to [Search Console](https://search.google.com/search-console). Select an existing verified property or add a URL-prefix property for that exact HTTPS origin. The shared workers.dev parent is not a domain you control. Do not add DNS records for someone else's parent.
-2. Choose an offered ownership method from [Google's verification help](https://support.google.com/webmasters/answer/9008080). If a public HTML file/tag is needed, supply the actual owner token through a separately reviewed change and a normal authorized release; never invent a token or overwrite another owner's token. A tag belongs on the actual CommunityLayout homepage, not only Starlight's head.
-3. After release, submit `/sitemap-index.xml` (now references `/sitemap.xml` for dynamic content). Inspect `/`, `/products/`, one published device, one guide, `/news/`, and `/about/`. Request indexing selectively; submission is not proof of indexing.
-4. Record Page Indexing snapshots, Web performance and dedicated Generative AI Search/Discover reports separately when accessible. The [June 2026 announcement](https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports) is newer than legacy instructions that only mention the Web total. Do not add AI impressions to the overlapping Web total. Record report unavailability as unknown.
+1. In [Search Console](https://search.google.com/search-console), select an existing verified new-origin URL-prefix or parent Domain property; skip verification when already satisfied. Otherwise add the exact URL-prefix `https://lensden.net/`, without DNS changes.
+2. For an offered HTML-file method, reuse the existing file only if its filename/content matches the logged-in owner's actual Google requirement and its required public URL is available. Never invent or replace tokens. A different file/tag requires separately authorized installation. See [Google verification help](https://support.google.com/webmasters/answer/9008080).
+3. Check Sitemaps submission history first; submit **https://lensden.net/sitemap-index.xml** only if not already successfully submitted. Record status/last read/errors. Use existing Page indexing and URL Inspection data for coverage; submission is not indexing. No new crawl of news/post pages is proposed.
+4. Record Web and available dedicated Generative AI Search/Discover reports separately. The [official announcement](https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports) describes overlapping views: do not add AI impressions to Web totals. Unavailable reports remain unknown.
 
 ## Bing Webmaster Tools
 
-1. Sign in to [Bing Webmaster Tools](https://www.bing.com/webmasters/), choose an existing property or add the same approved origin. Import from an already verified Search Console account only if the owner approves the requested access, or use the offered XML/tag method. See [Bing site verification](https://www.bing.com/webmasters/help/add-and-verify-site-12184f8b).
-2. If a verification file/tag is required, provide the exact token through the same release review. No DNS/security change is implied.
-3. Submit the sitemap index, inspect crawl/index eligibility and record AI Performance citation data separately from search impressions. The [official report description](https://blogs.bing.com/webmaster/2026/2/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview/) distinguishes citations from visits and page rank. Property access and actual data are NOT_VERIFIED.
+1. Select an existing verified new-origin property in [Bing Webmaster Tools](https://www.bing.com/webmasters/); do not repeat verification. Otherwise import the verified Google property after reviewing requested access and selecting this site. See [Bing verification/import help](https://www2.bing.com/webmasters/help/add-and-verify-site-12184f8b).
+2. Check whether the sitemap index was imported/already submitted before adding it again. If import is unavailable and a real XML/tag installation is required, provide that requirement for separate authorization; no DNS/file deployment occurs here.
+3. Record crawl/index coverage, Search Performance and available [AI Performance](https://blogs.bing.com/webmaster/2026/2/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview/) citation data separately. Citations are not visits or rankings. Account access and actual measurements remain NOT_VERIFIED.
 
 ## Cloudflare crawler access review (read-only checklist)
 

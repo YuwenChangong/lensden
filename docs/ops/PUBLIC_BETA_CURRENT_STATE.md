@@ -1,5 +1,28 @@
 # Public Beta Current State
 
+## 2026-11-02 GEO post-launch content and measurement review
+
+Documentation only; no completed release/Phase 1-3 replay. Current origin and
+version remain the authorized domain-cutover evidence below. Findings and exact
+owner actions: [post-launch report](../geo/post-launch-2026-11-02.md).
+
+Reused saved new-domain homepage: one confirmed QA-labelled post (exact UUID in
+report), three candidate test circles requiring ownership/discussion review;
+no moderation or production database writes. Three English drafts preserved
+byte-for-byte and unpublished; cited primary sources and six internal links
+reviewed. Existing Google verification file found in source/build; new-origin
+account verification/submission status NOT_VERIFIED, no token/DNS/file changes.
+
+Current ordinary-traffic CPU/errors and sitemap-specific cost remain
+NOT_VERIFIED: read-only management/GraphQL attempt hit analytics rate budget,
+not a Worker runtime failure. No retry loop or application probes. Historical
+release-window metrics are distinguished from current trends. Existing local
+20-query framework validates with zero collected observations, zero requests
+and zero writes; no fabricated baseline or AI testing. Owner steps: existing
+console access/sitemap, precise content review, draft approval, ordinary-traffic
+metrics and first finalized baseline export. No deployment, push/merge, R2,
+paid service, security change or article publication occurred.
+
 ## 2026-11-02 Lensden custom domain LIVE - bounded production checks verified
 
 This supersedes the preparation checkpoint below. DOMAIN=lensden.net, zone
