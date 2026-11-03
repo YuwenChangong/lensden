@@ -1,5 +1,48 @@
 # Public Beta Current State
 
+## 2026-11-03 Public discovery v1 — controlled Production release verified
+
+[Release receipt](../geo/public-discovery-v1-controlled-release-2026-11-03.md).
+DECISION=CONTROLLED_RELEASE_VERIFIED for the expressly authorized bounded scope.
+Code source acf9d1560f9fb3bec52d83545852536655ad6c72; actual build checkout
+f4b365e1b7f0c2451ae303a52f49f1dc613a2c28 differs only in reviewed documentation.
+One production-configured local build and one manual generated-artifact deploy,
+--keep-vars; no Git push/merge/hosted build. All27 binding metadata, domains,
+compatibility, security headers/redirects retained; no secret read/update or
+resource/plan/security configuration change. Three existing GEO guides retained.
+
+Current Worker 7b0c94f9-f7ec-4a5b-aa8d-f807a7df0e46(version169),100%;
+deployment d23613cb-5298-43f8-89ae-7c51a73fc3c0 activated2026-11-03T00:31:24.248692Z
+(13:31:24 NZDT). Rollback43ac9bb4-f336-4f37-a917-6639acc0ec82 remains available,
+not executed. No failures requiring rollback observed.
+Artifact376 files/8640098 bytes, manifestSHA256
+7b7c09d97ed1202c848261e8f69b9905673681844bdcb18fe9a8dedd342a5c10.
+Two static assets uploaded (index and CommentsSection JS), no R2 object access.
+
+Exactly3 sequential anonymous XML GETs, all200/valid,15s/1MB bounds,no retries:
+index has forum map once; forum map is107-byte empty urlset(0 URLs), matching
+admission; old map71 unique URLs retains all70 prior URLs and adds one published-
+query news URL. No extra news/detail/content/database scan; three GEO guide
+canonicals each once; no known fixture/private-path leakage found in XML.
+
+One existing Free Metrics readback: new version3 invocations,medianCPU10.13ms,
+errors0; Last24h/all-version exceededCPU/memory/Internal/LoadShed/exception0.
+All-version CPU/memory quantiles are historical mixed data, not new-path CPU.
+Small sample, per-sitemap CPU/cache/new-version peak memory and sustained Free
+headroom NOT_VERIFIED; no polling/synthetic traffic/new analytics. No new paid
+operation; existing Free admission retained, unrelated account/R2 invoice not
+claimed verified. No fee fallback or limit increase.
+
+Production application writes0/view-count writes0, post/news detail requests0,
+R2 objects0, remote push0; deployments1,local production builds1,hosted builds0.
+Comment SSR/hydration with real content remains NOT_VERIFIED under explicit
+zero-detail boundary; no fixture/content publication. Unknown fixtures,
+crawler/indexing/AI citations/future capacity not promoted to verified.
+Evidence artifacts/qa/public-discovery-release-2026-11-03/.
+This authorized release is complete; its action budgets are consumed, not
+permission for further release/verification. No additional owner action needed
+to complete this scope. Preserve independent boundaries for any future work.
+
 ## 2026-11-03 Public discovery v1 — read-only admission snapshot completed
 
 [Admission receipt and exact pending release scope](../geo/public-discovery-v1-admission-2026-11-03.md).
