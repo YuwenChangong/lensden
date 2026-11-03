@@ -1,0 +1,78 @@
+---
+title: "AR/AI glasses compatibility: a source-linked model checklist"
+description: "Compare documented display modes, host connections, tracking and vision options for existing Lensden devices, with sources and explicit unknowns."
+language: en
+draft: true
+author: Jayden
+author_approval: pending
+published_at: null
+source_review_date: "2026-11-03"
+canonical_candidate: "https://lensden.net/guides/ar-ai-glasses-specifications-compatibility/"
+status: "Local editorial candidate; not published"
+---
+
+# AR/AI glasses compatibility: a source-linked model checklist
+
+**A usable setup is a complete chain: exact glasses + exact host/port + signal conversion + power + the intended display mode. A matching connector or a larger advertised virtual screen does not settle that chain.**
+
+Prepared for Jayden's editorial approval. This is documentary research, not Lensden hands-on testing. Source review: November 3, 2026. Publication date will be assigned only on actual publication.
+
+Start with the existing [Lensden device library](/products/). Select devices with its existing compare controls; this resource explains the meaning and limits of that comparison. It introduces no second catalog or compatibility certification. Device links below use the existing brand/model identities.
+
+## What the numbers mean
+
+| Field | What to compare | What it cannot establish |
+|---|---|---|
+| Resolution | Pixels per eye, input mode and whether a figure is binocular | Two 1080p eyes do not make a 4K desktop |
+| Refresh rate | A supported mode for the complete chain; Hz is display updates per second | The game rendering at that frame rate, or every adapter accepting it |
+| Field of view | Angle and declared axis/measurement context | Advertised screen inches at an unspecified viewing distance |
+| Brightness | Perceived/to-eye versus panel/projector number, with source wording intact | A fair cross-brand ranking when test conditions differ |
+| PPD | Pixels per degree, including how it was calculated/measured | Edge clarity, comfort or text legibility for an individual |
+| Tracking | What senses motion, what processes it, required software/accessory | A 3DoF screen being a room-mapped 6DoF application |
+| Prescription support | Exact frame/insert and documented adjustment type | That a dial corrects every prescription or that different models share inserts |
+
+These are editorial comparison rules. For the signal standard, see [VESA's DisplayPort FAQ](https://www.displayport.org/faq/). The [existing display-specification guide](/guides/xr-display-specifications/) provides more measurement context.
+
+## Model-specific starting points
+
+All numbers below are manufacturer statements reviewed on **2026-11-03**, not measured Lensden results. “D” means the cited model-specific documentation supports the stated field; “U” means unknown; “C” means a condition remains unresolved. Confidence concerns attribution, not product quality. Where the manufacturer leaves an FoV axis unspecified, the axis remains **Unknown**.
+
+| Existing Lensden record | Documented display / maximum mode / FoV | Brightness wording, not a ranking | Evidence and confidence |
+|---|---|---|---|
+| [XREAL One](/products/xreal/xreal-one/) | 1920×1080 per eye; up to 120 Hz; 50° | Highest perceived: 600 nits | [Series specifications](https://tutorials.xreal.com/docs/glasses/one-series/spec/), D; negotiated host mode C |
+| [XREAL One Pro](/products/xreal/xreal-one-pro/) | 1920×1080 per eye; up to 120 Hz; 57° | Highest perceived: 700 nits | [Same source, One Pro section](https://tutorials.xreal.com/docs/glasses/one-series/spec/), D; negotiated host mode C |
+| [VITURE Pro XR](/products/viture/viture-pro/) | Full-HD/1080p; up to 120 Hz; 46° | Vendor distinguishes 4,000 projected from 1,000 perceived nits | [Pro & One manual, Pro column](https://www.viture.com/academy/xr-glasses/pro-one-series), D; no independent measurement |
+| [RayNeo Air 3s](/products/rayneo/rayneo-air-3s/) | Advertised 1080P; 120 Hz gaming mode; 46° | 650 nits, labelled to-eye on EU page | [EU Air 3s page](https://eu.rayneo.com/products/rayneo-air-3s-xr-glasses), D; exact per-eye pixel dimensions not established by that page text |
+| [Rokid Max](/products/rokid/rokid-max/) | Current model-specific resolution/refresh/FoV revalidation: **Unknown** | Measurement context: **Unknown** | [Manufacturer FAQ](https://global.rokid.com/pages/faq) supports secondary-display use; it does not independently revalidate this row's full historical spec sheet, U |
+| [Ray-Ban Meta catalog record](/products/meta/ray-ban-meta/) | Exact generation/display variant: **Unknown** in this review | **Unknown** | Catalog identity is too broad to transfer current-generation claims, U |
+
+The Rokid Max row must not inherit Max 2 specifications. The generic Ray-Ban Meta record must not silently become a record for a differently named display product. For other existing records—[Brilliant Labs Frame](/products/brilliant-labs/brilliant-labs-frame/), [Even Realities G1](/products/even-realities/even-realities-g1/) and [INMO Air 2](/products/inmo/inmo-air-2/)—model-specific connection, power, tracking and vision claims remain **Unknown in this resource** until separately sourced. Their catalog pages remain the product records; lack of review here is not a claim that they lack a feature.
+
+## Connections, power and tracking
+
+| Model / system | Connection and power evidence | Tracking boundary | Vision option |
+|---|---|---|---|
+| XREAL One / One Pro | [Manufacturer guide](https://us.shop.xreal.com/blogs/buying-guide/user-guide_xreal-one-series): compatible USB-C DP source powers glasses; HDMI sources require conversion. Exact watts for a chosen host/adapter: **Unknown** here | Series spec documents glasses-powered 3DoF. No bare-glasses 6DoF claim; accessory/firmware combinations need separate evidence | Guide documents prescription inserts and warns that One, One Pro and Air-series frame models differ |
+| VITURE Pro XR | Supplied USB-C-to-magnetic cable; compatible host or model-supported dock. Cable/adapter power rating is not measured glasses consumption; glasses-only watts **Unknown** | Spatial modes require the appropriate software/accessory workflow; do not copy Beast's native positioning claims to Pro | Pro section documents myopia adjustment and optional prescription frame. Mixed-model range wording conflicts elsewhere on the page; confirm exact range for the purchased model |
+| RayNeo Air 3s | [Air 3s FAQ](https://eu.rayneo.com/pages/support-faq-air3) asks for video-capable USB-C/DP support. Exact source current and adapter-mode limits **Unknown** here | No model-specific 6DoF evidence established; standalone spatial anchoring **Unknown** | [Air 3s package list](https://eu.rayneo.com/pages/support-air3s) lists a prescription-lens frame; individual lens suitability unverified |
+| Rokid Max | [FAQ](https://global.rokid.com/pages/faq) describes a secondary display. Exact adapter/power chain **Unknown** | Secondary display does not imply multiple simultaneous virtual monitors; do not apply Station 2/Max 2 bundle claims automatically | Current Max-specific insert/range confirmation **Unknown** |
+
+A connected device drawing power is not evidence of a particular battery runtime. A charging adapter's wattage ceiling describes that accessory's rating, not the glasses' draw or net charging of a handheld.
+
+## Three connection patterns
+
+| Intended source | Candidate chain | Before calling it compatible |
+|---|---|---|
+| Laptop or supported phone | Documented video-capable USB-C port → supplied/model-approved cable → glasses | Check exact port's DP output and power; then confirm desired mode and audio |
+| HDMI console | HDMI OUT → powered HDMI-input-to-glasses-output converter/dock → correct glasses cable | Verify signal direction, source/adapter resolution and refresh, power input, audio and protected-content support separately |
+| A handheld while charging | Supported host port → specifically supported charge-and-video accessory → glasses, plus accessory power input where required | Check exact host generation, dock firmware, power source and app-mode restrictions; a generic USB splitter is insufficient |
+
+For example, [VITURE's Pro/One dock manual](https://www.viture.com/academy/mobile-dock/pro-one-series) distinguishes dock generations and input-mode limits. It contains model-specific footnotes; these are not a blanket promise that any dock/glasses/console combination reaches 120 Hz. A virtual desktop app can impose further restrictions even when direct video works.
+
+## What a correction should contain
+
+Record the model and generation, region, firmware, host/OS, exact physical port, accessory model, input/output direction, source URL and the field being corrected. Separate a manufacturer statement from an independently observed result. For an observation, describe the procedure and actual mode rather than saying “works with USB-C.”
+
+A useful compatibility result can be “video documented; audio unconfirmed; requested mode unknown.” It does not need to become an unsupported yes/no verdict.
+
+The existing [USB-C guide](/guides/usb-c-display-glasses-compatibility/) covers One/One Pro fundamentals; [tracking explained](/guides/3dof-6dof-tracking/) separates orientation from positional tracking. This reference adds the cross-model source and uncertainty record. It is not a purchase ranking, a manufacturer endorsement or a substitute for a documented complete setup.
