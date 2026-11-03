@@ -1,5 +1,49 @@
 # Public Beta Current State
 
+## 2026-11-03 Public discovery v1 — read-only admission snapshot completed
+
+[Admission receipt and exact pending release scope](../geo/public-discovery-v1-admission-2026-11-03.md).
+Owner's one bounded read-only snapshot consumed; no deployment/build/write
+authorization inferred. Candidate acf9d1560f9fb3bec52d83545852536655ad6c72 unchanged.
+No new code, historical test rerun, configuration/plan/security change or resource.
+
+Workers Free Active, Workers Paid not subscribed; account UI Nov3 requests
+1/100000 (99999 from displayed counter, shared/delayed, not reserved).
+Supabase organization Free, Usage All projects says no quota exceeded;
+egress0.007/5GB, storage0.007/1GB; Lensden DB35.07MB, CPU3%, connections12/60.
+One anonymous HEAD exact count, same published/moderated/active-parent scope
+before fixture exclusions: count0,200,*/0,count=exact,1281ms, no record bodies,
+retry0, service-role0. Durable local dispatch/receipt prevents accidental repeat.
+
+Current deployed43ac9bb4(version168)/deployment35ed60e2 matches c9acc845 receipt,
+100% traffic; no newer version found. Current/previous27 binding descriptors and
+API-visible configuration match; metadata for43ac9bb4 and f5ab8d21 still available.
+Rollback after the proposed next release targets43ac9bb4. Candidate inherits
+known source/4e636573, preserves security/config; existing compiled static
+headers/redirects agree. No production artifact built; current dist is local-only.
+
+Refreshed existing Last24h metrics: Errors0; exceededCPU/memory0; active-version
+medianCPU23.15ms; all-version P50/P99 CPU22.93/60.3ms, memory25.52/29.51MB.
+Elevated CPU remains a runtime risk, not a fabricated resource failure or proof
+of new-path CPU. New route CPU/cache/crawler and production SSR NOT_VERIFIED.
+Subrequest4xx71 has unverified cause; latest Supabase60min overview63 requests,
+100% success, gateway53/Postgres6/Auth4 with warnings/errors0.
+
+DECISION=READY_FOR_SEPARATELY_AUTHORIZED_CONTROLLED_RELEASE. Prior missing
+essential plan/quota/source/count evidence resolved for the bounded scope;
+do not demand impossible predeployment new-code CPU. Exact later plan:
+one source/active precheck, one formal local build/manual activation only if
+separately authorized, up to3 sequential XML checks, one existing metrics read,
+stop/rollback43ac9bb4 on actual failures. No eligible current post: no fixture
+creation or detail GET/view RPC in that scope. Detail/continuation verification
+would require an explicit additional grant acknowledging view-counter writes.
+
+Evidence artifacts/qa/public-discovery-admission-2026-11-03/. Production
+HTML/XML requests0, writes0, builds0, deployments0, remote push0, R2 objects0.
+No old authorization replay; no rejected billing/rate-limited API retry.
+Next single action: Owner separately authorize the exact controlled release
+scope above. This task itself is complete; the production release is unexecuted.
+
 ## 2026-11-02 Public discovery v1 — final local review, cost admission HOLD
 
 [Release Readiness Packet](../geo/public-discovery-v1-release-readiness-2026-11-02.md)
