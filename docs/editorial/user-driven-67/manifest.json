@@ -1,0 +1,74 @@
+{
+  "created_date": "2026-11-03",
+  "target_articles": 67,
+  "finished_articles": 7,
+  "unfinished_research_briefs": 60,
+  "published": 0,
+  "status": "LOCAL_PREPARATION_ONLY",
+  "articles": [
+    {
+      "slug": "text-blur-ar-glasses-fit-vs-defect",
+      "title": "Why AR Glasses Look Blurry: The Checks Worth Doing Before a Return",
+      "category": "ar_glasses",
+      "summary": "Some XREAL owners describe sharp movies but fuzzy text. Lens fit, eyesight, and potential unit faults require different tests.",
+      "source_url": "https://www.reddit.com/r/Xreal/comments/1ue7i86/blurry_everywhere_and_not_only_on_edges/",
+      "body_file": "articles/text-blur-ar-glasses-fit-vs-defect.md",
+      "illustration_file": "illustrations/text-blur-ar-glasses-fit-vs-defect.svg"
+    },
+    {
+      "slug": "ar-glasses-ipd-nose-pads-comfort",
+      "title": "The Fit Test Before Buying AR Glasses: IPD, Nose Pads and Screen Edges",
+      "category": "ar_glasses",
+      "summary": "A pair can look excellent on paper and still hide a screen edge on your face. Test the fit before judging the optics.",
+      "source_url": "https://www.reddit.com/r/Xreal/comments/1lqnvkj/xreal_one_pro_blur_issue_around_edges/",
+      "body_file": "articles/ar-glasses-ipd-nose-pads-comfort.md",
+      "illustration_file": "illustrations/ar-glasses-ipd-nose-pads-comfort.svg"
+    },
+    {
+      "slug": "beam-pro-stutter-nebula-spatial-modes",
+      "title": "Beam Pro Stuttering and Spatial-Mode Glitches: A Better Troubleshooting Order",
+      "category": "ar_glasses",
+      "summary": "Reports from XREAL users distinguish standalone playback from performance once glasses and spatial modes are involved.",
+      "source_url": "https://bbs.xreal.cn/ask/78e4b862152445a1bea4434ae6977a5b?page=4",
+      "body_file": "articles/beam-pro-stutter-nebula-spatial-modes.md",
+      "illustration_file": "illustrations/beam-pro-stutter-nebula-spatial-modes.svg"
+    },
+    {
+      "slug": "switch-2-ar-glasses-docked-audio",
+      "title": "Nintendo Switch 2 and AR Glasses: Why Picture, Audio and Controls Behave Differently",
+      "category": "ar_glasses",
+      "summary": "A working picture is only one part of a Switch 2 setup. Power, audio protocol and docked-mode controls can surprise buyers.",
+      "source_url": "https://www.reddit.com/r/Xreal/comments/1vlv46w/finally_got_a_switch_2_and_happy_to_report_the/",
+      "body_file": "articles/switch-2-ar-glasses-docked-audio.md",
+      "illustration_file": "illustrations/switch-2-ar-glasses-docked-audio.svg"
+    },
+    {
+      "slug": "rayneo-air4pro-hdmi-adapter-heat",
+      "title": "RayNeo Air 4 Pro: What to Check When an HDMI Adapter Gets Hot",
+      "category": "ar_glasses",
+      "summary": "One owner reported a very hot PlayStation adapter alongside fit and audio questions. How should buyers separate symptoms?",
+      "source_url": "https://www.reddit.com/r/RayNeo/comments/1tr4jsb/rayneo_air_4_pro_first_impressions_heating/",
+      "body_file": "articles/rayneo-air4pro-hdmi-adapter-heat.md",
+      "illustration_file": "illustrations/rayneo-air4pro-hdmi-adapter-heat.svg"
+    },
+    {
+      "slug": "rayneo-v3-app-pairing-offline-access",
+      "title": "RayNeo V3 App Friction: Pairing, Offline Access and Getting Your Files Back",
+      "category": "ai_glasses",
+      "summary": "Chinese hands-on reports and app reviews describe pairing failures and awkward photo retrieval—problems that can outweigh camera specifications.",
+      "source_url": "https://www.thepaper.cn/newsDetail_forward_30506140",
+      "body_file": "articles/rayneo-v3-app-pairing-offline-access.md",
+      "illustration_file": "illustrations/rayneo-v3-app-pairing-offline-access.svg"
+    },
+    {
+      "slug": "rayban-meta-camera-not-working-notifications",
+      "title": "When Smart Glasses Misbehave: Meta Camera Errors, Loud Alerts and Privacy Questions",
+      "category": "ai_glasses",
+      "summary": "Community posts describe cameras that stop saving, unexpectedly loud notifications and questions about capture indicators. Separate anecdotes from confirmed defects.",
+      "source_url": "https://www.reddit.com/r/RaybanMeta/comments/1vf981d/glasses_camera_unavailable_try_again_later/",
+      "body_file": "articles/rayban-meta-camera-not-working-notifications.md",
+      "illustration_file": "illustrations/rayban-meta-camera-not-working-notifications.svg"
+    }
+  ],
+  "evidence_caution": "source questions are individual reports; do not infer prevalence or confirmed causes; direct access to YouTube/Tieba/Coolapk individual posts was insufficient; Bilibili descriptions and Coolapk publication do not substitute comments"
+}

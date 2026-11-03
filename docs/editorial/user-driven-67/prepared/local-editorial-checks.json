@@ -1,0 +1,11 @@
+{
+  "target": 67,
+  "articles": 67,
+  "words_min": 357,
+  "words_max": 447,
+  "unique_slugs": 67,
+  "source_links": 231,
+  "assets": 134,
+  "published": 0,
+  "checks": "Content lengths, unique URLs, renderer-compatible markup, source URLs, local asset existence; not proof of publication or search indexing"
+}
