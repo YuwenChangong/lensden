@@ -1,5 +1,35 @@
 # Public Beta Current State
 
+## 2026-11-03 Post-release source continuity — local investigation complete
+
+[Source-continuity report](../geo/source-continuity-2026-11-03.md).
+No application code, build, merge, push, deployment or production/config write.
+Fresh remote main98b23b911fe4729febc1bdf81375b638a165ec67 diverges from release
+head15641ae6:262 release-only/6 remote-only commits; base88680a6e.
+Local mainfedf5627 is an ancestor of release head,188 commits behind.
+Remote-side47 changed paths:33 byte-identical in release,14 retain deployed
+extensions/fixes. Preserve both histories and all released guides/discovery,
+pagination/domain/auth/MFA/media functionality; no reset/partial cherry-pick.
+161 local heads inventoried:139 ancestors including release head,22 divergent
+preserved untouched; no later descendant head found. Other worktree dirty state
+not inspected, not claimed clean. Actual text conflicts remain NOT_VERIFIED.
+
+Read-only CF metadata reconfirms7b0c94f9/deploymentd23613cb100% unchanged.
+Live Worker Git trigger YuwenChangong/lensden main,include*,limited excludes,
+npm run build then generated-config wrangler deploy --keep-vars. Main push is
+a production/build operation. Legacy Pages project still auto-builds main and
+preview* in config under old repo name; renamed webhook delivery NOT_VERIFIED.
+No trigger changes or trial push; offline release-guard helper is not wired
+into this build/deploy chain. A future source-only push needs separate approval
+and verified build suppression including Pages previews,or a new release grant.
+
+Evidence artifacts/qa/source-continuity-2026-11-03/:git-lineage.json,
+remote-main-residual.diff,remote-main-to-release-files.txt,provider-metadata.json.
+One Git fetch;existing CF management GETs5;application/DB/R2 operations0;
+historical tests0;paid operations0. Published release receipt remains authority.
+NEXT:Owner authorize local isolated history integration and runtime-tree
+equivalence review only;no remote/config/build/deploy authorization inferred.
+
 ## 2026-11-03 Public discovery v1 — controlled Production release verified
 
 [Release receipt](../geo/public-discovery-v1-controlled-release-2026-11-03.md).
