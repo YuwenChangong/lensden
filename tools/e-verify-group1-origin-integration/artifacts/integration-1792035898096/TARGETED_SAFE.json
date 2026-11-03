@@ -1,0 +1,323 @@
+{
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "originalV16Identity": "UNKNOWN",
+  "tests": [
+    {
+      "name": "REAL_CHROME_CDP_PRIVATE_ORIGIN",
+      "result": "PASS",
+      "evidence": {
+        "boundary": "MONITOR_ONLY",
+        "cdpCoverage": "MAIN_PAGE_SESSION_CANDIDATES_ONLY",
+        "correlation": "METHOD_URL_CANDIDATE_NOT_EXACT_ID",
+        "workerSharedWorkerWebSocketCoverage": "UNKNOWN_INCOMPLETE",
+        "evidenceFault": null,
+        "observations": [
+          {
+            "eventId": "cd27e94f8f077812b542d3bb",
+            "sequence": 1,
+            "requestMatchId": "edbd2c08fcda36c01c84cd90842d2140045606fde6b8e6d41fee03c52fc10553",
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "document",
+            "protocolClass": "HTTPS",
+            "originClass": "APPLICATION",
+            "invalidOriginReason": null,
+            "sourceHostId": null,
+            "sourceHostIdDoesNotAuthorizeTraffic": true,
+            "originEvidence": {
+              "status": "NOT_NEEDED",
+              "evidenceRef": null
+            },
+            "captureProtection": "CURRENT_USER_DPAPI_OWNER_SYSTEM_DACL",
+            "ruleMatched": true,
+            "ruleKind": "page",
+            "rejectionReason": null,
+            "frameClass": "UNAPPROVED_FRAME",
+            "frameOriginClass": "OTHER_ORIGIN",
+            "frameId": "ecc0b5d6da3476089e068a6c",
+            "parentFrameId": null,
+            "publicResourceId": "APP_LOGIN_DOCUMENT",
+            "publicPathname": null,
+            "queryPresent": false,
+            "fragmentPresent": false,
+            "credentialEnvelopePresent": false,
+            "redirectRelation": "NO_REDIRECT_PARENT",
+            "redirectParentEventId": null,
+            "cdpCorrelation": "SINGLE_CANDIDATE_NOT_PROVEN",
+            "cdpCandidates": [
+              {
+                "cdpEventId": "07465ea41f9c6d117a5b914f",
+                "initiatorType": "other",
+                "publicInitiatorId": null,
+                "redirectResponseObserved": false,
+                "cdpFrameId": "4eabc079d6c988ee88a2f018"
+              }
+            ],
+            "networkBoundary": "MONITOR_ONLY",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT"
+          },
+          {
+            "eventId": "7a2d9100e33b8a993cd8b856",
+            "sequence": 2,
+            "requestMatchId": "95f49754825dc9a4675cc90f96c82cb8a3b023788d272bdf52033d6b10d93844",
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "fetch",
+            "protocolClass": "HTTPS",
+            "originClass": "APPLICATION",
+            "invalidOriginReason": null,
+            "sourceHostId": null,
+            "sourceHostIdDoesNotAuthorizeTraffic": true,
+            "originEvidence": {
+              "status": "NOT_NEEDED",
+              "evidenceRef": null
+            },
+            "captureProtection": "CURRENT_USER_DPAPI_OWNER_SYSTEM_DACL",
+            "ruleMatched": false,
+            "ruleKind": null,
+            "rejectionReason": "OBSERVED_UNAPPROVED_REQUEST",
+            "frameClass": "APPLICATION_MAIN_FRAME",
+            "frameOriginClass": "APPLICATION",
+            "frameId": "ecc0b5d6da3476089e068a6c",
+            "parentFrameId": null,
+            "publicResourceId": null,
+            "publicPathname": null,
+            "queryPresent": false,
+            "fragmentPresent": false,
+            "credentialEnvelopePresent": false,
+            "redirectRelation": "NO_REDIRECT_PARENT",
+            "redirectParentEventId": null,
+            "cdpCorrelation": "SINGLE_CANDIDATE_NOT_PROVEN",
+            "cdpCandidates": [
+              {
+                "cdpEventId": "71d365147ac01bb252aad62a",
+                "initiatorType": "script",
+                "publicInitiatorId": "APP_LOGIN_DOCUMENT",
+                "redirectResponseObserved": false,
+                "cdpFrameId": "4eabc079d6c988ee88a2f018"
+              }
+            ],
+            "networkBoundary": "MONITOR_ONLY",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT"
+          },
+          {
+            "eventId": "f50d240bc1be83e4eec1f253",
+            "sequence": 3,
+            "requestMatchId": "ab9ab4f2d371a040af5748179cddcfaac212d6de1a0c47590bf800279d38abda",
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "document",
+            "protocolClass": "HTTPS",
+            "originClass": "APPLICATION",
+            "invalidOriginReason": null,
+            "sourceHostId": null,
+            "sourceHostIdDoesNotAuthorizeTraffic": true,
+            "originEvidence": {
+              "status": "NOT_NEEDED",
+              "evidenceRef": null
+            },
+            "captureProtection": "CURRENT_USER_DPAPI_OWNER_SYSTEM_DACL",
+            "ruleMatched": false,
+            "ruleKind": null,
+            "rejectionReason": "OBSERVED_UNAPPROVED_REQUEST",
+            "frameClass": "FRAME_UNAVAILABLE",
+            "frameOriginClass": "UNKNOWN",
+            "frameId": "ec2a67757ab882aa2931cf04",
+            "parentFrameId": "ecc0b5d6da3476089e068a6c",
+            "publicResourceId": null,
+            "publicPathname": null,
+            "queryPresent": false,
+            "fragmentPresent": false,
+            "credentialEnvelopePresent": false,
+            "redirectRelation": "NO_REDIRECT_PARENT",
+            "redirectParentEventId": null,
+            "cdpCorrelation": "SINGLE_CANDIDATE_NOT_PROVEN",
+            "cdpCandidates": [
+              {
+                "cdpEventId": "3c67576f7a9da0ee32c53ea4",
+                "initiatorType": "parser",
+                "publicInitiatorId": null,
+                "redirectResponseObserved": false,
+                "cdpFrameId": "2182d2e2d40edfc7a27cfdbb"
+              }
+            ],
+            "networkBoundary": "MONITOR_ONLY",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT"
+          },
+          {
+            "eventId": "c43d21c375e08ea2490959e6",
+            "sequence": 4,
+            "requestMatchId": "6ff4986419ccf73b6c07bc394c801c42ec912d9194195de36ba4f3e1078e3dbf",
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "fetch",
+            "protocolClass": "HTTPS",
+            "originClass": "APPLICATION",
+            "invalidOriginReason": null,
+            "sourceHostId": null,
+            "sourceHostIdDoesNotAuthorizeTraffic": true,
+            "originEvidence": {
+              "status": "NOT_NEEDED",
+              "evidenceRef": null
+            },
+            "captureProtection": "CURRENT_USER_DPAPI_OWNER_SYSTEM_DACL",
+            "ruleMatched": false,
+            "ruleKind": null,
+            "rejectionReason": "OBSERVED_UNAPPROVED_REQUEST",
+            "frameClass": "APPLICATION_MAIN_FRAME",
+            "frameOriginClass": "APPLICATION",
+            "frameId": "ecc0b5d6da3476089e068a6c",
+            "parentFrameId": null,
+            "publicResourceId": null,
+            "publicPathname": null,
+            "queryPresent": false,
+            "fragmentPresent": false,
+            "credentialEnvelopePresent": false,
+            "redirectRelation": "REDIRECT_CHAIN",
+            "redirectParentEventId": "7a2d9100e33b8a993cd8b856",
+            "cdpCorrelation": "SINGLE_CANDIDATE_NOT_PROVEN",
+            "cdpCandidates": [
+              {
+                "cdpEventId": "71d365147ac01bb252aad62a",
+                "initiatorType": "parser",
+                "publicInitiatorId": null,
+                "redirectResponseObserved": true,
+                "cdpFrameId": "4eabc079d6c988ee88a2f018"
+              }
+            ],
+            "networkBoundary": "MONITOR_ONLY",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT"
+          },
+          {
+            "eventId": "0d89d13135963573114e8553",
+            "sequence": 5,
+            "requestMatchId": "e7b4bb35ae5b80bb5c1bcb28a3a8ad47f18e9d9d09dda60865239679496964c0",
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "fetch",
+            "protocolClass": "HTTPS",
+            "originClass": "APPLICATION",
+            "invalidOriginReason": null,
+            "sourceHostId": null,
+            "sourceHostIdDoesNotAuthorizeTraffic": true,
+            "originEvidence": {
+              "status": "NOT_NEEDED",
+              "evidenceRef": null
+            },
+            "captureProtection": "CURRENT_USER_DPAPI_OWNER_SYSTEM_DACL",
+            "ruleMatched": false,
+            "ruleKind": null,
+            "rejectionReason": "OBSERVED_UNAPPROVED_REQUEST",
+            "frameClass": "APPLICATION_CHILD_FRAME",
+            "frameOriginClass": "APPLICATION",
+            "frameId": "ec2a67757ab882aa2931cf04",
+            "parentFrameId": "ecc0b5d6da3476089e068a6c",
+            "publicResourceId": null,
+            "publicPathname": null,
+            "queryPresent": false,
+            "fragmentPresent": false,
+            "credentialEnvelopePresent": false,
+            "redirectRelation": "NO_REDIRECT_PARENT",
+            "redirectParentEventId": null,
+            "cdpCorrelation": "SINGLE_CANDIDATE_NOT_PROVEN",
+            "cdpCandidates": [
+              {
+                "cdpEventId": "f08c365e987358be6c00025e",
+                "initiatorType": "script",
+                "publicInitiatorId": null,
+                "redirectResponseObserved": false,
+                "cdpFrameId": "2182d2e2d40edfc7a27cfdbb"
+              }
+            ],
+            "networkBoundary": "MONITOR_ONLY",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT"
+          },
+          {
+            "eventId": "d03bb4761949118024bca0bc",
+            "sequence": 6,
+            "requestMatchId": "c034d0efeb5b1dd0455a5825148ef205ee668a2497f2cac47e25b7525a0c5c92",
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "fetch",
+            "protocolClass": "HTTPS",
+            "originClass": "OTHER_ORIGIN",
+            "invalidOriginReason": null,
+            "sourceHostId": null,
+            "sourceHostIdDoesNotAuthorizeTraffic": true,
+            "originEvidence": {
+              "status": "PRIVATE_ORIGIN_CAPTURE_ACKNOWLEDGED",
+              "evidenceRef": "origin-3799723f92870638199a3ed4c049f346"
+            },
+            "captureProtection": "CURRENT_USER_DPAPI_OWNER_SYSTEM_DACL",
+            "ruleMatched": false,
+            "ruleKind": null,
+            "rejectionReason": "OBSERVED_UNAPPROVED_REQUEST",
+            "frameClass": "APPLICATION_MAIN_FRAME",
+            "frameOriginClass": "APPLICATION",
+            "frameId": "ecc0b5d6da3476089e068a6c",
+            "parentFrameId": null,
+            "publicResourceId": null,
+            "publicPathname": null,
+            "queryPresent": true,
+            "fragmentPresent": false,
+            "credentialEnvelopePresent": false,
+            "redirectRelation": "NO_REDIRECT_PARENT",
+            "redirectParentEventId": null,
+            "cdpCorrelation": "SINGLE_CANDIDATE_NOT_PROVEN",
+            "cdpCandidates": [
+              {
+                "cdpEventId": "5b958cf1ceae2fae0b7890d3",
+                "initiatorType": "script",
+                "publicInitiatorId": "APP_LOGIN_DOCUMENT",
+                "redirectResponseObserved": false,
+                "cdpFrameId": "4eabc079d6c988ee88a2f018"
+              }
+            ],
+            "networkBoundary": "MONITOR_ONLY",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT"
+          }
+        ],
+        "protectedIndex": {
+          "protection": "CURRENT_USER_DPAPI_OWNER_SYSTEM_DACL",
+          "lifetimeExpiresUTC": "2026-10-15T04:44:58.105Z",
+          "evidenceStoreId": "c7b1d59cece2ea96499b342c9dacc9a2",
+          "storageNamespace": "e-verify-group1-offline-origin-0cb3a971be19023ee7c50c89663be942",
+          "storageNamespaceIsNotAuthorization": true,
+          "evidence": [
+            {
+              "evidenceRef": "origin-3799723f92870638199a3ed4c049f346",
+              "ciphertextSha256": "eaea9f93dded6a6eea315d7d2f3c918c240ff2c292ca901369e7a4e5186ece21"
+            }
+          ],
+          "export": "NO_RAW_ORIGIN_EXPORT"
+        },
+        "historicalV16Identity": "UNKNOWN"
+      }
+    },
+    {
+      "name": "ACTUAL_RUNNER_GUARD_JOB_UNKNOWN_STOP",
+      "result": "PASS",
+      "observedRequestRemainsUnauthorized": true,
+      "cleanup": "PASS"
+    },
+    {
+      "name": "INVALID_ORIGIN_PRIVACY_FAIL_CLOSED",
+      "result": "PASS"
+    },
+    {
+      "name": "OWNER_STOP_INTEGRATION_CLEANUP",
+      "result": "PASS"
+    },
+    {
+      "name": "WORK_DEADLINE_INTEGRATION_CLEANUP",
+      "result": "PASS"
+    }
+  ]
+}

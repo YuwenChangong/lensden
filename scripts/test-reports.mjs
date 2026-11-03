@@ -112,6 +112,11 @@ async function main() {
   const helperSource = await read("src/lib/server/reports.server.ts");
   const notificationHelperSource = await read("src/lib/server/moderation-notifications.server.ts");
   const notificationSource = await read("src/lib/notifications.ts");
+  const reportsPanel = await read("src/components/admin/AdminReportsPanel.tsx");
+
+  assert(!/\[adminSession,\s*queryString,\s*refreshNonce\]/.test(reportsPanel), "reports list must not depend on a new hook wrapper on every render");
+  assert(/\[reportSession, reportSessionStatus, setReportSessionState, queryString, refreshNonce\]/.test(reportsPanel), "reports list must keep auth, filter and explicit refresh dependencies");
+  assert(/signal: controller.signal/.test(reportsPanel) && /controller.abort\(\)/.test(reportsPanel), "reports list must cancel superseded and unmounted reads");
 
   assert(/countRecentReportsByUser/.test(userApi), "user reports API should rate-limit reporters");
   assert(/resolveReportTargetPreview/.test(userApi), "user reports API should verify target exists");

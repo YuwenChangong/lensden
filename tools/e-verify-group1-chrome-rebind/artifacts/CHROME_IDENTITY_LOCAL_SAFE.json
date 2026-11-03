@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "version": "156.0.8078.12",
+  "sha256": "5db678875eb6895c802240aab8e9003aaee63124f719697d88077c46a7ed9f2a",
+  "signatureStatus": "Valid",
+  "publisher": "Google LLC",
+  "signerSubject": "CN=Google LLC, O=Google LLC, L=Mountain View, S=California, C=US, SERIALNUMBER=3582691, OID.2.5.4.15=Private Organization, OID.1.3.6.1.4.1.311.60.2.1.2=Delaware, OID.1.3.6.1.4.1.311.60.2.1.3=US",
+  "signerIssuer": "CN=DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1, O=\"DigiCert, Inc.\", C=US",
+  "timestampSubject": "CN=DigiCert SHA256 RSA4096 Timestamp Responder 2026 1, O=\"DigiCert, Inc.\", C=US",
+  "registeredVersion": "156.0.8078.12",
+  "updaterLogPresent": true,
+  "currentVersionUpdaterMentions": 27,
+  "previousSha256": "d3784ffbf1f6109348416064b3e4cd739b06fa61d89a81b262c780df9f32270c",
+  "previousVersion": "UNKNOWN_NOT_RECORDED",
+  "oldBinaryFound": false,
+  "installationPathUnchanged": true,
+  "preciseUpdateEvent": "NOT_PROVEN_FROM_RETAINED_EVIDENCE",
+  "rootCause": "TRUSTED_INSTALLED_BINARY_BYTES_CHANGED",
+  "providerRequests": 0,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

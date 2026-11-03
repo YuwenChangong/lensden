@@ -30,15 +30,16 @@ export default function CircleManageEntry({ circleSlug, ownerId, localeContext =
   const [checkingPermission, setCheckingPermission] = useState(true);
 
   useEffect(() => {
-    if (authState.status !== "signed_in" || !authState.user) {
+    if (authState.status !== "signed_in" || !authState.user || !supabase) {
       setCanManage(false);
       setCheckingPermission(authState.status === "checking");
       return;
     }
 
+    const client = supabase;
     let cancelled = false;
     setCheckingPermission(true);
-    supabase.auth
+    client.auth
       .getSession()
       .then(async ({ data, error }) => {
         if (cancelled) return;

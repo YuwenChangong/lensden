@@ -169,14 +169,15 @@ export default function CircleOwnerDashboard({ circleSlug, localeContext = resol
   }
 
   useEffect(() => {
-    if (authState.status !== "signed_in") {
+    if (authState.status !== "signed_in" || !supabase) {
       setSession(null);
       setLoading(false);
       return;
     }
 
+    const client = supabase;
     let cancelled = false;
-    supabase.auth.getSession().then(({ data }) => {
+    client.auth.getSession().then(({ data }) => {
       if (cancelled) return;
       const nextSession = data.session ?? null;
       setSession(nextSession);
@@ -288,15 +289,9 @@ export default function CircleOwnerDashboard({ circleSlug, localeContext = resol
       } else {
         await sessionFetch(`/api/forum/circles/${circleSlug}/comments?id=${confirmDelete.id}`, session, { method: "DELETE" });
       }
-      if (confirmDelete.type !== "circle") {
-        await refreshLists(session);
-      }
+      await refreshLists(session);
       setSuccess(
-        confirmDelete.type === "circle"
-          ? text.circleDeleted
-          : confirmDelete.type === "post"
-            ? text.postDeleted
-            : text.commentRemoved,
+        confirmDelete.type === "post" ? text.postDeleted : text.commentRemoved,
       );
       setConfirmDelete(null);
     } catch (requestError) {

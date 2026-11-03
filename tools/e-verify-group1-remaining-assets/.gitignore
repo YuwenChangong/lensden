@@ -1,0 +1,8 @@
+artifacts/AUTHORIZED_ASSET_READ.json
+artifacts/AUTHORIZATION_RECORD_SAFE.json
+artifacts/ASSET_READ_ONCE.claim
+artifacts/ASSET_READ_LOCAL_FAILURE_SAFE.json
+artifacts/ASSET_READ_EXECUTION_SAFE.json
+artifacts/ASSET_READ_SUPERVISOR_SAFE.json
+artifacts/ASSET_READ_FINAL_SAFE.json
+artifacts/ASSET_READ_GO_CLOSURE_SAFE.json

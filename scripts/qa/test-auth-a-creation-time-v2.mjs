@@ -1,0 +1,26 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {creationTimeEvidence, creationRequestWindow} from './auth-a-creation-time-v2.mjs';
+const binding='abfbf09e9de359f3bdc5d78cd87cbf273abd70f026eb0ea2e32f338b293cc0d7';
+const request={binding,label:'A-create',method:'POST',endpoint:'/auth/v1/admin/users',utc:'2026-10-23T06:15:20.698Z'};
+const response={binding,label:'A-create',status:200,utc:'2026-10-23T06:15:21.572Z'};
+const window=()=>creationRequestWindow(request,response,binding);
+test('normal server timestamp uses request-response boundaries, not journal instant',()=>{
+ const e=creationTimeEvidence({created_at:'2026-10-23T06:15:21.000000Z'},window());
+ assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'PASS');assert.equal(e.CREATED_AT_FIELD_PRESENT,true);assert.equal(e.CREATED_AT_PARSE_RESULT,'VALID_EXPLICIT_TIMEZONE');assert.equal(e.PROVIDER_CREATED_AT_UTC,'2026-10-23T06:15:21.000Z');assert.equal(e.CREATION_TIME_DIFFERENCE_MS,0);
+ assert.deepEqual(e.LOCAL_CREATION_WINDOW_UTC,{start:request.utc,end:response.utc,toleranceMs:10000});
+});
+test('missing timestamp is UNKNOWN with distinct evidence',()=>{const e=creationTimeEvidence({},window());assert.equal(e.CREATED_AT_FIELD_PRESENT,false);assert.equal(e.CREATED_AT_PARSE_RESULT,'MISSING');assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'UNKNOWN');assert.equal(e.CREATION_TIME_FAILURE_REASON,'CREATED_AT_MISSING');});
+test('null timestamp is not treated as a parseable epoch',()=>{const e=creationTimeEvidence({created_at:null},window());assert.equal(e.CREATED_AT_FIELD_PRESENT,true);assert.equal(e.CREATED_AT_PARSE_RESULT,'INVALID');assert.equal(e.PROVIDER_CREATED_AT_UTC,null);assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'UNKNOWN');});
+test('invalid timestamp does not retain raw input',()=>{const e=creationTimeEvidence({created_at:'NONSECRET_INVALID_FIXTURE'},window());assert.equal(e.CREATION_TIME_FAILURE_REASON,'CREATED_AT_INVALID_OR_UNZONED');assert.ok(!JSON.stringify(e).includes('NONSECRET_INVALID_FIXTURE'));});
+test('invalid calendar rollover is rejected',()=>{assert.equal(creationTimeEvidence({created_at:'2026-02-30T00:00:00Z'},window()).CREATION_TIME_VALIDATION_RESULT,'UNKNOWN');});
+test('unqualified local timezone is rejected',()=>{assert.equal(creationTimeEvidence({created_at:'2026-10-23T06:15:21'},window()).CREATION_TIME_VALIDATION_RESULT,'UNKNOWN');});
+test('explicit offset is normalized to UTC',()=>{const e=creationTimeEvidence({created_at:'2026-10-23T19:15:21+13:00'},window());assert.equal(e.PROVIDER_CREATED_AT_UTC,'2026-10-23T06:15:21.000Z');assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'PASS');});
+test('unchanged 10-second tolerance is inclusive',()=>{assert.equal(creationTimeEvidence({created_at:'2026-10-23T06:15:10.698Z'},window()).CREATION_TIME_VALIDATION_RESULT,'PASS');});
+test('one millisecond beyond approved tolerance fails with signed delta',()=>{const e=creationTimeEvidence({created_at:'2026-10-23T06:15:10.697Z'},window());assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'FAIL');assert.equal(e.CREATION_TIME_DIFFERENCE_MS,-10001);assert.equal(e.CREATION_TIME_FAILURE_REASON,'OUTSIDE_APPROVED_CREATION_REQUEST_WINDOW');});
+test('late timestamp fails, no clock-skew fitting',()=>{const e=creationTimeEvidence({created_at:'2026-10-23T06:16:00Z'},window());assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'FAIL');assert.equal(e.CREATION_TIME_DIFFERENCE_MS,38428);});
+test('unverified receipt boundaries stay UNKNOWN',()=>{const e=creationTimeEvidence({created_at:'2026-10-23T06:15:21Z'},creationRequestWindow({...request,binding:'OTHER'},response,binding));assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'UNKNOWN');assert.equal(e.CREATION_TIME_FAILURE_REASON,'CREATION_RECEIPT_BOUNDARIES_UNVERIFIED');});
+test('reversed or excessive request interval is not widened',()=>{for(const utc of ['2026-10-23T06:15:19Z','2026-10-23T06:16:21Z'])assert.equal(creationRequestWindow(request,{...response,utc},binding).verified,false);});
+test('failure projections always contain required fields',()=>{for(const user of [{},{created_at:'bad'},{created_at:'2026-10-23T06:16:00Z'}]){const e=creationTimeEvidence(user,window());for(const k of ['CREATED_AT_FIELD_PRESENT','CREATED_AT_PARSE_RESULT','PROVIDER_CREATED_AT_UTC','LOCAL_CREATION_WINDOW_UTC','CREATION_TIME_DIFFERENCE_MS','CREATION_TIME_VALIDATION_RESULT','CREATION_TIME_FAILURE_REASON'])assert.ok(Object.hasOwn(e,k));}});
+test('old comparator conflates missing, invalid and genuine mismatch',()=>{const journal='2026-10-23T06:15:21.578Z';for(const value of [undefined,'invalid','2020-01-01T00:00:00Z'])assert.equal(Math.abs(Date.parse(value)-Date.parse(journal))<10000,false);});
+test('a bare verified flag is insufficient boundary evidence',()=>{const e=creationTimeEvidence({created_at:'2026-10-23T06:15:21Z'},{verified:true});assert.equal(e.CREATION_TIME_VALIDATION_RESULT,'UNKNOWN');assert.equal(e.LOCAL_CREATION_WINDOW_UTC,null);});

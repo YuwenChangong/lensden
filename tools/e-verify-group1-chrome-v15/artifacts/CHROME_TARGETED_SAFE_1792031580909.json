@@ -1,0 +1,173 @@
+{
+  "results": [
+    {
+      "version": "Chrome/156.0.8078.36",
+      "actualExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "profileDeleted": true,
+      "receipt": {
+        "actor": "A",
+        "firstFailure": null,
+        "nativeAuth": "MONITOR_ONLY",
+        "diagnostics": {
+          "firstFailure": null,
+          "lastFailedRequest": null,
+          "lastRejectedRequest": null,
+          "valuesLogged": false
+        },
+        "started": true,
+        "captchaOwnerObserved": false,
+        "ownerFinished": false,
+        "observedRequests": 1,
+        "inFlight": 0,
+        "exactLogoutNoContentAbortObserved": 0,
+        "productionCaptchaConfigChecked": false,
+        "identityConfirmed": false,
+        "adminReadConfirmed": false,
+        "rlsEvidence": [],
+        "channel": {
+          "actor": "A",
+          "sessionPresent": false,
+          "destroyed": true,
+          "identityVerified": false,
+          "valuesExported": false
+        },
+        "counts": {
+          "allBrowserHttpDispatchesMax": 2,
+          "supabaseAuthDispatchesMax": 0,
+          "applicationMutationDispatchesMax": 0,
+          "ownerSessionRefreshRequestsMax": 0,
+          "supabaseRestReadDispatchesMax": 0,
+          "turnstileHttpDispatchesMax": 0,
+          "executionSecondsMax": 0
+        },
+        "closed": true,
+        "fixtureOnly": true
+      },
+      "chromeHashStable": true
+    },
+    {
+      "version": "Chrome/156.0.8078.36",
+      "actualExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "profileDeleted": true,
+      "receipt": {
+        "actor": "A",
+        "firstFailure": "OBSERVED_UNAPPROVED_REQUEST",
+        "nativeAuth": "MONITOR_ONLY",
+        "diagnostics": {
+          "firstFailure": "OBSERVED_UNAPPROVED_REQUEST",
+          "lastFailedRequest": null,
+          "lastRejectedRequest": {
+            "stage": "LOGIN_A",
+            "actor": "A",
+            "method": "GET",
+            "requestSource": "BROWSER_NAVIGATION",
+            "originClass": "APPLICATION",
+            "protocolClass": "HTTPS",
+            "resourceType": "document",
+            "frameClass": "NO_FRAME_OR_UNAVAILABLE",
+            "initiator": "NOT_EXPOSED_BY_PLAYWRIGHT_REQUEST",
+            "publicPathname": null,
+            "routeShape": "UNBOUND_REDACTED",
+            "verifiedResourceMatch": false,
+            "htmlReferenceMatch": false,
+            "referenceKind": null,
+            "htmlEvidenceSha256": null,
+            "contentBytesVerified": false,
+            "queryPresent": false,
+            "fragmentPresent": false,
+            "credentialEnvelopePresent": false,
+            "actorStageMatch": true,
+            "evidenceId": "71875376aaf8b5c014126cea1ec40933c0fac6fcbfc325f0d7ea8f1ab4644d16",
+            "evidenceIdBoundary": "PER_RUN_KEYED_PATH_ONLY_NO_QUERY_NO_REVERSIBLE_DICTIONARY",
+            "classificationMismatch": "NONE_PROVEN",
+            "redirectRelation": "NONE_OBSERVED",
+            "disposition": "NORMAL_STRICT_GATE",
+            "networkDispatchOccurred": "UNKNOWN_OR_ALREADY_SENT",
+            "admissionBoundary": "OBSERVATION_ONLY",
+            "rejectionCategory": "OBSERVED_UNAPPROVED_REQUEST"
+          },
+          "valuesLogged": false
+        },
+        "started": false,
+        "captchaOwnerObserved": false,
+        "ownerFinished": false,
+        "observedRequests": 1,
+        "inFlight": 0,
+        "exactLogoutNoContentAbortObserved": 0,
+        "productionCaptchaConfigChecked": false,
+        "identityConfirmed": false,
+        "adminReadConfirmed": false,
+        "rlsEvidence": [],
+        "channel": {
+          "actor": "A",
+          "sessionPresent": false,
+          "destroyed": true,
+          "identityVerified": false,
+          "valuesExported": false
+        },
+        "counts": {
+          "allBrowserHttpDispatchesMax": 1,
+          "supabaseAuthDispatchesMax": 0,
+          "applicationMutationDispatchesMax": 0,
+          "ownerSessionRefreshRequestsMax": 0,
+          "supabaseRestReadDispatchesMax": 0,
+          "turnstileHttpDispatchesMax": 0,
+          "executionSecondsMax": 0
+        },
+        "closed": true,
+        "fixtureOnly": true
+      },
+      "chromeHashStable": true
+    },
+    {
+      "version": "Chrome/156.0.8078.36",
+      "actualExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "profileDeleted": true,
+      "receipt": {
+        "actor": "A",
+        "firstFailure": "WORK_DEADLINE",
+        "nativeAuth": "MONITOR_ONLY",
+        "diagnostics": {
+          "firstFailure": "WORK_DEADLINE",
+          "lastFailedRequest": null,
+          "lastRejectedRequest": null,
+          "valuesLogged": false
+        },
+        "started": false,
+        "captchaOwnerObserved": false,
+        "ownerFinished": false,
+        "observedRequests": 0,
+        "inFlight": 0,
+        "exactLogoutNoContentAbortObserved": 0,
+        "productionCaptchaConfigChecked": false,
+        "identityConfirmed": false,
+        "adminReadConfirmed": false,
+        "rlsEvidence": [],
+        "channel": {
+          "actor": "A",
+          "sessionPresent": false,
+          "destroyed": true,
+          "identityVerified": false,
+          "valuesExported": false
+        },
+        "counts": {
+          "allBrowserHttpDispatchesMax": 1,
+          "supabaseAuthDispatchesMax": 0,
+          "applicationMutationDispatchesMax": 0,
+          "ownerSessionRefreshRequestsMax": 0,
+          "supabaseRestReadDispatchesMax": 0,
+          "turnstileHttpDispatchesMax": 0,
+          "executionSecondsMax": 0
+        },
+        "closed": true,
+        "fixtureOnly": true
+      },
+      "chromeHashStable": true
+    }
+  ],
+  "expectedHash": "fdd156b74dd997d3b15f0cdbb59ce0051f1e8b19d10822f31743abac09ec4c89",
+  "localFixturesOnly": true,
+  "nativeBoundary": "MONITOR_ONLY",
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0
+}

@@ -1,0 +1,75 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {scopeDigest,assertBoundFreePlan} from './execution/group1/free-plan-policy.mjs';
+import {GO,HUMAN_GATES} from './execution/group1/authorization.mjs';
+
+const here=path.dirname(fileURLToPath(import.meta.url));
+const group=path.join(here,'execution/group1'),artifacts=path.join(group,'artifacts');
+const old='C:/Temp/ogh-e-verify-group1-free-plan-authorization-20261013/execution/group1/artifacts';
+const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+const load=p=>JSON.parse(fs.readFileSync(p));
+const ensure=(ok,code)=>{if(!ok)throw new Error(code)};
+const save=(name,value)=>{const bytes=Buffer.from(JSON.stringify(value,null,2)+'\n');fs.writeFileSync(path.join(artifacts,name),bytes,{flag:'wx'});return hash(bytes)};
+ensure(!fs.existsSync(artifacts),'NEW_ARTIFACTS_ALREADY_EXIST');
+const originalBindingBytes=fs.readFileSync(path.join(old,'EXECUTION_BINDING_GROUP1.json'));
+ensure(hash(originalBindingBytes)==='bb9976a44d58f71a2f3a2f156a3394bb3b68a5032a4da7b893ddcac05e0489a3','ORIGINAL_BINDING_DRIFT');
+const originalBinding=JSON.parse(originalBindingBytes);
+for(const f of originalBinding.files)ensure(hash(fs.readFileSync(f.path))===f.sha256,'ORIGINAL_FROZEN_FILE_DRIFT');
+const prior=load(path.join(old,'GROUP1_FINAL_ATTEMPT_CLOSURE_SAFE.json'));
+ensure(prior.status==='BLOCKED'&&prior.firstFailure==='UNAPPROVED_REQUEST'&&prior.authDispatches===0&&prior.catalogCasesPassed===0&&prior.authorizationConsumed===true&&prior.executionClaimCreated===true,'PRIOR_EXECUTION_EVIDENCE_DRIFT');
+ensure(hash(fs.readFileSync(path.join(old,'GROUP1_EXECUTION_SAFE.json')))===prior.childReceiptSha256&&hash(fs.readFileSync(path.join(old,'GROUP1_SUPERVISOR_SAFE.json')))===prior.supervisorReceiptSha256,'HISTORICAL_RECEIPT_DRIFT');
+ensure(fs.readFileSync(path.join(old,'GROUP1_ONCE.claim'),'utf8')===prior.authorizationId+'\n','OLD_CLAIM_DRIFT');
+for(const name of ['gate.mjs','supervisor.mjs','job-broker.ps1','bootstrap.mjs'])ensure(hash(fs.readFileSync(path.join(old,'..',name)))===hash(fs.readFileSync(path.join(group,name))),'UNCHANGED_GATE_OR_CONTAINMENT_DRIFT');
+const beforeHashes=originalBinding.files.map(f=>({path:f.path,sha256:f.sha256}));
+const tests=['diagnostics.test.mjs','browser.test.mjs','runner.test.mjs'].map(x=>path.join(here,x));
+const run=spawnSync(process.execPath,['--test','--test-reporter=tap','--test-concurrency=1',...tests],{cwd:path.resolve(here,'../..'),encoding:'utf8',timeout:60000,maxBuffer:1048576,windowsHide:true});
+const number=name=>Number(new RegExp('^# '+name+' (\\d+)$','m').exec(run.stdout||'')?.[1]??-1);
+const result={format:'group1-login-diagnostic-targeted-test-v1',observedAtUTC:new Date().toISOString(),status:run.status===0?'PASS':'BLOCKED',tests:number('tests'),passed:number('pass'),failed:number('fail'),skipped:number('skipped'),exitCode:run.status,signal:run.signal,outputSha256:hash(Buffer.from(run.stdout||'')),realChromeLocalFixture:true,historical123And9Rerun:false,productionRequests:0,productionWrites:0,oauthRead:false};
+ensure(run.status===0&&result.tests===35&&result.passed===35&&result.failed===0&&result.skipped===0,'TARGETED_TESTS_FAILED');
+for(const f of beforeHashes)ensure(hash(fs.readFileSync(f.path))===f.sha256,'ORIGINAL_FILE_CHANGED_DURING_TEST');
+fs.mkdirSync(artifacts,{recursive:true});
+save('TARGETED_TESTS_SAFE.json',result);
+const packet=load(path.join(old,'GROUP1_PACKET_NOT_AUTHORIZED.json'));
+packet.referenceGroup1RequiredCases=packet.requiredCases;
+packet.referenceCatalogRestRequests=packet.catalogRestRequests;
+packet.authorizationId='e-verify-group1-openglasshub-20261013-login-diagnostic-v3';
+packet.approvalBoundary='2_NEW_LOGIN_INITIALIZATION_DIAGNOSTIC_SUBSET_ADDENDUM_REQUIRED';
+packet.requiredCases=['LOGIN_A_INITIALIZATION_DIAGNOSTIC'];
+packet.executionLimitSeconds=300;packet.workLimitSeconds=240;packet.cleanupReserveSeconds=60;
+packet.oauthRemainingSecondsStrictlyGreaterThan=360;
+packet.catalogRestRequests=[];packet.actors=['A'];packet.loginActions=[];
+packet.applicationPages=['/login/?next=%2Fproducts%2F'];packet.pageContentAssertions=[];
+packet.ownBackgroundGet=[];packet.adminGet=[];packet.authPaths=[];packet.dynamicPrivateProfileGet='NOT_ALLOWED_IN_DIAGNOSTIC';
+packet.diagnosticConstraints={mode:'LOGIN_A_INITIALIZATION_ONLY',browserGETMax:8,providerDeploymentGETMax:2,totalHTTPMax:10,authDispatchMax:0,restDispatchMax:0,mutationMax:0,observationSeconds:10};
+packet.effectiveBudgetContract='Owner caps unchanged ceilings; global10, browser8, Turnstile<=8, all mutations/Auth/REST/refresh0; no Supabase wire capability';
+packet.proposedContractChanges=['New independent LOGIN_A initialization-only diagnostic, no credential entry or CAPTCHA solving','Bounded safe predispatch/response completion journal, no raw private data','Global10/browser8/Deployment2, hard300/work240/cleanup60, OAuth>360','No login/Auth/REST/refresh/logout; original14 mappings and16 Catalog steps remain pending','First failure stops without post-Deployment; postcheck only on clean initialization'];
+packet.excluded=[...packet.excluded,'all Auth submissions, refreshes and logouts','all Supabase HTTP dispatches','actual Catalog RLS execution','full GROUP1 acceptance'];
+packet.sideEffects=['Anonymous Worker/static/challenge access and normal security/access logs; no authentication submission','Free-only historical owner attestation reused; quota exhaustion stops, no payment or upgrade'];
+const proof=load(path.join(old,'OWNER_FREE_PLAN_EVIDENCE.json'));
+proof.priorOwnerEvidenceSha256=hash(fs.readFileSync(path.join(old,'OWNER_FREE_PLAN_EVIDENCE.json')));
+proof.rebindingRecordedAtUTC=new Date().toISOString();proof.scopeSha256=scopeDigest(packet);
+packet.freePlanScopeSha256=proof.scopeSha256;
+packet.freePlanProofSha256=save('OWNER_FREE_PLAN_EVIDENCE.json',proof);
+const packetHash=save('GROUP1_PACKET_NOT_AUTHORIZED.json',packet);
+assertBoundFreePlan(packet);
+const paths=new Set(originalBinding.files.map(f=>f.path));
+function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){if(e.name==='artifacts')continue;const p=path.join(dir,e.name);if(e.isSymbolicLink())throw new Error('NEW_EXECUTION_SYMLINK');if(e.isDirectory())walk(p);else paths.add(p)}}
+walk(here);
+for(const name of ['EXECUTION_BINDING_GROUP1.json','GROUP1_FINAL_ATTEMPT_CLOSURE_SAFE.json','GROUP1_EXECUTION_SAFE.json','GROUP1_SUPERVISOR_SAFE.json','GROUP1_ONCE.claim','AUTHORIZED_GROUP1.json'])paths.add(path.join(old,name));
+for(const name of ['TARGETED_TESTS_SAFE.json','OWNER_FREE_PLAN_EVIDENCE.json','GROUP1_PACKET_NOT_AUTHORIZED.json'])paths.add(path.join(artifacts,name));
+const binding={...originalBinding,status:'OFFLINE_DIAGNOSTIC_READY_NOT_AUTHORIZED',packetSha256:packetHash,priorConsumedBindingSha256:hash(originalBindingBytes),files:[...paths].sort().map(p=>({path:p,sha256:hash(fs.readFileSync(p))})),originalFrozenFilesUnchanged:true,privateBindingUnchanged:true,scope:'LOGIN_A_INITIALIZATION_DIAGNOSTIC_ONLY'};
+const bindingHash=save('EXECUTION_BINDING_GROUP1.json',binding);
+const auth={format:'e-verify-group1-authorization-v1',authorizationId:packet.authorizationId,packetSha256:packetHash,executionBindingSha256:bindingHash,authorizedAtUTC:null,authorizationExpiresUTC:null,humanGates:Object.fromEntries(HUMAN_GATES.map(k=>[k,null]))};
+save('HUMAN_GROUP1_AUTHORIZATION_NOT_AUTHORIZED.json',auth);
+const template=fs.readFileSync(path.join(here,'AUTHORIZATION_NOT_AUTHORIZED.template.md'),'utf8')
+ .replaceAll('{{AUTHORIZATION_ID}}',packet.authorizationId).replaceAll('{{PACKET_SHA256}}',packetHash).replaceAll('{{EXECUTION_BINDING_SHA256}}',bindingHash)
+ .replace('{{AUTHORIZATION_JSON}}','```json\n'+JSON.stringify(auth,null,2)+'\n```').replace('{{ENTRY_PATH}}',path.join(group,'entry.mjs'));
+fs.writeFileSync(path.join(artifacts,'HUMAN_LOGIN_DIAGNOSTIC_AUTHORIZATION_NOT_AUTHORIZED.md'),template,{flag:'wx'});
+const freeze={format:'group1-login-diagnostic-freeze-safe-v1',rootCause:'UNKNOWN_HISTORICAL_REQUEST_IDENTITY_NOT_RECORDED',diagnosticGapFixed:true,admissionWhitelistUnchanged:true,minimalFix:'DIAGNOSTIC_CONTEXT_AND_RECEIPT_PROPAGATION_ONLY',historicalProductionAuthDispatches:0,historicalProductionRLSPassed:0,historicalClaimConsumed:true,tests:result,
+ authorizationId:packet.authorizationId,packetSha256:packetHash,executionBindingSha256:bindingHash,authorizationTemplateSha256:hash(Buffer.from(template)),boundFiles:binding.files.length,originalFrozenFilesVerified:beforeHashes.length,originalReceiptsAndClaimsUnchanged:true,originalPrivateBindingUnchanged:true,
+ actualProductionRootCauseFixed:false,diagnosticOnlyReady:true,fullGroup1Ready:false,authorization:'NOT_AUTHORIZED',go:'NOT_ISSUED',requiredGo:GO,claimCreated:false,productionRequests:0,productionWrites:0,catalogHold:'ACTIVE',publicBetaGo:'NOT_AUTHORIZED'};
+save('LOGIN_DIAGNOSTIC_FREEZE_SAFE.json',freeze);
+process.stdout.write(JSON.stringify({rootCause:freeze.rootCause,tests:result.tests,passed:result.passed,executionBindingSha256:bindingHash,packetSha256:packetHash,authorizationTemplateSha256:freeze.authorizationTemplateSha256,boundFiles:binding.files.length,originalFrozenFilesVerified:beforeHashes.length,authorizationId:packet.authorizationId,requiredGo:GO,productionRequests:0,productionWrites:0})+'\n');

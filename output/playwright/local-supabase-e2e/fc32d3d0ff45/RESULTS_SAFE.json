@@ -1,0 +1,638 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "fc32d3d0ff45",
+  "results": [
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "REPORTS_B_HTTP500_STACK",
+      "family": "reports",
+      "status": "FAIL",
+      "reason": "APPLICATION_HTTP_500",
+      "httpStatus": 500,
+      "stackClasses": [],
+      "exceptionFrames": [
+        "at async Object.fetch (file:///<repo>/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4733:22)"
+      ],
+      "responseBytes": 182,
+      "errorResponseIsHtml": false,
+      "redirectPaths": [
+        "/admin/reports/"
+      ],
+      "requestComparison": {
+        "browser": {
+          "protocol": "https:",
+          "hostMatchesLocalOrigin": true,
+          "path": "/admin/reports/",
+          "method": "GET",
+          "headerNames": [
+            "accept",
+            "accept-language",
+            "cookie",
+            "sec-ch-ua",
+            "sec-ch-ua-mobile",
+            "sec-ch-ua-platform",
+            "upgrade-insecure-requests",
+            "user-agent"
+          ],
+          "cookiePresent": true,
+          "authorizationHeaderPresent": false
+        },
+        "direct": {
+          "protocol": "https:",
+          "hostMatchesLocalOrigin": true,
+          "path": "/admin/reports/",
+          "method": "GET",
+          "explicitHeaderNames": [],
+          "cookiePresent": false,
+          "authorizationHeaderPresent": false
+        },
+        "runtimeConfiguration": "SAME_RUNNING_WORKER",
+        "browserIdentity": "ISOLATED_AUTH_CONTEXT_NOT_SENT_AS_BEARER_ON_HTML_NAVIGATION"
+      },
+      "directWorkerStatus": 200,
+      "diagnostic": "Error: Network connection lost."
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 55,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "localRateLimitFixture": {
+    "canonicalRpcWasMissing": true,
+    "source": "10a1848e33097a9bb79e5cb1f1107a86bac6c724b352a13948665b90559011bb",
+    "productionParity": "NOT_CLAIMED"
+  },
+  "runtimeFaultCategories": {
+    "crossRequestIo": 0,
+    "hangingPromise": 0,
+    "networkConnectionLost": 0,
+    "proxyNetworkConnectionLost": 0,
+    "fatalRuntime": 0
+  },
+  "workerdProbe": {
+    "phase": "CLEANUP",
+    "events": [
+      {
+        "seq": 1,
+        "tMs": 6890,
+        "phase": "SETUP",
+        "event": "RESOURCE_SNAPSHOT",
+        "freeHostMemoryMiB": 2589,
+        "nodeRssMiB": 289
+      },
+      {
+        "seq": 2,
+        "tMs": 6955,
+        "phase": "SETUP",
+        "event": "WORKERD_SPAWN",
+        "processId": 1
+      },
+      {
+        "seq": 3,
+        "tMs": 7004,
+        "phase": "SETUP",
+        "event": "WORKER_READY",
+        "processes": 1
+      },
+      {
+        "seq": 4,
+        "tMs": 7553,
+        "phase": "SETUP",
+        "event": "WORKERD_SPAWN",
+        "processId": 2
+      },
+      {
+        "seq": 5,
+        "tMs": 7722,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 6,
+        "tMs": 7728,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 7,
+        "tMs": 8077,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 8,
+        "tMs": 8079,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 9,
+        "tMs": 8080,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 10,
+        "tMs": 8081,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 11,
+        "tMs": 8118,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 12,
+        "tMs": 8397,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 13,
+        "tMs": 8616,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 14,
+        "tMs": 8621,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 15,
+        "tMs": 8671,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 16,
+        "tMs": 8674,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 17,
+        "tMs": 8678,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 18,
+        "tMs": 8678,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 19,
+        "tMs": 8737,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 20,
+        "tMs": 9075,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 21,
+        "tMs": 9076,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 22,
+        "tMs": 9101,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 23,
+        "tMs": 9319,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 24,
+        "tMs": 9323,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 25,
+        "tMs": 9367,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 26,
+        "tMs": 9369,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 27,
+        "tMs": 9372,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 28,
+        "tMs": 9375,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 29,
+        "tMs": 9414,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 30,
+        "tMs": 9730,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 31,
+        "tMs": 9732,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 32,
+        "tMs": 9757,
+        "phase": "SETUP",
+        "event": "WORKERD_OUTPUT",
+        "processId": 1,
+        "stream": "stdout",
+        "message": "error accepting tls connection; kj::mv(e) = kj/compat/tls.c++:82: failed: OpenSSL error; message = error:10000416:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_UNKNOWN; clientId = (unknown peer)\nstack: 0 0 0 7ff74645a8ac 7ff7464efb0d 0"
+      },
+      {
+        "seq": 33,
+        "tMs": 9890,
+        "phase": "B_REPORT_FIXTURE",
+        "event": "PHASE"
+      },
+      {
+        "seq": 34,
+        "tMs": 10034,
+        "phase": "A_PAGE",
+        "event": "PHASE"
+      },
+      {
+        "seq": 35,
+        "tMs": 10258,
+        "phase": "A_LIST_DENIAL",
+        "event": "PHASE"
+      },
+      {
+        "seq": 36,
+        "tMs": 10313,
+        "phase": "A_ACTION_DENIAL",
+        "event": "PHASE"
+      },
+      {
+        "seq": 37,
+        "tMs": 10367,
+        "phase": "B_PAGE",
+        "event": "PHASE"
+      },
+      {
+        "seq": 38,
+        "tMs": 10399,
+        "phase": "B_PAGE",
+        "event": "WRANGLER_ERROR",
+        "source": "ProxyController",
+        "causes": [
+          {
+            "name": "Error",
+            "message": "",
+            "stack": "Error\n    at castErrorCause (C:\\Temp\\[OPAQUE]\\node_modules\\wrangler\\wrangler-dist\\cli.js:180295:20)\n    at ProxyController2.emitErrorEvent (C:\\Temp\\[OPAQUE]\\node_modules\\wrangler\\wrangler-dist\\cli.js:326367:20)\n    at ProxyController2.onProxyWorkerMessage (C:\\Temp\\[OPAQUE]\\node_modules\\wrangler\\wrangler-dist\\cli.js:326244:18)\n    at PROXY_CONTROLLER (C:\\Temp\\[OPAQUE]\\node_modules\\wrangler\\wrangler-dist\\cli.js:325971:24)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async #[OPAQUE] (C:\\Temp\\[OPAQUE]\\node_modules\\miniflare\\dist\\src\\index.js:111715:22)\n    at async #handleLoopback (C:\\Temp\\[OPAQUE]\\node_modules\\miniflare\\dist\\src\\index.js:112048:20)"
+          },
+          {
+            "name": "Error",
+            "message": "Network connection lost.",
+            "stack": "Error: Network connection lost."
+          }
+        ]
+      },
+      {
+        "seq": 39,
+        "tMs": 10403,
+        "phase": "B_PAGE",
+        "event": "HTTP_500",
+        "processes": [
+          {
+            "id": 1,
+            "alive": true,
+            "exitCode": null
+          },
+          {
+            "id": 2,
+            "alive": true,
+            "exitCode": null
+          }
+        ],
+        "freeHostMemoryMiB": 1726
+      },
+      {
+        "seq": 40,
+        "tMs": 10422,
+        "phase": "B_PAGE",
+        "event": "DIRECT_COMPARISON",
+        "status": 200
+      },
+      {
+        "seq": 41,
+        "tMs": 10422,
+        "phase": "CLEANUP",
+        "event": "PHASE"
+      },
+      {
+        "seq": 42,
+        "tMs": 10639,
+        "phase": "CLEANUP",
+        "event": "WORKERD_EXIT",
+        "processId": 1,
+        "code": null,
+        "signal": "SIGKILL"
+      },
+      {
+        "seq": 43,
+        "tMs": 10639,
+        "phase": "CLEANUP",
+        "event": "WORKERD_CLOSED",
+        "processId": 1
+      },
+      {
+        "seq": 44,
+        "tMs": 10651,
+        "phase": "CLEANUP",
+        "event": "WORKERD_EXIT",
+        "processId": 2,
+        "code": null,
+        "signal": "SIGKILL"
+      },
+      {
+        "seq": 45,
+        "tMs": 10651,
+        "phase": "CLEANUP",
+        "event": "WORKERD_CLOSED",
+        "processId": 2
+      }
+    ],
+    "processes": [
+      {
+        "id": 1,
+        "pid": 76276,
+        "exitCode": null,
+        "signal": "SIGKILL",
+        "stdoutBytes": 9912,
+        "stderrBytes": 0,
+        "flagNames": [
+          "--binary",
+          "--experimental",
+          "--socket-addr",
+          "--external-addr",
+          "--control-fd"
+        ],
+        "closed": true
+      },
+      {
+        "id": 2,
+        "pid": 83120,
+        "exitCode": null,
+        "signal": "SIGKILL",
+        "stdoutBytes": 0,
+        "stderrBytes": 0,
+        "flagNames": [
+          "--binary",
+          "--experimental",
+          "--socket-addr",
+          "--external-addr",
+          "--control-fd"
+        ],
+        "closed": true
+      }
+    ],
+    "truncated": false,
+    "resourceLimits": "NO_CUSTOM_LIMITS_SET_BY_THIS_RUNNER",
+    "started": 1248.3113
+  },
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "moderation": "EXISTING_LOCAL_ONLY_SAFE_POLICY_NOT_EXTERNAL_PROVIDER_ACCEPTANCE",
+  "summary": {
+    "results": {
+      "PASS": 4,
+      "FAIL": 1
+    },
+    "originalRls16Passed": 0,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 0
+  },
+  "sensitiveValueCheck": "PASS"
+}

@@ -1,0 +1,19 @@
+{
+  "branch": "B",
+  "status": "READY_FOR_OWNER_APPROVAL",
+  "tests": "33/33",
+  "authorizationId": "e-verify-group1-openglasshub-20261013-remaining-assets-v9",
+  "executionBindingSha256": "29bb114ac2fc74d8509d2178658c5ad8afe50a420ff15d9a13c133c7b4e104bd",
+  "packetSha256": "59b84fcafd3eba9250d2239a2cff9a9b777e79931df971eba532b865a2191eeb",
+  "templateSha256": "31f43d50267eefd23911ae832e7df4fbbfb02d6040b4e9d4ed8a23fe8802c6e8",
+  "fullGroup1Ready": false,
+  "fullGroup1Budget": "UNKNOWN",
+  "ownerBudgetsChanged": false,
+  "humanGates": "ALL_NULL",
+  "utc": "NULL",
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE"
+}

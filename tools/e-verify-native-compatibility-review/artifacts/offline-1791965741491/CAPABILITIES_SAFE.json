@@ -1,0 +1,257 @@
+{
+  "format": "native-compatibility-offline-capabilities-v1",
+  "observations": [
+    {
+      "mode": "native-api-baseline",
+      "main": {
+        "Worker": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "SharedWorker": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "EventSource": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "RTCPeerConnection": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "webkitRTCPeerConnection": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "WebTransport": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        }
+      },
+      "child": {
+        "Worker": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "SharedWorker": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "EventSource": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "RTCPeerConnection": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "webkitRTCPeerConnection": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "WebTransport": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        }
+      },
+      "mainWorker": "WORKER_BLOCKED",
+      "childWorker": "LOCAL_WORKER_OK",
+      "workerTargets": 1,
+      "workerFetchHits": 1,
+      "pageFetchWorkerEvents": 1,
+      "workerFetchClassifications": [
+        {
+          "type": "XHR",
+          "frameRegistered": true,
+          "classification": "VENDOR_WIDGET_FLOW"
+        }
+      ]
+    },
+    {
+      "mode": "frozen-api-removal",
+      "main": {
+        "Worker": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "SharedWorker": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "EventSource": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "RTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "webkitRTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "WebTransport": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        }
+      },
+      "child": {
+        "Worker": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "SharedWorker": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "EventSource": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "RTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "webkitRTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "WebTransport": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        }
+      },
+      "mainWorker": "CONSTRUCTOR_UNAVAILABLE",
+      "childWorker": "CONSTRUCTOR_UNAVAILABLE",
+      "workerTargets": 0,
+      "workerFetchHits": 0,
+      "pageFetchWorkerEvents": 0,
+      "workerFetchClassifications": []
+    },
+    {
+      "mode": "worker-only-local-experiment",
+      "main": {
+        "Worker": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "SharedWorker": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "EventSource": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "RTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "webkitRTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "WebTransport": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        }
+      },
+      "child": {
+        "Worker": {
+          "available": true,
+          "writable": true,
+          "configurable": true
+        },
+        "SharedWorker": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "EventSource": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "RTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "webkitRTCPeerConnection": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        },
+        "WebTransport": {
+          "available": false,
+          "writable": false,
+          "configurable": false
+        }
+      },
+      "mainWorker": "WORKER_BLOCKED",
+      "childWorker": "LOCAL_WORKER_OK",
+      "workerTargets": 1,
+      "workerFetchHits": 1,
+      "pageFetchWorkerEvents": 1,
+      "workerFetchClassifications": [
+        {
+          "type": "XHR",
+          "frameRegistered": true,
+          "classification": "VENDOR_WIDGET_FLOW"
+        }
+      ]
+    }
+  ],
+  "actualSourceSha256": "1fb511aba39a1ae4e1aa73f7feed14b0f4fa21d7302d102d99cca17806e5c41a",
+  "frozenBindingSha256": "a42e0fadf2cb291c83680ab4417ba5a2022b1489a5cc09ca907b9367feb9ff31",
+  "launchFlagsReused": true,
+  "serviceWorkersBlockedInAllModes": true,
+  "actualHarnessWorkerSrcNone": true,
+  "actualAutoAttachExcludesWorkerTargets": true,
+  "proxyRejectOnly": true,
+  "nonLoopbackDnsDisabled": true,
+  "deniedPageRequests": 0,
+  "blockedProxyAttempts": 27,
+  "nodeDenials": 0,
+  "workerScriptHits": 2,
+  "workerFetchHits": 2,
+  "profileRemoved": true,
+  "officialSdkExecuted": false,
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "accountInputsUsed": false,
+  "frozenConfigurationChanged": false,
+  "noVendorRootCauseClaim": true,
+  "fixtureOnly": true
+}

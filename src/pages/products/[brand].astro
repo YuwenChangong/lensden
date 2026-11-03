@@ -9,6 +9,7 @@ import { env as runtimeEnv } from "cloudflare:workers";
 import CommunityLayout from "../../layouts/CommunityLayout.astro";
 import BrandMark from "../../components/products/BrandMark.astro";
 import ProductVisual from "../../components/products/ProductVisual.astro";
+import type { ComponentProps } from "astro/types";
 import { getBrandByKey } from "../../lib/device-catalog";
 import { createSSRClient, type CloudflareEnv } from "../../lib/supabase-server";
 import { listPublishedDevices, getPublicDeviceSpecValue } from "../../lib/public-device-data";
@@ -40,7 +41,7 @@ function buildCardFacts(product: DeviceRecord) {
     { label: "显示", value: getSpecValue(product, "display_type") ?? getSpecValue(product, "resolution") },
     { label: "重量", value: getSpecValue(product, "weight") },
     { label: "平台", value: getSpecValue(product, "chipset") ?? getSpecValue(product, "platform") },
-  ];
+  ] as const;
 
   return candidates.filter((item) => item.value).slice(0, 3);
 }
@@ -110,7 +111,8 @@ function serializeCompareProduct(product: DeviceRecord) {
     typeLabel: product.typeLabel,
     availability: product.availability ?? product.infoStatusLabel ?? product.statusLabel ?? null,
     cardFacts: buildCardFacts(product),
-    placeholderType: product.cardMedia.placeholderType,
+    // mapPublicDevice validates this union before returning its widened string type.
+    placeholderType: product.cardMedia.placeholderType as NonNullable<ComponentProps<typeof ProductVisual>["placeholderType"]>,
     detailHref: getProductDetailHref(product),
     officialHref: safeCatalogExternalUrl(product.officialProductUrl) ?? safeCatalogExternalUrl(product.buyUrl) ?? safeCatalogExternalUrl(product.brandWebsiteUrl),
     modelSearchText,
@@ -306,33 +308,38 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
 
   <script>
     import {renderCatalogCompareTable} from "../../lib/catalog-compare-dom";
+    type DeviceRecord = Awaited<ReturnType<typeof import("../../lib/public-device-data").listPublishedDevices>>[number];
+    type CompareProduct = Parameters<typeof renderCatalogCompareTable>[0]["products"][number]
+      & Pick<DeviceRecord, "slug" | "brandKey" | "typeLabel"> & { searchText: string };
+    type BrandProduct = Pick<DeviceRecord, "slug"> & { searchText: string; modelSearchText: string; detailSearchText: string };
+    type CompareField = Parameters<typeof renderCatalogCompareTable>[0]["fields"][number];
     const dataElement = document.getElementById("brand-products-data");
     const parsed = dataElement?.textContent
       ? JSON.parse(dataElement.textContent)
       : { brandKey: "", brandProducts: [], compareProducts: [], compareFields: [] };
     const currentBrandKey = typeof parsed.brandKey === "string" ? parsed.brandKey : "";
-    const text = parsed.ui;
-    const formatUiMessage = (template, args) => template.replace(/\{([A-Za-z][A-Za-z0-9_]*)\}/g, (_, key) => String(args[key]));
-    const brandProducts = Array.isArray(parsed.brandProducts) ? parsed.brandProducts : [];
-    const compareProducts = Array.isArray(parsed.compareProducts) ? parsed.compareProducts : [];
-    const compareFields = Array.isArray(parsed.compareFields) ? parsed.compareFields : [];
-    const productMap = new Map(compareProducts.map((product) => [product.slug, product]));
-    const brandProductMap = new Map(brandProducts.map((product) => [product.slug, product]));
+    const text: ReturnType<typeof import("../../lib/i18n/catalog").getUiMessages>["catalog"] = parsed.ui;
+    const formatUiMessage = (template: string, args: Record<string, string | number>) => template.replace(/\{([A-Za-z][A-Za-z0-9_]*)\}/g, (_: string, key: string) => String(args[key]));
+    const brandProducts: BrandProduct[] = Array.isArray(parsed.brandProducts) ? parsed.brandProducts : [];
+    const compareProducts: CompareProduct[] = Array.isArray(parsed.compareProducts) ? parsed.compareProducts : [];
+    const compareFields: CompareField[] = Array.isArray(parsed.compareFields) ? parsed.compareFields : [];
+    const productMap = new Map<string, CompareProduct>(compareProducts.map((product) => [product.slug, product]));
+    const brandProductMap = new Map<string | null, BrandProduct>(brandProducts.map((product) => [product.slug, product]));
     const maxCompareCount = 3;
     const selected = [...new Set(new URLSearchParams(window.location.search).getAll("compare"))]
       .filter((slug) => productMap.has(slug)).slice(0, maxCompareCount);
 
-    const searchInput = document.getElementById("brand-products-search");
+    const searchInput = document.querySelector<HTMLInputElement>("#brand-products-search");
     const searchField = document.querySelector(".brand-toolbar__search-field");
     const countLabel = document.getElementById("brand-products-count");
-    const cards = Array.from(document.querySelectorAll("[data-product-card]"));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-product-card]"));
     const searchDropdown = document.getElementById("brand-search-dropdown");
     const searchResultsList = document.getElementById("brand-search-results-list");
     const searchEmpty = document.getElementById("brand-search-empty");
     const compareSurface = document.getElementById("brand-compare");
     const compareSelected = document.getElementById("brand-compare-selected");
     const compareFeedback = document.getElementById("brand-compare-feedback");
-    const compareClear = document.getElementById("brand-compare-clear");
+    const compareClear = document.querySelector<HTMLButtonElement>("#brand-compare-clear");
     const compareSummary = document.getElementById("brand-compare-summary");
     const compareTableWrap = document.getElementById("brand-compare-table-wrap");
     const compareTableHead = document.getElementById("brand-compare-table-head");
@@ -341,13 +348,13 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
     let searchDropdownOpen = false;
     let searchDropdownCloseTimer = 0;
 
-    function normalize(value) {
+    function normalize(value: string | null | undefined) {
       return String(value || "")
         .trim()
         .toLowerCase();
     }
 
-    function shouldMatchBrandCard(product, query) {
+    function shouldMatchBrandCard(product: BrandProduct | undefined, query: string) {
       if (!query) return true;
       if (!product) return false;
 
@@ -364,7 +371,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       return modelSearchText.includes(normalizedQuery) || detailSearchText.includes(normalizedQuery);
     }
 
-    function isSelected(slug) {
+    function isSelected(slug: string) {
       return selected.includes(slug);
     }
 
@@ -373,7 +380,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
     }
 
     function renderCompareButtons() {
-      const compareButtons = Array.from(document.querySelectorAll("[data-compare-button]"));
+      const compareButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-compare-button]"));
       compareButtons.forEach((button) => {
         const slug = button.getAttribute("data-product-slug");
         const active = slug ? isSelected(slug) : false;
@@ -439,7 +446,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       }
 
       compareTableWrap.hidden = false;
-      const selectedProducts = selected.map((slug) => productMap.get(slug)).filter(Boolean);
+      const selectedProducts = selected.map((slug) => productMap.get(slug)).filter((product): product is CompareProduct => Boolean(product));
       const visibleFields = compareFields.filter((field) =>
         selectedProducts.some((product) => {
           const value = product.compareValues?.[field.key];
@@ -471,7 +478,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       renderCompareTable();
     }
 
-    function setSearchDropdownOpen(open) {
+    function setSearchDropdownOpen(open: boolean) {
       if (!searchDropdown || !searchInput) return;
       const shouldOpen = Boolean(open && normalize(searchInput.value));
       searchDropdownOpen = shouldOpen;
@@ -500,7 +507,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       setSearchDropdownOpen(false);
     }
 
-    function handleSearchKeyDown(event) {
+    function handleSearchKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape" && searchDropdownOpen) {
         event.preventDefault();
         closeSearchDropdown();
@@ -508,7 +515,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       }
     }
 
-    function renderSearchResults(query, matches) {
+    function renderSearchResults(query: string, matches: CompareProduct[]) {
       if (!searchDropdown || !searchResultsList || !searchEmpty || !searchInput) return;
 
       if (!query) {
@@ -568,7 +575,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       renderCompareButtons();
     }
 
-    function getCrossBrandMatches(query) {
+    function getCrossBrandMatches(query: string) {
       return query
         ? compareProducts
             .filter((product) => product.brandKey !== currentBrandKey && product.searchText.includes(query))
@@ -581,7 +588,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       renderSearchResults(query, getCrossBrandMatches(query));
     }
 
-    function addToCompare(slug) {
+    function addToCompare(slug: string) {
       if (!productMap.has(slug)) return;
       if (isSelected(slug)) {
         removeFromCompare(slug);
@@ -599,7 +606,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       refreshSearchResultsFromInput();
     }
 
-    function removeFromCompare(slug) {
+    function removeFromCompare(slug: string) {
       const index = selected.indexOf(slug);
       if (index === -1) return;
       selected.splice(index, 1);
@@ -638,12 +645,12 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
 
     searchInput?.addEventListener("input", updateListing);
     searchInput?.addEventListener("focus", () => {
-      if (normalize(searchInput.value)) {
+      if (normalize(searchInput?.value)) {
         refreshSearchResultsFromInput();
       }
     });
     searchInput?.addEventListener("click", () => {
-      if (!searchDropdownOpen && normalize(searchInput.value)) {
+      if (!searchDropdownOpen && normalize(searchInput?.value)) {
         refreshSearchResultsFromInput();
       }
     });

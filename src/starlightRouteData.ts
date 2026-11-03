@@ -6,6 +6,9 @@ import { getUiMessages } from "./lib/i18n/catalog";
 import * as guides from "./content/editorial-translations/en/guides/index.mdx";
 import * as developers from "./content/editorial-translations/en/developers/index.mdx";
 import * as about from "./content/editorial-translations/en/about/index.mdx";
+import { canonicalPageUrl, serializeJsonLd } from "./lib/seo";
+import { editorialSitemapPath } from "./lib/seo-sitemap";
+import { resolveSiteOrigin } from "./lib/site-origin";
 
 const reviewedModules = {
   "/src/content/editorial-translations/en/guides/index.mdx": guides,
@@ -62,6 +65,23 @@ export const onRequest = defineRouteMiddleware(async (context, next) => {
   }
   route.head = route.head.map((tag) => tag.tag === "meta" && tag.attrs?.property === "og:locale"
     ? { ...tag, attrs: { ...tag.attrs, content: selection.locale } } : tag);
+  const origin = resolveSiteOrigin(context.site?.origin);
+  const canonical = canonicalPageUrl(editorialSitemapPath(route.entry) ?? context.url.pathname, origin);
+  route.head = route.head.map(tag => {
+    if (canonical && tag.tag === 'link' && tag.attrs?.rel === 'canonical') return { ...tag, attrs: { ...tag.attrs, href: canonical } };
+    if (canonical && tag.tag === 'meta' && tag.attrs?.property === 'og:url') return { ...tag, attrs: { ...tag.attrs, content: canonical } };
+    return tag;
+  });
+  const socialImage = new URL('/brand/logo.jpg', origin).href;
+  for (const [field, content] of Object.entries({ 'twitter:title': route.entry.data.title,
+    'twitter:description': route.entry.data.description, 'twitter:image': socialImage, 'og:image': socialImage })) {
+    if (content && !route.head.some(tag => tag.tag === 'meta' && (tag.attrs?.name === field || tag.attrs?.property === field))) {
+      route.head.push({ tag: 'meta', attrs: field.startsWith('og:') ? { property: field, content } : { name: field, content } });
+    }
+  }
+  route.head.push({ tag: 'script', attrs: { type: 'application/ld+json' }, content: serializeJsonLd({
+    '@context': 'https://schema.org', '@graph': [{ '@type': 'Organization', name: 'Lensden', url: origin }, { '@type': 'WebSite', name: 'Lensden', url: origin }],
+  }) });
   if (route.toc) route.toc.items = tocItems(route, context.locals.t("tableOfContents.overview"));
 
   const text = getUiMessages(locale);

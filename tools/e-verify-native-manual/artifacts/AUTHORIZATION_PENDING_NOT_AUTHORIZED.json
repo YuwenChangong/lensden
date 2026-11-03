@@ -1,0 +1,16 @@
+{
+  "format": "native-turnstile-manual-authorization-v1",
+  "authorizationId": "e-verify-native-turnstile-manual-openglasshub-20261014-v1",
+  "executionBindingSha256": "3de16445b5ca449c847a81fbf080b132a55d7d0edaf523290275266096d0d386",
+  "packetSha256": "3b09b0d2fe08647c7112ae701aea6aa655e5023519df6c93d65b646a6b8dee39",
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "humanGates": {
+    "nativePartialControlsAndSoftStopAccepted": null,
+    "isolatedNoCredentialsOfficialTestKeyConfirmed": null,
+    "zeroCostFreeScopeAndUnmeteredConnectionConfirmed": null,
+    "vendorEphemeralStateAndSafeEvidenceAccepted": null,
+    "trustedEnvironmentAndCleanupReady": null,
+    "operatorAvailableForEntireValidity": null
+  }
+}

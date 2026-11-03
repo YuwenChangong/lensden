@@ -1,0 +1,22 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-fast-track-v18",
+  "status": "NOT_AUTHORIZED",
+  "fullContractAccepted": false,
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null,
+    "nativeAuthenticatedMonitorOnlyAndUnseenDispatchRiskAccepted": null,
+    "privateSdkStorageSnapshotAndNoRawEvidenceExportAccepted": null,
+    "serverAuthControlsUnknownAndStopRulesAccepted": null,
+    "currentZeroCostFreeServicesAndUnmeteredNetworkConfirmed": null,
+    "nativeUnenumeratedThirdPartyGetRiskAndStopRulesAccepted": null
+  },
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "executionBindingSha256": "c0c416e1aa4750319c760c852a75db0560794a691ed7bb7b691ed11f28d741e8",
+  "packetSha256": "106ba518ece42834a1e435cbb34976914772954a4771bbfcc0b11d60a48a4c76",
+  "contractSha256": "9ff7ebbcd9925edf5a59ec776113e6d46ebfc2285816a763424f175c93b19584"
+}

@@ -1,0 +1,16 @@
+{
+  "authorizationId": "e-verify-standard-chrome-turnstile-openglasshub-20261014-v1",
+  "bindingHash": "57dd3c30017d7ee6d4f3f2ea2d253462ace2363114169ad9a3bb14c3e0e42587",
+  "packetHash": "25aee8aeb35de07285c25ddde644479c62eb29af4a073aeab6163bd3fb79b1a0",
+  "contractSha256": "faabbd1f44356b98a74bb1048393146268180c1bb1faf3ccf858a55b141fb4df",
+  "templateSha256": "8fec8b4cb4328cb56006373683042b854512cc241b8dfe53f4e88b7afe82af78",
+  "boundFiles": 227,
+  "humanGates": "6_PENDING",
+  "utcWindow": null,
+  "claimCreated": false,
+  "goIssued": false,
+  "liveRequestsAuthorized": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "thirdPartyLiveRequests": 0
+}

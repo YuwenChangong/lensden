@@ -1,0 +1,22 @@
+{
+  "kind": "SCOPED_ANALYST_REVIEW_NOT_A_PRODUCTION_RECEIPT",
+  "localSupabase": "STARTED_AND_VERIFIED_THEN_CLEANED",
+  "databaseIsolation": "PASS",
+  "accounts": "A_B_ADMIN_CREATED_VERIFIED_AND_REMOVED",
+  "automatedAuth": {"passed":13,"total":13,"scope":"REAL_LOCAL_AUTH_AND_UI_POSITIVE_FLOWS"},
+  "group1": {"locallyClosed":6,"total":14,"productionAccepted":0},
+  "originalRls": {"passed":14,"total":16,"responseContractFailed":2,"anonymousReads":6,"authenticatedReads":10},
+  "additionalPrivateRls": {"passed":3,"total":3},
+  "businessSubchecks": {"PASS":10,"FAIL":1,"BLOCKED":2,"NOT_RUN":1,"completeBusinessAcceptance":false},
+  "confirmedLocalApplicationDefects": [
+    {"id":"COMMENT_READ_REACTIONS_PRIVILEGE_MISMATCH","httpStatus":500,"message":"permission denied for table comment_reactions","productionReproduced":false}
+  ],
+  "remaining": ["reply blocked by actual comment-read failure","owner deletion not yet verified after locator correction","post editing not executed","R2 image/video dependencies unavailable","notification delivery and full sort behavior unproven","original CAPTCHA/negative Auth/locale/full UI scope incomplete"],
+  "evidence": ["196ab48ea0aa/RESULTS_SAFE.json","196ab48ea0aa/PARTIAL_EXECUTION_SUPPLEMENT_SAFE.json","196ab48ea0aa/CLEANUP_SAFE.json","f89e861ef1f0/RESULTS_SAFE.json","3a1507307390/RESULTS_SAFE.json"],
+  "productionRequests":0,
+  "productionWrites":0,
+  "productionAuthOperations":0,
+  "productionDeployments":0,
+  "catalogHold":"ACTIVE",
+  "publicBetaGo":"NOT_AUTHORIZED"
+}

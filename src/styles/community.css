@@ -2894,6 +2894,24 @@ body {
   background: rgba(0, 0, 0, 0.62);
 }
 
+dialog.glass-confirm-backdrop {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  color: var(--text);
+}
+
+dialog.glass-confirm-backdrop:not([open]) {
+  display: none;
+}
+
+dialog.glass-confirm-backdrop::backdrop {
+  background: transparent;
+}
+
 .glass-modal {
   width: min(100%, 32rem);
   border-radius: 20px;
@@ -2902,6 +2920,9 @@ body {
 
 .glass-confirm-dialog {
   width: min(100%, 32rem);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overflow-wrap: anywhere;
   position: relative;
   z-index: 1;
   pointer-events: auto;
@@ -4060,11 +4081,23 @@ body {
 .post-lightbox-backdrop {
   position: fixed;
   inset: 0;
+  margin: 0;
+  border: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  box-sizing: border-box;
+  color: inherit;
   z-index: 150;
   display: grid;
   place-items: center;
   padding: 1rem;
   background: rgba(0, 0, 0, 0.76);
+}
+
+.post-lightbox-backdrop::backdrop {
+  background: transparent;
 }
 
 .post-lightbox {

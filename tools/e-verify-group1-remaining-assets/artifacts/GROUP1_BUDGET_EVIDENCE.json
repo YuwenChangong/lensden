@@ -1,0 +1,199 @@
+{
+  "format": "group1-budget-evidence-v1",
+  "privateBudgetMatchesFrozenPacket": true,
+  "privateBindingSha256": "fadbb0ffde9e4a7dcbcf232143738f547e0a70ef7750983beab6bafc44095678",
+  "rows": [
+    {
+      "budget": "allBrowserHttpDispatchesMax",
+      "CURRENT_APPROVED_MAX": 500,
+      "PROVEN_REQUIRED_COUNT": 51,
+      "WORST_CASE_BOUNDED_COUNT": 921,
+      "RESERVED_MARGIN": -421,
+      "SUFFICIENT": "UNKNOWN",
+      "note": "51 fixed runner reads/actions incl18 planned HTML; static/challenge/background/optional logout reload not zero. Upper is deliberately non-tight, not a request-budget increase.",
+      "admissionHardCap": 500
+    },
+    {
+      "budget": "applicationMutationDispatchesMax",
+      "CURRENT_APPROVED_MAX": 50,
+      "PROVEN_REQUIRED_COUNT": 9,
+      "WORST_CASE_BOUNDED_COUNT": 15,
+      "RESERVED_MARGIN": 35,
+      "SUFFICIENT": "YES",
+      "note": "6 password attempts,3 logout,up to6 refresh; all other mutations forbidden.",
+      "admissionHardCap": 50
+    },
+    {
+      "budget": "cleanupMutationDispatchesMax",
+      "CURRENT_APPROVED_MAX": 20,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 20,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 20
+    },
+    {
+      "budget": "supabaseAuthDispatchesMax",
+      "CURRENT_APPROVED_MAX": 40,
+      "PROVEN_REQUIRED_COUNT": 12,
+      "WORST_CASE_BOUNDED_COUNT": 18,
+      "RESERVED_MARGIN": 22,
+      "SUFFICIENT": "YES",
+      "note": "6 login+3 explicit identity+3 logout; up to6 refresh. SDK in scoped sources uses getSession, not extra getUser.",
+      "admissionHardCap": 40
+    },
+    {
+      "budget": "supabaseRestReadDispatchesMax",
+      "CURRENT_APPROVED_MAX": 80,
+      "PROVEN_REQUIRED_COUNT": 19,
+      "WORST_CASE_BOUNDED_COUNT": 19,
+      "RESERVED_MARGIN": 61,
+      "SUFFICIENT": "YES",
+      "note": "16 frozen RLS cases plus3 private profile reads; SSR internal reads are not browser PostgREST dispatches.",
+      "admissionHardCap": 80
+    },
+    {
+      "budget": "supabaseRestWriteDispatchesMax",
+      "CURRENT_APPROVED_MAX": 20,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 20,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 20
+    },
+    {
+      "budget": "turnstileHttpDispatchesMax",
+      "CURRENT_APPROVED_MAX": 40,
+      "PROVEN_REQUIRED_COUNT": 6,
+      "WORST_CASE_BOUNDED_COUNT": 40,
+      "RESERVED_MARGIN": 0,
+      "SUFFICIENT": "UNKNOWN",
+      "note": "6 loader opportunities; actual Managed challenge steps not predictable; hard cap40 is enforced, not guaranteed sufficient.",
+      "admissionHardCap": 40
+    },
+    {
+      "budget": "mailProducingSubmissionsMax",
+      "CURRENT_APPROVED_MAX": 3,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 3,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 3
+    },
+    {
+      "budget": "storageUploadOperationsMax",
+      "CURRENT_APPROVED_MAX": 20,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 20,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 20
+    },
+    {
+      "budget": "storageDeleteOperationsMax",
+      "CURRENT_APPROVED_MAX": 10,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 10,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 10
+    },
+    {
+      "budget": "mediaRangeRequestsMax",
+      "CURRENT_APPROVED_MAX": 20,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 20,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 20
+    },
+    {
+      "budget": "mediaUploadBytesMax",
+      "CURRENT_APPROVED_MAX": 30000000,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 30000000,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 30000000
+    },
+    {
+      "budget": "mediaReadBytesMax",
+      "CURRENT_APPROVED_MAX": 52428800,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 52428800,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 52428800
+    },
+    {
+      "budget": "r2StoredBytesMax",
+      "CURRENT_APPROVED_MAX": 20971520,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 20971520,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 20971520
+    },
+    {
+      "budget": "openaiModerationCallsMax",
+      "CURRENT_APPROVED_MAX": 20,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 20,
+      "SUFFICIENT": "YES",
+      "note": "Excluded from GROUP_1; positive owner-wide ceiling does not authorize this operation.",
+      "admissionHardCap": 20
+    },
+    {
+      "budget": "openaiAndProviderCostUSDMax",
+      "CURRENT_APPROVED_MAX": 0,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 0,
+      "RESERVED_MARGIN": 0,
+      "SUFFICIENT": "YES",
+      "note": "Free proof reused; no paid Provider capability granted.",
+      "admissionHardCap": 0
+    },
+    {
+      "budget": "executionSecondsMax",
+      "CURRENT_APPROVED_MAX": 3600,
+      "PROVEN_REQUIRED_COUNT": null,
+      "WORST_CASE_BOUNDED_COUNT": 1800,
+      "RESERVED_MARGIN": 1800,
+      "SUFFICIENT": "UNKNOWN",
+      "note": "Owner cap3600; supervisor hard1800/work1740/cleanup60. Manual6x300 waits cannot all exhaust and still complete; timeout safely stops.",
+      "admissionHardCap": 3600
+    },
+    {
+      "budget": "ownerSessionRefreshRequestsMax",
+      "CURRENT_APPROVED_MAX": 6,
+      "PROVEN_REQUIRED_COUNT": 0,
+      "WORST_CASE_BOUNDED_COUNT": 6,
+      "RESERVED_MARGIN": 0,
+      "SUFFICIENT": "YES",
+      "note": "Zero is a lower bound, not an assumption;6 shared maximum.",
+      "admissionHardCap": 6
+    }
+  ],
+  "requestBudget": "UNKNOWN",
+  "fixedStepLowerBound51": true,
+  "maxNavigationEpochs": 21,
+  "manifestUpperPerEpoch": 30,
+  "conservativeGlobalUpper": 921,
+  "globalHardAdmissionMax": 500,
+  "conservativeUpperIsNotAProvenMinimum": true,
+  "productionTrace": "NOT_EXECUTED",
+  "fullChromeMock": "BLOCKED_PENDING_PRODUCTION_RESOURCE_EVIDENCE",
+  "mediaFontsAndImages": "Excluded before dispatch, not hidden traffic",
+  "providerDeploymentGETMax": 2,
+  "productionRequests": 0
+}

@@ -1,0 +1,14 @@
+{
+  "format": "group1-asset-reader-targeted-offline-tests-v1",
+  "tests": 31,
+  "passed": 31,
+  "failed": 0,
+  "outputSha256": "693d86fde90737e624f253d9a4307ddcc7b9d2cffeea25426c0f64179acce6d6",
+  "realLoopbackHttp": true,
+  "realDpapiCapture": true,
+  "realWindowsJobContainment": true,
+  "historicalTestsRerun": false,
+  "defaultOAuthRead": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

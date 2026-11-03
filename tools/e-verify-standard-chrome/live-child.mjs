@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { waitForStart } from '../e-verify-group1-remaining-assets/supervisor.mjs';
+import { runStandard } from './browser.mjs';
+import { verifyFrozen } from './binding.mjs';
+import { validate, ID, GO } from './authorization.mjs';
+await waitForStart();
+const d = fileURLToPath(new URL('./artifacts/', import.meta.url)), b = verifyFrozen(d);
+if (fs.readFileSync(d + '/STANDARD_ONCE.claim', 'utf8') !== ID + '\n') throw Error('CLAIM_IDENTITY');
+validate(JSON.parse(fs.readFileSync(d + '/AUTHORIZATION_APPROVED.json')), { ...b, now: Date.now(), go: GO, claimExists: false });
+const r = await runStandard({ profilePath: process.argv[2] });
+fs.writeFileSync(d + '/STANDARD_SAFE.json', JSON.stringify({ ...r, authorizationId: ID }, null, 2), { flag: 'wx' });
+await new Promise(resolve => process.send({ type: 'receipt', status: 'complete' }, resolve)); process.disconnect();

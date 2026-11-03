@@ -1,0 +1,234 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "eaf565c6a919",
+  "results": [
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "REAL_R2_LIVE_PRECHECK",
+      "family": "realR2",
+      "status": "PASS",
+      "signedBucketHead200": true,
+      "consumesCurrentBudget": true
+    },
+    {
+      "id": "REAL_R2_SYNTHETIC_MP4",
+      "family": "realR2",
+      "status": "PASS",
+      "bytes": 2028,
+      "sha256": "828a2e396d65f29d0343828094294c66f4c10cb5b32a0b7922e3b1e9fd3b33f0",
+      "mime": "video/mp4;codecs=avc1.42001E",
+      "synthetic": true,
+      "realR2": false
+    },
+    {
+      "id": "REAL_R2_VIDEO_UPLOAD",
+      "family": "realR2",
+      "status": "FAIL",
+      "reason": "R2_FALLBACK_NOT_ACCEPTED",
+      "actual": false,
+      "expected": true
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 55,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "localRateLimitFixture": {
+    "canonicalRpcWasMissing": true,
+    "source": "10a1848e33097a9bb79e5cb1f1107a86bac6c724b352a13948665b90559011bb",
+    "productionParity": "NOT_CLAIMED"
+  },
+  "realR2": {
+    "bucketScope": "OWNER_APPROVED_TEST_BUCKET_ONLY",
+    "ownerCredentialProvenance": true,
+    "independentKeyIdentifierMatch": "UNVERIFIED",
+    "bucketExclusiveCredentialScopeIndependentlyProven": false,
+    "costEvidence": "REVIEWED_OCTOBER16_ACCOUNT_SNAPSHOT_NOT_REALTIME",
+    "costHardGuarantee": false,
+    "requestBudget": {
+      "max": 30,
+      "workMax": 22,
+      "cleanupReserved": 8,
+      "work": 2,
+      "cleanup": 0,
+      "denied": 0,
+      "byMethod": {
+        "HEAD": 1,
+        "OPTIONS": 1
+      }
+    },
+    "browserWholeNetworkHardCap": false,
+    "attempts": [
+      {
+        "sequence": 1,
+        "phase": "WORK",
+        "method": "HEAD",
+        "status": 200,
+        "locationPresent": false
+      },
+      {
+        "sequence": 2,
+        "phase": "WORK",
+        "method": "OPTIONS",
+        "status": 204,
+        "locationPresent": false
+      }
+    ],
+    "upload": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "bucketRange": "NOT_RUN",
+    "applicationRange": "NOT_RUN",
+    "delete": "NOT_RUN",
+    "objectNonexistence": "NOT_RUN",
+    "cleanup": "NO_R2_UPLOAD_ATTEMPTED",
+    "offlineNoCloudDispatch": false,
+    "livePrecheck": {
+      "signedHeadStatus": 200
+    },
+    "fixture": {
+      "bytes": 2028,
+      "sha256": "828a2e396d65f29d0343828094294c66f4c10cb5b32a0b7922e3b1e9fd3b33f0",
+      "mime": "video/mp4;codecs=avc1.42001E",
+      "synthetic": true
+    },
+    "ticket": {
+      "stage": "CORS_PRECHECK",
+      "requestObserved": true,
+      "httpStatus": 200,
+      "errorClass": "OTHER_LOCAL_TICKET_ERROR",
+      "errorType": "AssertionError"
+    },
+    "ownedObjectReference": "19223eebab1ed3466b7e"
+  },
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "moderation": "EXISTING_LOCAL_ONLY_SAFE_POLICY_NOT_EXTERNAL_PROVIDER_ACCEPTANCE",
+  "environmentBlocker": "R2_SINGLE_ATTEMPT_STOPPED",
+  "summary": {
+    "results": {
+      "PASS": 6,
+      "FAIL": 1
+    },
+    "originalRls16Passed": 0,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 0
+  },
+  "sensitiveValueCheck": "PASS"
+}

@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { buildCircleImageMap } from "./circle-images";
-import { buildResolvedPostMediaMap, type ResolvedPostMedia } from "./forum-media";
+import { buildResolvedPostMediaMap, type PostMediaRow, type ResolvedPostMedia } from "./forum-media";
 import { buildPostCommentCountMap, buildPostLikeCountMap } from "./post-engagement";
 import { resolveProfileAvatarUrl, resolveProfileBannerUrl } from "./profile-media";
 
@@ -27,7 +27,7 @@ export type ProfilePostRecord = {
   last_activity_at?: string | null;
   circles?: { slug?: string | null; name?: string | null } | null;
   profiles?: { username?: string | null; display_name?: string | null } | null;
-  post_media?: Array<Record<string, unknown>> | null;
+  post_media?: PostMediaRow[] | null;
 };
 
 export type ProfileCommentRecord = {

@@ -1,0 +1,1235 @@
+{
+  "format": "group1-production-asset-content-read-packet-v1",
+  "authorizationId": "e-verify-group1-openglasshub-20261013-production-asset-reader-v7",
+  "status": "PENDING_INDEPENDENT_OWNER_APPROVAL",
+  "sourceSha": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "buildId": "d98da799-d41d-41dc-acaf-8c6675fd799a",
+  "expectedProductionVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+  "accountId": "dcb374166b39234a499985145c075f50",
+  "worker": "openglasshub",
+  "appOrigin": "https://openglasshub.ogh.workers.dev",
+  "expectedPreviousDeploymentId": "e8481d68-d2d5-473b-8b0c-b82b8fa33fc3",
+  "fixedRequests": [
+    {
+      "role": "DEPLOYMENT_PRE_AND_POST",
+      "method": "GET",
+      "url": "https://api.cloudflare.com/client/v4/accounts/dcb374166b39234a499985145c075f50/workers/scripts/openglasshub/deployments",
+      "maxBodyBytes": 131072,
+      "maxRequests": 2
+    },
+    {
+      "role": "LOGIN_HTML_NOT_EXECUTED",
+      "method": "GET",
+      "url": "https://openglasshub.ogh.workers.dev/login/?next=%2Fproducts%2F",
+      "maxBodyBytes": 2097152,
+      "maxRequests": 1
+    },
+    {
+      "role": "REQUIRED_SCRIPT_CONTENT_PROOF",
+      "method": "GET",
+      "url": "https://openglasshub.ogh.workers.dev/_astro/SiteHeader.astro_astro_type_script_index_0_lang.CtUXEG6g.js",
+      "maxBodyBytes": 2097152,
+      "expectedSha256": null
+    }
+  ],
+  "conditionalDependencyScope": {
+    "basis": "EXACT_CURRENT_LOGIN_HTML_AND_LITERAL_PARENT_MODULE_REFERENCES_ONLY",
+    "method": "GET",
+    "stage": "ASSET_PROVENANCE_READ",
+    "resourceTypes": [
+      "script",
+      "stylesheet"
+    ],
+    "origin": "https://openglasshub.ogh.workers.dev",
+    "finiteStemSlots": [
+      {
+        "stem": "AdminCirclesDashboard",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminCirclesDashboard.AtbelRPK.js",
+            "bytes": 13904,
+            "sha256": "a7e3308f4ce7fffdf620e2c8ea5202ad64654df3fa53edf926714c728845d2c8"
+          }
+        ]
+      },
+      {
+        "stem": "AdminDevicesDashboard",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminDevicesDashboard.hFDGJRVO.js",
+            "bytes": 33796,
+            "sha256": "a97a6c3a5b28f3380c3012a2c656b956e93932ad81ed187464b9e9252987b69a"
+          }
+        ]
+      },
+      {
+        "stem": "AdminForumDashboard",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminForumDashboard.Dc-LtJ3C.js",
+            "bytes": 9548,
+            "sha256": "86380eec9e2656b080cee33e5cbbe237ab9bfdcb0b2054cb8b6c4d36f4cfcb9a"
+          }
+        ]
+      },
+      {
+        "stem": "AdminMediaDashboard",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminMediaDashboard.COQxOC-n.js",
+            "bytes": 6349,
+            "sha256": "ea9ce7b2f50b006c614a889e7341f83344ece375c25de48cbb69bad8eb80b8da"
+          }
+        ]
+      },
+      {
+        "stem": "AdminModerationQueue",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminModerationQueue.BxUne7m0.js",
+            "bytes": 7949,
+            "sha256": "462f185af87ee17ea25ca18c65f2aae0603dfa7dbae8e44816edee63f5bac1b6"
+          }
+        ]
+      },
+      {
+        "stem": "AdminNewsDashboard",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminNewsDashboard.D8GNYY5X.js",
+            "bytes": 23539,
+            "sha256": "6c4a846414d195ebec4dd043f5168f7b4d2c3e3d1f3c82fc7694ce3cbc831c22"
+          }
+        ]
+      },
+      {
+        "stem": "AdminReportsPanel",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminReportsPanel.BfcueG9r.js",
+            "bytes": 30781,
+            "sha256": "a01bbd400afbe869f17b7c3b485d6973c6aa738d94c245459b9fde885a2ae96c"
+          }
+        ]
+      },
+      {
+        "stem": "AdminUsersDashboard",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AdminUsersDashboard.LZa3VSV9.js",
+            "bytes": 9242,
+            "sha256": "be71eb3b3318b83b90a374aea59af319bdb984f5eae41754dbac9a7c27bfcbc3"
+          }
+        ]
+      },
+      {
+        "stem": "AuthCallback",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AuthCallback.CcCUMJyx.js",
+            "bytes": 2994,
+            "sha256": "35bd2b93d00f75580ff15d0ff98d29379f4cc8ebf5368c3dee3a6ec91d01348c"
+          }
+        ]
+      },
+      {
+        "stem": "AuthPanel",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/AuthPanel.EZiCXg-9.js",
+            "bytes": 13837,
+            "sha256": "5e9bc1d26ce8870c446f0f3e71ebaf298a67de2c1174aec3302ec41805ac07c0"
+          }
+        ]
+      },
+      {
+        "stem": "CircleManageEntry",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/CircleManageEntry.NLtSYWSW.js",
+            "bytes": 1994,
+            "sha256": "0546c09fb95b40d703ad35db21cd5e4be3a4a1766d5d3800b38e33f2496b28be"
+          }
+        ]
+      },
+      {
+        "stem": "CircleOwnerDashboard",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/CircleOwnerDashboard.B2DKQ1Nh.js",
+            "bytes": 17386,
+            "sha256": "8c708792985d9eddb66880a5e3bd2def45c3a7dfb0f0fb184a3cd184fb576b10"
+          }
+        ]
+      },
+      {
+        "stem": "CommentsSection",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/CommentsSection.Ccj0seu_.js",
+            "bytes": 13476,
+            "sha256": "350b91324fe600f521f3beda2c4aae0c25176fc772a25ee21cd8dae506211892"
+          }
+        ]
+      },
+      {
+        "stem": "CommunityLayout",
+        "extension": "css",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/CommunityLayout.jf1vXvaF.css",
+            "bytes": 125430,
+            "sha256": "43e22bcd8f713a3a205781e763909ae9e215f116509c638cfd8650db0caa4fd1"
+          }
+        ]
+      },
+      {
+        "stem": "CreateCircleForm",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/CreateCircleForm.BVs51Hoc.js",
+            "bytes": 8959,
+            "sha256": "a5eff9c5b99e6467b6ee5c9feafddb6fd8261f0b3fc6c7b68e0ca724034dafd5"
+          }
+        ]
+      },
+      {
+        "stem": "CreatePostForm",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/CreatePostForm.DXNtR30e.js",
+            "bytes": 16108,
+            "sha256": "f426b7a42ec6ddaa794db35387b16301331315ba8a34e97f7421357e091319b3"
+          }
+        ]
+      },
+      {
+        "stem": "EditProfileForm",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/EditProfileForm.BstFM_Qr.js",
+            "bytes": 9913,
+            "sha256": "a86007f5be4e5499a5fd20987251b1d83ba6914730c0f75b095c96ee7866e557"
+          }
+        ]
+      },
+      {
+        "stem": "FeedSidebarAuthHint",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/FeedSidebarAuthHint.CPoe9sCC.js",
+            "bytes": 688,
+            "sha256": "ef6a390c814384fa745087f439f398810811b1f31fe816b1bf3fb3e2d791e235"
+          }
+        ]
+      },
+      {
+        "stem": "GlassConfirmDialog",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/GlassConfirmDialog.BkjmaYBn.js",
+            "bytes": 2653,
+            "sha256": "206a8064062d48bc7184af1b4ee55dae85a5fa2aae18339e4288aff012a32771"
+          }
+        ]
+      },
+      {
+        "stem": "GlobalSearchBox",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/GlobalSearchBox.BOIU3G-Q.js",
+            "bytes": 5511,
+            "sha256": "bcdc1396f572ebef1ae1e122435c372bb7728142496d472546377aa91d82c9a7"
+          }
+        ]
+      },
+      {
+        "stem": "HeaderNotifications",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/HeaderNotifications.xxochVRg.js",
+            "bytes": 8998,
+            "sha256": "d3075d29fcf86e108a9c1b08f2bf346f95e1675b34074d25403180d62b3352a9"
+          }
+        ]
+      },
+      {
+        "stem": "HeaderUserMenu",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/HeaderUserMenu.pbLPFX5d.js",
+            "bytes": 8017,
+            "sha256": "0079ae4f333a8fd54c310b05c96c718a7be2450694fd4cbb9de0330098e1b629"
+          }
+        ]
+      },
+      {
+        "stem": "LocalePreferenceSync",
+        "extension": "js",
+        "multiplicity": 2,
+        "localReferences": [
+          {
+            "path": "/_astro/LocalePreferenceSync.C6ZrnQDj.js",
+            "bytes": 3931,
+            "sha256": "8309f3700026a532c6f25682edbb54054800c08893725e179810c9897cc5f5ba"
+          },
+          {
+            "path": "/_astro/LocalePreferenceSync.DozvmMnE.js",
+            "bytes": 160,
+            "sha256": "a0a89192786b6d4391746b1f0206b3eb4306e1924d5707e29d35b300d2d6e516"
+          }
+        ]
+      },
+      {
+        "stem": "MobileTableOfContents.astro_astro_type_script_index_0_lang",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BC4YkNnQ.js",
+            "bytes": 674,
+            "sha256": "914c78a83d56d3e59aeebc690387dbef60f6a4a2e780f75d2121aef1998514b1"
+          }
+        ]
+      },
+      {
+        "stem": "MyProfilePage",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/MyProfilePage.C4IqLUNf.js",
+            "bytes": 11993,
+            "sha256": "184f9e8fc07bae299a07c6936bab8b89258e216637dbf54ef1c58b7647c0e65b"
+          }
+        ]
+      },
+      {
+        "stem": "NewsPagination",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/NewsPagination.BnR9MNPp.js",
+            "bytes": 2748,
+            "sha256": "c94ff55b27db4a43f5d22f51f74197e760dbaa37af567c3e83c89f49fea126c3"
+          }
+        ]
+      },
+      {
+        "stem": "NotificationsPage",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/NotificationsPage.Pe_dqqKR.js",
+            "bytes": 4940,
+            "sha256": "3e4fe05e5590af579bc7c44cefca1ee14e22645f068a1d348067948040b30ffe"
+          }
+        ]
+      },
+      {
+        "stem": "PostMediaGallery",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/PostMediaGallery.CvVF08fZ.js",
+            "bytes": 4170,
+            "sha256": "de4d820b2a0931451f2073d954c959c27397574c487b68d552554b18903cf95d"
+          }
+        ]
+      },
+      {
+        "stem": "PostModerationActions",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/PostModerationActions.DnBfn9np.js",
+            "bytes": 4650,
+            "sha256": "359d5ce7a3336874a31d552471c8bb27cd40ace4f4177d27a29a88c9ceeee87a"
+          }
+        ]
+      },
+      {
+        "stem": "PostSocialActions",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/PostSocialActions.BRoqFMGy.js",
+            "bytes": 4600,
+            "sha256": "2ad6ac08433159402b318f1046ec7026a54d9f43352b4684852f43f9c4fa4674"
+          }
+        ]
+      },
+      {
+        "stem": "ReportTrigger",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/ReportTrigger.C4kXk1WR.js",
+            "bytes": 4290,
+            "sha256": "cf72859635867c9e292002415b58a444884059a8c17fba69bb97e7d6e96af551"
+          }
+        ]
+      },
+      {
+        "stem": "ResetPasswordForm",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/ResetPasswordForm.9KbWP1nN.js",
+            "bytes": 4158,
+            "sha256": "0c5f4ebe065f53ab7c4bba2d3dc15f5fb3c597a1435fcee974442c4175948363"
+          }
+        ]
+      },
+      {
+        "stem": "SettingsPage",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/SettingsPage.DImHgz8J.js",
+            "bytes": 5342,
+            "sha256": "f8c3166d5073d2eba8485732bf9f6432be27216b0074710f3a8a858cd8c9fcf4"
+          }
+        ]
+      },
+      {
+        "stem": "SharePostButton",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/SharePostButton.DklMAqlH.js",
+            "bytes": 985,
+            "sha256": "13258ec338928909d276d18c3bfafd10657a346fe367b3054e9d490272138cc4"
+          }
+        ]
+      },
+      {
+        "stem": "SiteHeader",
+        "extension": "css",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/SiteHeader.BKThlVlH.css",
+            "bytes": 8315,
+            "sha256": "537f4d49f52b52c418399bb787f6ee9a5c1ca8badbb4c05fc47f71f07e0912cd"
+          }
+        ]
+      },
+      {
+        "stem": "SiteHeader.astro_astro_type_script_index_0_lang",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.DaQNT1ww.js",
+            "bytes": 1168,
+            "sha256": "4550699f9e06afc37000e20f4dbd2c9223f0786afd03769713785325d047c0ca"
+          }
+        ]
+      },
+      {
+        "stem": "TableOfContents.astro_astro_type_script_index_0_lang",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BP64OFl3.js",
+            "bytes": 88,
+            "sha256": "3692b6b27daf565cba3a7eeee408553a99132e71c8d426fc16590f8d9359acd4"
+          }
+        ]
+      },
+      {
+        "stem": "_brand_",
+        "extension": "css",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/_brand_.9qGMzWJR.css",
+            "bytes": 14473,
+            "sha256": "ec71ef6317a614ac1e77856f09c33a03d72d58a4bc558e44387f2a4b34c60950"
+          }
+        ]
+      },
+      {
+        "stem": "_brand_.astro_astro_type_script_index_0_lang",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/_brand_.astro_astro_type_script_index_0_lang.DAYSRm7b.js",
+            "bytes": 6568,
+            "sha256": "cfa1d737892172af7c02074024fc0f985ca1afa53a114ff42ed216c839902bbc"
+          }
+        ]
+      },
+      {
+        "stem": "auth-callback-url",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/auth-callback-url.C1pwqHVg.js",
+            "bytes": 492,
+            "sha256": "2a930c0620bc38a060fd75409df8d4b2ab386d7deae3347f1fb017dc6ac80a38"
+          }
+        ]
+      },
+      {
+        "stem": "auth-messages",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/auth-messages.3HE5GXRn.js",
+            "bytes": 7687,
+            "sha256": "15f1627e538b9e7e52140d9c17defec79959f443b61de84ff8bef2e5950f0b47"
+          }
+        ]
+      },
+      {
+        "stem": "auth-redirect",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/auth-redirect.5ZO3FMne.js",
+            "bytes": 1794,
+            "sha256": "aa50f4990b53a3dd8532c7617bd2bae15eaedf45c9c7c3572c1193e4cfea3386"
+          }
+        ]
+      },
+      {
+        "stem": "catalog-compare-dom",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/catalog-compare-dom.tKlnu0X0.js",
+            "bytes": 950,
+            "sha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a"
+          }
+        ]
+      },
+      {
+        "stem": "client-image",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/client-image.Ccmrk0wr.js",
+            "bytes": 1385,
+            "sha256": "2154f10ca3c0ec2f1267fab8f8461f1bf51367789227e040f4a65b099e289412"
+          }
+        ]
+      },
+      {
+        "stem": "client",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/client.C9ykwJRQ.js",
+            "bytes": 180744,
+            "sha256": "b6b9827d0edbb0969b7f91072249e44d48dd6b36c9846980a2a684b8413fba42"
+          }
+        ]
+      },
+      {
+        "stem": "ec",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/ec.0vx5m.js",
+            "bytes": 2523,
+            "sha256": "182e98b9acfcfd358ea486967bd17dcaddd5930b8d092bc0653fd26ddbb11e37"
+          }
+        ]
+      },
+      {
+        "stem": "ec",
+        "extension": "css",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/ec.xqx3p.css",
+            "bytes": 15673,
+            "sha256": "0399df1852e8a102f443d18e448633f3a00d64a32e498cb360ace5d64a9eb102"
+          }
+        ]
+      },
+      {
+        "stem": "index",
+        "extension": "css",
+        "multiplicity": 2,
+        "localReferences": [
+          {
+            "path": "/_astro/index.BFDTW7An.css",
+            "bytes": 35731,
+            "sha256": "ad086bb0f39852dc8038471fe36e4f26902c6d31a1c23cdad489cdaaf2f6c63d"
+          },
+          {
+            "path": "/_astro/index.CXX0zyC2.css",
+            "bytes": 12894,
+            "sha256": "1524674d0d67d5f9a516f7b3066dfcbfcf9847f94d3e390a6ae469799fc835cf"
+          }
+        ]
+      },
+      {
+        "stem": "index.astro_astro_type_script_index_0_lang",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/index.astro_astro_type_script_index_0_lang.BskClGKx.js",
+            "bytes": 6196,
+            "sha256": "4ffdb68c3751287481be1c638028d38862a971c848cfa9322a170f2eea3b93a5"
+          }
+        ]
+      },
+      {
+        "stem": "jsx-runtime",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/jsx-runtime.Cs_ylJLF.js",
+            "bytes": 5569,
+            "sha256": "c2c3692670c89dbcfb1a21e5596bb534f00f8e476448eae2eea79357d6dbfd6f"
+          }
+        ]
+      },
+      {
+        "stem": "legal-consent-adapters",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/legal-consent-adapters.hgu_dait.js",
+            "bytes": 309,
+            "sha256": "5188c420576b7c93a86a73f368ee9317303e31f449e006e4ccd47fe7490b5021"
+          }
+        ]
+      },
+      {
+        "stem": "notifications",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/notifications.CwRuuH1z.js",
+            "bytes": 685,
+            "sha256": "043984dfb373bfae763570e83734299883bd8f60b1cdc91651fc798e1213e834"
+          }
+        ]
+      },
+      {
+        "stem": "page",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/page.Dtz6tGCc.js",
+            "bytes": 2536,
+            "sha256": "1c99026c0527cac05d3a172c386fdd43767eac5818e26c45ff353ad5d1f03aa9"
+          }
+        ]
+      },
+      {
+        "stem": "print",
+        "extension": "css",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/print.ehPL0gv-.css",
+            "bytes": 3318,
+            "sha256": "4d7d25c3d697e6d36e64afb9edef136e6d2e4c50f70a48000ca90f9b059e3622"
+          }
+        ]
+      },
+      {
+        "stem": "product-public-safety",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/product-public-safety.BFvqNWGH.js",
+            "bytes": 898,
+            "sha256": "f5db8e009b4cd722b6b058875013490848da3430922c51a82adf39e67214f38a"
+          }
+        ]
+      },
+      {
+        "stem": "profile-data",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/profile-data.DTjvR5vM.js",
+            "bytes": 10293,
+            "sha256": "898869f1500853be418f6aa4ce49ebe11d957f22637787957e8c04e1812d67bf"
+          }
+        ]
+      },
+      {
+        "stem": "profile-links",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/profile-links.n5IEH-ft.js",
+            "bytes": 301,
+            "sha256": "7f563fe43018c16619bd0ae0845c03ddcdcaf84cdf37e84d0b6d09943c08f283"
+          }
+        ]
+      },
+      {
+        "stem": "react-dom",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/react-dom.BHf2gUf-.js",
+            "bytes": 3587,
+            "sha256": "468f9774b111a96b0ee21ceb962f1da0fcf69a90ea0a62b640ad08b4ca2dbfb5"
+          }
+        ]
+      },
+      {
+        "stem": "react",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/react.DZuxrRTg.js",
+            "bytes": 8088,
+            "sha256": "e9c0a21591214c6b5ed976fe40a1c45a254c4ca58b7e5cd1d151af7f14ed3b27"
+          }
+        ]
+      },
+      {
+        "stem": "starlight-toc",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/starlight-toc.DD0ndyou.js",
+            "bytes": 2033,
+            "sha256": "8e57bd419b676fb1a5a21c13b3ea68b31e1fa992339ab3d20a8af3fc7c1c7a72"
+          }
+        ]
+      },
+      {
+        "stem": "storage-tus",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/storage-tus.bLETWBsm.js",
+            "bytes": 60970,
+            "sha256": "81e935d59872bd65d0cc37adbe805f1473dbfb59c21cef45590f17b4893d9180"
+          }
+        ]
+      },
+      {
+        "stem": "supabase-browser",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/supabase-browser.CbJzQpCJ.js",
+            "bytes": 210364,
+            "sha256": "aa677f1ee5784636ca14b697b28872d7f4882179dfdfc5a9015a039e82c0b37c"
+          }
+        ]
+      },
+      {
+        "stem": "useAdminSession",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/useAdminSession.B8o2Cihd.js",
+            "bytes": 3397,
+            "sha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83"
+          }
+        ]
+      },
+      {
+        "stem": "useBrowserAuthState",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/useBrowserAuthState.DwB-xnWR.js",
+            "bytes": 1023,
+            "sha256": "20324053b51dd1cc538294305b49d56e628dc34a1f4b0c8b8faec5367e2ce664"
+          }
+        ]
+      },
+      {
+        "stem": "useLocale",
+        "extension": "js",
+        "multiplicity": 1,
+        "localReferences": [
+          {
+            "path": "/_astro/useLocale.uXE5yf0C.js",
+            "bytes": 107574,
+            "sha256": "7ef9768e2be3f702e430a9ede82666c6ffab59095f711438a7b82ba4087df8e9"
+          }
+        ]
+      }
+    ],
+    "maxResourcesIncludingRequiredScript": 67,
+    "rawWildcardAdmission": false,
+    "unknownQueryOrPrivatePathAllowed": false,
+    "blindLocalManifestProbeAllowed": false,
+    "unsupportedImportOrPrivateReference": "STOP_BLOCKED"
+  },
+  "proposedReadBudgets": {
+    "totalGETMax": 70,
+    "htmlGETMax": 1,
+    "assetGETMax": 67,
+    "providerDeploymentGETMax": 2,
+    "concurrencyMax": 4,
+    "hardSeconds": 300,
+    "workSeconds": 240,
+    "cleanupReserveSeconds": 60,
+    "perRequestSeconds": 15,
+    "maxHeaderBytes": 8192,
+    "maxAssetBytes": 2097152,
+    "anonymousAggregateBytesMax": 16777216
+  },
+  "maxAuthorizationValiditySeconds": 3600,
+  "oauthRemainingSecondsStrictlyGreaterThan": 360,
+  "ownerOriginalGlobalRequestCeiling": 500,
+  "expectedAssetHashes": "UNKNOWN_BEFORE_READ;ACTUAL_HASH_OBSERVATION_NOT_SOURCE_PASS",
+  "privateCaptureRequired": true,
+  "existingFreeProofSha256": "1e457981c0b0f1f3f5fd1c59243f7f5cbfc0769b1382ad47f5d6026ccd4fd6e7",
+  "zeroCostPolicy": {
+    "MAX_ADDITIONAL_COST_USD": 0,
+    "PAID_USAGE_AUTHORIZED": false
+  },
+  "authDispatchMax": 0,
+  "rlsReadsMax": 0,
+  "productionWritesMax": 0,
+  "retries": 0,
+  "redirectFollowing": 0,
+  "thirdPartyHTTPMax": 0,
+  "fullGroup1Authorized": false,
+  "group2Authorized": false,
+  "group3Authorized": false,
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null
+  },
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "proposedGo": "GO_E_VERIFY_GROUP1_PRODUCTION_ASSET_PROOF_V1",
+  "executionReadiness": "EXACT_READER_FROZEN_NOT_AUTHORIZED",
+  "executionLimitSeconds": 300,
+  "workLimitSeconds": 240,
+  "cleanupReserveSeconds": 60,
+  "manifest": [
+    {
+      "path": "/_astro/AdminCirclesDashboard.AtbelRPK.js",
+      "bytes": 13904,
+      "sha256": "a7e3308f4ce7fffdf620e2c8ea5202ad64654df3fa53edf926714c728845d2c8"
+    },
+    {
+      "path": "/_astro/AdminDevicesDashboard.hFDGJRVO.js",
+      "bytes": 33796,
+      "sha256": "a97a6c3a5b28f3380c3012a2c656b956e93932ad81ed187464b9e9252987b69a"
+    },
+    {
+      "path": "/_astro/AdminForumDashboard.Dc-LtJ3C.js",
+      "bytes": 9548,
+      "sha256": "86380eec9e2656b080cee33e5cbbe237ab9bfdcb0b2054cb8b6c4d36f4cfcb9a"
+    },
+    {
+      "path": "/_astro/AdminMediaDashboard.COQxOC-n.js",
+      "bytes": 6349,
+      "sha256": "ea9ce7b2f50b006c614a889e7341f83344ece375c25de48cbb69bad8eb80b8da"
+    },
+    {
+      "path": "/_astro/AdminModerationQueue.BxUne7m0.js",
+      "bytes": 7949,
+      "sha256": "462f185af87ee17ea25ca18c65f2aae0603dfa7dbae8e44816edee63f5bac1b6"
+    },
+    {
+      "path": "/_astro/AdminNewsDashboard.D8GNYY5X.js",
+      "bytes": 23539,
+      "sha256": "6c4a846414d195ebec4dd043f5168f7b4d2c3e3d1f3c82fc7694ce3cbc831c22"
+    },
+    {
+      "path": "/_astro/AdminReportsPanel.BfcueG9r.js",
+      "bytes": 30781,
+      "sha256": "a01bbd400afbe869f17b7c3b485d6973c6aa738d94c245459b9fde885a2ae96c"
+    },
+    {
+      "path": "/_astro/AdminUsersDashboard.LZa3VSV9.js",
+      "bytes": 9242,
+      "sha256": "be71eb3b3318b83b90a374aea59af319bdb984f5eae41754dbac9a7c27bfcbc3"
+    },
+    {
+      "path": "/_astro/AuthCallback.CcCUMJyx.js",
+      "bytes": 2994,
+      "sha256": "35bd2b93d00f75580ff15d0ff98d29379f4cc8ebf5368c3dee3a6ec91d01348c"
+    },
+    {
+      "path": "/_astro/AuthPanel.EZiCXg-9.js",
+      "bytes": 13837,
+      "sha256": "5e9bc1d26ce8870c446f0f3e71ebaf298a67de2c1174aec3302ec41805ac07c0"
+    },
+    {
+      "path": "/_astro/CircleManageEntry.NLtSYWSW.js",
+      "bytes": 1994,
+      "sha256": "0546c09fb95b40d703ad35db21cd5e4be3a4a1766d5d3800b38e33f2496b28be"
+    },
+    {
+      "path": "/_astro/CircleOwnerDashboard.B2DKQ1Nh.js",
+      "bytes": 17386,
+      "sha256": "8c708792985d9eddb66880a5e3bd2def45c3a7dfb0f0fb184a3cd184fb576b10"
+    },
+    {
+      "path": "/_astro/CommentsSection.Ccj0seu_.js",
+      "bytes": 13476,
+      "sha256": "350b91324fe600f521f3beda2c4aae0c25176fc772a25ee21cd8dae506211892"
+    },
+    {
+      "path": "/_astro/CommunityLayout.jf1vXvaF.css",
+      "bytes": 125430,
+      "sha256": "43e22bcd8f713a3a205781e763909ae9e215f116509c638cfd8650db0caa4fd1"
+    },
+    {
+      "path": "/_astro/CreateCircleForm.BVs51Hoc.js",
+      "bytes": 8959,
+      "sha256": "a5eff9c5b99e6467b6ee5c9feafddb6fd8261f0b3fc6c7b68e0ca724034dafd5"
+    },
+    {
+      "path": "/_astro/CreatePostForm.DXNtR30e.js",
+      "bytes": 16108,
+      "sha256": "f426b7a42ec6ddaa794db35387b16301331315ba8a34e97f7421357e091319b3"
+    },
+    {
+      "path": "/_astro/EditProfileForm.BstFM_Qr.js",
+      "bytes": 9913,
+      "sha256": "a86007f5be4e5499a5fd20987251b1d83ba6914730c0f75b095c96ee7866e557"
+    },
+    {
+      "path": "/_astro/FeedSidebarAuthHint.CPoe9sCC.js",
+      "bytes": 688,
+      "sha256": "ef6a390c814384fa745087f439f398810811b1f31fe816b1bf3fb3e2d791e235"
+    },
+    {
+      "path": "/_astro/GlassConfirmDialog.BkjmaYBn.js",
+      "bytes": 2653,
+      "sha256": "206a8064062d48bc7184af1b4ee55dae85a5fa2aae18339e4288aff012a32771"
+    },
+    {
+      "path": "/_astro/GlobalSearchBox.BOIU3G-Q.js",
+      "bytes": 5511,
+      "sha256": "bcdc1396f572ebef1ae1e122435c372bb7728142496d472546377aa91d82c9a7"
+    },
+    {
+      "path": "/_astro/HeaderNotifications.xxochVRg.js",
+      "bytes": 8998,
+      "sha256": "d3075d29fcf86e108a9c1b08f2bf346f95e1675b34074d25403180d62b3352a9"
+    },
+    {
+      "path": "/_astro/HeaderUserMenu.pbLPFX5d.js",
+      "bytes": 8017,
+      "sha256": "0079ae4f333a8fd54c310b05c96c718a7be2450694fd4cbb9de0330098e1b629"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.C6ZrnQDj.js",
+      "bytes": 3931,
+      "sha256": "8309f3700026a532c6f25682edbb54054800c08893725e179810c9897cc5f5ba"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.DozvmMnE.js",
+      "bytes": 160,
+      "sha256": "a0a89192786b6d4391746b1f0206b3eb4306e1924d5707e29d35b300d2d6e516"
+    },
+    {
+      "path": "/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BC4YkNnQ.js",
+      "bytes": 674,
+      "sha256": "914c78a83d56d3e59aeebc690387dbef60f6a4a2e780f75d2121aef1998514b1"
+    },
+    {
+      "path": "/_astro/MyProfilePage.C4IqLUNf.js",
+      "bytes": 11993,
+      "sha256": "184f9e8fc07bae299a07c6936bab8b89258e216637dbf54ef1c58b7647c0e65b"
+    },
+    {
+      "path": "/_astro/NewsPagination.BnR9MNPp.js",
+      "bytes": 2748,
+      "sha256": "c94ff55b27db4a43f5d22f51f74197e760dbaa37af567c3e83c89f49fea126c3"
+    },
+    {
+      "path": "/_astro/NotificationsPage.Pe_dqqKR.js",
+      "bytes": 4940,
+      "sha256": "3e4fe05e5590af579bc7c44cefca1ee14e22645f068a1d348067948040b30ffe"
+    },
+    {
+      "path": "/_astro/PostMediaGallery.CvVF08fZ.js",
+      "bytes": 4170,
+      "sha256": "de4d820b2a0931451f2073d954c959c27397574c487b68d552554b18903cf95d"
+    },
+    {
+      "path": "/_astro/PostModerationActions.DnBfn9np.js",
+      "bytes": 4650,
+      "sha256": "359d5ce7a3336874a31d552471c8bb27cd40ace4f4177d27a29a88c9ceeee87a"
+    },
+    {
+      "path": "/_astro/PostSocialActions.BRoqFMGy.js",
+      "bytes": 4600,
+      "sha256": "2ad6ac08433159402b318f1046ec7026a54d9f43352b4684852f43f9c4fa4674"
+    },
+    {
+      "path": "/_astro/ReportTrigger.C4kXk1WR.js",
+      "bytes": 4290,
+      "sha256": "cf72859635867c9e292002415b58a444884059a8c17fba69bb97e7d6e96af551"
+    },
+    {
+      "path": "/_astro/ResetPasswordForm.9KbWP1nN.js",
+      "bytes": 4158,
+      "sha256": "0c5f4ebe065f53ab7c4bba2d3dc15f5fb3c597a1435fcee974442c4175948363"
+    },
+    {
+      "path": "/_astro/SettingsPage.DImHgz8J.js",
+      "bytes": 5342,
+      "sha256": "f8c3166d5073d2eba8485732bf9f6432be27216b0074710f3a8a858cd8c9fcf4"
+    },
+    {
+      "path": "/_astro/SharePostButton.DklMAqlH.js",
+      "bytes": 985,
+      "sha256": "13258ec338928909d276d18c3bfafd10657a346fe367b3054e9d490272138cc4"
+    },
+    {
+      "path": "/_astro/SiteHeader.BKThlVlH.css",
+      "bytes": 8315,
+      "sha256": "537f4d49f52b52c418399bb787f6ee9a5c1ca8badbb4c05fc47f71f07e0912cd"
+    },
+    {
+      "path": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.DaQNT1ww.js",
+      "bytes": 1168,
+      "sha256": "4550699f9e06afc37000e20f4dbd2c9223f0786afd03769713785325d047c0ca"
+    },
+    {
+      "path": "/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BP64OFl3.js",
+      "bytes": 88,
+      "sha256": "3692b6b27daf565cba3a7eeee408553a99132e71c8d426fc16590f8d9359acd4"
+    },
+    {
+      "path": "/_astro/_brand_.9qGMzWJR.css",
+      "bytes": 14473,
+      "sha256": "ec71ef6317a614ac1e77856f09c33a03d72d58a4bc558e44387f2a4b34c60950"
+    },
+    {
+      "path": "/_astro/_brand_.astro_astro_type_script_index_0_lang.DAYSRm7b.js",
+      "bytes": 6568,
+      "sha256": "cfa1d737892172af7c02074024fc0f985ca1afa53a114ff42ed216c839902bbc"
+    },
+    {
+      "path": "/_astro/auth-callback-url.C1pwqHVg.js",
+      "bytes": 492,
+      "sha256": "2a930c0620bc38a060fd75409df8d4b2ab386d7deae3347f1fb017dc6ac80a38"
+    },
+    {
+      "path": "/_astro/auth-messages.3HE5GXRn.js",
+      "bytes": 7687,
+      "sha256": "15f1627e538b9e7e52140d9c17defec79959f443b61de84ff8bef2e5950f0b47"
+    },
+    {
+      "path": "/_astro/auth-redirect.5ZO3FMne.js",
+      "bytes": 1794,
+      "sha256": "aa50f4990b53a3dd8532c7617bd2bae15eaedf45c9c7c3572c1193e4cfea3386"
+    },
+    {
+      "path": "/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "bytes": 950,
+      "sha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a"
+    },
+    {
+      "path": "/_astro/client-image.Ccmrk0wr.js",
+      "bytes": 1385,
+      "sha256": "2154f10ca3c0ec2f1267fab8f8461f1bf51367789227e040f4a65b099e289412"
+    },
+    {
+      "path": "/_astro/client.C9ykwJRQ.js",
+      "bytes": 180744,
+      "sha256": "b6b9827d0edbb0969b7f91072249e44d48dd6b36c9846980a2a684b8413fba42"
+    },
+    {
+      "path": "/_astro/ec.0vx5m.js",
+      "bytes": 2523,
+      "sha256": "182e98b9acfcfd358ea486967bd17dcaddd5930b8d092bc0653fd26ddbb11e37"
+    },
+    {
+      "path": "/_astro/ec.xqx3p.css",
+      "bytes": 15673,
+      "sha256": "0399df1852e8a102f443d18e448633f3a00d64a32e498cb360ace5d64a9eb102"
+    },
+    {
+      "path": "/_astro/index.BFDTW7An.css",
+      "bytes": 35731,
+      "sha256": "ad086bb0f39852dc8038471fe36e4f26902c6d31a1c23cdad489cdaaf2f6c63d"
+    },
+    {
+      "path": "/_astro/index.CXX0zyC2.css",
+      "bytes": 12894,
+      "sha256": "1524674d0d67d5f9a516f7b3066dfcbfcf9847f94d3e390a6ae469799fc835cf"
+    },
+    {
+      "path": "/_astro/index.astro_astro_type_script_index_0_lang.BskClGKx.js",
+      "bytes": 6196,
+      "sha256": "4ffdb68c3751287481be1c638028d38862a971c848cfa9322a170f2eea3b93a5"
+    },
+    {
+      "path": "/_astro/jsx-runtime.Cs_ylJLF.js",
+      "bytes": 5569,
+      "sha256": "c2c3692670c89dbcfb1a21e5596bb534f00f8e476448eae2eea79357d6dbfd6f"
+    },
+    {
+      "path": "/_astro/legal-consent-adapters.hgu_dait.js",
+      "bytes": 309,
+      "sha256": "5188c420576b7c93a86a73f368ee9317303e31f449e006e4ccd47fe7490b5021"
+    },
+    {
+      "path": "/_astro/notifications.CwRuuH1z.js",
+      "bytes": 685,
+      "sha256": "043984dfb373bfae763570e83734299883bd8f60b1cdc91651fc798e1213e834"
+    },
+    {
+      "path": "/_astro/page.Dtz6tGCc.js",
+      "bytes": 2536,
+      "sha256": "1c99026c0527cac05d3a172c386fdd43767eac5818e26c45ff353ad5d1f03aa9"
+    },
+    {
+      "path": "/_astro/print.ehPL0gv-.css",
+      "bytes": 3318,
+      "sha256": "4d7d25c3d697e6d36e64afb9edef136e6d2e4c50f70a48000ca90f9b059e3622"
+    },
+    {
+      "path": "/_astro/product-public-safety.BFvqNWGH.js",
+      "bytes": 898,
+      "sha256": "f5db8e009b4cd722b6b058875013490848da3430922c51a82adf39e67214f38a"
+    },
+    {
+      "path": "/_astro/profile-data.DTjvR5vM.js",
+      "bytes": 10293,
+      "sha256": "898869f1500853be418f6aa4ce49ebe11d957f22637787957e8c04e1812d67bf"
+    },
+    {
+      "path": "/_astro/profile-links.n5IEH-ft.js",
+      "bytes": 301,
+      "sha256": "7f563fe43018c16619bd0ae0845c03ddcdcaf84cdf37e84d0b6d09943c08f283"
+    },
+    {
+      "path": "/_astro/react-dom.BHf2gUf-.js",
+      "bytes": 3587,
+      "sha256": "468f9774b111a96b0ee21ceb962f1da0fcf69a90ea0a62b640ad08b4ca2dbfb5"
+    },
+    {
+      "path": "/_astro/react.DZuxrRTg.js",
+      "bytes": 8088,
+      "sha256": "e9c0a21591214c6b5ed976fe40a1c45a254c4ca58b7e5cd1d151af7f14ed3b27"
+    },
+    {
+      "path": "/_astro/starlight-toc.DD0ndyou.js",
+      "bytes": 2033,
+      "sha256": "8e57bd419b676fb1a5a21c13b3ea68b31e1fa992339ab3d20a8af3fc7c1c7a72"
+    },
+    {
+      "path": "/_astro/storage-tus.bLETWBsm.js",
+      "bytes": 60970,
+      "sha256": "81e935d59872bd65d0cc37adbe805f1473dbfb59c21cef45590f17b4893d9180"
+    },
+    {
+      "path": "/_astro/supabase-browser.CbJzQpCJ.js",
+      "bytes": 210364,
+      "sha256": "aa677f1ee5784636ca14b697b28872d7f4882179dfdfc5a9015a039e82c0b37c"
+    },
+    {
+      "path": "/_astro/useAdminSession.B8o2Cihd.js",
+      "bytes": 3397,
+      "sha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83"
+    },
+    {
+      "path": "/_astro/useBrowserAuthState.DwB-xnWR.js",
+      "bytes": 1023,
+      "sha256": "20324053b51dd1cc538294305b49d56e628dc34a1f4b0c8b8faec5367e2ce664"
+    },
+    {
+      "path": "/_astro/useLocale.uXE5yf0C.js",
+      "bytes": 107574,
+      "sha256": "7ef9768e2be3f702e430a9ede82666c6ffab59095f711438a7b82ba4087df8e9"
+    }
+  ],
+  "requiredTarget": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.CtUXEG6g.js",
+  "evidenceCapture": "DPAPI_CURRENT_USER_OWNER_SYSTEM_DACL;NO_PLAINTEXT_LOGS",
+  "evidenceAcceptance": "CONTENT_EVIDENCE_COLLECTED_IS_NOT_SOURCE_PROVENANCE_OR_FULL_GROUP1_PASS",
+  "literalCssImports": "ONLY_UNAMBIGUOUS_LITERAL_IMPORT_IN_ALREADY_READ_STYLESHEET",
+  "byteLimitBoundary": "ACCEPTED_PERSISTED_BYTES_NOT_ABSOLUTE_WIRE_BYTES_OR_BILL_CAP",
+  "postDeploymentAfterFailure": false,
+  "localFailureReceiptPreventsReplay": true
+}

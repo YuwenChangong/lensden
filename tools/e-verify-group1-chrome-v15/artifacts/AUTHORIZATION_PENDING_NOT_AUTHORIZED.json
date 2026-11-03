@@ -1,0 +1,21 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-chrome-v15",
+  "status": "NOT_AUTHORIZED",
+  "fullContractAccepted": false,
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null,
+    "nativeAuthenticatedMonitorOnlyAndUnseenDispatchRiskAccepted": null,
+    "privateSdkStorageSnapshotAndNoRawEvidenceExportAccepted": null,
+    "serverAuthControlsUnknownAndStopRulesAccepted": null,
+    "currentZeroCostFreeServicesAndUnmeteredNetworkConfirmed": null
+  },
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "executionBindingSha256": null,
+  "packetSha256": "ced74f08a28ba5f14d97b21c177d9f0ca2a2d71887b65cf095cd6fd8824325c2",
+  "contractSha256": "5d750371331325fce4e6a09e4229ff062c05b13cf554cf054f2f94e363fae585"
+}

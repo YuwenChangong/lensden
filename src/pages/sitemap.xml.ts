@@ -1,164 +1,77 @@
-import { env as runtimeEnv } from "cloudflare:workers";
-import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
-import { brandCatalog } from "../lib/device-catalog";
-import { LEGAL_POLICY } from "../lib/legal-policy";
-import { listPublishedDevices } from "../lib/public-device-data";
-import { getProductDetailHref } from "../lib/product-route";
-import { createSSRClient, type CloudflareEnv } from "../lib/supabase-server";
-import { isPublicVisibleCircle } from "../lib/site-navigation";
-import { isGazeLauncherPublicEnabled } from "../lib/gaze-launcher-visibility";
-import { resolveSiteOrigin } from "../lib/site-origin";
-
-type SitemapEntry = {
-  loc: string;
-  lastmod?: string;
-  changefreq?: "daily" | "weekly" | "monthly";
-  priority?: string;
-};
-
-function escapeXml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
-function normalizeDate(value: string | null | undefined) {
-  if (!value) return undefined;
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
-}
-
-function serializeSitemap(entries: SitemapEntry[]) {
-  const body = entries
-    .map((entry) => {
-      const fields = [
-        `<loc>${escapeXml(entry.loc)}</loc>`,
-        entry.lastmod ? `<lastmod>${escapeXml(entry.lastmod)}</lastmod>` : "",
-        entry.changefreq ? `<changefreq>${entry.changefreq}</changefreq>` : "",
-        entry.priority ? `<priority>${entry.priority}</priority>` : "",
-      ].filter(Boolean);
-
-      return `<url>${fields.join("")}</url>`;
-    })
-    .join("");
-
-  return `<?xml version="1.0" encoding="UTF-8"?>` +
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${body}</urlset>`;
-}
+import { env as runtimeEnv } from 'cloudflare:workers';
+import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
+import { brandCatalog, getBrandByKey } from '../lib/device-catalog';
+import { LEGAL_POLICY } from '../lib/legal-policy';
+import { getProductDetailHref, isValidProductSegment } from '../lib/product-route';
+import { createSSRClient } from '../lib/supabase-server';
+import { isPublicVisibleCircle } from '../lib/site-navigation';
+import { isGazeLauncherPublicEnabled } from '../lib/gaze-launcher-visibility';
+import { resolveSiteOrigin } from '../lib/site-origin';
+import { canonicalNewsSitemapSlug, createSitemapTransport, editorialSitemapPath, readSitemapRows, serializeSitemap, type SitemapEntry } from '../lib/seo-sitemap';
+import { validSeoDate } from '../lib/seo';
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ locals, site }) => {
-  const siteOrigin = resolveSiteOrigin(site?.origin);
-  const absoluteUrl = (pathname: string) => new URL(pathname, siteOrigin).toString();
-  const docs = await getCollection("docs");
-  const env = runtimeEnv;
-  const supabase = env?.SUPABASE_URL && env?.SUPABASE_ANON_KEY ? createSSRClient(env) : null;
-  const publishedDevices = supabase ? await listPublishedDevices(supabase) : [];
+const englishGuides = import.meta.glob<{ draft?: boolean; published_at?: string; lastUpdated?: string | Date }>(
+  '../content/editorial-translations/en/guides/*.mdx', { eager: true, import: 'frontmatter' },
+);
 
-  const entries: SitemapEntry[] = [
-    { loc: absoluteUrl("/"), changefreq: "daily", priority: "1.0" },
-    { loc: absoluteUrl("/feed/"), changefreq: "daily", priority: "0.9" },
-    { loc: absoluteUrl("/circles/"), changefreq: "daily", priority: "0.85" },
-    { loc: absoluteUrl("/news/"), changefreq: "daily", priority: "0.85" },
-    { loc: absoluteUrl("/products/"), changefreq: "weekly", priority: "0.8" },
-    { loc: absoluteUrl("/guides/"), changefreq: "weekly", priority: "0.8" },
-    { loc: absoluteUrl("/developers/"), changefreq: "weekly", priority: "0.75" },
-    ...(isGazeLauncherPublicEnabled() ? [{ loc: absoluteUrl("/gaze-launcher/"), changefreq: "weekly" as const, priority: "0.75" }] : []),
-    { loc: absoluteUrl(LEGAL_POLICY.routes.terms), changefreq: "monthly", priority: "0.42" },
-    { loc: absoluteUrl(LEGAL_POLICY.routes.privacy), changefreq: "monthly", priority: "0.42" },
-    { loc: absoluteUrl(LEGAL_POLICY.routes.guidelines), changefreq: "monthly", priority: "0.4" },
-    { loc: absoluteUrl(LEGAL_POLICY.routes.safety), changefreq: "monthly", priority: "0.38" },
-    { loc: absoluteUrl(LEGAL_POLICY.routes.accountDeletion), changefreq: "monthly", priority: "0.35" },
-    { loc: absoluteUrl(LEGAL_POLICY.routes.contact), changefreq: "monthly", priority: "0.35" },
-  ];
-
-  for (const brand of brandCatalog) {
-    entries.push({
-      loc: absoluteUrl(`/products/${brand.key}/`),
-      changefreq: "weekly",
-      priority: "0.72",
-    });
-  }
-
-  for (const product of publishedDevices) {
-    entries.push({ loc: absoluteUrl(getProductDetailHref(product)), changefreq: "monthly", priority: "0.7" });
-  }
-
-  for (const entry of docs) {
-    const docSlug = String((entry as { slug?: string | null }).slug ?? "");
-    if (!docSlug) continue;
-
-    if (docSlug.startsWith("reference/devices/")) {
-      // Editorial article presence/date is not device publication authority.
-      continue;
-    }
-    if (docSlug.startsWith("reference/guides/")) {
-      const slug = docSlug.replace("reference/guides/", "");
-      entries.push({
-        loc: absoluteUrl(`/guides/${slug}/`),
-        lastmod: normalizeDate(entry.data.lastUpdated instanceof Date ? entry.data.lastUpdated.toISOString() : undefined),
-        changefreq: "monthly",
-        priority: "0.7",
-      });
-    }
-  }
-
-  if (supabase) {
-    const [{ data: circles, error: circlesError }, { data: newsArticles, error: newsError }] = await Promise.all([
-      supabase
-        .from("circles")
-        .select("slug, status, updated_at, created_at, name")
-        .eq("status", "active")
-        .limit(200)
-        .order("updated_at", { ascending: false }),
-      supabase
-        .from("news_articles")
-        .select("slug, published_at, updated_at")
-        .eq("status", "published")
-        .limit(200)
-        .order("published_at", { ascending: false, nullsFirst: false }),
+export const GET: APIRoute = async ({ site }) => {
+  const origin = resolveSiteOrigin(site?.origin);
+  const absolute = (path: string) => new URL(path, origin).href;
+  let transport: ReturnType<typeof createSitemapTransport> | undefined;
+  try {
+    // Existing anonymous public client only. No session, administrative key,
+    // specification reads, view-count RPCs, or community-post queries.
+    if (!runtimeEnv.SUPABASE_URL || !runtimeEnv.SUPABASE_ANON_KEY) throw new Error('Sitemap data unavailable.');
+    transport = createSitemapTransport(runtimeEnv.SUPABASE_URL);
+    const client = createSSRClient(runtimeEnv, transport.fetch);
+    const [docs, devices, circles, news] = await Promise.all([
+      getCollection('docs'), readSitemapRows(client, 'devices'),
+      readSitemapRows(client, 'circles'), readSitemapRows(client, 'news_articles'),
     ]);
-
-    if (circlesError) {
-      console.warn("[sitemap] failed to load circles", circlesError.message);
-    } else {
-      for (const circle of (circles ?? []).filter((item) => item.slug && isPublicVisibleCircle(item))) {
-        entries.push({
-          loc: absoluteUrl(`/circles/${circle.slug}/`),
-          lastmod: normalizeDate(circle.updated_at ?? circle.created_at),
-          changefreq: "weekly",
-          priority: "0.65",
-        });
-      }
+    const paths = ['/', '/feed/', '/circles/', '/news/', '/products/', '/guides/', '/developers/', '/about/',
+      ...Object.entries(LEGAL_POLICY.routes).filter(([key]) => key !== 'consent').map(([, path]) => path),
+      ...(isGazeLauncherPublicEnabled() ? ['/gaze-launcher/'] : []),
+      ...brandCatalog.map(brand => `/products/${brand.key}/`),
+    ];
+    const entries: SitemapEntry[] = paths.map(path => ({ loc: absolute(path) }));
+    for (const device of devices) {
+      if (!device.brand_key || !getBrandByKey(device.brand_key) || !isValidProductSegment(device.brand_key) || !isValidProductSegment(device.slug)) throw new Error('Sitemap data unavailable.');
+      // Device updated_at does not cover normalized spec/source updates.
+      entries.push({ loc: absolute(getProductDetailHref({ brandKey: device.brand_key, slug: device.slug })) });
     }
-
-    if (newsError) {
-      console.warn("[sitemap] failed to load news", newsError.message);
-    } else {
-      for (const article of newsArticles ?? []) {
-        if (!article.slug) continue;
-        entries.push({
-          loc: absoluteUrl(`/news/${article.slug}/`),
-          lastmod: normalizeDate(article.updated_at ?? article.published_at),
-          changefreq: "weekly",
-          priority: "0.72",
-        });
-      }
+    for (const entry of docs) {
+      const path = editorialSitemapPath(entry);
+      if (path) entries.push({ loc: absolute(path), lastmod: validSeoDate(entry.data.lastUpdated) });
     }
+    for (const [file, data] of Object.entries(englishGuides)) {
+      if (data.draft || !validSeoDate(data.published_at)) continue;
+      const slug = file.split('/').pop()?.replace(/\.mdx$/, '');
+      if (!slug || !isValidProductSegment(slug) || slug === 'index') continue;
+      entries.push({ loc: absolute(`/guides/${slug}/`), lastmod: validSeoDate(data.lastUpdated) });
+    }
+    for (const circle of circles.filter(isPublicVisibleCircle)) {
+      if (!isValidProductSegment(circle.slug)) throw new Error('Sitemap data unavailable.');
+      // The page also lists posts; circle.updated_at does not track those changes.
+      // Omit lastmod until a timestamp covers meaningful updates to the full page.
+      entries.push({ loc: absolute(`/circles/${circle.slug}/`) });
+    }
+    for (const article of news) {
+      if (!isValidProductSegment(article.slug)) throw new Error('Sitemap data unavailable.');
+      // updated_at also changes on view-count writes. Do not claim publication
+      // is the last editorial modification; omit lastmod until it is reliable.
+      entries.push({ loc: absolute(`/news/${canonicalNewsSitemapSlug(article.slug)}/`) });
+    }
+    return new Response(serializeSitemap(entries, origin), {
+      headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600' },
+    });
+  } catch {
+    return new Response('Sitemap temporarily unavailable.', {
+      status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex', 'Retry-After': '3600' },
+    });
+  } finally {
+    transport?.abort();
   }
-
-  const uniqueEntries = Array.from(new Map(entries.map((entry) => [entry.loc, entry])).values());
-  const xml = serializeSitemap(uniqueEntries);
-
-  return new Response(xml, {
-    headers: {
-      "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=3600",
-    },
-  });
 };

@@ -1,0 +1,27 @@
+{
+  "scope": "BOUNDED_DELETE_FOLLOWUP_LOCAL_ONLY",
+  "originalRls": {
+    "newlyRun": 0,
+    "newlyPassed": 0,
+    "unaffectedPriorPass": 14,
+    "previousEvidence": "196ab48ea0aa",
+    "totalPassedWithReusedEvidence": 14
+  },
+  "group1": {
+    "newlyClosed": null,
+    "totalLocalCases": 6,
+    "total": 14,
+    "otherSixReusedFromPriorEvidence": true
+  },
+  "edit": {
+    "status": "BLOCKED",
+    "reason": "NO_OWNER_POST_OR_COMMENT_EDIT_UI_OR_CONTENT_UPDATE_API_IN_CURRENT_SOURCE"
+  },
+  "media": {
+    "status": "BLOCKED",
+    "reason": "LOCAL_R2_NOT_CONFIGURED"
+  },
+  "productionParity": "UNKNOWN",
+  "productionRequests": 0,
+  "productionWrites": 0
+}

@@ -1,0 +1,15 @@
+{
+  "format": "isolated-turnstile-authorization-v1",
+  "authorizationId": "e-verify-turnstile-isolated-openglasshub-20261014-b1",
+  "packetSha256": "80418264782a7cbc6f2fd6d5c2e80d894ea37281426d1c0c231aa97d761974d8",
+  "executionBindingSha256": "cf89bfda28134b8a2a28ea82949e04023c1820d7ceb5b8bf6af158d8ce528431",
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "humanGates": {
+    "boundedVendorTrustAndResidualRiskAccepted": null,
+    "isolatedOfficialTestKeyOnlyConfirmed": null,
+    "freeOnlyZeroAdditionalCostConfirmed": null,
+    "diagnosticLogsAndPrivacyBoundaryAccepted": null,
+    "operatorAvailableForEntireValidity": null
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "OFFLINE_READ_PLAN_ADMISSION_ONLY_NOT_PRODUCTION_EXECUTOR",
+  "tests": 11,
+  "passed": 11,
+  "failed": 0,
+  "stdoutSha256": "0f42e08e47687dee9082b0d4ea9f75d2b15a131dd6f3706cd366ca2a07d36115",
+  "historicalTestsRerun": false,
+  "productionRequests": 0
+}

@@ -1,0 +1,15 @@
+{
+  "format": "group1-script-targeted-tests-v1",
+  "recordedAtUTC": "2026-10-13T05:09:09.335Z",
+  "total": 17,
+  "passed": 17,
+  "failed": 0,
+  "skipped": 0,
+  "realChromeLoopbackTests": 3,
+  "actualFrozenAstroReactChunks": true,
+  "productionHtmlFixture": false,
+  "stdoutSha256": "3f7bb8eb3f886b022d0dae3bdbc1c4712bd0fd615f80eaa721e123504488b276",
+  "historicalTestsRerun": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

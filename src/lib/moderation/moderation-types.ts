@@ -141,10 +141,8 @@ export interface ModerationInput {
   providerInput?: ModerationProviderInput;
 }
 
-export interface OpenAIModerationResult {
+export type OpenAIModerationResult = {
   provider: "openai";
-  decision: "allow" | "review" | "reject" | "error";
-  reasonCode: string;
   flagged: boolean;
   providerStatus?: ModerationProviderStatus;
   decisionSource?: ModerationDecisionSource;
@@ -152,7 +150,10 @@ export interface OpenAIModerationResult {
   categories?: string[];
   scoresSummary?: Record<string, "low" | "medium" | "high">;
   safeSummary?: string | null;
-}
+} & (
+  | { decision: "allow"; reasonCode: "openai_allow" | "openai_allow_empty" }
+  | { decision: "review" | "reject" | "error"; reasonCode: OpenAIModerationReasonCode }
+);
 
 export interface ForumPolicyClassifierResult {
   provider: "forum_policy";

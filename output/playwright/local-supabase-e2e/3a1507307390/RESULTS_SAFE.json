@@ -1,0 +1,591 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "3a1507307390",
+  "results": [
+    {
+      "id": "REAL_NODE_AUTH_A",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REAL_NODE_AUTH_B",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REAL_NODE_AUTH_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_PUBLIC",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "family": "original16Rls",
+      "status": "FAIL",
+      "reason": "RLS_ASSERTION_FAILED",
+      "httpStatus": 401,
+      "permissionCode": "42501",
+      "rows": null,
+      "detailEmpty": true,
+      "hintEmpty": false,
+      "messageClass": "PERMISSION_DENIED"
+    },
+    {
+      "id": "RLS_ANON_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "family": "original16Rls",
+      "status": "FAIL",
+      "reason": "RLS_ASSERTION_FAILED",
+      "httpStatus": 401,
+      "permissionCode": "42501",
+      "rows": null,
+      "detailEmpty": true,
+      "hintEmpty": false,
+      "messageClass": "PERMISSION_DENIED"
+    },
+    {
+      "id": "RLS_A_LEGACY",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_AUDIT",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_LEGACY",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_AUDIT",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "OWN_PRIVATE_RLS_A",
+      "family": "additionalRls",
+      "status": "PASS",
+      "ownRows": 1,
+      "crossUserRows": 0,
+      "databaseRlsEnforced": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "OWN_PRIVATE_RLS_B",
+      "family": "additionalRls",
+      "status": "PASS",
+      "ownRows": 1,
+      "crossUserRows": 0,
+      "databaseRlsEnforced": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "ANON_PRIVATE_RLS",
+      "family": "additionalRls",
+      "status": "PASS",
+      "httpStatus": 401,
+      "permissionCode": "42501"
+    },
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_PERSISTENCE_A",
+      "family": "auth",
+      "status": "PASS",
+      "reloadKeepsExpectedSession": true
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_PERSISTENCE_B",
+      "family": "auth",
+      "status": "PASS",
+      "reloadKeepsExpectedSession": true
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_PERSISTENCE_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "reloadKeepsExpectedSession": true
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "ADMIN_API_A",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 403,
+      "expectedRole": "user",
+      "backendPermissionChecked": true
+    },
+    {
+      "id": "ADMIN_API_B",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 403,
+      "expectedRole": "user",
+      "backendPermissionChecked": true
+    },
+    {
+      "id": "ADMIN_API_ADMIN",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 200,
+      "expectedRole": "admin",
+      "backendPermissionChecked": true
+    },
+    {
+      "id": "POST_CREATE_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "POST_CREATE_HTTP_FAILURE",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "id": "COMMENT_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "COMMENT_HTTP_FAILURE",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "id": "REPLY_UI",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "UI_OR_LOCAL_OPERATION_TIMEOUT"
+    },
+    {
+      "id": "LIKE_UI",
+      "family": "business",
+      "status": "PASS",
+      "uiPressedAndBackendVoteVerified": true
+    },
+    {
+      "id": "CIRCLE_CREATE_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "CIRCLE_CREATE_HTTP_FAILURE",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "id": "OTHER_USER_POST_DELETE_DENIED",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 400,
+      "originalRowUnchanged": true
+    },
+    {
+      "id": "NOTIFICATIONS_UI",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "LOCAL_APPLICATION_HTTP_500"
+    },
+    {
+      "id": "PAGE_/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/feed/?sort=latest",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/feed/?sort=hot",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/products/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/products/xreal/xreal-air/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/circles/e2e-3a1507307390/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/admin/devices/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/admin/forum/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/admin/reports/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/admin/media/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/admin/news/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/admin/users/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "PAGE_/admin/circles/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true
+    },
+    {
+      "id": "RESPONSIVE_1440",
+      "family": "ui",
+      "status": "PASS",
+      "width": 1440,
+      "noHorizontalOverflow": true
+    },
+    {
+      "id": "RESPONSIVE_390",
+      "family": "ui",
+      "status": "PASS",
+      "width": 390,
+      "noHorizontalOverflow": true
+    },
+    {
+      "id": "RESPONSIVE_430",
+      "family": "ui",
+      "status": "PASS",
+      "width": 430,
+      "noHorizontalOverflow": true
+    },
+    {
+      "id": "REAL_LINK_NAVIGATION_NO_HMR",
+      "family": "ui",
+      "status": "PASS",
+      "realLinkClick": true,
+      "viteHmrAbsent": true
+    },
+    {
+      "id": "LOGOUT_A",
+      "family": "auth",
+      "status": "BLOCKED",
+      "reason": "UI_OR_LOCAL_OPERATION_TIMEOUT"
+    },
+    {
+      "id": "LOGOUT_B",
+      "family": "auth",
+      "status": "BLOCKED",
+      "reason": "UI_OR_LOCAL_OPERATION_TIMEOUT"
+    },
+    {
+      "id": "LOGOUT_ADMIN",
+      "family": "auth",
+      "status": "BLOCKED",
+      "reason": "UI_OR_LOCAL_OPERATION_TIMEOUT"
+    },
+    {
+      "id": "POST_EDIT_UI",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "UI_WORKFLOW_NOT_YET_EXECUTED"
+    },
+    {
+      "id": "IMAGE_VIDEO_UPLOAD",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "LOCAL_R2_SIGNING_AND_MEDIA_SERVICE_NOT_CONFIGURED"
+    },
+    {
+      "id": "REPORT_AND_ADMIN_REVIEW",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "UI_WORKFLOW_NOT_YET_EXECUTED"
+    },
+    {
+      "id": "CIRCLE_EDIT_UI",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "UI_WORKFLOW_NOT_YET_EXECUTED"
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 53,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "summary": {
+    "results": {
+      "PASS": 49,
+      "FAIL": 5,
+      "BLOCKED": 9
+    },
+    "originalRls16Passed": 14,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 7
+  }
+}

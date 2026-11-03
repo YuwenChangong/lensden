@@ -1,0 +1,63 @@
+{
+  "format": "group1-safe-script-identity-closure-v1",
+  "recordedAtUTC": "2026-10-13T05:27:17.429Z",
+  "historicalScriptIdentified": false,
+  "rejectionRootCause": "UNKNOWN_REQUEST_IDENTITY_OMITTED_BY_PRIOR_SAFE_JOURNAL",
+  "normalizationDefect": "NO_ROOT_REWRITE_FOUND",
+  "networkPolicyBroadened": false,
+  "missingKnownLocalBindings": 0,
+  "localBuildAssets": 67,
+  "localLiteralDependencyEdges": 207,
+  "deployedBuildByteMatch": "UNKNOWN",
+  "fullGroup1RetryReady": false,
+  "unknownPublicBuildNameIdentification": true,
+  "privacyBlockedPathsAreNotClaimedIdentified": true,
+  "minimalFix": "VERIFIED_PUBLIC_REFERENCE_IDENTITY_AND_FINGERPRINT_ONLY_NO_ADMISSION_CHANGE",
+  "tests": {
+    "format": "group1-safe-script-identity-tests-v1",
+    "recordedAtUTC": "2026-10-13T05:27:16.789Z",
+    "total": 15,
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "realChromeLoopbackTests": 5,
+    "productionHtmlFixture": false,
+    "unknownBuildNamesExercised": true,
+    "finalRunnerReceiptExercised": true,
+    "stdoutSha256": "90b8e6d88fc3206732a89d8e8a2906e5dead585c591ac1ddbaf4061c59612be6",
+    "historicalTestsRerun": false,
+    "productionRequests": 0,
+    "productionWrites": 0
+  },
+  "originalFrozenFilesUnchanged": true,
+  "privateBindingUnchanged": true,
+  "historicalFiles": [
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\AUTHORIZED_GROUP1.json",
+      "sha256": "f6346f4ae5911e340d78e5147dbe23c51dacfd6866b378c90cb191fc9b22b57f"
+    },
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\GROUP1_ONCE.claim",
+      "sha256": "00fdacda015c1d66de87a83a99fd622a9d0fb42541d56f00b47c3908a6339f10"
+    },
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\GROUP1_EXECUTION_SAFE.json",
+      "sha256": "4a3e0a03923fba0b79cd72a8a4b8e02b76f75151394d062783b0fc5ee37b9774"
+    },
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\GROUP1_SUPERVISOR_SAFE.json",
+      "sha256": "ed492b3e44c1c56ba6b6fbaac10f043dfcf2e85326f2c96c70bd8a90f7822041"
+    }
+  ],
+  "authorizationId": "e-verify-group1-openglasshub-20261013-safe-script-identity-diagnostic-v5",
+  "packetSha256": "0e562e8bc9bf16036db9c028f8c11e0c096c1fb726468fe31a9300e99d50cc11",
+  "executionBindingSha256": "86277764550654fd96d4102e7b4bf17d752e8bd04e267bd5a2397df2850d410f",
+  "authorizationTemplateSha256": "51c83030e8c59e57d901ca9d6c49b317d778d1d457a1967a140cd596ba75768c",
+  "requiredGo": "GO_E_VERIFY_GROUP1_SAFE_SCRIPT_IDENTITY_DIAGNOSTIC_V1",
+  "productionAuthorization": "NOT_AUTHORIZED",
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE"
+}

@@ -1,0 +1,2293 @@
+{
+  "schemaVersion": 1,
+  "scope": "OFFLINE_TYPECHECK_ONLY",
+  "sourceBase": "3323cb85",
+  "historicalReleasedSource": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "toolchain": {
+    "astro": "7.2.10",
+    "check": "0.9.4",
+    "typescript": "5.7.3",
+    "node": "v24.14.1"
+  },
+  "gate": "node scripts/test-astro-check-baseline-ratchet.mjs",
+  "trackedCIConfiguration": "NONE",
+  "comparison": {
+    "frozenBaselineErrors": 177,
+    "releasedSourceErrors": 246,
+    "candidateBeforeErrors": 244,
+    "candidateBeforePaths": 90,
+    "candidateIntroducedErrors": 0,
+    "baselineExistingErrors": 244,
+    "exactHistoricalMessageAndSourceLineMatches": 244,
+    "existingMediaCleanupDiagnosticsRemoved": 2
+  },
+  "final": {
+    "gateStatus": "PASS",
+    "rawAstroExit": 1,
+    "errors": 56,
+    "paths": 16,
+    "newErrors": 0,
+    "changedDiagnosticSourceLines": 0,
+    "unparsedChangedDiagnosticPaths": 0,
+    "baselineManifestUnchanged": true,
+    "strictAndCheckScopeUnchanged": true,
+    "dependenciesUnchanged": true,
+    "build": "PASS_LOCAL_CONFIG"
+  },
+  "diagnosticDistributionBefore": {
+    "ts(2783)": 1,
+    "ts(2339)": 76,
+    "ts(2322)": 12,
+    "ts(18047)": 15,
+    "ts(2367)": 2,
+    "ts(2345)": 10,
+    "ts(2503)": 1,
+    "ts(2604)": 3,
+    "ts(2786)": 1,
+    "ts(2307)": 64,
+    "ts(2352)": 7,
+    "ts(2739)": 1,
+    "ts(2445)": 1,
+    "ts(18048)": 2,
+    "ts(18046)": 6,
+    "ts(7053)": 2,
+    "ts(7006)": 38,
+    "ts(2769)": 2
+  },
+  "diagnosticsBefore": [
+    {
+      "path": "src/components/admin/AdminCirclesDashboard.tsx",
+      "line": 207,
+      "column": 30,
+      "code": "ts(2783)",
+      "message": "'status' is specified more than once, so this usage will be overwritten."
+    },
+    {
+      "path": "src/components/admin/AdminReportsPanel.tsx",
+      "line": 509,
+      "column": 22,
+      "code": "ts(2339)",
+      "message": "Property 'circle' does not exist on type '{ target_type: \"post\"; target_id: string; title: string | null; excerpt: string; status: string | null; moderation_status: string | null; author_id: string | null; author_profile: ProfilePreview | null; circle: { ...; } | null; } | { ...; } | { ...; } | { ...; }'."
+    },
+    {
+      "path": "src/components/admin/AdminReportsPanel.tsx",
+      "line": 510,
+      "column": 22,
+      "code": "ts(2339)",
+      "message": "Property 'post' does not exist on type '{ target_type: \"post\"; target_id: string; title: string | null; excerpt: string; status: string | null; moderation_status: string | null; author_id: string | null; author_profile: ProfilePreview | null; circle: { ...; } | null; } | { ...; } | { ...; } | { ...; }'."
+    },
+    {
+      "path": "src/components/admin/AdminUsersDashboard.tsx",
+      "line": 271,
+      "column": 53,
+      "code": "ts(2322)",
+      "message": "Type 'string | null' is not assignable to type 'string | undefined'."
+    },
+    {
+      "path": "src/components/forum/CircleCoverEditor.tsx",
+      "line": 154,
+      "column": 15,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/CircleCoverEditor.tsx",
+      "line": 55,
+      "column": 28,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/CircleManageEntry.tsx",
+      "line": 41,
+      "column": 5,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/CircleOwnerDashboard.tsx",
+      "line": 179,
+      "column": 5,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/CircleOwnerDashboard.tsx",
+      "line": 291,
+      "column": 11,
+      "code": "ts(2367)",
+      "message": "This comparison appears to be unintentional because the types '\"comment\" | \"post\"' and '\"circle\"' have no overlap."
+    },
+    {
+      "path": "src/components/forum/CircleOwnerDashboard.tsx",
+      "line": 295,
+      "column": 9,
+      "code": "ts(2367)",
+      "message": "This comparison appears to be unintentional because the types '\"comment\" | \"post\"' and '\"circle\"' have no overlap."
+    },
+    {
+      "path": "src/components/forum/CommentForm.tsx",
+      "line": 101,
+      "column": 25,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string' is not assignable to parameter of type 'SetStateAction<\"评论发布成功。\" | \"Comment published.\">'."
+    },
+    {
+      "path": "src/components/forum/CommentForm.tsx",
+      "line": 147,
+      "column": 35,
+      "code": "ts(2503)",
+      "message": "Cannot find namespace 'JSX'."
+    },
+    {
+      "path": "src/components/forum/CommentForm.tsx",
+      "line": 150,
+      "column": 6,
+      "code": "ts(2604)",
+      "message": "JSX element type 'Shell' does not have any construct or call signatures."
+    },
+    {
+      "path": "src/components/forum/CommentForm.tsx",
+      "line": 150,
+      "column": 6,
+      "code": "ts(2786)",
+      "message": "'Shell' cannot be used as a JSX component."
+    },
+    {
+      "path": "src/components/forum/CreateCircleForm.tsx",
+      "line": 224,
+      "column": 64,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/CreateCircleForm.tsx",
+      "line": 305,
+      "column": 15,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/PostSocialActions.tsx",
+      "line": 219,
+      "column": 33,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/PostSocialActions.tsx",
+      "line": 229,
+      "column": 33,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/PostSocialActions.tsx",
+      "line": 259,
+      "column": 33,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/forum/PostSocialActions.tsx",
+      "line": 268,
+      "column": 33,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/legal/LegalConsentGate.tsx",
+      "line": 34,
+      "column": 49,
+      "code": "ts(2339)",
+      "message": "Property 'token' does not exist on type '(() => null) | { token: string | null; error: null; }'."
+    },
+    {
+      "path": "src/components/legal/LegalConsentGate.tsx",
+      "line": 35,
+      "column": 56,
+      "code": "ts(2339)",
+      "message": "Property 'error' does not exist on type '(() => null) | { token: string | null; error: null; }'."
+    },
+    {
+      "path": "src/components/products/ProductDetail.astro",
+      "line": 8,
+      "column": 21,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/components/products/ProductDetail.astro",
+      "line": 61,
+      "column": 113,
+      "code": "ts(2322)",
+      "message": "Type 'string' is not assignable to type '\"frame\" | \"glasses\" | \"headset\" | \"wordmark\" | undefined'."
+    },
+    {
+      "path": "src/components/profile/EditProfileForm.tsx",
+      "line": 173,
+      "column": 28,
+      "code": "ts(18047)",
+      "message": "'supabase' is possibly 'null'."
+    },
+    {
+      "path": "src/components/profile/MyProfilePage.tsx",
+      "line": 92,
+      "column": 41,
+      "code": "ts(2345)",
+      "message": "Argument of type 'ProfilePostRecord[]' is not assignable to parameter of type 'PostWithMedia[]'."
+    },
+    {
+      "path": "src/layouts/SiteLayout.astro",
+      "line": 6,
+      "column": 2,
+      "code": "ts(2322)",
+      "message": "Type '{ children: any[]; }' is not assignable to type 'IntrinsicAttributes & Props'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1039,
+      "column": 85,
+      "code": "ts(18047)",
+      "message": "'device' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1041,
+      "column": 61,
+      "code": "ts(18047)",
+      "message": "'device' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1042,
+      "column": 26,
+      "code": "ts(18047)",
+      "message": "'device' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1066,
+      "column": 27,
+      "code": "ts(2339)",
+      "message": "Property 'imageAlt' does not exist on type '{ imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; } | { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: false; placeholderType: \"glasses\"; } | ... 21 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1080,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'officialProductUrl' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1080,
+      "column": 62,
+      "code": "ts(2339)",
+      "message": "Property 'productUrl' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1081,
+      "column": 23,
+      "code": "ts(2339)",
+      "message": "Property 'buyUrl' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1085,
+      "column": 55,
+      "code": "ts(2339)",
+      "message": "Property 'positioning' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1087,
+      "column": 61,
+      "code": "ts(2339)",
+      "message": "Property 'keyLimitations' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1118,
+      "column": 50,
+      "code": "ts(2339)",
+      "message": "Property 'releaseYear' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1119,
+      "column": 52,
+      "code": "ts(2339)",
+      "message": "Property 'availability' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1039,
+      "column": 85,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string' is not assignable to parameter of type 'never'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1041,
+      "column": 61,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string' is not assignable to parameter of type 'never'."
+    },
+    {
+      "path": "src/lib/forum-feed.ts",
+      "line": 217,
+      "column": 5,
+      "code": "ts(2322)",
+      "message": "Type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null' is not assignable to type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; view_count: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null'."
+    },
+    {
+      "path": "src/lib/forum-feed.ts",
+      "line": 285,
+      "column": 5,
+      "code": "ts(2322)",
+      "message": "Type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null' is not assignable to type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; view_count: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null'."
+    },
+    {
+      "path": "src/lib/forum-search.ts",
+      "line": 272,
+      "column": 21,
+      "code": "ts(2352)",
+      "message": "Conversion of type 'GenericStringError[]' to type 'Record<string, unknown>[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/forum-search.ts",
+      "line": 317,
+      "column": 25,
+      "code": "ts(2352)",
+      "message": "Conversion of type 'ParserError<\"Unexpected input: \" | \"Unexpected input: ,post_media(*)\">[]' to type 'Record<string, unknown>[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/forum-search.ts",
+      "line": 558,
+      "column": 11,
+      "code": "ts(2739)",
+      "message": "Type 'PromiseLike<ForumSearchCircleResult[] | { post_count: number; id: string; slug: string; name: string; description: string | null; created_at: string | null; image_path: string | null; status: string | null; }[]>' is missing the following properties from type 'Promise<ForumSearchCircleResult[]>': catch, finally, [Symbol.toStringTag]"
+    },
+    {
+      "path": "src/lib/moderation/local-sensitive-lexicon.server.ts",
+      "line": 219,
+      "column": 41,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string | null' is not assignable to parameter of type 'string'."
+    },
+    {
+      "path": "src/lib/moderation/moderate-asset.server.ts",
+      "line": 105,
+      "column": 5,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string' is not assignable to parameter of type 'ModerationReasonCode | null'."
+    },
+    {
+      "path": "src/lib/moderation/moderation-media.server.ts",
+      "line": 103,
+      "column": 75,
+      "code": "ts(2445)",
+      "message": "Property 'url' is protected and only accessible within class 'BaseApiClient<TError>' and its subclasses."
+    },
+    {
+      "path": "src/lib/moderation/openai-moderation-provider.server.ts",
+      "line": 52,
+      "column": 7,
+      "code": "ts(18048)",
+      "message": "'value' is possibly 'undefined'."
+    },
+    {
+      "path": "src/lib/moderation/openai-moderation-provider.server.ts",
+      "line": 53,
+      "column": 7,
+      "code": "ts(18048)",
+      "message": "'value' is possibly 'undefined'."
+    },
+    {
+      "path": "src/lib/news.ts",
+      "line": 648,
+      "column": 27,
+      "code": "ts(2345)",
+      "message": "Argument of type 'NewsArticleRow | null' is not assignable to parameter of type 'NewsArticleRow'."
+    },
+    {
+      "path": "src/lib/profile-data.ts",
+      "line": 127,
+      "column": 16,
+      "code": "ts(18047)",
+      "message": "'withBannerResult.error' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/profile-data.ts",
+      "line": 283,
+      "column": 62,
+      "code": "ts(2345)",
+      "message": "Argument of type 'ProfilePostRecord[]' is not assignable to parameter of type 'PostWithMedia[]'."
+    },
+    {
+      "path": "src/lib/server/device-admin.ts",
+      "line": 132,
+      "column": 416,
+      "code": "ts(18046)",
+      "message": "'parsed.value.changes' is of type 'unknown'."
+    },
+    {
+      "path": "src/lib/server/device-admin.ts",
+      "line": 132,
+      "column": 445,
+      "code": "ts(18046)",
+      "message": "'parsed.value.changes' is of type 'unknown'."
+    },
+    {
+      "path": "src/lib/server/device-admin.ts",
+      "line": 132,
+      "column": 564,
+      "code": "ts(18046)",
+      "message": "'parsed.value.changes' is of type 'unknown'."
+    },
+    {
+      "path": "src/lib/server/device-admin.ts",
+      "line": 132,
+      "column": 611,
+      "code": "ts(18046)",
+      "message": "'parsed.value.changes' is of type 'unknown'."
+    },
+    {
+      "path": "src/lib/server/device-admin.ts",
+      "line": 132,
+      "column": 307,
+      "code": "ts(2345)",
+      "message": "Argument of type 'unknown' is not assignable to parameter of type 'string'."
+    },
+    {
+      "path": "src/lib/server/device-admin.ts",
+      "line": 132,
+      "column": 762,
+      "code": "ts(2345)",
+      "message": "Argument of type 'unknown' is not assignable to parameter of type 'string'."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 870,
+      "column": 108,
+      "code": "ts(2339)",
+      "message": "Property 'post' does not exist on type 'ReportTargetPreview'."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 874,
+      "column": 24,
+      "code": "ts(2339)",
+      "message": "Property 'post' does not exist on type 'ReportTargetPreview'."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 276,
+      "column": 21,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; name: any; slug: any; status: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 293,
+      "column": 44,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 319,
+      "column": 22,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; title: any; status: any; moderation_status: any; circle_id: any; circles: { id: any; name: any; slug: any; status: any; }[]; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 341,
+      "column": 44,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 383,
+      "column": 44,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/site-navigation.ts",
+      "line": 18,
+      "column": 49,
+      "code": "ts(7053)",
+      "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ readonly notFoundTitle: \"页面未找到\"; readonly notFoundDescription: \"你访问的页面不存在，或当前预览环境还没有这条内容。\"; readonly notFoundLead: \"链接可能已失效、内容尚未发布，或者你访问的是预览环境里不存在的地址。\"; readonly notFoundHome: \"返回首页\"; ... 46 more ...; readonly noSearchResults: \"没有找到相关内容\"; } | { ...; }'."
+    },
+    {
+      "path": "src/pages/api/admin/device-specs.ts",
+      "line": 1,
+      "column": 21,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/devices.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/devices.ts",
+      "line": 24,
+      "column": 56,
+      "code": "ts(2322)",
+      "message": "Type 'Response | Promise<Response | undefined>' is not assignable to type 'Response | Promise<Response>'."
+    },
+    {
+      "path": "src/pages/api/admin/devices.ts",
+      "line": 25,
+      "column": 57,
+      "code": "ts(2322)",
+      "message": "Type 'Response | Promise<Response | undefined>' is not assignable to type 'Response | Promise<Response>'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 103,
+      "column": 7,
+      "code": "ts(2322)",
+      "message": "Type '{ id: any; slug: any; name: any; description: any; type: any; created_at: any; updated_at: any; image_path: any; owner_id: any; profiles: { id: any; username: any; display_name: any; avatar_url: any; role: any; }[]; }[] | null' is not assignable to type '{ id: any; slug: any; name: any; description: any; type: any; status: any; created_at: any; updated_at: any; image_path: any; owner_id: any; profiles: { id: any; username: any; display_name: any; avatar_url: any; role: any; }[]; }[] | null'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 157,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 158,
+      "column": 41,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 159,
+      "column": 45,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 160,
+      "column": 43,
+      "code": "ts(2339)",
+      "message": "Property 'avatar_url' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 161,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'role' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles/purge.ts",
+      "line": 2,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/forum/me.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 47,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'status' does not exist on type '{ id: any; title: any; status: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 63,
+      "column": 32,
+      "code": "ts(2339)",
+      "message": "Property 'title' does not exist on type '{ id: any; title: any; status: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 67,
+      "column": 32,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; display_name: any; username: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 68,
+      "column": 42,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ id: any; display_name: any; username: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 69,
+      "column": 38,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ id: any; display_name: any; username: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 100,
+      "column": 38,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{ name: any; slug: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 101,
+      "column": 38,
+      "code": "ts(2339)",
+      "message": "Property 'slug' does not exist on type '{ name: any; slug: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 92,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 93,
+      "column": 41,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 94,
+      "column": 45,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 95,
+      "column": 43,
+      "code": "ts(2339)",
+      "message": "Property 'avatar_url' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 96,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'role' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/reports.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/approve.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/hide.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/lexicon-health.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 74,
+      "column": 29,
+      "code": "ts(2339)",
+      "message": "Property 'title' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 89,
+      "column": 31,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 90,
+      "column": 34,
+      "code": "ts(2339)",
+      "message": "Property 'title' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 91,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'status' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 94,
+      "column": 30,
+      "code": "ts(2339)",
+      "message": "Property 'circles' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/reject.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/news.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/reports.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/reports/[id].ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/reports/[id]/action.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/trusted-runtime/capability.ts",
+      "line": 2,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/users.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/users/[id]/ban.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/users/[id]/clear-warning.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/users/[id]/safety.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/users/[id]/suspend.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/users/[id]/unban.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/admin/users/[id]/warn.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/auth/resend-confirmation.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/circles.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/circles/[slug]/comments.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/circles/[slug]/manage.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/circles/[slug]/posts.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/comments.ts",
+      "line": 13,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/external-video-upload.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/media-upload-guard.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/post-media.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/posts.ts",
+      "line": 13,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/reports.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/forum/search.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/legal/consent.ts",
+      "line": 2,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/legal/consent.ts",
+      "line": 33,
+      "column": 29,
+      "code": "ts(7006)",
+      "message": "Parameter 'verifiedUserId' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/api/media/circle/[circleId].ts",
+      "line": 2,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/media/post/[mediaId].ts",
+      "line": 2,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/media/profile/[userId]/[kind].ts",
+      "line": 2,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/news.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/news/[slug].ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/users/me/notifications.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/users/me/preferences.ts",
+      "line": 1,
+      "column": 21,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/users/me/profile.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/users/me/summary.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/api/users/me/summary.ts",
+      "line": 121,
+      "column": 7,
+      "code": "ts(2322)",
+      "message": "Type 'string | null' is not assignable to type 'string'."
+    },
+    {
+      "path": "src/pages/circles/[slug].astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/circles/[slug].astro",
+      "line": 31,
+      "column": 29,
+      "code": "ts(2339)",
+      "message": "Property 'R2_PUBLIC_BASE_URL' does not exist on type 'CloudflareEnv'."
+    },
+    {
+      "path": "src/pages/circles/[slug].astro",
+      "line": 117,
+      "column": 80,
+      "code": "ts(2769)",
+      "message": "No overload matches this call."
+    },
+    {
+      "path": "src/pages/circles/index.astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/circles/index.astro",
+      "line": 57,
+      "column": 70,
+      "code": "ts(2769)",
+      "message": "No overload matches this call."
+    },
+    {
+      "path": "src/pages/devices/[slug].astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/feed/index.astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/feed/index.astro",
+      "line": 23,
+      "column": 29,
+      "code": "ts(2339)",
+      "message": "Property 'R2_PUBLIC_BASE_URL' does not exist on type 'CloudflareEnv'."
+    },
+    {
+      "path": "src/pages/guides/[slug].astro",
+      "line": 52,
+      "column": 8,
+      "code": "ts(2604)",
+      "message": "Component 'Content' is not a valid component."
+    },
+    {
+      "path": "src/pages/index.astro",
+      "line": 7,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/login/index.astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/news/[slug].astro",
+      "line": 7,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/news/[slug].astro",
+      "line": 93,
+      "column": 18,
+      "code": "ts(2604)",
+      "message": "Component 'Tag' is not a valid component."
+    },
+    {
+      "path": "src/pages/news/index.astro",
+      "line": 7,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 124,
+      "column": 39,
+      "code": "ts(2339)",
+      "message": "Property 'slug' does not exist on type '{ slug: any; name: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 124,
+      "column": 56,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{ slug: any; name: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 138,
+      "column": 41,
+      "code": "ts(2339)",
+      "message": "Property 'slug' does not exist on type '{ slug: any; name: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 139,
+      "column": 23,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{ slug: any; name: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 195,
+      "column": 61,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ display_name: any; username: any; avatar_url: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 31,
+      "column": 29,
+      "code": "ts(2339)",
+      "message": "Property 'R2_PUBLIC_BASE_URL' does not exist on type 'CloudflareEnv'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 84,
+      "column": 91,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ display_name: any; username: any; avatar_url: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 86,
+      "column": 60,
+      "code": "ts(2339)",
+      "message": "Property 'avatar_url' does not exist on type '{ display_name: any; username: any; avatar_url: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 91,
+      "column": 20,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ display_name: any; username: any; avatar_url: any; }[]'."
+    },
+    {
+      "path": "src/pages/posts/[id].astro",
+      "line": 92,
+      "column": 23,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ display_name: any; username: any; avatar_url: any; }[]'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 445,
+      "column": 25,
+      "code": "ts(18046)",
+      "message": "'product' is of type 'unknown'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 8,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 231,
+      "column": 11,
+      "code": "ts(2322)",
+      "message": "Type 'string' is not assignable to type '\"frame\" | \"glasses\" | \"headset\" | \"wordmark\" | undefined'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 450,
+      "column": 78,
+      "code": "ts(2322)",
+      "message": "Type 'unknown[]' is not assignable to type 'Product[]'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 385,
+      "column": 18,
+      "code": "ts(2339)",
+      "message": "Property 'disabled' does not exist on type 'Element'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 386,
+      "column": 106,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 386,
+      "column": 183,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 397,
+      "column": 16,
+      "code": "ts(2339)",
+      "message": "Property 'disabled' does not exist on type 'Element'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 398,
+      "column": 105,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 398,
+      "column": 182,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 418,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 423,
+      "column": 101,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 456,
+      "column": 22,
+      "code": "ts(2339)",
+      "message": "Property 'disabled' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 476,
+      "column": 64,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 580,
+      "column": 44,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 617,
+      "column": 44,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 624,
+      "column": 14,
+      "code": "ts(2339)",
+      "message": "Property 'hidden' does not exist on type 'Element'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 641,
+      "column": 33,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 646,
+      "column": 56,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 315,
+      "column": 102,
+      "code": "ts(7006)",
+      "message": "Parameter 'key' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 315,
+      "column": 30,
+      "code": "ts(7006)",
+      "message": "Parameter 'template' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 315,
+      "column": 40,
+      "code": "ts(7006)",
+      "message": "Parameter 'args' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 315,
+      "column": 99,
+      "code": "ts(7006)",
+      "message": "Parameter '_' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 319,
+      "column": 53,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 320,
+      "column": 56,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 344,
+      "column": 24,
+      "code": "ts(7006)",
+      "message": "Parameter 'value' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 350,
+      "column": 35,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 350,
+      "column": 44,
+      "code": "ts(7006)",
+      "message": "Parameter 'query' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 367,
+      "column": 25,
+      "code": "ts(7006)",
+      "message": "Parameter 'slug' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 443,
+      "column": 51,
+      "code": "ts(7006)",
+      "message": "Parameter 'field' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 474,
+      "column": 36,
+      "code": "ts(7006)",
+      "message": "Parameter 'open' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 503,
+      "column": 34,
+      "code": "ts(7006)",
+      "message": "Parameter 'event' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 511,
+      "column": 34,
+      "code": "ts(7006)",
+      "message": "Parameter 'query' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 511,
+      "column": 41,
+      "code": "ts(7006)",
+      "message": "Parameter 'matches' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 530,
+      "column": 24,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 571,
+      "column": 35,
+      "code": "ts(7006)",
+      "message": "Parameter 'query' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 574,
+      "column": 22,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 584,
+      "column": 27,
+      "code": "ts(7006)",
+      "message": "Parameter 'slug' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 602,
+      "column": 32,
+      "code": "ts(7006)",
+      "message": "Parameter 'slug' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/[brand].astro",
+      "line": 250,
+      "column": 22,
+      "code": "ts(7053)",
+      "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ readonly 产品: \"产品\"; readonly 类别: \"类别\"; readonly 显示: \"显示\"; readonly 分辨率: \"分辨率\"; readonly 刷新率: \"刷新率\"; readonly 入眼亮度: \"入眼亮度\"; readonly \"\\u9762\\u677F / \\u6295\\u5F71\\u4EAE\\u5EA6\": \"面板 / 投影亮度\"; readonly FOV: \"FOV\"; readonly 重量: \"重量\"; readonly \"\\u5E73\\u53F0 / \\u82AF\\u7247\": \"平台 / 芯片\"; readonly 平台: \"平台\"; readonly 相机: \"相机\";...'."
+    },
+    {
+      "path": "src/pages/products/[brand]/[slug].astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 295,
+      "column": 25,
+      "code": "ts(18046)",
+      "message": "'product' is of type 'unknown'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 6,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 300,
+      "column": 78,
+      "code": "ts(2322)",
+      "message": "Type 'unknown[]' is not assignable to type 'Product[]'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 268,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 273,
+      "column": 101,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 310,
+      "column": 16,
+      "code": "ts(2339)",
+      "message": "Property 'disabled' does not exist on type 'Element'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 312,
+      "column": 104,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 312,
+      "column": 181,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{}'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 324,
+      "column": 22,
+      "code": "ts(2339)",
+      "message": "Property 'disabled' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 344,
+      "column": 64,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 444,
+      "column": 44,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 449,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 485,
+      "column": 44,
+      "code": "ts(2339)",
+      "message": "Property 'value' does not exist on type 'HTMLElement'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 498,
+      "column": 16,
+      "code": "ts(2339)",
+      "message": "Property 'hidden' does not exist on type 'Element'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 502,
+      "column": 16,
+      "code": "ts(2339)",
+      "message": "Property 'hidden' does not exist on type 'Element'."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 218,
+      "column": 102,
+      "code": "ts(7006)",
+      "message": "Parameter 'key' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 218,
+      "column": 30,
+      "code": "ts(7006)",
+      "message": "Parameter 'template' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 218,
+      "column": 40,
+      "code": "ts(7006)",
+      "message": "Parameter 'args' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 218,
+      "column": 99,
+      "code": "ts(7006)",
+      "message": "Parameter '_' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 222,
+      "column": 53,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 241,
+      "column": 24,
+      "code": "ts(7006)",
+      "message": "Parameter 'value' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 247,
+      "column": 25,
+      "code": "ts(7006)",
+      "message": "Parameter 'slug' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 293,
+      "column": 51,
+      "code": "ts(7006)",
+      "message": "Parameter 'field' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 342,
+      "column": 36,
+      "code": "ts(7006)",
+      "message": "Parameter 'open' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 371,
+      "column": 34,
+      "code": "ts(7006)",
+      "message": "Parameter 'event' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 379,
+      "column": 34,
+      "code": "ts(7006)",
+      "message": "Parameter 'query' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 379,
+      "column": 41,
+      "code": "ts(7006)",
+      "message": "Parameter 'matches' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 398,
+      "column": 24,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 439,
+      "column": 32,
+      "code": "ts(7006)",
+      "message": "Parameter 'query' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 440,
+      "column": 46,
+      "code": "ts(7006)",
+      "message": "Parameter 'product' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 453,
+      "column": 27,
+      "code": "ts(7006)",
+      "message": "Parameter 'slug' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/products/index.astro",
+      "line": 468,
+      "column": 32,
+      "code": "ts(7006)",
+      "message": "Parameter 'slug' implicitly has an 'any' type."
+    },
+    {
+      "path": "src/pages/search/index.astro",
+      "line": 7,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/search/index.astro",
+      "line": 33,
+      "column": 28,
+      "code": "ts(2339)",
+      "message": "Property 'R2_PUBLIC_BASE_URL' does not exist on type 'CloudflareEnv'."
+    },
+    {
+      "path": "src/pages/sitemap.xml.ts",
+      "line": 1,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/u/[username].astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    },
+    {
+      "path": "src/pages/users/[id].astro",
+      "line": 4,
+      "column": 35,
+      "code": "ts(2307)",
+      "message": "Cannot find module 'cloudflare:workers' or its corresponding type declarations."
+    }
+  ],
+  "diagnosticsAfter": [
+    {
+      "path": "src/components/legal/LegalConsentGate.tsx",
+      "line": 34,
+      "column": 49,
+      "code": "ts(2339)",
+      "message": "Property 'token' does not exist on type '(() => null) | { token: string | null; error: null; }'."
+    },
+    {
+      "path": "src/components/legal/LegalConsentGate.tsx",
+      "line": 35,
+      "column": 56,
+      "code": "ts(2339)",
+      "message": "Property 'error' does not exist on type '(() => null) | { token: string | null; error: null; }'."
+    },
+    {
+      "path": "src/layouts/SiteLayout.astro",
+      "line": 6,
+      "column": 2,
+      "code": "ts(2322)",
+      "message": "Type '{ children: any[]; }' is not assignable to type 'IntrinsicAttributes & Props'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1039,
+      "column": 85,
+      "code": "ts(18047)",
+      "message": "'device' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1041,
+      "column": 61,
+      "code": "ts(18047)",
+      "message": "'device' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1042,
+      "column": 26,
+      "code": "ts(18047)",
+      "message": "'device' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1066,
+      "column": 27,
+      "code": "ts(2339)",
+      "message": "Property 'imageAlt' does not exist on type '{ imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; } | { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: false; placeholderType: \"glasses\"; } | ... 21 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1080,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'officialProductUrl' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1080,
+      "column": 62,
+      "code": "ts(2339)",
+      "message": "Property 'productUrl' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1081,
+      "column": 23,
+      "code": "ts(2339)",
+      "message": "Property 'buyUrl' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1085,
+      "column": 55,
+      "code": "ts(2339)",
+      "message": "Property 'positioning' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1087,
+      "column": 61,
+      "code": "ts(2339)",
+      "message": "Property 'keyLimitations' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1118,
+      "column": 50,
+      "code": "ts(2339)",
+      "message": "Property 'releaseYear' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1119,
+      "column": 52,
+      "code": "ts(2339)",
+      "message": "Property 'availability' does not exist on type '{ slug: string; brandKey: string; brandName: string; name: string; shortDescription: string; longDescription: string; typeLabel: string; media: { imageBackground: \"light\"; imageFit: \"contain\"; hasConfirmedImage: true; placeholderType: \"glasses\"; }; ... 8 more ...; fullSpecs: { ...; }; } | ... 22 more ... | { ...; }'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1039,
+      "column": 85,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string' is not assignable to parameter of type 'never'."
+    },
+    {
+      "path": "src/lib/device-catalog.ts",
+      "line": 1041,
+      "column": 61,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string' is not assignable to parameter of type 'never'."
+    },
+    {
+      "path": "src/lib/forum-feed.ts",
+      "line": 217,
+      "column": 5,
+      "code": "ts(2322)",
+      "message": "Type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null' is not assignable to type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; view_count: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null'."
+    },
+    {
+      "path": "src/lib/forum-feed.ts",
+      "line": 285,
+      "column": 5,
+      "code": "ts(2322)",
+      "message": "Type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null' is not assignable to type '{ id: any; author_id: any; title: any; body: any; type: any; status: any; created_at: any; last_activity_at: any; view_count: any; profiles: { display_name: any; username: any; }[]; circles: { slug: any; name: any; status: any; }[]; post_media: any[]; }[] | null'."
+    },
+    {
+      "path": "src/lib/moderation/local-sensitive-lexicon.server.ts",
+      "line": 219,
+      "column": 41,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string | null' is not assignable to parameter of type 'string'."
+    },
+    {
+      "path": "src/lib/moderation/moderate-asset.server.ts",
+      "line": 105,
+      "column": 5,
+      "code": "ts(2345)",
+      "message": "Argument of type 'string' is not assignable to parameter of type 'ModerationReasonCode | null'."
+    },
+    {
+      "path": "src/lib/moderation/moderation-media.server.ts",
+      "line": 103,
+      "column": 75,
+      "code": "ts(2445)",
+      "message": "Property 'url' is protected and only accessible within class 'BaseApiClient<TError>' and its subclasses."
+    },
+    {
+      "path": "src/lib/moderation/openai-moderation-provider.server.ts",
+      "line": 52,
+      "column": 7,
+      "code": "ts(18048)",
+      "message": "'value' is possibly 'undefined'."
+    },
+    {
+      "path": "src/lib/moderation/openai-moderation-provider.server.ts",
+      "line": 53,
+      "column": 7,
+      "code": "ts(18048)",
+      "message": "'value' is possibly 'undefined'."
+    },
+    {
+      "path": "src/lib/news.ts",
+      "line": 648,
+      "column": 27,
+      "code": "ts(2345)",
+      "message": "Argument of type 'NewsArticleRow | null' is not assignable to parameter of type 'NewsArticleRow'."
+    },
+    {
+      "path": "src/lib/profile-data.ts",
+      "line": 127,
+      "column": 16,
+      "code": "ts(18047)",
+      "message": "'withBannerResult.error' is possibly 'null'."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 870,
+      "column": 108,
+      "code": "ts(2339)",
+      "message": "Property 'post' does not exist on type 'ReportTargetPreview'."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 874,
+      "column": 24,
+      "code": "ts(2339)",
+      "message": "Property 'post' does not exist on type 'ReportTargetPreview'."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 276,
+      "column": 21,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; name: any; slug: any; status: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 293,
+      "column": 44,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 319,
+      "column": 22,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; title: any; status: any; moderation_status: any; circle_id: any; circles: { id: any; name: any; slug: any; status: any; }[]; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 341,
+      "column": 44,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/lib/server/reports.server.ts",
+      "line": 383,
+      "column": 44,
+      "code": "ts(2352)",
+      "message": "Conversion of type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 103,
+      "column": 7,
+      "code": "ts(2322)",
+      "message": "Type '{ id: any; slug: any; name: any; description: any; type: any; created_at: any; updated_at: any; image_path: any; owner_id: any; profiles: { id: any; username: any; display_name: any; avatar_url: any; role: any; }[]; }[] | null' is not assignable to type '{ id: any; slug: any; name: any; description: any; type: any; status: any; created_at: any; updated_at: any; image_path: any; owner_id: any; profiles: { id: any; username: any; display_name: any; avatar_url: any; role: any; }[]; }[] | null'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 157,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 158,
+      "column": 41,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 159,
+      "column": 45,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 160,
+      "column": 43,
+      "code": "ts(2339)",
+      "message": "Property 'avatar_url' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/circles.ts",
+      "line": 161,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'role' does not exist on type '{ id: any; username: any; display_name: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 47,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'status' does not exist on type '{ id: any; title: any; status: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 63,
+      "column": 32,
+      "code": "ts(2339)",
+      "message": "Property 'title' does not exist on type '{ id: any; title: any; status: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 67,
+      "column": 32,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; display_name: any; username: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 68,
+      "column": 42,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ id: any; display_name: any; username: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/media.ts",
+      "line": 69,
+      "column": 38,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ id: any; display_name: any; username: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 100,
+      "column": 38,
+      "code": "ts(2339)",
+      "message": "Property 'name' does not exist on type '{ name: any; slug: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 101,
+      "column": 38,
+      "code": "ts(2339)",
+      "message": "Property 'slug' does not exist on type '{ name: any; slug: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 92,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 93,
+      "column": 41,
+      "code": "ts(2339)",
+      "message": "Property 'username' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 94,
+      "column": 45,
+      "code": "ts(2339)",
+      "message": "Property 'display_name' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 95,
+      "column": 43,
+      "code": "ts(2339)",
+      "message": "Property 'avatar_url' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/forum/posts.ts",
+      "line": 96,
+      "column": 37,
+      "code": "ts(2339)",
+      "message": "Property 'role' does not exist on type '{ id: any; display_name: any; username: any; avatar_url: any; role: any; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 74,
+      "column": 29,
+      "code": "ts(2339)",
+      "message": "Property 'title' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 89,
+      "column": 31,
+      "code": "ts(2339)",
+      "message": "Property 'id' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 90,
+      "column": 34,
+      "code": "ts(2339)",
+      "message": "Property 'title' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 91,
+      "column": 35,
+      "code": "ts(2339)",
+      "message": "Property 'status' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/admin/moderation/queue.ts",
+      "line": 94,
+      "column": 30,
+      "code": "ts(2339)",
+      "message": "Property 'circles' does not exist on type '{ id: any; title: any; status: any; circle_id: any; circles: { id: any; name: any; slug: any; }[]; }[]'."
+    },
+    {
+      "path": "src/pages/api/legal/consent.ts",
+      "line": 33,
+      "column": 29,
+      "code": "ts(7006)",
+      "message": "Parameter 'verifiedUserId' implicitly has an 'any' type."
+    }
+  ],
+  "affectedFiles": [
+    "docs/ops/PUBLIC_BETA_CURRENT_STATE.md",
+    "docs/ops/reconciliation/release-candidate-typecheck-safe.json",
+    "docs/ops/reconciliation/release-candidate-typecheck.md",
+    "scripts/test-forum-search-visibility.mjs",
+    "scripts/test-locale-catalog-search-news.mjs",
+    "scripts/test-locale-starlight-editorial.mjs",
+    "src/cloudflare-workers.d.ts",
+    "src/components/admin/AdminCirclesDashboard.tsx",
+    "src/components/admin/AdminReportsPanel.tsx",
+    "src/components/admin/AdminUsersDashboard.tsx",
+    "src/components/forum/CircleCoverEditor.tsx",
+    "src/components/forum/CircleManageEntry.tsx",
+    "src/components/forum/CircleOwnerDashboard.tsx",
+    "src/components/forum/CommentForm.tsx",
+    "src/components/forum/CreateCircleForm.tsx",
+    "src/components/forum/PostSocialActions.tsx",
+    "src/components/products/ProductDetail.astro",
+    "src/components/profile/EditProfileForm.tsx",
+    "src/lib/circle-data.ts",
+    "src/lib/forum-search.ts",
+    "src/lib/profile-data.ts",
+    "src/lib/server/device-admin.ts",
+    "src/lib/site-navigation.ts",
+    "src/lib/supabase-server.ts",
+    "src/lib/user-summary.ts",
+    "src/pages/guides/[slug].astro",
+    "src/pages/news/[slug].astro",
+    "src/pages/posts/[id].astro",
+    "src/pages/products/[brand].astro",
+    "src/pages/products/index.astro"
+  ],
+  "targetedScripts": [
+    {
+      "command": "node scripts/test-astro-check-baseline-ratchet-unit.mjs",
+      "status": "PASS",
+      "assertions": 19
+    },
+    {
+      "command": "node scripts/test-device-admin-api-matrix.mjs",
+      "status": "PASS",
+      "assertions": 62
+    },
+    {
+      "command": "node scripts/test-user-summary-api-safety.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-reports.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-catalog-compare-security.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-locale-auth-profile.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-forum-search-filter-safety.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-forum-search-visibility.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-catalog-spec-presentation.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-locale-catalog-search-news.mjs",
+      "status": "PASS",
+      "assertions": null
+    },
+    {
+      "command": "node scripts/test-locale-starlight-editorial.mjs",
+      "status": "PASS",
+      "assertions": null
+    }
+  ],
+  "intermediateFailures": [
+    {
+      "test": "test-forum-search-visibility.mjs",
+      "reason": "CRLF-sensitive source assertion; then stale fixture missing empty devices projection",
+      "resolution": "Normalize CRLF only; empty devices projection matches existing expected devices count0"
+    },
+    {
+      "test": "test-locale-catalog-search-news.mjs",
+      "reason": "Astro update-check blocked by fetch guard; later compare control obscured after broad multi-row search",
+      "resolution": "Disable version-update request for local test; search each named product before ordinary click; no forced click or product-layout change"
+    },
+    {
+      "test": "test-locale-starlight-editorial.mjs",
+      "reason": "Astro fetchLatestAstroVersion attempts package registry request",
+      "resolution": "ASTRO_DISABLE_UPDATE_CHECK=true; final externalRequests0"
+    }
+  ],
+  "migrationCount": 56,
+  "migrationSetUnchanged": true,
+  "candidateFixes": 7,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "deployments": 0,
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "mergeReadiness": "READY_FOR_OWNER_APPROVAL",
+  "productionParity": "UNKNOWN",
+  "residualGaps": [
+    "Frozen historical type debt56 is not zero-error astro check",
+    "UI03 local workerd unresolved",
+    "UI02 local partial",
+    "GROUP1 local10/14",
+    "Production migrations/code/smoke require separate approval"
+  ],
+  "actualNodeVersion": "v24.14.1",
+  "cleanup": {
+    "testProcesses": "EXITED",
+    "databaseAndAccounts": "NOT_CREATED",
+    "historicalSourceSnapshot": "RETAINED_POLICY_BLOCKED",
+    "snapshotPath": "C:/Users/1/AppData/Local/Temp/ogh-typecheck-baseline-Kv88wt",
+    "containsCredentials": false,
+    "dependencyJunction": "EXISTING_INSTALLATION_NOT_COPIED"
+  }
+}

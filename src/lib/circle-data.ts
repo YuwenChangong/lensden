@@ -5,7 +5,7 @@ type CircleBase = {
   name: string;
   slug: string;
   description?: string | null;
-  created_at?: string | null;
+  created_at: string;
   status?: string | null;
 };
 

@@ -7,6 +7,7 @@ import { JSDOM } from "jsdom";
 import { serializePreferenceCookie } from "../src/lib/i18n/preference-cookie.ts";
 
 const manifest = JSON.parse(await readFile("node_modules/@astrojs/starlight/package.json", "utf8"));
+process.env.ASTRO_DISABLE_UPDATE_CHECK = "true";
 assert.equal(manifest.version, "0.41.3", "Task 18 public interface baseline must remain installed Starlight 0.41.3");
 const originalFetch = globalThis.fetch;
 let externalRequests = 0, server;

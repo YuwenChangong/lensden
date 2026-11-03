@@ -1,0 +1,22 @@
+{
+  "format": "offline-worker-supervision-feasibility-v1",
+  "workerObserved": true,
+  "waitingForDebugger": true,
+  "ownerFrameProven": false,
+  "scriptAdmittedFromRegisteredFrame": false,
+  "scriptRequests": 1,
+  "bodyExecutionHitsAtAttachment": 0,
+  "bodyExecutionHits": 0,
+  "fetchSupported": false,
+  "fetchFailureClass": "CDP_METHOD_NOT_AVAILABLE",
+  "workerResumed": false,
+  "profileRemoved": true,
+  "blockedProxyAttempts": 15,
+  "nodeDenials": 0,
+  "fixtureOnly": true,
+  "officialSdkExecuted": false,
+  "frozenExecutorChanged": false,
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "liveReadiness": "BLOCKED_NOT_AN_AUTHORIZATION_OR_SAFE_WORKER_IMPLEMENTATION"
+}

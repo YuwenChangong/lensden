@@ -1,0 +1,437 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "d4a4ea23aa5a",
+  "results": [
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "AUTH08_WRONG_PASSWORD",
+      "family": "group1Continuation",
+      "status": "FAIL",
+      "reason": "ASSERTION_FAILED"
+    },
+    {
+      "id": "AUTH08_INVALID_RECOVERY",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "invalidInputRejected": true,
+      "errorVisible": true,
+      "urlSanitized": true,
+      "noEmailSent": true,
+      "actualExpiredTokenNotClaimed": false
+    },
+    {
+      "id": "AUTH08_EXPIRED_RECOVERY",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "invalidInputRejected": true,
+      "errorVisible": true,
+      "urlSanitized": true,
+      "noEmailSent": true,
+      "actualExpiredTokenNotClaimed": true
+    },
+    {
+      "id": "AUTH08_SAFE_NEXT",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "realLocalLogin": true,
+      "externalNextRejected": true
+    },
+    {
+      "id": "AUTH01_REAL_CAPTCHA",
+      "family": "group1Continuation",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_AUTHORIZED_LOCAL_CAPTCHA_OFF"
+    },
+    {
+      "id": "ADMIN04_READ_DEVICES",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "collectionShapeVerified": true,
+      "uiRendered": true,
+      "fixtureMatched": false
+    },
+    {
+      "id": "ADMIN04_READ_FORUM",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "collectionShapeVerified": true,
+      "uiRendered": true,
+      "fixtureMatched": true
+    },
+    {
+      "id": "ADMIN04_DENY_FORUM_A",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_DENY_FORUM_B",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_READ_REPORTS",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "collectionShapeVerified": true,
+      "uiRendered": true,
+      "fixtureMatched": false
+    },
+    {
+      "id": "ADMIN04_DENY_REPORTS_A",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_DENY_REPORTS_B",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_READ_MEDIA",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "collectionShapeVerified": true,
+      "uiRendered": true,
+      "fixtureMatched": false
+    },
+    {
+      "id": "ADMIN04_DENY_MEDIA_A",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_DENY_MEDIA_B",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_READ_NEWS",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "collectionShapeVerified": true,
+      "uiRendered": true,
+      "fixtureMatched": false
+    },
+    {
+      "id": "ADMIN04_DENY_NEWS_A",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_DENY_NEWS_B",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_READ_USERS",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "collectionShapeVerified": true,
+      "uiRendered": true,
+      "fixtureMatched": true
+    },
+    {
+      "id": "ADMIN04_DENY_USERS_A",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_DENY_USERS_B",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_READ_CIRCLES",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "collectionShapeVerified": true,
+      "uiRendered": true,
+      "fixtureMatched": true
+    },
+    {
+      "id": "ADMIN04_DENY_CIRCLES_A",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "ADMIN04_DENY_CIRCLES_B",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "httpStatus": 403,
+      "noCollectionReturned": true
+    },
+    {
+      "id": "REPORT_DUPLICATE_IDEMPOTENCE",
+      "family": "business",
+      "status": "PASS",
+      "realApiDuplicate": true,
+      "oneDatabaseReport": true
+    },
+    {
+      "id": "ADMIN_REPORT_DISMISS_UI",
+      "family": "business",
+      "status": "PASS",
+      "realUiAction": true,
+      "resolutionActorVerified": true
+    },
+    {
+      "id": "REPORT_ACTION_NONADMIN_DENIED",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 403,
+      "targetUnchanged": true
+    },
+    {
+      "id": "ADMIN_POST_HIDE_RESTORE_UI",
+      "family": "business",
+      "status": "PASS",
+      "realUiHideRestore": true,
+      "anonymousVisibilityVerified": true
+    },
+    {
+      "id": "CIRCLE_OWNER_ONLY_MANAGEMENT",
+      "family": "permissions",
+      "status": "PASS",
+      "readAndWriteDenied": true,
+      "ownerDataUnchanged": true
+    },
+    {
+      "id": "CIRCLE_OWNER_DELETE_RESTORE_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "APPLICATION_HTTP_500",
+      "httpStatus": 500,
+      "diagnostic": "Error: Network connection lost."
+    },
+    {
+      "id": "NOTIFICATION_READ_AND_CROSS_USER_ISOLATION",
+      "family": "business",
+      "status": "PASS",
+      "realUiAutoRead": true,
+      "crossUserPatchNoEffect": true
+    },
+    {
+      "id": "UI01_EXPLICIT_LANGUAGE_PREFERENCE",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actualSettingsUi": true,
+      "serverPreferencePersisted": true,
+      "countryTrustNotClaimed": true
+    },
+    {
+      "id": "UI02_NAVIGATION_FOCUS_1440",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "width": 1440,
+      "keyboardFocus": true,
+      "actualLinkNavigation": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "id": "UI02_NAVIGATION_FOCUS_390",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "width": 390,
+      "keyboardFocus": true,
+      "actualLinkNavigation": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "id": "UI02_NAVIGATION_FOCUS_430",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "width": 430,
+      "keyboardFocus": true,
+      "actualLinkNavigation": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "id": "UI03_EMPTY_INVALID_ERROR_STATES",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actual400404AndEmptyCollection": true,
+      "noArtificialResponseFixture": true
+    },
+    {
+      "id": "LOCAL_IMAGE_UPLOAD_DISPLAY_CLEANUP",
+      "family": "media",
+      "status": "FAIL",
+      "reason": "ASSERTION_FAILED"
+    },
+    {
+      "id": "REAL_R2_VIDEO_INTEGRATION",
+      "family": "media",
+      "status": "BLOCKED",
+      "reason": "NO_ISOLATED_R2_ENDPOINT_OR_CREDENTIALS_HARDCODED_CLOUD_ENDPOINT_NOT_USED"
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 55,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "localRateLimitFixture": {
+    "canonicalRpcWasMissing": true,
+    "source": "10a1848e33097a9bb79e5cb1f1107a86bac6c724b352a13948665b90559011bb",
+    "productionParity": "NOT_CLAIMED"
+  },
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "moderation": "EXISTING_LOCAL_ONLY_SAFE_POLICY_NOT_EXTERNAL_PROVIDER_ACCEPTANCE",
+  "summary": {
+    "results": {
+      "PASS": 37,
+      "FAIL": 3,
+      "BLOCKED": 2
+    },
+    "originalRls16Passed": 0,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 0
+  },
+  "sensitiveValueCheck": "PASS"
+}

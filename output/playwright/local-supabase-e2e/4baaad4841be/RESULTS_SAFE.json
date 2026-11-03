@@ -1,0 +1,405 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "4baaad4841be",
+  "results": [
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "UI03_ROUTE_SETTINGS",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "A",
+      "routeClass": "SETTINGS",
+      "stage": "COMPLETE",
+      "assets": 21,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 0,
+      "apiStatus": null,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_ROUTE_POST",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "A",
+      "routeClass": "POST",
+      "stage": "COMPLETE",
+      "assets": 27,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 0,
+      "apiStatus": null,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_ROUTE_DEVICES",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "ADMIN",
+      "routeClass": "DEVICES",
+      "stage": "COMPLETE",
+      "assets": 24,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 1,
+      "apiStatus": 200,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_ROUTE_FORUM",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "ADMIN",
+      "routeClass": "FORUM",
+      "stage": "COMPLETE",
+      "assets": 23,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 2,
+      "apiStatus": 200,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_ROUTE_REPORTS",
+      "family": "group1Continuation",
+      "status": "FAIL",
+      "reason": "REPEATED_LOCAL_READS_EXCEEDED_BOUND",
+      "actor": "ADMIN",
+      "routeClass": "REPORTS",
+      "stage": "BOUNDED_OBSERVATION",
+      "assets": 24,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 941,
+      "apiRequests": 953,
+      "apiStatus": 200,
+      "localReadCap": 12,
+      "capTriggered": true
+    },
+    {
+      "id": "UI03_ROUTE_MEDIA",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "ADMIN",
+      "routeClass": "MEDIA",
+      "stage": "COMPLETE",
+      "assets": 23,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 2,
+      "apiStatus": 200,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_ROUTE_NEWS",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "ADMIN",
+      "routeClass": "NEWS",
+      "stage": "COMPLETE",
+      "assets": 26,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 2,
+      "apiStatus": 200,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_ROUTE_USERS",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "ADMIN",
+      "routeClass": "USERS",
+      "stage": "COMPLETE",
+      "assets": 24,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 2,
+      "apiStatus": 200,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_ROUTE_CIRCLES",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "actor": "ADMIN",
+      "routeClass": "CIRCLES",
+      "stage": "COMPLETE",
+      "assets": 26,
+      "assetErrors": 0,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "apiRequests": 2,
+      "apiStatus": 200,
+      "localReadCap": 12,
+      "capTriggered": false,
+      "localOnly": true,
+      "networkIdleNotUsed": true,
+      "completeBusinessWorkflowNotClaimed": true
+    },
+    {
+      "id": "UI03_NOTIFICATION_STATES",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "loadingHeldRealLocalRequest": true,
+      "emptyVerifiedInOwnedDatabase": true,
+      "errorFixtureHttpStatus": 503,
+      "errorIsDeliberateFixtureNotBackendFailure": true
+    },
+    {
+      "id": "UI02_CORE_CONTENT_VIEWPORTS",
+      "family": "group1Continuation",
+      "status": "PASS",
+      "measurements": [
+        {
+          "width": 1440,
+          "routeClass": "FEED",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 1440,
+          "routeClass": "PRODUCT",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 1440,
+          "routeClass": "CIRCLE",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 390,
+          "routeClass": "FEED",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 390,
+          "routeClass": "PRODUCT",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 390,
+          "routeClass": "CIRCLE",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 430,
+          "routeClass": "FEED",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 430,
+          "routeClass": "PRODUCT",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        },
+        {
+          "width": 430,
+          "routeClass": "CIRCLE",
+          "horizontalOverflow": false,
+          "mainLandmarks": 1,
+          "missingImageAlt": 0,
+          "unlabeledButtons": 0
+        }
+      ],
+      "videoCoverage": false,
+      "fullAccessibilityAuditNotClaimed": true
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 55,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "localRateLimitFixture": {
+    "canonicalRpcWasMissing": true,
+    "source": "10a1848e33097a9bb79e5cb1f1107a86bac6c724b352a13948665b90559011bb",
+    "productionParity": "NOT_CLAIMED"
+  },
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "moderation": "EXISTING_LOCAL_ONLY_SAFE_POLICY_NOT_EXTERNAL_PROVIDER_ACCEPTANCE",
+  "summary": {
+    "results": {
+      "PASS": 14,
+      "FAIL": 1
+    },
+    "originalRls16Passed": 0,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 0
+  },
+  "sensitiveValueCheck": "PASS"
+}

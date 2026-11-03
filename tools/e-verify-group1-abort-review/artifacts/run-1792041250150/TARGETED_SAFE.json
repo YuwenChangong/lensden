@@ -1,0 +1,17 @@
+{
+  "scope": "UNCHANGED_V18_ABORT_HANDLING_ONLY",
+  "tests": [
+    "CLEANUP_ABORT_NOT_FIRST_FAILURE",
+    "UNASSOCIATED_ABORT_STILL_FATAL",
+    "NETWORK_FAILURE_STILL_FATAL",
+    "FIRST_FAILURE_PRESERVED",
+    "REAL_CHROME_EXPLICIT_ABORT_STILL_FATAL_NOT_HISTORY_PROOF",
+    "REAL_CHROME_NETWORK_FAILURE_FIXTURE_STILL_FATAL",
+    "ILLEGAL_POST_FIRST_FAILURE_PRESERVED"
+  ],
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "realCredentialsUsed": false,
+  "productionRootCauseProven": false,
+  "frozenBrowserModified": false
+}

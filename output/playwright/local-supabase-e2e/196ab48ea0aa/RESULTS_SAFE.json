@@ -1,0 +1,733 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "196ab48ea0aa",
+  "results": [
+    {
+      "id": "REAL_NODE_AUTH_A",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REAL_NODE_AUTH_B",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REAL_NODE_AUTH_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_PUBLIC",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "family": "original16Rls",
+      "status": "FAIL",
+      "reason": "RLS_ASSERTION_FAILED",
+      "httpStatus": 401,
+      "permissionCode": "42501",
+      "rows": null,
+      "detailEmpty": true,
+      "hintEmpty": false,
+      "messageClass": "PERMISSION_DENIED",
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_ANON_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_ANON_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_ANON_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "family": "original16Rls",
+      "status": "FAIL",
+      "reason": "RLS_ASSERTION_FAILED",
+      "httpStatus": 401,
+      "permissionCode": "42501",
+      "rows": null,
+      "detailEmpty": true,
+      "hintEmpty": false,
+      "messageClass": "PERMISSION_DENIED",
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_A_LEGACY",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_A_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_A_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_A_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_A_AUDIT",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_B_LEGACY",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_B_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_B_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_B_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RLS_B_AUDIT",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "OWN_PRIVATE_RLS_A",
+      "family": "additionalRls",
+      "status": "PASS",
+      "ownRows": 1,
+      "crossUserRows": 0,
+      "databaseRlsEnforced": true,
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "OWN_PRIVATE_RLS_B",
+      "family": "additionalRls",
+      "status": "PASS",
+      "ownRows": 1,
+      "crossUserRows": 0,
+      "databaseRlsEnforced": true,
+      "serviceRoleUsed": false,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "ANON_PRIVATE_RLS",
+      "family": "additionalRls",
+      "status": "PASS",
+      "httpStatus": 401,
+      "permissionCode": "42501",
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_PERSISTENCE_A",
+      "family": "auth",
+      "status": "PASS",
+      "reloadKeepsExpectedSession": true
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_PERSISTENCE_B",
+      "family": "auth",
+      "status": "PASS",
+      "reloadKeepsExpectedSession": true
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_PERSISTENCE_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "reloadKeepsExpectedSession": true
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "ADMIN_API_A",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 403,
+      "expectedRole": "user",
+      "backendPermissionChecked": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "ADMIN_API_B",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 403,
+      "expectedRole": "user",
+      "backendPermissionChecked": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "ADMIN_API_ADMIN",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 200,
+      "expectedRole": "admin",
+      "backendPermissionChecked": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "POST_CREATE_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "POST_CREATE_HTTP_FAILURE",
+      "httpStatus": 503,
+      "code": "RATE_LIMIT_SERVICE_UNAVAILABLE",
+      "message": "Rate limit service temporarily unavailable",
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "COMMENT_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "COMMENT_HTTP_FAILURE",
+      "httpStatus": 503,
+      "code": "RATE_LIMIT_SERVICE_UNAVAILABLE",
+      "message": "Rate limit service temporarily unavailable",
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "REPLY_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "COMMENT_READ_HTTP_FAILURE",
+      "httpStatus": 500,
+      "message": "permission denied for table comment_reactions"
+    },
+    {
+      "id": "LIKE_UI",
+      "family": "business",
+      "status": "PASS",
+      "uiPressedAndBackendVoteVerified": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "CIRCLE_CREATE_UI",
+      "family": "business",
+      "status": "FAIL",
+      "reason": "CIRCLE_CREATE_HTTP_FAILURE",
+      "httpStatus": 503,
+      "code": "RATE_LIMIT_SERVICE_UNAVAILABLE",
+      "message": "Rate limit service temporarily unavailable",
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "CIRCLE_EDIT_UI",
+      "family": "business",
+      "status": "PASS",
+      "uiEditedAndDatabaseVerified": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "OTHER_USER_POST_DELETE_DENIED",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 403,
+      "originalRowUnchanged": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "NOTIFICATIONS_UI",
+      "family": "business",
+      "status": "PASS",
+      "pageAndBackendRead": true,
+      "deliveryNotYetProven": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "REPORT_UI",
+      "family": "business",
+      "status": "PASS",
+      "realUiReportAndDatabaseVerified": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "ADMIN_HIDE_POST_UI",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "UI_OR_LOCAL_OPERATION_TIMEOUT",
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "POST_DELETE_UI",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "UI_OR_LOCAL_OPERATION_TIMEOUT"
+    },
+    {
+      "id": "FEED_LAYOUT_390",
+      "family": "business",
+      "status": "PASS",
+      "width": 390,
+      "realAuthenticatedFeed": true,
+      "noHorizontalOverflow": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "FEED_LAYOUT_430",
+      "family": "business",
+      "status": "PASS",
+      "width": 430,
+      "realAuthenticatedFeed": true,
+      "noHorizontalOverflow": true,
+      "evidenceRun": "f89e861ef1f0",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/feed/?sort=latest",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/feed/?sort=hot",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/products/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/products/xreal/xreal-air/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/circles/e2e-196ab48ea0aa/",
+      "family": "pages",
+      "status": "NOT_RUN",
+      "reason": "TARGETED_FOLLOWUP_ONLY"
+    },
+    {
+      "id": "PAGE_/admin/devices/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/admin/forum/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/admin/reports/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/admin/media/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/admin/news/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/admin/users/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "PAGE_/admin/circles/",
+      "family": "pages",
+      "status": "PASS",
+      "httpStatus": 200,
+      "pageRendered": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RESPONSIVE_1440",
+      "family": "ui",
+      "status": "PASS",
+      "width": 1440,
+      "noHorizontalOverflow": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RESPONSIVE_390",
+      "family": "ui",
+      "status": "PASS",
+      "width": 390,
+      "noHorizontalOverflow": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "RESPONSIVE_430",
+      "family": "ui",
+      "status": "PASS",
+      "width": 430,
+      "noHorizontalOverflow": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "REAL_LINK_NAVIGATION_NO_HMR",
+      "family": "ui",
+      "status": "PASS",
+      "realLinkClick": true,
+      "viteHmrAbsent": true,
+      "evidenceRun": "3a1507307390",
+      "reusedThisTaskOnly": true
+    },
+    {
+      "id": "LOGOUT_A",
+      "family": "auth",
+      "status": "PASS",
+      "uiLogout": true,
+      "browserSessionRemoved": true
+    },
+    {
+      "id": "LOGOUT_B",
+      "family": "auth",
+      "status": "PASS",
+      "uiLogout": true,
+      "browserSessionRemoved": true
+    },
+    {
+      "id": "LOGOUT_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "uiLogout": true,
+      "browserSessionRemoved": true
+    },
+    {
+      "id": "POST_EDIT_UI",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "UI_WORKFLOW_NOT_YET_EXECUTED"
+    },
+    {
+      "id": "IMAGE_VIDEO_UPLOAD",
+      "family": "business",
+      "status": "BLOCKED",
+      "reason": "LOCAL_R2_SIGNING_AND_MEDIA_SERVICE_NOT_CONFIGURED"
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 53,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "localRateLimitFixture": {
+    "canonicalRpcWasMissing": true,
+    "source": "10a1848e33097a9bb79e5cb1f1107a86bac6c724b352a13948665b90559011bb",
+    "productionParity": "NOT_CLAIMED"
+  },
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "moderation": "EXISTING_LOCAL_ONLY_SAFE_POLICY_NOT_EXTERNAL_PROVIDER_ACCEPTANCE",
+  "summary": {
+    "results": {
+      "PASS": 56,
+      "FAIL": 6,
+      "BLOCKED": 4,
+      "NOT_RUN": 1
+    },
+    "originalRls16Passed": 14,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 8
+  },
+  "sensitiveValueCheck": "PASS"
+}

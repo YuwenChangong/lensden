@@ -1,0 +1,27 @@
+{
+  "previousAuthorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261014-v14",
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-chrome-v15",
+  "packetChangedFields": [
+    "format",
+    "authorizationId",
+    "independentGo",
+    "executionEntry",
+    "contractSha256",
+    "chromeIdentity",
+    "previousAuthorizationId",
+    "previousOwnerGatesApplied"
+  ],
+  "materialPermissionsBudgetsCasesSessionPrivacyDifferences": "NONE",
+  "technicalDifference": "Signed Chrome identity and per-launch before/after hash checks; fresh ID, entry, contract identity and hashes.",
+  "previous265HashesUnchanged": true,
+  "oldOwnerConfirmationsMigrated": false,
+  "ownerReconfirmationRequired": true,
+  "targetedTests": "3/3_REAL_CHROME_PLUS_2/2_IDENTITY_DRIFT",
+  "bindingSha256": "241476de1ad5594501c537a660891222f044e4a1b8192804997343436aa7d699",
+  "packetSha256": "ced74f08a28ba5f14d97b21c177d9f0ca2a2d71887b65cf095cd6fd8824325c2",
+  "contractSha256": "5d750371331325fce4e6a09e4229ff062c05b13cf554cf054f2f94e363fae585",
+  "frozenFiles": 278,
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "catalogHold": "ACTIVE"
+}

@@ -1,0 +1,18 @@
+{
+  "format": "isolated-turnstile-offline-results-v1",
+  "gateAndAuthorizationTests": {"passed": 33, "total": 33},
+  "realChromeLoopbackAndNativeContainmentTests": {"passed": 11, "total": 11},
+  "frozenRuntimeAndNoGoConsistencyTests": {"passed": 2, "total": 2},
+  "total": {"passed": 46, "total": 46},
+  "realVendorSdkExecuted": false,
+  "officialTestSitekeyLiveTest": "NOT_EXECUTED",
+  "originalV11RequestIdentity": "UNKNOWN",
+  "accountCredentialsUsed": false,
+  "effectiveAuthorizationCreated": false,
+  "productionClaimCreated": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "thirdPartyLiveRequests": 0,
+  "historicalSuitesRepeated": false,
+  "catalogHold": "ACTIVE"
+}

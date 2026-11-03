@@ -1,0 +1,18 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-chrome-v15",
+  "checkedAtUTC": "2026-10-15T02:36:17.724Z",
+  "localOAuthCheck": "EXPIRED",
+  "requiredScopes": "PASS",
+  "requiredScopesNames": ["account:read", "workers_scripts:write"],
+  "expiresUTC": "2026-10-14T03:54:48.964Z",
+  "remainingSecondsAtCheck": -81689,
+  "requiredRemainingStrictlyGreaterThan": 1860,
+  "failure": "OAUTH_COVERAGE",
+  "currentInstalledWranglerVersion": "4.125.0",
+  "automaticLoginOrRefresh": false,
+  "providerRequests": 0,
+  "credentialsPrinted": false,
+  "validAuthorizationCreated": false,
+  "claimCreated": false,
+  "goIssued": false
+}

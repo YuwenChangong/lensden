@@ -1,5 +1,6 @@
 ---
 import ProductVisual from "./ProductVisual.astro";
+import type { ComponentProps } from "astro/types";
 import { getUiMessages } from "../../lib/i18n/catalog";
 import { resolveLocale } from "../../lib/i18n/locale";
 import type { getPublishedDeviceBySlug } from "../../lib/public-device-data";
@@ -8,6 +9,9 @@ import type { PublicDetailSource,PublicDetailEvidence } from "../../lib/public-p
 import { env } from "cloudflare:workers";
 import { safeCatalogExternalUrl, safeCatalogMediaUrl } from "../../lib/product-public-safety";
 import { catalogLabel, catalogDisplayValue } from "../../lib/catalog-presentation";
+import { productSchema, breadcrumbSchema, serializeJsonLd } from "../../lib/seo";
+import { resolveSiteOrigin } from "../../lib/site-origin";
+import { getProductDetailHref } from "../../lib/product-route";
 
 interface Props {
   product: NonNullable<Awaited<ReturnType<typeof getPublishedDeviceBySlug>>>;
@@ -23,12 +27,23 @@ const gallery = product.media.images.map(image=>({...image,url:safeCatalogMediaU
 const primary = gallery.find(image=>image.hero) ?? gallery[0];
 const imageUrl = primary?.url ?? safeCatalogMediaUrl(product.productImageUrl,r2Base);
 const imageAlt = primary ? (localeContext.locale === "zh-CN" ? primary.altZh : primary.altEn) : product.media.imageAlt;
+// mapPublicDevice validates this union before returning its widened string type.
+const placeholderType = product.media.placeholderType as NonNullable<ComponentProps<typeof ProductVisual>["placeholderType"]>;
 const links = product.externalLinks.map((link) => ({ ...link, href: safeCatalogExternalUrl(link.url) })).filter((link) => link.href);
 const publicSources=sources.map(source=>({...source,href:safeCatalogExternalUrl(source.url)})).filter(source=>source.href);
 const sourceTypeLabel=(type:string)=>type==="reputable_secondary"?text.productSourceSecondary:type==="regulatory_document"?text.productSourceRegulatory:type==="archived_official"?text.productSourceArchived:text.productSourceOfficial;
 const date=(value:string|null)=>value&&/^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(value)&&Number.isFinite(Date.parse(value))?value.slice(0,10):null;
 const contexts:Record<string,readonly[string,string]>={eye_brightness:["入眼亮度测量","Eye brightness measurement"],panel_or_projector_brightness:["面板或投影亮度测量","Panel or projector brightness measurement"]};
 const items = parameterGroups.flatMap(group=>group.items);
+const origin = resolveSiteOrigin(Astro.site?.origin);
+const schema = { '@context': 'https://schema.org', '@graph': [
+  productSchema({ product, url: new URL(getProductDetailHref(product), origin).href, items, sources, evidence }),
+  breadcrumbSchema([
+    { name: text.products, url: new URL('/products/', origin).href },
+    { name: product.brandName, url: new URL(`/products/${product.brandKey}/`, origin).href },
+    { name: product.name, url: new URL(getProductDetailHref(product), origin).href },
+  ]),
+] };
 const selected = items.filter(item=>item.keySpec).sort((a,b)=>a.keySpecOrder-b.keySpecOrder);
 const summary = product.normalizedCatalog ? selected
   .map(item=>({field:item.field,label:item.label,value:item.displayValue,factualValue:item.value})) : product.previewSpecs.map(item=>({
@@ -38,6 +53,7 @@ const summary = product.normalizedCatalog ? selected
 ---
 
 <article class="product-detail" data-product-detail data-product-slug={product.slug} data-product-brand={product.brandKey}>
+  <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />
   <nav class="product-detail__breadcrumb" aria-label={text.products}>
     <a href="/products/">{text.products}</a>
     <span aria-hidden="true">/</span>
@@ -58,11 +74,15 @@ const summary = product.normalizedCatalog ? selected
     </div>
     <div class="product-detail__visual">
       {imageUrl ? <><img data-catalog-image src={imageUrl} alt={imageAlt} width="640" height="400" /><p data-image-fallback hidden>{localeContext.locale==="zh-CN"?"图片暂不可用":"Image unavailable"}</p></> : (
-        <ProductVisual brandMark={product.brandMarkText} title={product.name} categoryLabel={product.typeLabel} placeholderType={product.media.placeholderType} />
+        <ProductVisual brandMark={product.brandMarkText} title={product.name} categoryLabel={product.typeLabel} placeholderType={placeholderType} />
       )}
     </div>
   </header>
   {gallery.length>1&&<div class="product-detail__gallery" aria-label={localeContext.locale==="zh-CN"?"产品图片":"Product images"}>{gallery.filter(image=>image!==primary&&image.url!==primary?.url).map(image=><img data-catalog-image src={image.url} alt={localeContext.locale==="zh-CN"?image.altZh:image.altEn} width="240" height="150" loading="lazy"/>)}</div>}
+  {product.keyLimitations.length > 0 && <section class="product-detail__group" data-product-limitations>
+    <h2>{localeContext.locale === 'zh-CN' ? '已知限制' : 'Known limitations'}</h2>
+    <ul>{product.keyLimitations.map(limitation => <li>{limitation}</li>)}</ul>
+  </section>}
   {summary.length > 0 && (
     <section class="product-detail__group" data-spec-preview>
       <h2>{text.productKeyParameters}</h2>
@@ -90,10 +110,11 @@ const summary = product.normalizedCatalog ? selected
               <p class="product-detail__provenance" data-parameter-metadata>
                 {item.state === "CONFLICT" && text.productParameterConflict}
                 {item.region&&item.region!=="Global"&&` · ${text.productRegion}: ${item.region}`}
-                {item.measurementContext&&contexts[item.measurementContext]&&` · ${contexts[item.measurementContext][localeContext.locale==="zh-CN"?0:1]}`}
+                {item.measurementContext&&` · ${contexts[item.measurementContext]?.[localeContext.locale==="zh-CN"?0:1] ?? item.measurementContext}`}
                 {item.variant && ` · ${item.variant}`}
                 {date(item.verifiedAt)&&` · ${text.productVerified}: ${date(item.verifiedAt)}`}
               </p>
+              {item.state === 'KNOWN' && evidence.some(claim => claim.key === item.key && claim.region === item.region && claim.variant === item.variant && !claim.is_conflicting && publicSources.some(source => source.id === claim.source_id)) && <p class="product-detail__provenance">{evidence.filter(claim => claim.key === item.key && claim.region === item.region && claim.variant === item.variant && !claim.is_conflicting).map(claim => publicSources.some(source => source.id === claim.source_id) && <a href={`#catalog-source-${claim.source_id}`}>{text.viewSource}</a>)}</p>}
               {item.state==="CONFLICT"&&<ul class="product-detail__claims">{evidence.filter(claim=>claim.key===item.key&&claim.region===item.region&&claim.variant===item.variant).map(claim=><li>{claim.claimed_value}{publicSources.find(source=>source.id===claim.source_id)&&<a href={`#catalog-source-${claim.source_id}`}>{text.viewSource}</a>}</li>)}</ul>}
             </div>
           ))}

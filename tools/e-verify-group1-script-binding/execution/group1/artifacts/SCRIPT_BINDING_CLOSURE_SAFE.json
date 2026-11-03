@@ -1,0 +1,60 @@
+{
+  "format": "group1-script-binding-closure-v1",
+  "recordedAtUTC": "2026-10-13T05:09:09.979Z",
+  "scriptIdentified": false,
+  "rejectionRootCause": "UNKNOWN_REQUEST_IDENTITY_OMITTED_BY_PRIOR_SAFE_JOURNAL",
+  "normalizationDefect": "NO_ROOT_REWRITE_FOUND",
+  "networkPolicyBroadened": false,
+  "missingKnownLocalBindings": 0,
+  "localBuildAssets": 67,
+  "localLiteralDependencyEdges": 207,
+  "deployedBuildByteMatch": "UNKNOWN",
+  "fullGroup1RetryReady": false,
+  "minimalFix": "DIAGNOSTIC_FINGERPRINT_AND_OFFLINE_EXACT_MANIFEST_MATCHING_ONLY",
+  "tests": {
+    "format": "group1-script-targeted-tests-v1",
+    "recordedAtUTC": "2026-10-13T05:09:09.335Z",
+    "total": 17,
+    "passed": 17,
+    "failed": 0,
+    "skipped": 0,
+    "realChromeLoopbackTests": 3,
+    "actualFrozenAstroReactChunks": true,
+    "productionHtmlFixture": false,
+    "stdoutSha256": "3f7bb8eb3f886b022d0dae3bdbc1c4712bd0fd615f80eaa721e123504488b276",
+    "historicalTestsRerun": false,
+    "productionRequests": 0,
+    "productionWrites": 0
+  },
+  "originalFrozenFilesUnchanged": true,
+  "privateBindingUnchanged": true,
+  "historicalFiles": [
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\AUTHORIZED_GROUP1.json",
+      "sha256": "f6346f4ae5911e340d78e5147dbe23c51dacfd6866b378c90cb191fc9b22b57f"
+    },
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\GROUP1_ONCE.claim",
+      "sha256": "00fdacda015c1d66de87a83a99fd622a9d0fb42541d56f00b47c3908a6339f10"
+    },
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\GROUP1_EXECUTION_SAFE.json",
+      "sha256": "4a3e0a03923fba0b79cd72a8a4b8e02b76f75151394d062783b0fc5ee37b9774"
+    },
+    {
+      "path": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-login-diagnostics\\execution\\group1\\artifacts\\GROUP1_SUPERVISOR_SAFE.json",
+      "sha256": "ed492b3e44c1c56ba6b6fbaac10f043dfcf2e85326f2c96c70bd8a90f7822041"
+    }
+  ],
+  "authorizationId": "e-verify-group1-openglasshub-20261013-script-fingerprint-diagnostic-v4",
+  "packetSha256": "c11214d9c398826d46b3891ff49b02a6280e9f58c876fe9e73ed51c1f7f5e7a2",
+  "executionBindingSha256": "98604720441aa0665e1c6b06e9d80c22c4f8ac6e8099e685bd6359f18bd60c39",
+  "authorizationTemplateSha256": "1e8fdb3b215feff8570d45847e5eaaced3f3baae76d03f91825e957d8011d3e8",
+  "requiredGo": "GO_E_VERIFY_GROUP1_SCRIPT_FINGERPRINT_DIAGNOSTIC_V1",
+  "productionAuthorization": "NOT_AUTHORIZED",
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE"
+}

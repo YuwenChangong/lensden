@@ -1,0 +1,15 @@
+{
+  "format": "e-verify-group1-authorization-v1",
+  "authorizationId": "e-verify-group1-openglasshub-20261013-login-diagnostic-v3",
+  "packetSha256": "ab3e3346eebb93e0a7043f46aa5e90c1b17f59fa37c3fdf19116818b447b4ba7",
+  "executionBindingSha256": "f9936ffecafd99c89e8be9cbb4d4741e27f1b3f66ea55f2031d2843c4fa123f6",
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null
+  }
+}

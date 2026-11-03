@@ -6,10 +6,12 @@ import {
   isMissingViewCountError,
 } from "./post-engagement";
 import { isPublicVisibleCircle } from "./site-navigation";
+import { isDiscoveryExcluded } from "./discovery-exclusions";
 
 export type FeedSort = "recommended" | "latest" | "hot";
 
 type FeedCircle = {
+  id?: string | null;
   slug?: string | null;
   name?: string | null;
   status?: string | null;
@@ -161,7 +163,7 @@ async function resolveCircleId(client: SupabaseClient, circleSlug: string) {
 }
 
 export function filterPublicVisibleFeedPosts(posts: FeedPostRecord[]): FeedPostRecord[] {
-  return posts.filter((post) => Boolean(post.circles) && isPublicVisibleCircle(post.circles ?? {}));
+  return posts.filter((post) => !isDiscoveryExcluded('posts', post.id) && Boolean(post.circles) && isPublicVisibleCircle(post.circles ?? {}));
 }
 
 async function loadCandidatePosts(
@@ -170,9 +172,9 @@ async function loadCandidatePosts(
   limit: number,
 ) {
   const selectWithViewCount =
-    "id, author_id, title, body, type, status, created_at, last_activity_at, view_count, profiles:author_id(display_name, username), circles:circle_id!inner(slug, name, status), post_media(*)";
+    "id, author_id, title, body, type, status, created_at, last_activity_at, view_count, profiles:author_id(display_name, username), circles:circle_id!inner(id, slug, name, status), post_media(*)";
   const selectWithoutViewCount =
-    "id, author_id, title, body, type, status, created_at, last_activity_at, profiles:author_id(display_name, username), circles:circle_id!inner(slug, name, status), post_media(*)";
+    "id, author_id, title, body, type, status, created_at, last_activity_at, profiles:author_id(display_name, username), circles:circle_id!inner(id, slug, name, status), post_media(*)";
 
   let circleId: string | null = null;
   if (circleSlug) {
@@ -195,7 +197,7 @@ async function loadCandidatePosts(
     query = query.eq("circle_id", circleId);
   }
 
-  let { data, error } = await query;
+  let { data, error } = await query.overrideTypes<FeedPostRecord[], { merge: false }>();
   let supportsViewCount = true;
 
   if (error && isMissingViewCountError(error)) {
@@ -213,7 +215,7 @@ async function loadCandidatePosts(
       fallbackQuery = fallbackQuery.eq("circle_id", circleId);
     }
 
-    const fallback = await fallbackQuery;
+    const fallback = await fallbackQuery.overrideTypes<FeedPostRecord[], { merge: false }>();
     data = fallback.data;
     error = fallback.error;
   }
@@ -235,9 +237,9 @@ async function loadLatestPostsPage(
   limit: number,
 ) {
   const selectWithViewCount =
-    "id, author_id, title, body, type, status, created_at, last_activity_at, view_count, profiles:author_id(display_name, username), circles:circle_id!inner(slug, name, status), post_media(*)";
+    "id, author_id, title, body, type, status, created_at, last_activity_at, view_count, profiles:author_id(display_name, username), circles:circle_id!inner(id, slug, name, status), post_media(*)";
   const selectWithoutViewCount =
-    "id, author_id, title, body, type, status, created_at, last_activity_at, profiles:author_id(display_name, username), circles:circle_id!inner(slug, name, status), post_media(*)";
+    "id, author_id, title, body, type, status, created_at, last_activity_at, profiles:author_id(display_name, username), circles:circle_id!inner(id, slug, name, status), post_media(*)";
 
   let circleId: string | null = null;
   if (circleSlug) {
@@ -263,7 +265,7 @@ async function loadLatestPostsPage(
     query = query.eq("circle_id", circleId);
   }
 
-  let { data, error } = await query;
+  let { data, error } = await query.overrideTypes<FeedPostRecord[], { merge: false }>();
   let supportsViewCount = true;
 
   if (error && isMissingViewCountError(error)) {
@@ -281,7 +283,7 @@ async function loadLatestPostsPage(
       fallbackQuery = fallbackQuery.eq("circle_id", circleId);
     }
 
-    const fallback = await fallbackQuery;
+    const fallback = await fallbackQuery.overrideTypes<FeedPostRecord[], { merge: false }>();
     data = fallback.data;
     error = fallback.error;
   }
@@ -290,11 +292,14 @@ async function loadLatestPostsPage(
     throw new Error(error.message);
   }
 
-  const loadedPosts = filterPublicVisibleFeedPosts((data as FeedPostRecord[] | null) ?? []);
+  const candidates = (data as FeedPostRecord[] | null) ?? [];
+  // Pagination offsets refer to database rows. Filter only this page's rows;
+  // the extra row is a continuation sentinel, never part of the visible page.
+  const loadedPosts = filterPublicVisibleFeedPosts(candidates.slice(0, limit));
   return {
     posts: loadedPosts.slice(0, limit),
     supportsViewCount,
-    hasMore: loadedPosts.length > limit,
+    hasMore: candidates.length > limit,
   };
 }
 

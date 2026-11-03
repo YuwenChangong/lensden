@@ -1,0 +1,29 @@
+{
+  "kind": "SCOPED_LOCAL_EVIDENCE_REVIEW_NOT_PRODUCTION_RECEIPT",
+  "runs": ["4889c238ecf0", "fb175138cd78"],
+  "migrationCommit": "3249a954",
+  "migration": "20261015072723_restore_comment_reaction_application_privileges.sql",
+  "rootCause": "INTENDED_RLS_ACCESS_REVOKED_BY_FORWARD_ACL_RECONCILIATION",
+  "commentGet": {"before":500,"after":200,"rlsPoliciesUnchanged":true},
+  "migrationFreshReplay": {"passed":true,"count":54,"run":"fb175138cd78"},
+  "targetedLatestUniqueChromeAssertions": {"PASS":35,"FAIL":2,"total":37},
+  "localRlsAssertionUnitTests": {"PASS":9,"total":9},
+  "originalRls": {"PASS":16,"total":16,"newlyExecuted":2,"reusedPass":14,"anonymous":6,"authenticated":10,"frozenValidatorUnchanged":true,"productionAcceptance":false},
+  "privateRowIsolation": {"PASS":3,"total":3},
+  "group1LocalOriginalCases": {"closed":7,"total":14,"newlyClosed":"RLS-01","productionAccepted":0},
+  "businessSelectedScope": {"PASS":12,"FAIL":2,"BLOCKED":2,"completeBusinessAcceptance":false},
+  "remainingConfirmedLocalBugs": [
+    {"id":"DELETED_PARENT_REPLY_THREAD_INCOMPLETE","replyStillInDatabase":true,"replyReturnedByApi":true,"replyVisibleToBInFreshUi":false},
+    {"id":"ADMIN_COMMENT_DELETE_UI_HIDDEN","roleVerified":"admin","apiCanDelete":false,"actualAdminDeleteApiStatus":200}
+  ],
+  "edit": {"status":"BLOCKED","reason":"OWNER_CONTENT_EDIT_UI_AND_API_NOT_IMPLEMENTED_IN_INSPECTED_SOURCE"},
+  "media": {"status":"BLOCKED","reason":"LOCAL_R2_NOT_CONFIGURED"},
+  "productionParity":"UNKNOWN",
+  "cleanup": {"ownedDatabaseContainersAndVolumesRemoved":true,"ephemeralAccountsAndRowsRemoved":true,"dpapiCredentialsAndPointerRemoved":true,"temporaryTlsKeysRemoved":true,"browserWorkerShutdownAwaited":true,"loopbackAppAndDatabaseListenersAbsent":true},
+  "productionRequests":0,
+  "productionWrites":0,
+  "productionAuthOperations":0,
+  "productionDeployments":0,
+  "catalogHold":"ACTIVE",
+  "publicBetaGo":"NOT_AUTHORIZED"
+}

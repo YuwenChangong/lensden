@@ -1,6 +1,7 @@
 ---
 title: Search Console 上线检查清单
 description: Lensden 在提交到 Google Search Console 前后的最小检查步骤、首批 URL 和验证标准。
+lastUpdated: 2026-11-02
 sidebar:
   label: Search Console 清单
 ---
@@ -12,13 +13,14 @@ sidebar:
 ## 1. Property 设置
 
 - 打开 Google Search Console
-- 选择 `URL prefix` 或 `Domain` 方式添加站点
-- 当前生产地址使用 `https://lensden.ogh.workers.dev`
+- 主域名使用 `Domain` 属性并通过 DNS 验证；也可使用精确的 `URL prefix`
+- 当前生产地址使用 `https://lensden.net`
 - 如果后续切换独立域名，需要重新补做域名级验证或新增 property
 
 ## 2. Sitemap 提交
 
-- 站点上线后确认 `https://lensden.ogh.workers.dev/sitemap-index.xml` 可访问
+- 站点上线后确认 `https://lensden.net/sitemap-index.xml` 可访问
+- 索引中的 `/sitemap.xml` 提供 SSR 动态页面；不要只检查构建生成的固定页面清单
 - 在 Search Console 的 `Sitemaps` 页面提交该地址
 - 等待 Google 抓取并记录成功、失败或警告状态
 
@@ -27,14 +29,15 @@ sidebar:
 建议优先用 `URL Inspection` 提交以下页面：
 
 - `/`
-- `/devices/`
+- `/products/`
 - `/guides/`
 - `/guides/ar-ai-glasses-buying-guide-2026/`
 - `/guides/ar-ai-xr-glasses-difference/`
 - `/guides/best-ar-ai-glasses-for-developers/`
 - `/guides/why-most-ar-glasses-cannot-run-custom-os/`
-- `/gaze-launcher/`
 - `/feed/`
+
+旧 `/devices/` 是跳转入口，不作为产品详情的规范地址提交。Gaze Launcher 公开开关仍关闭时，不提交该页面。产品详情只选择已发布且可匿名访问的真实 `/products/{brand}/{slug}/` URL。
 
 ## 4. 预期验证步骤
 
@@ -58,6 +61,10 @@ sidebar:
 - 第 3 周：检查高价值 guide 和 devices 页是否被发现
 - 第 4 周：根据展示量、点击量和未索引原因做内容补强
 
+## 7. AI 搜索记录
+
+分别记录 Google Web 总展示与 Generative AI Search/Discover 报告中的展示；AI 数据与总量有重叠，不要相加。Google 的 [2026 年 6 月官方公告](https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports) 介绍了独立报告。没有权限、没有数据或报告不可见时记录未知，不填零。Bing Webmaster Tools 的 AI Performance 引用次数与访问次数也应分开。本站是否完成验证、已被索引、获得 AI 引用仍需由站点所有者实际确认，本清单不表示这些动作已经完成。
+
 ## 相关阅读
 
 - [设备库](/devices/)
@@ -67,4 +74,4 @@ sidebar:
 
 ## 最后更新
 
-2026-05-18
+2026-11-02（文档更新；不是设备核验或生产部署日期）

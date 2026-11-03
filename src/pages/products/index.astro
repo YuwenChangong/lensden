@@ -206,20 +206,24 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
 
   <script>
     import {renderCatalogCompareTable} from "../../lib/catalog-compare-dom";
-    const searchInput = document.getElementById("products-search");
+    type DeviceRecord = Awaited<ReturnType<typeof import("../../lib/public-device-data").listPublishedDevices>>[number];
+    type CompareProduct = Parameters<typeof renderCatalogCompareTable>[0]["products"][number]
+      & Pick<DeviceRecord, "slug" | "brandKey" | "typeLabel"> & { searchText: string };
+    type CompareField = Parameters<typeof renderCatalogCompareTable>[0]["fields"][number];
+    const searchInput = document.querySelector<HTMLInputElement>("#products-search");
     const searchField = document.querySelector(".products-toolbar__search-field");
     const resultCount = document.getElementById("products-result-count");
-    const modules = Array.from(document.querySelectorAll("[data-brand-module]"));
+    const modules = Array.from(document.querySelectorAll<HTMLElement>("[data-brand-module]"));
     const brandsDataElement = document.getElementById("products-brand-data");
     const brandsPayload = brandsDataElement?.textContent
       ? JSON.parse(brandsDataElement.textContent)
       : { brands: [], compareFields: [], compareProducts: [] };
-    const text = brandsPayload.ui;
-    const formatUiMessage = (template, args) => template.replace(/\{([A-Za-z][A-Za-z0-9_]*)\}/g, (_, key) => String(args[key]));
+    const text: ReturnType<typeof import("../../lib/i18n/catalog").getUiMessages>["catalog"] = brandsPayload.ui;
+    const formatUiMessage = (template: string, args: Record<string, string | number>) => template.replace(/\{([A-Za-z][A-Za-z0-9_]*)\}/g, (_: string, key: string) => String(args[key]));
     const totalBrands = Array.isArray(brandsPayload.brands) ? brandsPayload.brands.length : modules.length;
-    const compareProducts = Array.isArray(brandsPayload.compareProducts) ? brandsPayload.compareProducts : [];
-    const compareFields = Array.isArray(brandsPayload.compareFields) ? brandsPayload.compareFields : [];
-    const productMap = new Map(compareProducts.map((product) => [product.slug, product]));
+    const compareProducts: CompareProduct[] = Array.isArray(brandsPayload.compareProducts) ? brandsPayload.compareProducts : [];
+    const compareFields: CompareField[] = Array.isArray(brandsPayload.compareFields) ? brandsPayload.compareFields : [];
+    const productMap = new Map<string, CompareProduct>(compareProducts.map((product) => [product.slug, product]));
     const maxCompareCount = 3;
     const selected = [...new Set(new URLSearchParams(window.location.search).getAll("compare"))]
       .filter((slug) => productMap.has(slug)).slice(0, maxCompareCount);
@@ -231,20 +235,20 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
     const compareSummary = document.getElementById("products-compare-summary");
     const compareSelected = document.getElementById("products-compare-selected");
     const compareFeedback = document.getElementById("products-compare-feedback");
-    const compareClear = document.getElementById("products-compare-clear");
+    const compareClear = document.querySelector<HTMLButtonElement>("#products-compare-clear");
     const compareTableWrap = document.getElementById("products-compare-table-wrap");
     const compareTableHead = document.getElementById("products-compare-table-head");
     const compareTableBody = document.getElementById("products-compare-table-body");
     let searchDropdownOpen = false;
     let searchDropdownCloseTimer = 0;
 
-    function normalize(value) {
+    function normalize(value: string | null | undefined) {
       return String(value || "")
         .trim()
         .toLowerCase();
     }
 
-    function isSelected(slug) {
+    function isSelected(slug: string) {
       return selected.includes(slug);
     }
 
@@ -289,7 +293,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       }
 
       compareTableWrap.hidden = false;
-      const selectedProducts = selected.map((slug) => productMap.get(slug)).filter(Boolean);
+      const selectedProducts = selected.map((slug) => productMap.get(slug)).filter((product): product is CompareProduct => Boolean(product));
       const visibleFields = compareFields.filter((field) =>
         selectedProducts.some((product) => {
           const value = product.compareValues?.[field.key];
@@ -301,7 +305,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
     }
 
     function renderCompareButtons() {
-      const compareButtons = Array.from(document.querySelectorAll("[data-compare-button]"));
+      const compareButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-compare-button]"));
       compareButtons.forEach((button) => {
         const slug = button.getAttribute("data-product-slug");
         const active = slug ? isSelected(slug) : false;
@@ -339,7 +343,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       renderCompareTable();
     }
 
-    function setSearchDropdownOpen(open) {
+    function setSearchDropdownOpen(open: boolean) {
       if (!searchDropdown || !searchInput) return;
       const shouldOpen = Boolean(open && normalize(searchInput.value));
       searchDropdownOpen = shouldOpen;
@@ -368,7 +372,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       setSearchDropdownOpen(false);
     }
 
-    function handleSearchKeyDown(event) {
+    function handleSearchKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape" && searchDropdownOpen) {
         event.preventDefault();
         closeSearchDropdown();
@@ -376,7 +380,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       }
     }
 
-    function renderSearchResults(query, matches) {
+    function renderSearchResults(query: string, matches: CompareProduct[]) {
       if (!searchDropdown || !searchResultsList || !searchEmpty || !searchInput) return;
 
       if (!query) {
@@ -436,7 +440,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       renderCompareButtons();
     }
 
-    function getProductMatches(query) {
+    function getProductMatches(query: string) {
       return query ? compareProducts.filter((product) => product.searchText.includes(query)).slice(0, 6) : [];
     }
 
@@ -450,7 +454,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       refreshSearchResultsFromInput();
     }
 
-    function addToCompare(slug) {
+    function addToCompare(slug: string) {
       if (!productMap.has(slug)) return;
       if (isSelected(slug)) return;
       if (selected.length >= maxCompareCount) {
@@ -465,7 +469,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
       refreshSearchResultsFromInput();
     }
 
-    function removeFromCompare(slug) {
+    function removeFromCompare(slug: string) {
       const index = selected.indexOf(slug);
       if (index === -1) return;
       selected.splice(index, 1);
@@ -488,7 +492,7 @@ const compareProducts = publishedDevices.map((product) => serializeCompareProduc
 
       modules.forEach((module) => {
         const brandName = normalize(module.getAttribute("data-brand-name"));
-        const previewPills = Array.from(module.querySelectorAll("[data-brand-preview]"));
+        const previewPills = Array.from(module.querySelectorAll<HTMLElement>("[data-brand-preview]"));
         const brandMatches = query ? brandName.includes(query) : true;
         let previewMatchCount = 0;
 

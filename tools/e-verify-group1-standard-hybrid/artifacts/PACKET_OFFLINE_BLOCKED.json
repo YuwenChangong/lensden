@@ -1,0 +1,577 @@
+{
+  "format": "group1-standard-hybrid-blocked-design-packet-v1",
+  "authorizationId": "e-verify-group1-standard-hybrid-openglasshub-20261014-v12",
+  "status": "BLOCKED_NOT_EXECUTABLE",
+  "firstBlocker": "NATIVE_FIRST_PARTY_AUTH_STAGE_AND_PREDISPATCH_ADAPTER_NOT_VERIFIED",
+  "executionEntry": null,
+  "independentGo": null,
+  "productionAuthorization": "NOT_AUTHORIZED",
+  "sourceSha": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "expectedProductionVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+  "appOrigin": "https://openglasshub.ogh.workers.dev",
+  "supabaseOrigin": "https://xcbnxzjlsvtgzixurcof.supabase.co",
+  "worker": "openglasshub",
+  "approvalBoundary": "2_EXPLICIT_SUBSET_ADDENDUM_REQUIRED",
+  "caseMappings": [
+    {
+      "caseId": "AUTH-01",
+      "originalCase": "Managed Turnstile acquisition in actual owner browser without bypass; CAPTCHA-less/invalid proof fails",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "CONTROLLED_AUTH_POST_PENDING_INTEGRATION"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "AUTH-02",
+      "originalCase": "Real ordinary account A login, session persistence and logout",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "CONTROLLED_AUTH_POST_PENDING_INTEGRATION"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "AUTH-03",
+      "originalCase": "Real ordinary account B login for cross-user isolation",
+      "actors": [
+        "B"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "CONTROLLED_AUTH_POST_PENDING_INTEGRATION"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "AUTH-04",
+      "originalCase": "Existing approved administrator login; no role promotion or privilege changes",
+      "actors": [
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "CONTROLLED_AUTH_POST_PENDING_INTEGRATION"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "AUTH-08:bounded-nonmail-partial",
+      "originalCase": "Wrong credentials, invalid/expired recovery input, safe next redirect and error rendering; no brute force",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "CONTROLLED_AUTH_POST_PENDING_INTEGRATION"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "RLS-01",
+      "originalCase": "Anon actual public Data API permits safe published columns/projections and denies legacy JSON/private audit",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "PRIVATE_FIXED_GET_READER"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "RLS-02",
+      "originalCase": "A/B authentic JWT roles: direct devices selection exposes no legacy/unpublished rows; empty or exact permission denial as frozen role fixture requires",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "PRIVATE_FIXED_GET_READER"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "RLS-03",
+      "originalCase": "A/B cannot query anon-only invoker projections or private audit; do not treat authenticated as inheriting anon",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "PRIVATE_FIXED_GET_READER"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "RLS-04",
+      "originalCase": "Signed-in website public detail still works through anonymous SSR, not proof of authenticated direct database grants",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "PRIVATE_FIXED_GET_READER"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "RLS-05",
+      "originalCase": "Ordinary A/B denied protected admin APIs/UI; existing admin device list loads, reviewed privileges retained",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "PRIVATE_FIXED_GET_READER"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "ADMIN-04:devices-read-partial",
+      "originalCase": "Admin devices/forum/reports/media/news/users/circles pages and unauthorized denial; Catalog writes remain prohibited",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "IDENTITY_VERIFIED_READ_ASSERTIONS"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "UI-01:core-partial",
+      "originalCase": "Production Chinese and English using explicit preference; trusted country overrides Accept-Language, no forged country header",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "IDENTITY_VERIFIED_READ_ASSERTIONS"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "UI-02:core-partial",
+      "originalCase": "Production desktop 1440 and mobile 390/430 navigation/layout/form/content/media overflow, focus and accessibility",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "IDENTITY_VERIFIED_READ_ASSERTIONS"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    },
+    {
+      "caseId": "UI-03:core-partial",
+      "originalCase": "Actual assets/CSP/resource success, application console errors, key internal links and error/empty/loading/unauthorized states",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionPaths": [
+        "NATIVE_BROWSER_MANUAL",
+        "IDENTITY_VERIFIED_READ_ASSERTIONS"
+      ],
+      "requiredEvidence": [
+        "exact-original-expectation",
+        "safe-case-id",
+        "private-identity-match-boolean",
+        "actor-context-isolation",
+        "observed-status-not-assumed",
+        "cleanup-result"
+      ],
+      "liveStatus": "NOT_EXECUTED",
+      "readiness": "MAPPED_NOT_FULL_RUNNER_READY"
+    }
+  ],
+  "catalogRestRequests": [
+    {
+      "id": "RLS_ANON_PUBLIC",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=slug,brand_key,name,catalog_normalized&slug=eq.xreal-air&publication_status=eq.published&limit=1",
+      "kind": "published",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_ANON_SPECS",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_SOURCES",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_EVIDENCE",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "actor": "anon",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_LEGACY",
+      "actor": "A",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_A_SPECS",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_SOURCES",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_EVIDENCE",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_AUDIT",
+      "actor": "A",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_LEGACY",
+      "actor": "B",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_SPECS",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_SOURCES",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_EVIDENCE",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_AUDIT",
+      "actor": "B",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    }
+  ],
+  "rlsRoleCounts": {
+    "anon": 6,
+    "A": 5,
+    "B": 5
+  },
+  "actors": [
+    "A",
+    "B",
+    "ADMIN"
+  ],
+  "loginActions": [
+    {
+      "actor": "A",
+      "kind": "success"
+    },
+    {
+      "actor": "B",
+      "kind": "success"
+    },
+    {
+      "actor": "ADMIN",
+      "kind": "success"
+    },
+    {
+      "actor": "A",
+      "kind": "invalid-captcha"
+    },
+    {
+      "actor": "A",
+      "kind": "missing-captcha"
+    },
+    {
+      "actor": "A",
+      "kind": "wrong-password"
+    }
+  ],
+  "applicationPages": [
+    "/login/?next=%2Fproducts%2F",
+    "/products/",
+    "/products/xreal/xreal-air/",
+    "/admin/devices/"
+  ],
+  "pageContentAssertions": [
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/xreal/xreal-air/",
+      "kind": "PRODUCT",
+      "expectedStatus": 200,
+      "slug": "xreal-air",
+      "brand": "xreal",
+      "assertions": [
+        "exact product identity",
+        "structured parameter data",
+        "public source links",
+        "exact canonical URL"
+      ],
+      "source": "src/pages/products/[brand]/[slug].astro"
+    },
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/",
+      "kind": "INDEX",
+      "expectedStatus": 200,
+      "source": "src/pages/products/index.astro"
+    }
+  ],
+  "adminGet": [
+    "/api/admin/forum/me",
+    "/api/admin/devices"
+  ],
+  "ownBackgroundGet": [
+    "/api/users/me/summary",
+    "/api/users/me/preferences",
+    "/api/users/me/notifications?limit=8&unread_only=1"
+  ],
+  "ownerBudgets": {
+    "allBrowserHttpDispatchesMax": 650,
+    "applicationMutationDispatchesMax": 50,
+    "cleanupMutationDispatchesMax": 20,
+    "supabaseAuthDispatchesMax": 40,
+    "supabaseRestReadDispatchesMax": 80,
+    "supabaseRestWriteDispatchesMax": 20,
+    "turnstileHttpDispatchesMax": 40,
+    "mailProducingSubmissionsMax": 3,
+    "storageUploadOperationsMax": 20,
+    "storageDeleteOperationsMax": 10,
+    "mediaRangeRequestsMax": 20,
+    "mediaUploadBytesMax": 30000000,
+    "mediaReadBytesMax": 52428800,
+    "r2StoredBytesMax": 20971520,
+    "openaiModerationCallsMax": 20,
+    "openaiAndProviderCostUSDMax": 0,
+    "executionSecondsMax": 3600,
+    "ownerSessionRefreshRequestsMax": 6
+  },
+  "otherBudgetsChanged": false,
+  "budgetSemanticsNotAutomaticallyInherited": true,
+  "productionVersionCheck": "FRESH_PRE_AND_POST_REQUIRED_NOT_CURRENTLY_VERIFIED",
+  "providerDeploymentGetMax": 2,
+  "executionLimitSeconds": 1800,
+  "workLimitSeconds": 1740,
+  "cleanupReserveSeconds": 60,
+  "oauthRemainingSecondsStrictlyGreaterThan": 1860,
+  "oauthScopes": [
+    "account:read",
+    "workers_scripts:write"
+  ],
+  "browserBoundary": "MONITOR_ONLY",
+  "authRlsBoundary": "HARD_FOR_FIXED_NODE_GET_ONLY_BROWSER_AUTH_NOT_READY",
+  "sessionHandoff": "VERIFIED_OFFLINE_HELPER_NOT_COMPLETE_NATIVE_PRODUCTION_ADAPTER",
+  "isolatedAcceptance": "ACCEPTED_WITH_DOCUMENTED_EXCEPTION",
+  "originalIsolatedExecution": "INCOMPLETE",
+  "productionCaptchaAcceptance": "NOT_EXECUTED",
+  "privateBindingSha256": "950e185df3a3658ce990def5061cc39a63e571443292fabf141a99e5b9de98a3",
+  "privateValuesInPacket": false,
+  "contractSha256": "1cef17d2f37492eb7a5b4069bdc4c9b15b481ca0f62ae5700684b2b106cf19ee",
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null,
+    "standardBrowserCredentialRiskAndBudgetBoundaryAccepted": null,
+    "privateSessionHandoffAndControlledAuthTransportAccepted": null
+  },
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "claimCreated": false,
+  "goIssued": false,
+  "maxAdditionalCostUSD": 0,
+  "catalogHold": "ACTIVE",
+  "group1": "BLOCKED_UNTIL_REAL_ACCEPTANCE",
+  "group2": "NOT_AUTHORIZED",
+  "group3": "NOT_AUTHORIZED",
+  "publicBetaGo": "NOT_AUTHORIZED"
+}

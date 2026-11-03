@@ -1,0 +1,30 @@
+{
+  "kind": "SCOPED_LOCAL_EVIDENCE_REVIEW_NOT_PRODUCTION_RECEIPT",
+  "baseCommit": "482e7f86",
+  "runs": ["d4a4ea23aa5a", "97b0f4713f7c", "4b4666800249"],
+  "standaloneAuthoritativeForumPrd": "NOT_FOUND",
+  "reviewedSources": ["PRD-OpenGlass-Hub-MVP.md", "docs/forum-admin-mvp.md", "docs/forum-phase2-rls-test-matrix.md", "docs/forum-phase4b-comments-mvp-validation.md"],
+  "editFeatureScope": "DEFERRED_PUBLIC_BETA_OWNER_DECISION_NOT_PASS",
+  "productOrMigrationChanges": false,
+  "latestUniqueContinuationAssertions": {"PASS": 41, "FAIL": 1, "BLOCKED": 2, "total": 44, "necessaryLoginIsolationPrerequisites": 4},
+  "group1LocalCases": {
+    "PASS": 10, "total": 14, "productionAccepted": 0,
+    "reused": ["AUTH-02", "AUTH-03", "AUTH-04", "RLS-01", "RLS-02", "RLS-03", "RLS-04", "RLS-05"],
+    "newScopedLocalPass": ["AUTH-08:bounded-nonmail-partial", "ADMIN-04:devices-read-partial"],
+    "blocked": ["AUTH-01", "UI-01:core-partial", "UI-02:core-partial", "UI-03:core-partial"],
+    "actualExpiredRecoveryTokenTested": false,
+    "trustedCountryPrecedenceTested": false
+  },
+  "businessSelectedScope": {"PASS": 22, "FAIL": 1, "BLOCKED": 1, "DEFERRED": 1, "previousPass": 16, "newDistinctPass": 6, "hideRestoreExtendsPriorScenarioNotExtraCount": true, "completeForumAcceptance": false},
+  "originalCatalogRls": {"PASS": 16, "total": 16, "reusedAllThisTask": true, "newlyExecutedThisTask": 0},
+  "priorComment19AndAuth13": "REUSED_UNCHANGED_NOT_RERUN",
+  "localMediaRouteFixtureScripts": {"PASS": 2, "realR2": false, "source": ["scripts/test-media-upload-guard-authorization.mjs", "scripts/test-post-media-delivery-authorization.mjs"]},
+  "realLocalImageUpload": "PASS", "realLocalImageDecoded": "PASS", "localMediaLifecycle": "FAIL",
+  "confirmedBug": {"id": "POST_DELETE_ORPHAN_THUMBNAIL", "evidenceRun": "4b4666800249", "deleteHttpStatus": 200, "reportedCleanupOk": true, "remainingOriginalObjects": 0, "remainingThumbnailObjects": 1, "remainingMediaRows": 0, "publicDeletedMediaLeakageTested": false, "fixedThisTask": false},
+  "realR2VideoIntegration": "BLOCKED_NO_APPROVED_ISOLATED_CONFIG",
+  "allOwnedInstanceCleanup": "PASS",
+  "productionParity": "UNKNOWN",
+  "productionRequests": 0, "productionWrites": 0, "productionDeployments": 0, "thirdPartyLiveRequests": 0,
+  "catalogHold": "ACTIVE", "publicBetaGo": "NOT_AUTHORIZED",
+  "nextSingleAction": "OWNER_APPROVAL_FOR_MINIMAL_LOCAL_THUMBNAIL_CLEANUP_FIX"
+}

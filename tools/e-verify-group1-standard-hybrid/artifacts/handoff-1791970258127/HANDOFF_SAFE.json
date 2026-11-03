@@ -1,0 +1,23 @@
+{
+  "handoffs": 3,
+  "contextIsolation": true,
+  "separateProfiles": true,
+  "stops": 0,
+  "apiCalls": 6,
+  "forbiddenForwarding": 0,
+  "profileRemoved": true,
+  "sessionsDestroyed": true,
+  "proxyBlocked": 42,
+  "rawValuesLogged": false,
+  "fixtureOnly": true,
+  "actualSupabaseSdkUsed": false,
+  "controlledTransportFixture": "EXISTING_REAL_HTTP_LOOPBACK_WIRE_NOT_PRODUCTION_TLS",
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "thirdPartyLiveRequests": 0,
+  "counts": {
+    "allBrowserHttpDispatchesMax": 6,
+    "supabaseAuthDispatchesMax": 3,
+    "supabaseRestReadDispatchesMax": 3
+  }
+}

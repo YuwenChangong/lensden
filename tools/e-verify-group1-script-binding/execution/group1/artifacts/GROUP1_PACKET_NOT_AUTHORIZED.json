@@ -1,0 +1,579 @@
+{
+  "format": "e-verify-group1-subset-packet-v1",
+  "authorizationId": "e-verify-group1-openglasshub-20261013-script-fingerprint-diagnostic-v4",
+  "approvalBoundary": "2_NEW_PATH_FINGERPRINT_DIAGNOSTIC_ADDENDUM_REQUIRED",
+  "sourceSha": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "accountId": "dcb374166b39234a499985145c075f50",
+  "worker": "openglasshub",
+  "expectedProductionVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+  "appOrigin": "https://openglasshub.ogh.workers.dev",
+  "supabaseOrigin": "https://xcbnxzjlsvtgzixurcof.supabase.co",
+  "requiredCases": [
+    "LOGIN_A_INITIALIZATION_DIAGNOSTIC"
+  ],
+  "executionLimitSeconds": 300,
+  "workLimitSeconds": 240,
+  "cleanupReserveSeconds": 60,
+  "authorizationValidityMaxSeconds": 3600,
+  "oauthRemainingSecondsStrictlyGreaterThan": 360,
+  "ownerBudgets": {
+    "allBrowserHttpDispatchesMax": 500,
+    "applicationMutationDispatchesMax": 50,
+    "cleanupMutationDispatchesMax": 20,
+    "supabaseAuthDispatchesMax": 40,
+    "supabaseRestReadDispatchesMax": 80,
+    "supabaseRestWriteDispatchesMax": 20,
+    "turnstileHttpDispatchesMax": 40,
+    "mailProducingSubmissionsMax": 3,
+    "storageUploadOperationsMax": 20,
+    "storageDeleteOperationsMax": 10,
+    "mediaRangeRequestsMax": 20,
+    "mediaUploadBytesMax": 30000000,
+    "mediaReadBytesMax": 52428800,
+    "r2StoredBytesMax": 20971520,
+    "openaiModerationCallsMax": 20,
+    "openaiAndProviderCostUSDMax": 0,
+    "executionSecondsMax": 3600,
+    "ownerSessionRefreshRequestsMax": 6
+  },
+  "providerDeploymentGetMax": 2,
+  "catalogRestRequests": [],
+  "actors": [
+    "A"
+  ],
+  "loginActions": [],
+  "applicationPages": [
+    "/login/?next=%2Fproducts%2F"
+  ],
+  "pageContentAssertions": [],
+  "staticManifest": [
+    {
+      "path": "/_astro/AdminCirclesDashboard.AtbelRPK.js",
+      "bytes": 13904,
+      "sha256": "a7e3308f4ce7fffdf620e2c8ea5202ad64654df3fa53edf926714c728845d2c8"
+    },
+    {
+      "path": "/_astro/AdminDevicesDashboard.hFDGJRVO.js",
+      "bytes": 33796,
+      "sha256": "a97a6c3a5b28f3380c3012a2c656b956e93932ad81ed187464b9e9252987b69a"
+    },
+    {
+      "path": "/_astro/AdminForumDashboard.Dc-LtJ3C.js",
+      "bytes": 9548,
+      "sha256": "86380eec9e2656b080cee33e5cbbe237ab9bfdcb0b2054cb8b6c4d36f4cfcb9a"
+    },
+    {
+      "path": "/_astro/AdminMediaDashboard.COQxOC-n.js",
+      "bytes": 6349,
+      "sha256": "ea9ce7b2f50b006c614a889e7341f83344ece375c25de48cbb69bad8eb80b8da"
+    },
+    {
+      "path": "/_astro/AdminModerationQueue.BxUne7m0.js",
+      "bytes": 7949,
+      "sha256": "462f185af87ee17ea25ca18c65f2aae0603dfa7dbae8e44816edee63f5bac1b6"
+    },
+    {
+      "path": "/_astro/AdminNewsDashboard.D8GNYY5X.js",
+      "bytes": 23539,
+      "sha256": "6c4a846414d195ebec4dd043f5168f7b4d2c3e3d1f3c82fc7694ce3cbc831c22"
+    },
+    {
+      "path": "/_astro/AdminReportsPanel.BfcueG9r.js",
+      "bytes": 30781,
+      "sha256": "a01bbd400afbe869f17b7c3b485d6973c6aa738d94c245459b9fde885a2ae96c"
+    },
+    {
+      "path": "/_astro/AdminUsersDashboard.LZa3VSV9.js",
+      "bytes": 9242,
+      "sha256": "be71eb3b3318b83b90a374aea59af319bdb984f5eae41754dbac9a7c27bfcbc3"
+    },
+    {
+      "path": "/_astro/AuthCallback.CcCUMJyx.js",
+      "bytes": 2994,
+      "sha256": "35bd2b93d00f75580ff15d0ff98d29379f4cc8ebf5368c3dee3a6ec91d01348c"
+    },
+    {
+      "path": "/_astro/AuthPanel.EZiCXg-9.js",
+      "bytes": 13837,
+      "sha256": "5e9bc1d26ce8870c446f0f3e71ebaf298a67de2c1174aec3302ec41805ac07c0"
+    },
+    {
+      "path": "/_astro/CircleManageEntry.NLtSYWSW.js",
+      "bytes": 1994,
+      "sha256": "0546c09fb95b40d703ad35db21cd5e4be3a4a1766d5d3800b38e33f2496b28be"
+    },
+    {
+      "path": "/_astro/CircleOwnerDashboard.B2DKQ1Nh.js",
+      "bytes": 17386,
+      "sha256": "8c708792985d9eddb66880a5e3bd2def45c3a7dfb0f0fb184a3cd184fb576b10"
+    },
+    {
+      "path": "/_astro/CommentsSection.Ccj0seu_.js",
+      "bytes": 13476,
+      "sha256": "350b91324fe600f521f3beda2c4aae0c25176fc772a25ee21cd8dae506211892"
+    },
+    {
+      "path": "/_astro/CommunityLayout.jf1vXvaF.css",
+      "bytes": 125430,
+      "sha256": "43e22bcd8f713a3a205781e763909ae9e215f116509c638cfd8650db0caa4fd1"
+    },
+    {
+      "path": "/_astro/CreateCircleForm.BVs51Hoc.js",
+      "bytes": 8959,
+      "sha256": "a5eff9c5b99e6467b6ee5c9feafddb6fd8261f0b3fc6c7b68e0ca724034dafd5"
+    },
+    {
+      "path": "/_astro/CreatePostForm.DXNtR30e.js",
+      "bytes": 16108,
+      "sha256": "f426b7a42ec6ddaa794db35387b16301331315ba8a34e97f7421357e091319b3"
+    },
+    {
+      "path": "/_astro/EditProfileForm.BstFM_Qr.js",
+      "bytes": 9913,
+      "sha256": "a86007f5be4e5499a5fd20987251b1d83ba6914730c0f75b095c96ee7866e557"
+    },
+    {
+      "path": "/_astro/FeedSidebarAuthHint.CPoe9sCC.js",
+      "bytes": 688,
+      "sha256": "ef6a390c814384fa745087f439f398810811b1f31fe816b1bf3fb3e2d791e235"
+    },
+    {
+      "path": "/_astro/GlassConfirmDialog.BkjmaYBn.js",
+      "bytes": 2653,
+      "sha256": "206a8064062d48bc7184af1b4ee55dae85a5fa2aae18339e4288aff012a32771"
+    },
+    {
+      "path": "/_astro/GlobalSearchBox.BOIU3G-Q.js",
+      "bytes": 5511,
+      "sha256": "bcdc1396f572ebef1ae1e122435c372bb7728142496d472546377aa91d82c9a7"
+    },
+    {
+      "path": "/_astro/HeaderNotifications.xxochVRg.js",
+      "bytes": 8998,
+      "sha256": "d3075d29fcf86e108a9c1b08f2bf346f95e1675b34074d25403180d62b3352a9"
+    },
+    {
+      "path": "/_astro/HeaderUserMenu.pbLPFX5d.js",
+      "bytes": 8017,
+      "sha256": "0079ae4f333a8fd54c310b05c96c718a7be2450694fd4cbb9de0330098e1b629"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.C6ZrnQDj.js",
+      "bytes": 3931,
+      "sha256": "8309f3700026a532c6f25682edbb54054800c08893725e179810c9897cc5f5ba"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.DozvmMnE.js",
+      "bytes": 160,
+      "sha256": "a0a89192786b6d4391746b1f0206b3eb4306e1924d5707e29d35b300d2d6e516"
+    },
+    {
+      "path": "/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BC4YkNnQ.js",
+      "bytes": 674,
+      "sha256": "914c78a83d56d3e59aeebc690387dbef60f6a4a2e780f75d2121aef1998514b1"
+    },
+    {
+      "path": "/_astro/MyProfilePage.C4IqLUNf.js",
+      "bytes": 11993,
+      "sha256": "184f9e8fc07bae299a07c6936bab8b89258e216637dbf54ef1c58b7647c0e65b"
+    },
+    {
+      "path": "/_astro/NewsPagination.BnR9MNPp.js",
+      "bytes": 2748,
+      "sha256": "c94ff55b27db4a43f5d22f51f74197e760dbaa37af567c3e83c89f49fea126c3"
+    },
+    {
+      "path": "/_astro/NotificationsPage.Pe_dqqKR.js",
+      "bytes": 4940,
+      "sha256": "3e4fe05e5590af579bc7c44cefca1ee14e22645f068a1d348067948040b30ffe"
+    },
+    {
+      "path": "/_astro/PostMediaGallery.CvVF08fZ.js",
+      "bytes": 4170,
+      "sha256": "de4d820b2a0931451f2073d954c959c27397574c487b68d552554b18903cf95d"
+    },
+    {
+      "path": "/_astro/PostModerationActions.DnBfn9np.js",
+      "bytes": 4650,
+      "sha256": "359d5ce7a3336874a31d552471c8bb27cd40ace4f4177d27a29a88c9ceeee87a"
+    },
+    {
+      "path": "/_astro/PostSocialActions.BRoqFMGy.js",
+      "bytes": 4600,
+      "sha256": "2ad6ac08433159402b318f1046ec7026a54d9f43352b4684852f43f9c4fa4674"
+    },
+    {
+      "path": "/_astro/ReportTrigger.C4kXk1WR.js",
+      "bytes": 4290,
+      "sha256": "cf72859635867c9e292002415b58a444884059a8c17fba69bb97e7d6e96af551"
+    },
+    {
+      "path": "/_astro/ResetPasswordForm.9KbWP1nN.js",
+      "bytes": 4158,
+      "sha256": "0c5f4ebe065f53ab7c4bba2d3dc15f5fb3c597a1435fcee974442c4175948363"
+    },
+    {
+      "path": "/_astro/SettingsPage.DImHgz8J.js",
+      "bytes": 5342,
+      "sha256": "f8c3166d5073d2eba8485732bf9f6432be27216b0074710f3a8a858cd8c9fcf4"
+    },
+    {
+      "path": "/_astro/SharePostButton.DklMAqlH.js",
+      "bytes": 985,
+      "sha256": "13258ec338928909d276d18c3bfafd10657a346fe367b3054e9d490272138cc4"
+    },
+    {
+      "path": "/_astro/SiteHeader.BKThlVlH.css",
+      "bytes": 8315,
+      "sha256": "537f4d49f52b52c418399bb787f6ee9a5c1ca8badbb4c05fc47f71f07e0912cd"
+    },
+    {
+      "path": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.DaQNT1ww.js",
+      "bytes": 1168,
+      "sha256": "4550699f9e06afc37000e20f4dbd2c9223f0786afd03769713785325d047c0ca"
+    },
+    {
+      "path": "/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BP64OFl3.js",
+      "bytes": 88,
+      "sha256": "3692b6b27daf565cba3a7eeee408553a99132e71c8d426fc16590f8d9359acd4"
+    },
+    {
+      "path": "/_astro/_brand_.9qGMzWJR.css",
+      "bytes": 14473,
+      "sha256": "ec71ef6317a614ac1e77856f09c33a03d72d58a4bc558e44387f2a4b34c60950"
+    },
+    {
+      "path": "/_astro/_brand_.astro_astro_type_script_index_0_lang.DAYSRm7b.js",
+      "bytes": 6568,
+      "sha256": "cfa1d737892172af7c02074024fc0f985ca1afa53a114ff42ed216c839902bbc"
+    },
+    {
+      "path": "/_astro/auth-callback-url.C1pwqHVg.js",
+      "bytes": 492,
+      "sha256": "2a930c0620bc38a060fd75409df8d4b2ab386d7deae3347f1fb017dc6ac80a38"
+    },
+    {
+      "path": "/_astro/auth-messages.3HE5GXRn.js",
+      "bytes": 7687,
+      "sha256": "15f1627e538b9e7e52140d9c17defec79959f443b61de84ff8bef2e5950f0b47"
+    },
+    {
+      "path": "/_astro/auth-redirect.5ZO3FMne.js",
+      "bytes": 1794,
+      "sha256": "aa50f4990b53a3dd8532c7617bd2bae15eaedf45c9c7c3572c1193e4cfea3386"
+    },
+    {
+      "path": "/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "bytes": 950,
+      "sha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a"
+    },
+    {
+      "path": "/_astro/client-image.Ccmrk0wr.js",
+      "bytes": 1385,
+      "sha256": "2154f10ca3c0ec2f1267fab8f8461f1bf51367789227e040f4a65b099e289412"
+    },
+    {
+      "path": "/_astro/client.C9ykwJRQ.js",
+      "bytes": 180744,
+      "sha256": "b6b9827d0edbb0969b7f91072249e44d48dd6b36c9846980a2a684b8413fba42"
+    },
+    {
+      "path": "/_astro/ec.0vx5m.js",
+      "bytes": 2523,
+      "sha256": "182e98b9acfcfd358ea486967bd17dcaddd5930b8d092bc0653fd26ddbb11e37"
+    },
+    {
+      "path": "/_astro/ec.xqx3p.css",
+      "bytes": 15673,
+      "sha256": "0399df1852e8a102f443d18e448633f3a00d64a32e498cb360ace5d64a9eb102"
+    },
+    {
+      "path": "/_astro/index.BFDTW7An.css",
+      "bytes": 35731,
+      "sha256": "ad086bb0f39852dc8038471fe36e4f26902c6d31a1c23cdad489cdaaf2f6c63d"
+    },
+    {
+      "path": "/_astro/index.CXX0zyC2.css",
+      "bytes": 12894,
+      "sha256": "1524674d0d67d5f9a516f7b3066dfcbfcf9847f94d3e390a6ae469799fc835cf"
+    },
+    {
+      "path": "/_astro/index.astro_astro_type_script_index_0_lang.BskClGKx.js",
+      "bytes": 6196,
+      "sha256": "4ffdb68c3751287481be1c638028d38862a971c848cfa9322a170f2eea3b93a5"
+    },
+    {
+      "path": "/_astro/jsx-runtime.Cs_ylJLF.js",
+      "bytes": 5569,
+      "sha256": "c2c3692670c89dbcfb1a21e5596bb534f00f8e476448eae2eea79357d6dbfd6f"
+    },
+    {
+      "path": "/_astro/legal-consent-adapters.hgu_dait.js",
+      "bytes": 309,
+      "sha256": "5188c420576b7c93a86a73f368ee9317303e31f449e006e4ccd47fe7490b5021"
+    },
+    {
+      "path": "/_astro/notifications.CwRuuH1z.js",
+      "bytes": 685,
+      "sha256": "043984dfb373bfae763570e83734299883bd8f60b1cdc91651fc798e1213e834"
+    },
+    {
+      "path": "/_astro/page.Dtz6tGCc.js",
+      "bytes": 2536,
+      "sha256": "1c99026c0527cac05d3a172c386fdd43767eac5818e26c45ff353ad5d1f03aa9"
+    },
+    {
+      "path": "/_astro/print.ehPL0gv-.css",
+      "bytes": 3318,
+      "sha256": "4d7d25c3d697e6d36e64afb9edef136e6d2e4c50f70a48000ca90f9b059e3622"
+    },
+    {
+      "path": "/_astro/product-public-safety.BFvqNWGH.js",
+      "bytes": 898,
+      "sha256": "f5db8e009b4cd722b6b058875013490848da3430922c51a82adf39e67214f38a"
+    },
+    {
+      "path": "/_astro/profile-data.DTjvR5vM.js",
+      "bytes": 10293,
+      "sha256": "898869f1500853be418f6aa4ce49ebe11d957f22637787957e8c04e1812d67bf"
+    },
+    {
+      "path": "/_astro/profile-links.n5IEH-ft.js",
+      "bytes": 301,
+      "sha256": "7f563fe43018c16619bd0ae0845c03ddcdcaf84cdf37e84d0b6d09943c08f283"
+    },
+    {
+      "path": "/_astro/react-dom.BHf2gUf-.js",
+      "bytes": 3587,
+      "sha256": "468f9774b111a96b0ee21ceb962f1da0fcf69a90ea0a62b640ad08b4ca2dbfb5"
+    },
+    {
+      "path": "/_astro/react.DZuxrRTg.js",
+      "bytes": 8088,
+      "sha256": "e9c0a21591214c6b5ed976fe40a1c45a254c4ca58b7e5cd1d151af7f14ed3b27"
+    },
+    {
+      "path": "/_astro/starlight-toc.DD0ndyou.js",
+      "bytes": 2033,
+      "sha256": "8e57bd419b676fb1a5a21c13b3ea68b31e1fa992339ab3d20a8af3fc7c1c7a72"
+    },
+    {
+      "path": "/_astro/storage-tus.bLETWBsm.js",
+      "bytes": 60970,
+      "sha256": "81e935d59872bd65d0cc37adbe805f1473dbfb59c21cef45590f17b4893d9180"
+    },
+    {
+      "path": "/_astro/supabase-browser.CbJzQpCJ.js",
+      "bytes": 210364,
+      "sha256": "aa677f1ee5784636ca14b697b28872d7f4882179dfdfc5a9015a039e82c0b37c"
+    },
+    {
+      "path": "/_astro/useAdminSession.B8o2Cihd.js",
+      "bytes": 3397,
+      "sha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83"
+    },
+    {
+      "path": "/_astro/useBrowserAuthState.DwB-xnWR.js",
+      "bytes": 1023,
+      "sha256": "20324053b51dd1cc538294305b49d56e628dc34a1f4b0c8b8faec5367e2ce664"
+    },
+    {
+      "path": "/_astro/useLocale.uXE5yf0C.js",
+      "bytes": 107574,
+      "sha256": "7ef9768e2be3f702e430a9ede82666c6ffab59095f711438a7b82ba4087df8e9"
+    }
+  ],
+  "ownBackgroundGet": [],
+  "adminGet": [],
+  "authPaths": [],
+  "dynamicPrivateProfileGet": "NOT_ALLOWED_IN_DIAGNOSTIC",
+  "turnstileCapability": "HTTPS challenges.cloudflare.com only: GET /turnstile/v0/api.js?render=explicit; bounded GET/POST /cdn-cgi/challenge-platform/ subtree. No redirects/other origins/cookies; vendor Worker/WS/EventSource transports closed; unsupported behavior stops, never bypasses.",
+  "proposedContractChanges": [
+    "New independent LOGIN_A initialization-only diagnostic, no credential entry or CAPTCHA solving",
+    "Bounded safe predispatch/response completion journal, no raw private data",
+    "Global10/browser8/Deployment2, hard300/work240/cleanup60, OAuth>360",
+    "No login/Auth/REST/refresh/logout; original14 mappings and16 Catalog steps remain pending",
+    "First failure stops without post-Deployment; postcheck only on clean initialization",
+    "Safe stable pathname fingerprint and evidence class only; no static allowlist or request budget increase"
+  ],
+  "excluded": [
+    "registration",
+    "emails",
+    "recovery links",
+    "consent writes",
+    "posts/comments/likes/circles mutation",
+    "media reads/uploads/deletes",
+    "admin writes",
+    "Realtime acceptance",
+    "full locale/mobile visual acceptance",
+    "provider config",
+    "database SQL",
+    "Catalog release",
+    "all Auth submissions, refreshes and logouts",
+    "all Supabase HTTP dispatches",
+    "actual Catalog RLS execution",
+    "full GROUP1 acceptance"
+  ],
+  "sideEffects": [
+    "Anonymous Worker/static/challenge access and normal security/access logs; no authentication submission",
+    "Free-only historical owner attestation reused; quota exhaustion stops, no payment or upgrade"
+  ],
+  "serverModerationDependency": "NONE_FOR_SOURCE_REVIEWED_SCOPE",
+  "mutationResultAmbiguity": "STOP_NO_RETRY_NO_AUTOMATIC_CLEANUP",
+  "catalogHold": "ACTIVE",
+  "recoveryBoundary": "NO_VERSION151_DEFAULT_AFTER_HARDENING",
+  "productionAuthorization": "NOT_AUTHORIZED",
+  "fullEVerify": "INCOMPLETE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "freePlanProofSha256": "55c1e39de7196c6002cbfeda2cd0662affd911fda0aeeb3c8f085bb1d91193f6",
+  "freePlanScopeSha256": "321191b9d0ee181e3e45236ad0181808ffba581a71ec9af6a2f04a67944bef56",
+  "referenceGroup1RequiredCases": [
+    "AUTH-01",
+    "AUTH-02",
+    "AUTH-03",
+    "AUTH-04",
+    "AUTH-08:bounded-nonmail-partial",
+    "RLS-01",
+    "RLS-02",
+    "RLS-03",
+    "RLS-04",
+    "RLS-05",
+    "ADMIN-04:devices-read-partial",
+    "UI-01:core-partial",
+    "UI-02:core-partial",
+    "UI-03:core-partial"
+  ],
+  "referenceCatalogRestRequests": [
+    {
+      "id": "RLS_ANON_PUBLIC",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=slug,brand_key,name,catalog_normalized&slug=eq.xreal-air&publication_status=eq.published&limit=1",
+      "kind": "published",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_ANON_SPECS",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_SOURCES",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_EVIDENCE",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "actor": "anon",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_LEGACY",
+      "actor": "A",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_A_SPECS",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_SOURCES",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_EVIDENCE",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_AUDIT",
+      "actor": "A",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_LEGACY",
+      "actor": "B",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_SPECS",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_SOURCES",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_EVIDENCE",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_AUDIT",
+      "actor": "B",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    }
+  ],
+  "diagnosticConstraints": {
+    "mode": "LOGIN_A_INITIALIZATION_ONLY",
+    "browserGETMax": 8,
+    "providerDeploymentGETMax": 2,
+    "totalHTTPMax": 10,
+    "authDispatchMax": 0,
+    "restDispatchMax": 0,
+    "mutationMax": 0,
+    "observationSeconds": 10
+  },
+  "effectiveBudgetContract": "Owner caps unchanged ceilings; global10, browser8, Turnstile<=8, all mutations/Auth/REST/refresh0; no Supabase wire capability",
+  "diagnosticLogging": {
+    "scope": "APPLICATION_LOGIN_A_GET_SCRIPT_PATHNAME_ONLY",
+    "algorithm": "SHA256",
+    "prefix": "group1-script-path-v1\u0000",
+    "queryValuesExcluded": true,
+    "unknownRawPathsRetained": false,
+    "exactFiniteManifestComparisonOnly": true
+  }
+}

@@ -242,7 +242,7 @@ async function fetchPublishedPosts(
   const buildQuery = (selectClause: string) => {
     let query = supabase
       .from("posts")
-      .select(selectClause)
+      .select<string, Record<string, unknown>>(selectClause)
       .eq("status", "published")
       .eq("moderation_status", "published")
       .or(`title.ilike.${params.pattern},body.ilike.${params.pattern}`)
@@ -269,7 +269,7 @@ async function fetchPublishedPosts(
   }
 
   const merged = new Map<string, SearchPostRow>();
-  for (const row of (textResult.data ?? []) as Array<Record<string, unknown>>) {
+  for (const row of textResult.data ?? []) {
     const normalized = normalizePostRow(row);
     if (!isActivePublicSearchCircle(normalized.circles)) continue;
     merged.set(normalized.id, normalized);
@@ -279,7 +279,7 @@ async function fetchPublishedPosts(
     const authorSelect = supportsViewCount ? selectWithViewCount : selectWithoutViewCount;
     let authorQuery = supabase
       .from("posts")
-      .select(authorSelect)
+      .select<typeof authorSelect, Record<string, unknown>>(authorSelect)
       .eq("status", "published")
       .eq("moderation_status", "published")
       .in("author_id", params.authorIds)
@@ -314,7 +314,7 @@ async function fetchPublishedPosts(
     } else if (authorResult.error) {
       throw authorResult.error;
     } else {
-      for (const row of (authorResult.data ?? []) as Array<Record<string, unknown>>) {
+      for (const row of authorResult.data ?? []) {
         const normalized = normalizePostRow(row);
         if (!isActivePublicSearchCircle(normalized.circles)) continue;
         merged.set(normalized.id, normalized);
@@ -555,7 +555,7 @@ export async function runForumSearch(
           })
         : Promise.resolve({ rows: [], supportsViewCount: true });
 
-    const circlesPromise: Promise<ForumSearchCircleResult[]> =
+    const circlesPromise: PromiseLike<ForumSearchCircleResult[]> =
       parsed.circleSlug || parsed.type === "posts" || parsed.type === "users" || parsed.type === "devices"
         ? Promise.resolve([])
         : supabase

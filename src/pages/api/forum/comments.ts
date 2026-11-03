@@ -19,11 +19,14 @@ import {
   moderateContent,
 } from "../../../lib/moderation/moderate-content.server";
 import { isModeratorRole } from "../../../lib/server/admin-auth";
+import { assertStaffWriteAssurance } from "../../../lib/server/admin-assurance";
 import { requireAuthenticatedLegalConsent } from "../../../lib/server/legal-consent-mutation.server";
 import { createLegalConsentReadRepository } from "../../../lib/server/legal-consent-repository.server";
 import { enforceUserRateLimit, hashRateLimitIp } from "../../../lib/server/rate-limit";
 import { assertUserCanWrite, getSafetyWriteBlockResponse } from "../../../lib/server/user-safety.server";
 import { isPublicVisibleCircle } from "../../../lib/site-navigation";
+import { isDiscoveryExcluded } from "../../../lib/discovery-exclusions";
+import { parsePublicCommentPage, PUBLIC_COMMENT_PAGE_SIZE } from "../../../lib/forum-discovery";
 
 export const prerender = false;
 
@@ -34,7 +37,7 @@ export const prerender = false;
 interface CommentRow {
   id: string;
   post_id: string;
-  author_id: string;
+  author_id: string | null;
   parent_id: string | null;
   body: string;
   status: string;
@@ -59,7 +62,7 @@ interface ReactionRow {
 interface EnrichedComment {
   id: string;
   post_id: string;
-  author_id: string;
+  author_id: string | null;
   parent_id: string | null;
   body: string;
   status: string;
@@ -73,8 +76,9 @@ interface EnrichedComment {
   } | null;
   like_count: number;
   liked_by_me: boolean;
-  reply_count: number;
+  reply_count: number | null;
   can_delete: boolean;
+  delete_as_staff: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -367,10 +371,13 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
     const url = new URL(request.url);
     const postId = url.searchParams.get("post_id");
+    const publicPage = url.searchParams.has('public_page') ? parsePublicCommentPage(url.searchParams.get('public_page')) : null;
+    if (publicPage === undefined) return json({ error: 'Invalid comment page' }, 400);
 
     if (!postId || !UUID_REGEX.test(postId)) {
       return json({ error: "post_id is required (valid UUID)" }, 400);
     }
+    if (isDiscoveryExcluded('posts', postId)) return json({ error: 'Post not found' }, 404);
 
     const token = getBearerToken(request);
     let client = createAnonClient(env);
@@ -390,19 +397,29 @@ export const GET: APIRoute = async ({ request, locals }) => {
     }
 
     // Fetch comments (published + owner pending + deleted placeholders for published replies)
-    const { data: allComments, error: commentsError } = await client
+    let commentsQuery = client
       .from("comments")
       .select("id, post_id, author_id, parent_id, body, status, moderation_status, created_at, updated_at")
       .eq("post_id", readTarget.postId)
-      .in("status", ["published", "deleted", "pending"])
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: true })
+      .order("id", { ascending: true });
+    // Anonymous hydration mirrors the public SSR page. Authenticated viewers
+    // retain the existing owner-pending/staff projection and permission filters.
+    commentsQuery = publicPage && !viewerUserId
+      ? commentsQuery.eq('status', 'published').eq('moderation_status', 'published')
+      : commentsQuery.in('status', ['published', 'deleted', 'pending']);
+    commentsQuery = publicPage
+      ? commentsQuery.range((publicPage - 1) * PUBLIC_COMMENT_PAGE_SIZE, publicPage * PUBLIC_COMMENT_PAGE_SIZE - 1)
+      : commentsQuery.limit(1000);
+    const { data: allComments, error: commentsError } = await commentsQuery;
 
     if (commentsError) {
+      if (publicPage) return json({ error: 'Comments temporarily unavailable.' }, 503);
       if (isMigrationMissingError(commentsError)) return migrationRequiredResponse();
       return json({ error: commentsError.message }, 500);
     }
 
-    const rows = (allComments ?? []) as CommentRow[];
+    const rows = ((allComments ?? []) as CommentRow[]).filter(row => !isDiscoveryExcluded('comments', row.id));
 
     const publishedComments = rows.filter(
       (c) => c.status === "published" && (c.moderation_status ?? "published") === "published",
@@ -413,29 +430,37 @@ export const GET: APIRoute = async ({ request, locals }) => {
         (c.moderation_status ?? null) === "pending_review" &&
         viewerUserId === c.author_id,
     );
-    const deletedComments = rows.filter((c) => c.status === "deleted");
-
-    // A deleted comment is only kept if it has child replies among published comments
-    const deletedWithReplies = deletedComments.filter((dc) =>
-      publishedComments.some((pc) => pc.parent_id === dc.id),
-    );
-    const deletedIds = new Set(deletedWithReplies.map((c) => c.id));
+    // RLS deliberately hides deleted bodies. A bounded projection supplies only
+    // public reply ancestry, never deleted content, authors, media or reactions.
+    let deletedWithReplies: CommentRow[] = [];
+    if (publishedComments.some((c) => c.parent_id)) {
+      const { data: placeholders, error: placeholderError } = await client.rpc("deleted_comment_placeholders", {
+        target_post_id: readTarget.postId,
+        visible_comment_ids: publishedComments.map((c) => c.id),
+      });
+      if (placeholderError) return json({ error: "COMMENT_PLACEHOLDER_READ_FAILED" }, 500);
+      deletedWithReplies = (placeholders ?? []).map((c: Pick<CommentRow, "id" | "post_id" | "parent_id" | "created_at" | "updated_at">) => ({
+        ...c, author_id: null, body: "", status: "deleted", moderation_status: "published",
+      })).filter((c: CommentRow) => !isDiscoveryExcluded('comments', c.id));
+    }
 
     // Final comment set: all published + deleted placeholders with replies
-    const visibleComments = [...publishedComments, ...pendingComments, ...deletedWithReplies];
+    const visibleComments = [...publishedComments, ...pendingComments, ...deletedWithReplies]
+      .sort((a, b) => a.created_at.localeCompare(b.created_at) || a.id.localeCompare(b.id));
 
     if (visibleComments.length === 0) {
       return json({ comments: [], total: 0 });
     }
 
     // Fetch profiles for all visible comment authors
-    const authorIds = [...new Set(visibleComments.map((c) => c.author_id))];
+    const authorIds = [...new Set(visibleComments.map((c) => c.author_id).filter((id): id is string => id !== null))];
     const { data: profiles, error: profilesError } = await client
       .from("profiles")
       .select("id, username, display_name, avatar_url, role")
       .in("id", authorIds);
 
     if (profilesError) {
+      if (publicPage) return json({ error: 'Comments temporarily unavailable.' }, 503);
       if (isMigrationMissingError(profilesError)) return migrationRequiredResponse();
       return json({ error: profilesError.message }, 500);
     }
@@ -453,6 +478,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
       .in("comment_id", commentIds);
 
     if (reactionsError) {
+      if (publicPage) return json({ error: 'Comments temporarily unavailable.' }, 503);
       return json({ error: reactionsError.message }, 500);
     }
 
@@ -473,30 +499,13 @@ export const GET: APIRoute = async ({ request, locals }) => {
     }
 
     // Determine liked_by_me if authenticated
-    let myUserId: string | null = viewerUserId;
+    const myUserId = viewerUserId;
     let myRole: string | null = null;
-
-    if (token && !myUserId) {
-      try {
-        const userClient = createUserClient(env, token);
-        const { data: authData } = await userClient.auth.getUser(token);
-        if (authData?.user) {
-          myUserId = authData.user.id;
-          const profile = profileMap.get(myUserId);
-          if (!profile) {
-            const { data: myProfile } = await userClient
-              .from("profiles")
-              .select("id, role")
-              .eq("id", myUserId)
-              .maybeSingle();
-            if (myProfile) myRole = (myProfile as { role: string }).role;
-          } else {
-            myRole = profile.role;
-          }
-        }
-      } catch {
-        // Token invalid, proceed as anonymous
-      }
+    if (myUserId) {
+      const { data: myProfile, error: myProfileError } = await client.from("profiles")
+        .select("role").eq("id", myUserId).maybeSingle();
+      if (myProfileError) return json({ error: "COMMENT_VIEWER_ROLE_READ_FAILED" }, 500);
+      myRole = myProfile?.role ?? null;
     }
 
     const likedSet = new Set<string>();
@@ -509,14 +518,15 @@ export const GET: APIRoute = async ({ request, locals }) => {
     const isStaff = isModeratorRole(myRole);
 
     // Enrich comments
+    const visibleIds = new Set(visibleComments.map(c => c.id));
     const enriched: EnrichedComment[] = visibleComments.map((c) => {
-      const profile = profileMap.get(c.author_id);
-      const isDeleted = c.status === "deleted" || deletedIds.has(c.id);
+      const profile = c.author_id ? profileMap.get(c.author_id) : null;
+      const isDeleted = c.status === "deleted";
       return {
         id: c.id,
         post_id: c.post_id,
         author_id: c.author_id,
-        parent_id: c.parent_id,
+        parent_id: publicPage && c.parent_id && !visibleIds.has(c.parent_id) ? null : c.parent_id,
         body: isDeleted ? "" : c.body,
         status: isDeleted ? "deleted" : c.status,
         created_at: c.created_at,
@@ -531,13 +541,15 @@ export const GET: APIRoute = async ({ request, locals }) => {
           : null,
         like_count: likeCountMap.get(c.id) ?? 0,
         liked_by_me: likedSet.has(c.id),
-        reply_count: replyCountMap.get(c.id) ?? 0,
-        can_delete: myUserId === c.author_id || isStaff,
+        reply_count: publicPage ? null : replyCountMap.get(c.id) ?? 0,
+        can_delete: !isDeleted && Boolean(myUserId && (myUserId === c.author_id || isStaff)),
+        delete_as_staff: !isDeleted && isStaff && myUserId !== c.author_id,
       };
     });
 
     return json({ comments: enriched, total: enriched.length });
   } catch (err) {
+    if (new URL(request.url).searchParams.has('public_page')) return json({ error: 'Comments temporarily unavailable.' }, 503);
     if (isMigrationMissingError(err)) return migrationRequiredResponse();
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },
@@ -758,6 +770,8 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
 
     const isStaff = isModeratorRole((profile as { role: string }).role);
 
+    await assertStaffWriteAssurance(request, userClient, token, authData.user.id, profile.role);
+
     // Fetch the comment
     const { data: comment, error: commentError } = await userClient
       .from("comments")
@@ -796,6 +810,7 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
 
     return json({ ok: true, comment_id: commentId, status: "deleted" });
   } catch (err) {
+    if (err instanceof Response) return err;
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,

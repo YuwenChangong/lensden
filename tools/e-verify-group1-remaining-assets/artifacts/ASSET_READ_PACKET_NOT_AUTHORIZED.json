@@ -1,0 +1,718 @@
+{
+  "format": "group1-consolidated-remaining-asset-read-v1",
+  "readerPolicyVersion": "STRICT_MODULE_PARSE_V2",
+  "htmlReferencePolicy": "REJECT_BASE_CASE_INSENSITIVE_TOKENS_AND_CSS_IMPORTS",
+  "authorizationId": "e-verify-group1-openglasshub-20261013-remaining-assets-v9",
+  "status": "PENDING_OWNER_APPROVAL",
+  "sourceSha": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "buildId": "d98da799-d41d-41dc-acaf-8c6675fd799a",
+  "expectedProductionVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+  "accountId": "dcb374166b39234a499985145c075f50",
+  "worker": "openglasshub",
+  "appOrigin": "https://openglasshub.ogh.workers.dev",
+  "expectedPreviousDeploymentId": "e8481d68-d2d5-473b-8b0c-b82b8fa33fc3",
+  "fixedRequests": [
+    {
+      "role": "DEPLOYMENT_PRE_AND_POST",
+      "method": "GET",
+      "url": "https://api.cloudflare.com/client/v4/accounts/dcb374166b39234a499985145c075f50/workers/scripts/openglasshub/deployments",
+      "maxBodyBytes": 131072,
+      "maxRequests": 2
+    },
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/",
+      "method": "GET"
+    },
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/xreal/xreal-air/",
+      "method": "GET"
+    },
+    {
+      "url": "https://openglasshub.ogh.workers.dev/admin/devices/",
+      "method": "GET"
+    }
+  ],
+  "pages": [
+    "/products/",
+    "/products/xreal/xreal-air/",
+    "/admin/devices/"
+  ],
+  "requiredTarget": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.CtUXEG6g.js",
+  "htmlRequiredMarkers": {
+    "/products/": [
+      "data-brand-module"
+    ],
+    "/products/xreal/xreal-air/": [
+      "data-product-detail"
+    ],
+    "/admin/devices/": [
+      "AdminDevicesDashboard."
+    ]
+  },
+  "manifest": [
+    {
+      "path": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.CtUXEG6g.js",
+      "kind": "script",
+      "bytes": 1168,
+      "sha256": "d38ccb187c70064b9bec7e27993090ade0408ca524cccef2aec7312521240902",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.DozvmMnE.js",
+      "kind": "script",
+      "bytes": 160,
+      "sha256": "a0a89192786b6d4391746b1f0206b3eb4306e1924d5707e29d35b300d2d6e516",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/client.C9ykwJRQ.js",
+      "kind": "script",
+      "bytes": 180744,
+      "sha256": "b6b9827d0edbb0969b7f91072249e44d48dd6b36c9846980a2a684b8413fba42",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/HeaderUserMenu.BQjZAuvq.js",
+      "kind": "script",
+      "bytes": 8022,
+      "sha256": "c089c71a3eb20cf7c6a340b5c47ead959a40e2f87aa56556f7a7b5adb55400df",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/AuthPanel.DgqtsVwn.js",
+      "kind": "script",
+      "bytes": 13837,
+      "sha256": "2678302ab24a14f6f98c385476ae41fd770628f6024e4ad89d75f1ef382a7cf6",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/page.Dtz6tGCc.js",
+      "kind": "script",
+      "bytes": 2536,
+      "sha256": "1c99026c0527cac05d3a172c386fdd43767eac5818e26c45ff353ad5d1f03aa9",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/SiteHeader.BKThlVlH.css",
+      "kind": "stylesheet",
+      "bytes": 8315,
+      "sha256": "537f4d49f52b52c418399bb787f6ee9a5c1ca8badbb4c05fc47f71f07e0912cd",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/GlobalSearchBox.Bl5bcP-U.js",
+      "kind": "script",
+      "bytes": 5511,
+      "sha256": "bf403b435307e8ea0521d94d3a286f13584286dead534a084407303fa2c049f9",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/HeaderNotifications.Dvp51m2w.js",
+      "kind": "script",
+      "bytes": 9003,
+      "sha256": "87f2cd770b3cc9e9bd026a3ec8bc6ccefaecf335885b66af71d03e1c5f434399",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.C6ZrnQDj.js",
+      "kind": "script",
+      "bytes": 3931,
+      "sha256": "8309f3700026a532c6f25682edbb54054800c08893725e179810c9897cc5f5ba",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/CommunityLayout.jf1vXvaF.css",
+      "kind": "stylesheet",
+      "bytes": 125430,
+      "sha256": "43e22bcd8f713a3a205781e763909ae9e215f116509c638cfd8650db0caa4fd1",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/react.DZuxrRTg.js",
+      "kind": "script",
+      "bytes": 8088,
+      "sha256": "e9c0a21591214c6b5ed976fe40a1c45a254c4ca58b7e5cd1d151af7f14ed3b27",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/SettingsPage.k4jTk_Qi.js",
+      "kind": "script",
+      "bytes": 5342,
+      "sha256": "2dee892acbc1d98b7dacbbe326663aaaa6db5909f0a43a0c0c96ff2cb11b8f32",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/react-dom.BHf2gUf-.js",
+      "kind": "script",
+      "bytes": 3587,
+      "sha256": "468f9774b111a96b0ee21ceb962f1da0fcf69a90ea0a62b640ad08b4ca2dbfb5",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/supabase-browser.CbJzQpCJ.js",
+      "kind": "script",
+      "bytes": 210364,
+      "sha256": "aa677f1ee5784636ca14b697b28872d7f4882179dfdfc5a9015a039e82c0b37c",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/jsx-runtime.Cs_ylJLF.js",
+      "kind": "script",
+      "bytes": 5569,
+      "sha256": "c2c3692670c89dbcfb1a21e5596bb534f00f8e476448eae2eea79357d6dbfd6f",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/useLocale.OuxaUvmK.js",
+      "kind": "script",
+      "bytes": 107578,
+      "sha256": "991ebf58bed99754cc2f4436bfafb830de70fb720a73897b1efa05fd3a32eb3c",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/legal-consent-adapters.hgu_dait.js",
+      "kind": "script",
+      "bytes": 309,
+      "sha256": "5188c420576b7c93a86a73f368ee9317303e31f449e006e4ccd47fe7490b5021",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/useBrowserAuthState.DwB-xnWR.js",
+      "kind": "script",
+      "bytes": 1023,
+      "sha256": "20324053b51dd1cc538294305b49d56e628dc34a1f4b0c8b8faec5367e2ce664",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/auth-redirect.5ZO3FMne.js",
+      "kind": "script",
+      "bytes": 1794,
+      "sha256": "aa50f4990b53a3dd8532c7617bd2bae15eaedf45c9c7c3572c1193e4cfea3386",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/auth-messages.3HE5GXRn.js",
+      "kind": "script",
+      "bytes": 7687,
+      "sha256": "15f1627e538b9e7e52140d9c17defec79959f443b61de84ff8bef2e5950f0b47",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/notifications.CwRuuH1z.js",
+      "kind": "script",
+      "bytes": 685,
+      "sha256": "043984dfb373bfae763570e83734299883bd8f60b1cdc91651fc798e1213e834",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/product-public-safety.BFvqNWGH.js",
+      "kind": "script",
+      "bytes": 898,
+      "sha256": "f5db8e009b4cd722b6b058875013490848da3430922c51a82adf39e67214f38a",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/index.astro_astro_type_script_index_0_lang.BskClGKx.js",
+      "kind": "script",
+      "localReferenceSha256": "4ffdb68c3751287481be1c638028d38862a971c848cfa9322a170f2eea3b93a5",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "kind": "script",
+      "localReferenceSha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/index.CXX0zyC2.css",
+      "kind": "stylesheet",
+      "localReferenceSha256": "1524674d0d67d5f9a516f7b3066dfcbfcf9847f94d3e390a6ae469799fc835cf",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/AdminDevicesDashboard.hFDGJRVO.js",
+      "kind": "script",
+      "localReferenceSha256": "a97a6c3a5b28f3380c3012a2c656b956e93932ad81ed187464b9e9252987b69a",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/useAdminSession.B8o2Cihd.js",
+      "kind": "script",
+      "localReferenceSha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/GlassConfirmDialog.BkjmaYBn.js",
+      "kind": "script",
+      "localReferenceSha256": "206a8064062d48bc7184af1b4ee55dae85a5fa2aae18339e4288aff012a32771",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/ProductDetail.astro_astro_type_script_index_0_lang.D9BQM-BK.js",
+      "kind": "script",
+      "localReferenceSha256": "ba8895c8d2e9fb9c1916e7904f923771d6892cfaad23ef589a9aca9b2e4eab88",
+      "localInlineBytes": 285,
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_ONLY_IF_DETAIL_HTML_EXTERNALIZES_FROZEN_INLINE_SCRIPT"
+    }
+  ],
+  "edgeRules": {
+    "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.js": [
+      "/_astro/SettingsPage.js"
+    ],
+    "/_astro/LocalePreferenceSync.js": [
+      "/_astro/LocalePreferenceSync.js",
+      "/_astro/jsx-runtime.js",
+      "/_astro/react.js",
+      "/_astro/supabase-browser.js",
+      "/_astro/useBrowserAuthState.js"
+    ],
+    "/_astro/client.js": [
+      "/_astro/react-dom.js",
+      "/_astro/react.js"
+    ],
+    "/_astro/HeaderUserMenu.js": [
+      "/_astro/auth-redirect.js",
+      "/_astro/jsx-runtime.js",
+      "/_astro/react-dom.js",
+      "/_astro/react.js",
+      "/_astro/supabase-browser.js",
+      "/_astro/useBrowserAuthState.js",
+      "/_astro/useLocale.js"
+    ],
+    "/_astro/AuthPanel.js": [
+      "/_astro/auth-messages.js",
+      "/_astro/auth-redirect.js",
+      "/_astro/jsx-runtime.js",
+      "/_astro/legal-consent-adapters.js",
+      "/_astro/react.js",
+      "/_astro/supabase-browser.js",
+      "/_astro/useBrowserAuthState.js",
+      "/_astro/useLocale.js"
+    ],
+    "/_astro/page.js": [],
+    "/_astro/SiteHeader.css": [],
+    "/_astro/GlobalSearchBox.js": [
+      "/_astro/jsx-runtime.js",
+      "/_astro/product-public-safety.js",
+      "/_astro/react.js",
+      "/_astro/useLocale.js"
+    ],
+    "/_astro/HeaderNotifications.js": [
+      "/_astro/jsx-runtime.js",
+      "/_astro/notifications.js",
+      "/_astro/react-dom.js",
+      "/_astro/react.js",
+      "/_astro/supabase-browser.js",
+      "/_astro/useBrowserAuthState.js",
+      "/_astro/useLocale.js"
+    ],
+    "/_astro/CommunityLayout.css": [],
+    "/_astro/react.js": [],
+    "/_astro/SettingsPage.js": [
+      "/_astro/LocalePreferenceSync.js",
+      "/_astro/jsx-runtime.js",
+      "/_astro/react.js",
+      "/_astro/supabase-browser.js",
+      "/_astro/useBrowserAuthState.js",
+      "/_astro/useLocale.js"
+    ],
+    "/_astro/react-dom.js": [
+      "/_astro/react.js"
+    ],
+    "/_astro/supabase-browser.js": [],
+    "/_astro/jsx-runtime.js": [
+      "/_astro/react.js"
+    ],
+    "/_astro/useLocale.js": [
+      "/_astro/jsx-runtime.js",
+      "/_astro/react.js"
+    ],
+    "/_astro/legal-consent-adapters.js": [
+      "/_astro/auth-redirect.js"
+    ],
+    "/_astro/useBrowserAuthState.js": [
+      "/_astro/react.js"
+    ],
+    "/_astro/auth-redirect.js": [],
+    "/_astro/auth-messages.js": [],
+    "/_astro/notifications.js": [],
+    "/_astro/product-public-safety.js": [],
+    "/_astro/index.astro_astro_type_script_index_0_lang.js": [
+      "/_astro/catalog-compare-dom.js"
+    ],
+    "/_astro/catalog-compare-dom.js": [],
+    "/_astro/index.css": [],
+    "/_astro/AdminDevicesDashboard.js": [
+      "/_astro/GlassConfirmDialog.js",
+      "/_astro/auth-redirect.js",
+      "/_astro/jsx-runtime.js",
+      "/_astro/product-public-safety.js",
+      "/_astro/react.js",
+      "/_astro/useAdminSession.js",
+      "/_astro/useLocale.js"
+    ],
+    "/_astro/useAdminSession.js": [
+      "/_astro/react.js",
+      "/_astro/supabase-browser.js"
+    ],
+    "/_astro/GlassConfirmDialog.js": [
+      "/_astro/jsx-runtime.js",
+      "/_astro/react-dom.js",
+      "/_astro/react.js",
+      "/_astro/useLocale.js"
+    ],
+    "/_astro/ProductDetail.astro_astro_type_script_index_0_lang.js": [],
+    "/login/": [
+      "/_astro/AuthPanel.js",
+      "/_astro/CommunityLayout.css",
+      "/_astro/GlobalSearchBox.js",
+      "/_astro/HeaderNotifications.js",
+      "/_astro/HeaderUserMenu.js",
+      "/_astro/LocalePreferenceSync.js",
+      "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.js",
+      "/_astro/SiteHeader.css",
+      "/_astro/client.js",
+      "/_astro/page.js"
+    ],
+    "/products/": [
+      "/_astro/CommunityLayout.css",
+      "/_astro/GlobalSearchBox.js",
+      "/_astro/HeaderNotifications.js",
+      "/_astro/HeaderUserMenu.js",
+      "/_astro/LocalePreferenceSync.js",
+      "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.js",
+      "/_astro/SiteHeader.css",
+      "/_astro/client.js",
+      "/_astro/index.astro_astro_type_script_index_0_lang.js",
+      "/_astro/index.css",
+      "/_astro/page.js"
+    ],
+    "/products/xreal/xreal-air/": [
+      "/_astro/CommunityLayout.css",
+      "/_astro/GlobalSearchBox.js",
+      "/_astro/HeaderNotifications.js",
+      "/_astro/HeaderUserMenu.js",
+      "/_astro/LocalePreferenceSync.js",
+      "/_astro/ProductDetail.astro_astro_type_script_index_0_lang.js",
+      "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.js",
+      "/_astro/SiteHeader.css",
+      "/_astro/client.js",
+      "/_astro/page.js"
+    ],
+    "/admin/devices/": [
+      "/_astro/AdminDevicesDashboard.js",
+      "/_astro/CommunityLayout.css",
+      "/_astro/GlobalSearchBox.js",
+      "/_astro/HeaderNotifications.js",
+      "/_astro/HeaderUserMenu.js",
+      "/_astro/LocalePreferenceSync.js",
+      "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.js",
+      "/_astro/SiteHeader.css",
+      "/_astro/client.js",
+      "/_astro/page.js"
+    ]
+  },
+  "requiredRoots": {
+    "/products/": [
+      "/_astro/index.astro_astro_type_script_index_0_lang.js"
+    ],
+    "/products/xreal/xreal-air/": [],
+    "/admin/devices/": [
+      "/_astro/AdminDevicesDashboard.js"
+    ]
+  },
+  "remainingSlots": [
+    {
+      "path": "/_astro/index.astro_astro_type_script_index_0_lang.BskClGKx.js",
+      "kind": "script",
+      "localReferenceSha256": "4ffdb68c3751287481be1c638028d38862a971c848cfa9322a170f2eea3b93a5",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "kind": "script",
+      "localReferenceSha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/index.CXX0zyC2.css",
+      "kind": "stylesheet",
+      "localReferenceSha256": "1524674d0d67d5f9a516f7b3066dfcbfcf9847f94d3e390a6ae469799fc835cf",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/AdminDevicesDashboard.hFDGJRVO.js",
+      "kind": "script",
+      "localReferenceSha256": "a97a6c3a5b28f3380c3012a2c656b956e93932ad81ed187464b9e9252987b69a",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/useAdminSession.B8o2Cihd.js",
+      "kind": "script",
+      "localReferenceSha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/GlassConfirmDialog.BkjmaYBn.js",
+      "kind": "script",
+      "localReferenceSha256": "206a8064062d48bc7184af1b4ee55dae85a5fa2aae18339e4288aff012a32771",
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_CONDITIONAL_ONLY"
+    },
+    {
+      "path": "/_astro/ProductDetail.astro_astro_type_script_index_0_lang.D9BQM-BK.js",
+      "kind": "script",
+      "localReferenceSha256": "ba8895c8d2e9fb9c1916e7904f923771d6892cfaad23ef589a9aca9b2e4eab88",
+      "localInlineBytes": 285,
+      "productionContentSha256": null,
+      "provenance": "UNVERIFIED_ONLY_IF_DETAIL_HTML_EXTERNALIZES_FROZEN_INLINE_SCRIPT"
+    }
+  ],
+  "reusedAssets": [
+    {
+      "path": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.CtUXEG6g.js",
+      "kind": "script",
+      "bytes": 1168,
+      "sha256": "d38ccb187c70064b9bec7e27993090ade0408ca524cccef2aec7312521240902",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.DozvmMnE.js",
+      "kind": "script",
+      "bytes": 160,
+      "sha256": "a0a89192786b6d4391746b1f0206b3eb4306e1924d5707e29d35b300d2d6e516",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/client.C9ykwJRQ.js",
+      "kind": "script",
+      "bytes": 180744,
+      "sha256": "b6b9827d0edbb0969b7f91072249e44d48dd6b36c9846980a2a684b8413fba42",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/HeaderUserMenu.BQjZAuvq.js",
+      "kind": "script",
+      "bytes": 8022,
+      "sha256": "c089c71a3eb20cf7c6a340b5c47ead959a40e2f87aa56556f7a7b5adb55400df",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/AuthPanel.DgqtsVwn.js",
+      "kind": "script",
+      "bytes": 13837,
+      "sha256": "2678302ab24a14f6f98c385476ae41fd770628f6024e4ad89d75f1ef382a7cf6",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/page.Dtz6tGCc.js",
+      "kind": "script",
+      "bytes": 2536,
+      "sha256": "1c99026c0527cac05d3a172c386fdd43767eac5818e26c45ff353ad5d1f03aa9",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/SiteHeader.BKThlVlH.css",
+      "kind": "stylesheet",
+      "bytes": 8315,
+      "sha256": "537f4d49f52b52c418399bb787f6ee9a5c1ca8badbb4c05fc47f71f07e0912cd",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/GlobalSearchBox.Bl5bcP-U.js",
+      "kind": "script",
+      "bytes": 5511,
+      "sha256": "bf403b435307e8ea0521d94d3a286f13584286dead534a084407303fa2c049f9",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/HeaderNotifications.Dvp51m2w.js",
+      "kind": "script",
+      "bytes": 9003,
+      "sha256": "87f2cd770b3cc9e9bd026a3ec8bc6ccefaecf335885b66af71d03e1c5f434399",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.C6ZrnQDj.js",
+      "kind": "script",
+      "bytes": 3931,
+      "sha256": "8309f3700026a532c6f25682edbb54054800c08893725e179810c9897cc5f5ba",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/CommunityLayout.jf1vXvaF.css",
+      "kind": "stylesheet",
+      "bytes": 125430,
+      "sha256": "43e22bcd8f713a3a205781e763909ae9e215f116509c638cfd8650db0caa4fd1",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/react.DZuxrRTg.js",
+      "kind": "script",
+      "bytes": 8088,
+      "sha256": "e9c0a21591214c6b5ed976fe40a1c45a254c4ca58b7e5cd1d151af7f14ed3b27",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/SettingsPage.k4jTk_Qi.js",
+      "kind": "script",
+      "bytes": 5342,
+      "sha256": "2dee892acbc1d98b7dacbbe326663aaaa6db5909f0a43a0c0c96ff2cb11b8f32",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/react-dom.BHf2gUf-.js",
+      "kind": "script",
+      "bytes": 3587,
+      "sha256": "468f9774b111a96b0ee21ceb962f1da0fcf69a90ea0a62b640ad08b4ca2dbfb5",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/supabase-browser.CbJzQpCJ.js",
+      "kind": "script",
+      "bytes": 210364,
+      "sha256": "aa677f1ee5784636ca14b697b28872d7f4882179dfdfc5a9015a039e82c0b37c",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/jsx-runtime.Cs_ylJLF.js",
+      "kind": "script",
+      "bytes": 5569,
+      "sha256": "c2c3692670c89dbcfb1a21e5596bb534f00f8e476448eae2eea79357d6dbfd6f",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/useLocale.OuxaUvmK.js",
+      "kind": "script",
+      "bytes": 107578,
+      "sha256": "991ebf58bed99754cc2f4436bfafb830de70fb720a73897b1efa05fd3a32eb3c",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/legal-consent-adapters.hgu_dait.js",
+      "kind": "script",
+      "bytes": 309,
+      "sha256": "5188c420576b7c93a86a73f368ee9317303e31f449e006e4ccd47fe7490b5021",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/useBrowserAuthState.DwB-xnWR.js",
+      "kind": "script",
+      "bytes": 1023,
+      "sha256": "20324053b51dd1cc538294305b49d56e628dc34a1f4b0c8b8faec5367e2ce664",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/auth-redirect.5ZO3FMne.js",
+      "kind": "script",
+      "bytes": 1794,
+      "sha256": "aa50f4990b53a3dd8532c7617bd2bae15eaedf45c9c7c3572c1193e4cfea3386",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/auth-messages.3HE5GXRn.js",
+      "kind": "script",
+      "bytes": 7687,
+      "sha256": "15f1627e538b9e7e52140d9c17defec79959f443b61de84ff8bef2e5950f0b47",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/notifications.CwRuuH1z.js",
+      "kind": "script",
+      "bytes": 685,
+      "sha256": "043984dfb373bfae763570e83734299883bd8f60b1cdc91651fc798e1213e834",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    },
+    {
+      "path": "/_astro/product-public-safety.BFvqNWGH.js",
+      "kind": "script",
+      "bytes": 898,
+      "sha256": "f5db8e009b4cd722b6b058875013490848da3430922c51a82adf39e67214f38a",
+      "provenance": "VERIFIED_REUSE_ONLY"
+    }
+  ],
+  "scopeSha256": "fe67f24f364240d187f2409f8f233647e093ac8aced023ff35303d197d6b6a9e",
+  "inlineContingency": {
+    "source": "src/components/products/ProductDetail.astro",
+    "compiledSource": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/dist/server/chunks/entrypoints_BIiJaWEe.mjs",
+    "bytes": 285,
+    "sha256": "ba8895c8d2e9fb9c1916e7904f923771d6892cfaad23ef589a9aca9b2e4eab88",
+    "onlyIfExplicitlyReferenced": true
+  },
+  "proposedReadBudgets": {
+    "totalGETMax": 12,
+    "htmlGETMax": 3,
+    "assetGETMax": 7,
+    "providerDeploymentGETMax": 2,
+    "concurrencyMax": 4,
+    "hardSeconds": 300,
+    "workSeconds": 240,
+    "cleanupReserveSeconds": 60,
+    "perRequestSeconds": 15,
+    "maxHeaderBytes": 8192,
+    "maxAssetBytes": 2097152,
+    "anonymousAggregateBytesMax": 16777216
+  },
+  "historicalReadCeiling": 70,
+  "amendment": {
+    "htmlGetMax": {
+      "old": 1,
+      "new": 3
+    },
+    "assetGetMax": {
+      "old": 67,
+      "new": 7
+    },
+    "totalGetMax": {
+      "old": 70,
+      "new": 12
+    },
+    "details": "New independent contract; no login GET or existing23 asset GET;6 missing slots plus1 explicitly referenced inline-to-external contingency."
+  },
+  "ownerOriginalGlobalRequestCeiling": 500,
+  "ownerBudgetSha256": "a340ce14361bf638c8522c9baf84a7be5a216d8ee39a42811504e944d58962f6",
+  "existingFreeProofSha256": "1e457981c0b0f1f3f5fd1c59243f7f5cbfc0769b1382ad47f5d6026ccd4fd6e7",
+  "zeroCostPolicy": {
+    "MAX_ADDITIONAL_COST_USD": 0,
+    "PAID_USAGE_AUTHORIZED": false
+  },
+  "executionLimitSeconds": 300,
+  "workLimitSeconds": 240,
+  "cleanupReserveSeconds": 60,
+  "maxAuthorizationValiditySeconds": 3600,
+  "oauthRemainingSecondsStrictlyGreaterThan": 360,
+  "authDispatchMax": 0,
+  "rlsReadsMax": 0,
+  "productionWritesMax": 0,
+  "thirdPartyHTTPMax": 0,
+  "retries": 0,
+  "redirectFollowing": 0,
+  "publicPageSSR": "Products pages invoke existing anonymous catalog SELECT/PostgREST reads incl pagination; not zero internal reads, no direct RLS test or Auth request.",
+  "fullGroup1Authorized": false,
+  "group2Authorized": false,
+  "group3Authorized": false,
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null
+  },
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "proposedGo": "GO_E_VERIFY_GROUP1_REMAINING_ASSET_PROOF_V1"
+}

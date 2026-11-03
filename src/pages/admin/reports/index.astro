@@ -15,6 +15,7 @@ const text = getUiMessages(Astro.locals.localeContext.locale).admin;
 >
   <section class="community-section" style="padding-top: 1rem;">
     <h1 class="community-page-title">/admin/reports</h1>
+    <a href="/admin/security/" class="community-link">Authenticator / MFA</a>
     <p class="community-page-subtitle">{text.pages.reports.lead}</p>
     <p class="community-page-subtitle"><a href="/admin/moderation/" class="community-link">{text.copy.moderationQueue}</a> · <a href="/admin/forum/" class="community-link">{text.copy.forumGovernance}</a> · <a href="/admin/users/" class="community-link">{text.copy.userSafetyConsole}</a></p>
     <AdminReportsPanel localeContext={Astro.locals.localeContext} client:load />

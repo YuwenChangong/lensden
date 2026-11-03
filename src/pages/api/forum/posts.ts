@@ -21,6 +21,7 @@ import {
   moderateContent,
 } from "../../../lib/moderation/moderate-content.server";
 import { isModeratorRole } from "../../../lib/server/admin-auth";
+import { assertStaffWriteAssurance } from "../../../lib/server/admin-assurance";
 import { requireAuthenticatedLegalConsent } from "../../../lib/server/legal-consent-mutation.server";
 import { createLegalConsentReadRepository } from "../../../lib/server/legal-consent-repository.server";
 import { enforceUserRateLimit, hashRateLimitIp } from "../../../lib/server/rate-limit";
@@ -126,6 +127,7 @@ async function resolveWritableCircleBySlug(client: SupabaseClient, circleSlug: s
 export async function resolveAccessibleForumPostTarget(
   client: SupabaseClient,
   postId: string,
+  allowDeleted = false,
 ): Promise<{ ok: true; target: AccessibleForumPostTarget } | { ok: false; status: 404 | 500; error: string }> {
   const { data: post, error: postError } = await client
     .from("posts")
@@ -135,7 +137,8 @@ export async function resolveAccessibleForumPostTarget(
   if (postError) return { ok: false, status: 500, error: "POST_TARGET_LOOKUP_FAILED" };
 
   const postRow = post as { id: string; author_id: string; circle_id: string | null; status: string; moderation_status?: string | null } | null;
-  if (!postRow || postRow.id !== postId || !postRow.circle_id || !UUID_REGEX.test(postRow.circle_id) || postRow.status !== "published" || postRow.moderation_status !== "published") {
+  if (!postRow || postRow.id !== postId || !postRow.circle_id || !UUID_REGEX.test(postRow.circle_id) ||
+    (postRow.status !== "published" && !(allowDeleted && postRow.status === "deleted")) || postRow.moderation_status !== "published") {
     return { ok: false, status: 404, error: "POST_NOT_ACCESSIBLE" };
   }
 
@@ -453,13 +456,15 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
     const viewerRole = await loadViewerRole(userClient, authData.user.id);
     const isStaff = isModeratorRole(viewerRole);
 
+    await assertStaffWriteAssurance(request, userClient, token, authData.user.id, viewerRole);
+
     const url = new URL(request.url);
     const postId = String(url.searchParams.get("id") ?? url.searchParams.get("post_id") ?? "").trim();
     if (!UUID_REGEX.test(postId)) {
       return json({ error: "Invalid post_id format" }, 400);
     }
 
-    const target = await resolveAccessibleForumPostTarget(userClient, postId);
+    const target = await resolveAccessibleForumPostTarget(userClient, postId, true);
     if (!target.ok) {
       if (target.status === 500) return json({ error: "Post lookup failed" }, 500);
       return json({ error: "Post not found" }, 404);
@@ -470,7 +475,7 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
 
     let mediaQuery = userClient
       .from("post_media")
-      .select("id,kind,storage_path,url")
+      .select("id,kind,storage_path,url,thumbnail_url,user_id,post_id")
       .eq("post_id", postId);
     if (!isStaff) {
       mediaQuery = mediaQuery.eq("user_id", authData.user.id);
@@ -517,6 +522,7 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
       message: cleanup.ok ? "已删除并清理媒体" : "已删除，部分媒体清理需要后续重试",
     });
   } catch (err) {
+    if (err instanceof Response) return err;
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,
@@ -574,6 +580,8 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
       return json({ error: "Forbidden" }, 403);
     }
 
+    await assertStaffWriteAssurance(request, userClient, token, authData.user.id, viewerRole);
+
     const { data: updated, error: updateError } = await userClient
       .from("posts")
       .update({ status: "hidden" })
@@ -586,6 +594,7 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
 
     return json({ post: updated });
   } catch (err) {
+    if (err instanceof Response) return err;
     return json(
       { error: err instanceof Error ? err.message : "Unexpected server error" },
       500,

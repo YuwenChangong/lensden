@@ -1,0 +1,21 @@
+id,category,query
+Q01,fundamentals,What is the difference between AR glasses and AI glasses?
+Q02,fundamentals,Do all smart glasses have a display?
+Q03,fundamentals,What does a tethered display glasses system need to work?
+Q04,products,What should I verify before using XREAL One glasses with my phone?
+Q05,products,How can I check the exact model and generation of Ray-Ban Meta glasses?
+Q06,products,Where can I find primary sources for Apple Vision Pro display specifications?
+Q07,comparisons,How should I compare XREAL One and XREAL One Pro using verified specifications?
+Q08,comparisons,How do display glasses differ from standalone spatial computing headsets?
+Q09,comparisons,How should I compare AI glasses when one model has no display?
+Q10,display,What is the difference between waveguide and birdbath optics in AR glasses?
+Q11,display,What is the difference between panel brightness and eye brightness in AR glasses?
+Q12,display,How do per-eye resolution and total pixel count differ in XR specifications?
+Q13,display,What measurement context is needed to compare field of view in AR glasses?
+Q14,tracking,What is the difference between 3DoF and 6DoF tracking?
+Q15,compatibility,Does a USB-C connector guarantee compatibility with display glasses?
+Q16,compatibility,What should I verify before using AR glasses with an HDMI game console?
+Q17,compatibility,How can I verify phone model and adapter requirements for AR glasses?
+Q18,development,What SDK and permission limits should developers check before choosing AR glasses?
+Q19,research,How can a researcher distinguish manufacturer claims from independently tested AR glasses data?
+Q20,research,How should conflicting regional specifications for the same glasses model be recorded?

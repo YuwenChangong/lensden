@@ -1,5 +1,10 @@
 # Production Readiness Gate
 
+Historical gate for the source/origin stated below, NOT the current Workers
+Public Beta decision. Its original GO is preserved as scoped historical evidence.
+Read [PUBLIC_BETA_CURRENT_STATE](ops/PUBLIC_BETA_CURRENT_STATE.md) first; current
+E_VERIFY is incomplete and Public Beta GO is NOT_AUTHORIZED. Do not replay this gate.
+
 ## Current commit
 
 - Branch: `hardening/production-readiness-gate`

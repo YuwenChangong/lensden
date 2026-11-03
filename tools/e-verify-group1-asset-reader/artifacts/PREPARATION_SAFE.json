@@ -1,0 +1,18 @@
+{
+  "format": "asset-reader-offline-preparation-safe-v1",
+  "executorReady": true,
+  "tests": "31/31_PASS",
+  "executionBindingSha256": "e1b9adcb80afee170b3d2aa4850bd7019c9d95e05c56393a63aec16c295d693d",
+  "packetSha256": "24b1cb56bff0d76c8fe97fd7a45dde3fb20eb54887bf01d23e8dd1436866d990",
+  "templateSha256": "a4433acc52cd311b295c7ec061065d097e19a28ceb9ac7dd908d175f7009254c",
+  "frozenFiles": 1444,
+  "oldFrozenFilesUnchanged": true,
+  "defaultOAuthRead": false,
+  "effectiveAuthorizationCreated": false,
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE",
+  "fullGroup1Ready": false
+}

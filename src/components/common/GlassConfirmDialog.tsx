@@ -63,6 +63,8 @@ export default function GlassConfirmDialog({
   const { messages } = useLocale(localeContext);
   const text = messages.community;
   const titleId = useId();
+  const descriptionId = useId();
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const loadingRef = useRef(loading);
@@ -77,23 +79,24 @@ export default function GlassConfirmDialog({
   useEffect(() => {
     if (!open) return;
 
+    const dialog = dialogRef.current;
+    if (!dialog) return;
     restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (!shouldCloseGlassConfirmDialogOnEscape(event.key, loadingRef.current)) return;
-
-      event.preventDefault();
-      onCancelRef.current();
-    };
-
-    document.addEventListener("keydown", closeOnEscape);
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
     cancelButtonRef.current?.focus();
 
     return () => {
-      document.removeEventListener("keydown", closeOnEscape);
-      restoreFocusRef.current?.focus();
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      if (restoreFocusRef.current?.isConnected) restoreFocusRef.current.focus({ preventScroll: true });
     };
   }, [open]);
+
+  useEffect(() => {
+    if (open && loading) dialogRef.current?.focus();
+  }, [open, loading]);
 
   useEffect(() => {
     if (!open) setConfirmationValue("");
@@ -109,11 +112,36 @@ export default function GlassConfirmDialog({
   });
 
   return createPortal(
-    <div className="glass-confirm-backdrop">
-      <div className="glass-confirm-dialog glass-modal" role="alertdialog" aria-modal="true" aria-labelledby={titleId}>
+    <dialog
+      ref={dialogRef}
+      className="glass-confirm-backdrop"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+      aria-busy={loading}
+      tabIndex={-1}
+      onCancel={(event) => {
+        event.preventDefault();
+        if (shouldCloseGlassConfirmDialogOnEscape("Escape", loadingRef.current)) onCancelRef.current();
+      }}
+      onKeyDown={(event) => {
+        if (event.key !== "Tab") return;
+        const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("button:not(:disabled),input:not(:disabled)"))
+          .filter((control) => control.getClientRects().length > 0);
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (!first || event.shiftKey && document.activeElement === first || !event.shiftKey && document.activeElement === last
+            || document.activeElement === event.currentTarget) {
+          event.preventDefault();
+          (event.shiftKey ? last : first)?.focus();
+        }
+      }}
+    >
+      <div className="glass-confirm-dialog glass-modal">
         <div className="glass-confirm-header glass-modal__header">
           <h3 id={titleId}>{title}</h3>
-          <p>{description}</p>
+          <p id={descriptionId}>{description}</p>
         </div>
         <div className="glass-confirm-body glass-modal__body">
           {detail ? <p>{detail}</p> : null}
@@ -131,7 +159,7 @@ export default function GlassConfirmDialog({
               />
             </label>
           ) : null}
-          {error ? <div className="comment-delete-error">{error}</div> : null}
+          {error ? <div className="comment-delete-error" role="alert">{error}</div> : null}
         </div>
         <div className="glass-confirm-actions glass-modal__actions">
           <button
@@ -153,7 +181,7 @@ export default function GlassConfirmDialog({
           </button>
         </div>
       </div>
-    </div>,
+    </dialog>,
     document.body,
   );
 }

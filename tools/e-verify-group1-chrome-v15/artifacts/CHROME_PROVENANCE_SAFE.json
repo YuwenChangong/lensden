@@ -1,0 +1,21 @@
+{
+  "checkedAtUTC": "2026-10-15T02:33:55.5078362Z",
+  "path": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "oldVersion": "156.0.8078.12",
+  "oldSha256": "5db678875eb6895c802240aab8e9003aaee63124f719697d88077c46a7ed9f2a",
+  "version": "156.0.8078.36",
+  "sha256": "fdd156b74dd997d3b15f0cdbb59ce0051f1e8b19d10822f31743abac09ec4c89",
+  "signatureStatus": "Valid",
+  "publisher": "Google LLC",
+  "timestampPublisher": "DigiCert SHA256 RSA4096 Timestamp Responder 2026 1",
+  "rootCause": "SIGNED_VERSION_REPLACEMENT_AT_SAME_INSTALLED_PATH",
+  "specificUpdaterTransaction": "NOT_PROVEN",
+  "oldInstalledVersionStillAvailable": false,
+  "actualPlaywrightExecutable": "VERIFIED_BY_LIVE_LOCAL_PROCESS_PATH_AND_CDP_VERSION",
+  "standardWorkerConstructors": "AVAILABLE_OFFLINE",
+  "stability": "SAME_HASH_DURING_THREE_LOCAL_CHROME_RUNS_AND_LATER_RECHECK",
+  "futureUpdateImmunity": false,
+  "updaterSettingsChanged": false,
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0
+}

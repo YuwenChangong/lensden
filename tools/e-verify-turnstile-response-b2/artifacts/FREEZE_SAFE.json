@@ -1,0 +1,15 @@
+{
+  "authorizationId": "e-verify-turnstile-sdk-response-openglasshub-20261014-b2",
+  "executionBindingSha256": "536da169c1ec472181fb33cf7f7e1baaaae620d7913dd3dd9f2c24201a2d3592",
+  "packetSha256": "526b4ead89966a3cbe2c0766d5c9161d25ce30645d869d79b349c3d748984f17",
+  "templateSha256": "45447627da843ad080ea235f440ec9dbe511786f28d91bdef771c5ad47adae9b",
+  "boundFiles": 214,
+  "historicalB1BoundFilesUnchanged": 193,
+  "authorization": "NOT_AUTHORIZED",
+  "humanGates": "PENDING",
+  "utcWindow": null,
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0
+}

@@ -1,0 +1,12 @@
+{
+  "observedAtUTC": "2026-10-13T07:49:56.477Z",
+  "source": "EXACT_FROZEN_DEFAULT_FILE",
+  "requiredScopes": "PASS",
+  "localOAuthCheck": "PASS",
+  "fileLastModifiedUTC": "2026-10-13T07:41:41.556Z",
+  "oauthExpiresUTC": "2026-10-13T08:41:40.553Z",
+  "oauthRemainingSeconds": 3104,
+  "remoteIdentity": "NOT_VERIFIED_NO_PROVIDER_REQUEST",
+  "tokenOrRefreshTokenRecorded": false,
+  "productionRequests": 0
+}

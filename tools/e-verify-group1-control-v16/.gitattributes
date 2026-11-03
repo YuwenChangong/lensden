@@ -1,0 +1,4 @@
+*.mjs -text
+*.md -text
+*.ps1 -text
+artifacts/** -text

@@ -1,0 +1,12 @@
+{
+  "tests": 25,
+  "passed": 25,
+  "failed": 0,
+  "stdoutSha256": "887055c6f01972ef7ba58ac48e4a21209202151e20e7b501f4be618ceced15de",
+  "durationMs": 97082,
+  "normalFullFlow": "BLOCKED_AT_OWNER500",
+  "counterfactualFlow": "MOCK_PASS_NOT_PRODUCTION_COMPATIBLE",
+  "oldSuitesRerun": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

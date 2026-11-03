@@ -1,0 +1,23 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-manual-recovery-v19",
+  "status": "NOT_AUTHORIZED",
+  "fullContractAccepted": false,
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null,
+    "nativeAuthenticatedMonitorOnlyAndUnseenDispatchRiskAccepted": null,
+    "privateSdkStorageSnapshotAndNoRawEvidenceExportAccepted": null,
+    "serverAuthControlsUnknownAndStopRulesAccepted": null,
+    "currentZeroCostFreeServicesAndUnmeteredNetworkConfirmed": null,
+    "nativeUnenumeratedThirdPartyGetRiskAndStopRulesAccepted": null,
+    "unresolvedExternalFetchAbortContinuationAccepted": null
+  },
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "executionBindingSha256": "ec07f877d41a4d4a7ce00dd7fcad94402c1cdde7f29de8b65a5c50234c088108",
+  "packetSha256": "c1097bc18827a3f1b04094df3aefe393f03e32ae2b5ac01eb4481687e26ce655",
+  "contractSha256": "a8695f246364d76ccb64c90d987154d2bcbf8180fe874c194533209dcd3c459b"
+}

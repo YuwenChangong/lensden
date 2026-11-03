@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { joinedRecord } from "./joined-record.ts";
 import { applyModerationAdminAction, type ModerationAdminTarget } from "./moderation-admin.ts";
 import {
   notifyCommentModerated,
@@ -273,7 +274,7 @@ export async function resolveReportTargetPreview(
     if (!data) return { exists: false, available: false, target: null };
     const status = typeof data.status === "string" ? data.status : null;
     const moderationStatus = typeof data.moderation_status === "string" ? data.moderation_status : null;
-    const circle = (data.circles as Record<string, unknown> | null | undefined) ?? null;
+    const circle = joinedRecord(data.circles);
     return {
       exists: String(data.id ?? "") === targetId,
       available:
@@ -290,7 +291,7 @@ export async function resolveReportTargetPreview(
         status,
         moderation_status: moderationStatus,
         author_id: typeof data.author_id === "string" ? data.author_id : null,
-        author_profile: mapProfilePreview((data.profiles as Record<string, unknown> | null | undefined) ?? null),
+        author_profile: mapProfilePreview(joinedRecord(data.profiles)),
         circle: circle
           ? {
               id: String(circle.id ?? ""),
@@ -316,8 +317,8 @@ export async function resolveReportTargetPreview(
     if (!data) return { exists: false, available: false, target: null };
     const status = typeof data.status === "string" ? data.status : null;
     const moderationStatus = typeof data.moderation_status === "string" ? data.moderation_status : null;
-    const postRow = (data.posts as Record<string, unknown> | null | undefined) ?? null;
-    const circleRow = (postRow?.circles as Record<string, unknown> | null | undefined) ?? null;
+    const postRow = joinedRecord(data.posts);
+    const circleRow = joinedRecord(postRow?.circles);
     return {
       exists: String(data.id ?? "") === targetId,
       available:
@@ -338,7 +339,7 @@ export async function resolveReportTargetPreview(
         status,
         moderation_status: moderationStatus,
         author_id: typeof data.author_id === "string" ? data.author_id : null,
-        author_profile: mapProfilePreview((data.profiles as Record<string, unknown> | null | undefined) ?? null),
+        author_profile: mapProfilePreview(joinedRecord(data.profiles)),
         post: postRow
           ? {
               id: String(postRow.id ?? ""),
@@ -380,7 +381,7 @@ export async function resolveReportTargetPreview(
         status,
         moderation_status: null,
         author_id: typeof data.owner_id === "string" ? data.owner_id : null,
-        author_profile: mapProfilePreview((data.profiles as Record<string, unknown> | null | undefined) ?? null),
+        author_profile: mapProfilePreview(joinedRecord(data.profiles)),
         circle: {
           id: data.id,
           name: typeof data.name === "string" ? data.name : null,
@@ -867,7 +868,7 @@ export async function applyAdminReportAction(params: {
 
     if (report.target_type === "post" && params.notificationWriter && target.author_id) {
       void notifyPostModerated(params.notificationWriter, { recipientId: target.author_id, postId: report.target_id });
-    } else if (report.target_type === "comment" && params.notificationWriter && target.author_id && target.post?.id) {
+    } else if (report.target_type === "comment" && target.target_type === "comment" && params.notificationWriter && target.author_id && target.post?.id) {
       void notifyCommentModerated(params.notificationWriter, {
         recipientId: target.author_id,
         commentId: report.target_id,

@@ -1,0 +1,137 @@
+{
+  "environment": "LOCAL_REAL_ASTRO_APPLICATION_WITHOUT_AUTH_DATABASE",
+  "headless": true,
+  "results": [
+    {
+      "id": "LOGIN_RENDER_1440",
+      "status": "FAIL",
+      "error": "Error",
+      "reason": "locator.waitFor: Error: strict mode violation: locator('button[type=submit]') resolved to 3 elements:"
+    },
+    {
+      "id": "LOGIN_EMPTY_PASSWORD_SUBMIT",
+      "status": "FAIL",
+      "error": "Error",
+      "reason": "locator.click: Error: strict mode violation: locator('button[type=submit]') resolved to 3 elements:"
+    },
+    {
+      "id": "LOGIN_MODE_SWITCH",
+      "status": "PASS",
+      "signupAndLoginTabs": true,
+      "registrationNotSubmitted": true
+    },
+    {
+      "id": "LOGIN_TO_LEGAL_NAVIGATION",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.waitForURL: Timeout 15000ms exceeded."
+    },
+    {
+      "id": "LOGIN_RENDER_390",
+      "status": "FAIL",
+      "error": "Error",
+      "reason": "locator.waitFor: Error: strict mode violation: locator('button[type=submit]') resolved to 3 elements:"
+    },
+    {
+      "id": "LOGIN_RENDER_430",
+      "status": "FAIL",
+      "error": "Error",
+      "reason": "locator.waitFor: Error: strict mode violation: locator('button[type=submit]') resolved to 3 elements:"
+    },
+    {
+      "id": "PAGE_/",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.goto: Timeout 12000ms exceeded."
+    },
+    {
+      "id": "PAGE_/about/",
+      "status": "PASS",
+      "path": "/about/",
+      "httpStatus": 200,
+      "heading": "About OpenGlass Hub",
+      "navigations": 2,
+      "scope": "ANONYMOUS_PAGE_RENDER_ONLY_NOT_DATA_ACCEPTANCE"
+    },
+    {
+      "id": "PAGE_/feed/",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.goto: Timeout 12000ms exceeded."
+    },
+    {
+      "id": "PAGE_/news/",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.goto: Timeout 12000ms exceeded."
+    },
+    {
+      "id": "PAGE_/products/",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.goto: Timeout 12000ms exceeded."
+    },
+    {
+      "id": "PAGE_/products/xreal/xreal-air/",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.goto: Timeout 12000ms exceeded."
+    },
+    {
+      "id": "PAGE_/circles/",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.goto: Timeout 12000ms exceeded."
+    },
+    {
+      "id": "PAGE_/search/?q=xreal",
+      "status": "BLOCKED",
+      "error": "TimeoutError",
+      "reason": "page.goto: Timeout 12000ms exceeded."
+    },
+    {
+      "id": "PAGE_/settings/",
+      "status": "PASS",
+      "path": "/settings/",
+      "httpStatus": 200,
+      "heading": "Settings",
+      "navigations": 3,
+      "scope": "ANONYMOUS_PAGE_RENDER_ONLY_NOT_DATA_ACCEPTANCE"
+    },
+    {
+      "id": "PAGE_/admin/devices/",
+      "status": "PASS",
+      "path": "/admin/devices/",
+      "httpStatus": 200,
+      "heading": "Audit",
+      "navigations": 3,
+      "scope": "ANONYMOUS_PAGE_RENDER_ONLY_NOT_DATA_ACCEPTANCE"
+    },
+    {
+      "id": "ANONYMOUS_DENIED_/api/admin/devices",
+      "status": "FAIL",
+      "error": "Error",
+      "reason": "UNAUTHENTICATED_DENIAL_CONTRACT"
+    },
+    {
+      "id": "ANONYMOUS_DENIED_/api/users/me/summary",
+      "status": "PASS",
+      "httpStatus": 401,
+      "denialBodyChecked": true,
+      "privateDataExposed": false
+    }
+  ],
+  "blockedRemoteRequests": 0,
+  "authenticatedAuth": "BLOCKED",
+  "accountIsolation": "BLOCKED",
+  "rlsPassed": 0,
+  "rlsTotal": 16,
+  "group1Completed": 0,
+  "group1Total": 14,
+  "businessWrites": "NOT_RUN",
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "productionWrites": 0,
+  "oldAuthorizationReused": false,
+  "browserClosed": true
+}

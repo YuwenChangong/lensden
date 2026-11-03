@@ -1,0 +1,12 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-manual-recovery-v19",
+  "source": "OWNER_ASYNC_REPLY_AFTER_EXECUTION_STOPPED",
+  "observation": "WINDOW_OR_LOGIN_PAGE_ABNORMAL",
+  "preciseSymptom": "UNKNOWN_PENDING_OWNER_DESCRIPTION",
+  "ownerStartClicked": "UNKNOWN",
+  "executionStartEvents": 0,
+  "doesNotProveNoHumanClick": true,
+  "doesNotProveWindowWasVisuallyUsable": true,
+  "originalExecutionReceiptModified": false,
+  "credentialsRecorded": false
+}

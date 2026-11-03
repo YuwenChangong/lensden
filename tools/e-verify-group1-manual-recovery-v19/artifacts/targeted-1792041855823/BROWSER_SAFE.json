@@ -1,0 +1,76 @@
+{
+  "tests": [
+    {
+      "name": "ABORT_CONTINUES_NO_AUTH_NO_RLS_OWNER_STOP",
+      "result": "PASS",
+      "evidence": {
+        "firstFailure": null,
+        "lastFailedRequest": null,
+        "lastRejectedRequest": null,
+        "observedExternalGets": 1,
+        "unenumeratedGets": [
+          {
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "fetch",
+            "frameClass": "APPLICATION_MAIN_FRAME",
+            "legitimacy": "UNKNOWN",
+            "originClass": "UNENUMERATED_EXTERNAL",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT",
+            "networkBoundary": "MONITOR_ONLY"
+          }
+        ],
+        "unresolvedAborts": [
+          {
+            "requestObservationId": "request-2",
+            "actor": "A",
+            "stage": "LOGIN_A",
+            "method": "GET",
+            "resourceType": "fetch",
+            "originClass": "OTHER",
+            "routeClass": "REDACTED",
+            "errorClass": "net::ERR_ABORTED",
+            "classification": "UNRESOLVED",
+            "legitimacy": "UNKNOWN",
+            "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT",
+            "networkBoundary": "MONITOR_ONLY",
+            "automaticRetry": false
+          }
+        ],
+        "unresolvedAbortPolicy": "POSITIVE_LOGIN_EXTERNAL_GET_FETCH_ONLY",
+        "exactPrivateOriginCollection": false,
+        "cdpAttribution": "NOT_CLAIMED",
+        "valuesLogged": false
+      }
+    },
+    {
+      "name": "CONNECTION_RESET_STILL_FATAL",
+      "result": "PASS"
+    },
+    {
+      "name": "POST_STILL_DENIED",
+      "result": "PASS"
+    },
+    {
+      "name": "SENSITIVE_REQUEST_STILL_FATAL",
+      "result": "PASS"
+    },
+    {
+      "name": "SCRIPT_ABORT_STILL_FATAL",
+      "result": "PASS"
+    },
+    {
+      "name": "NEGATIVE_STAGE_STILL_STRICT",
+      "result": "PASS"
+    },
+    {
+      "name": "DEADLINE_AFTER_UNRESOLVED_ABORT",
+      "result": "PASS"
+    }
+  ],
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "realCredentialsUsed": false,
+  "realSdkOrCaptchaUsed": false
+}

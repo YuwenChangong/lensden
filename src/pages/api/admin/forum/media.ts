@@ -1,4 +1,5 @@
 import { env as runtimeEnv } from "cloudflare:workers";
+import { joinedRecord } from "../../../../lib/server/joined-record";
 import type { APIRoute } from "astro";
 import { deleteMediaObject } from "../../../../lib/server/media-cleanup";
 import { jsonResponse, requireModerator, type RuntimeEnv } from "../../../../lib/server/admin-auth";
@@ -44,7 +45,9 @@ export const GET: APIRoute = async ({ request, locals }) => {
     if (error) return jsonResponse({ error: error.message }, 500);
 
     const mapped = (data ?? []).map((row) => {
-      const postStatus = row.posts?.status ?? null;
+      const post = joinedRecord(row.posts);
+      const profile = joinedRecord(row.profiles);
+      const postStatus = post?.status ?? null;
       const isBoundToPost = Boolean(row.post_id && postStatus && postStatus !== "deleted");
       return {
         id: row.id,
@@ -60,13 +63,13 @@ export const GET: APIRoute = async ({ request, locals }) => {
         duration_seconds: row.duration_seconds,
         created_at: row.created_at,
         is_bound_to_post: isBoundToPost,
-        post_title: row.posts?.title ?? null,
+        post_title: post?.title ?? null,
         post_status: postStatus,
-        uploader_profile: row.profiles
+        uploader_profile: profile
           ? {
-              id: row.profiles.id ?? row.user_id,
-              display_name: row.profiles.display_name ?? null,
-              username: row.profiles.username ?? null,
+              id: profile.id ?? row.user_id,
+              display_name: profile.display_name ?? null,
+              username: profile.username ?? null,
             }
           : null,
       };
@@ -99,7 +102,7 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
 
     const { data: media, error: mediaError } = await client
       .from("post_media")
-      .select("id,kind,storage_path,url")
+      .select("id,kind,storage_path,url,thumbnail_url,user_id,post_id")
       .eq("id", mediaId)
       .maybeSingle();
 

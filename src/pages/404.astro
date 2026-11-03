@@ -2,6 +2,7 @@
 import CommunityLayout from "../layouts/CommunityLayout.astro";
 import { getUiMessages } from "../lib/i18n/catalog";
 const text = getUiMessages(Astro.locals.localeContext.locale).shell;
+Astro.response.status = 404;
 ---
 
 <CommunityLayout

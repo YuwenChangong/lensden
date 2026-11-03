@@ -1,0 +1,72 @@
+{
+  "task": "PUBLIC_BETA_STAGED_RELEASE_INTEGRATION",
+  "recordedUTC": "2026-10-19T02:17:37.075Z",
+  "baseMain": "fedf5627a7cd2a28a6f5c0732c333b4e2fad56bb",
+  "sourceReviewCommit": "f957a9ef0553ff2e26530c1d5f7515b587bd53e5",
+  "branch": "codex/public-beta-staged-integration-20261019",
+  "integrationChecks": {
+    "passed": 10,
+    "checks": [
+      "DEDICATED_FEATURE_BRANCH_FROM_CURRENT_LOCAL_MAIN",
+      "FIVE_IMPORTED_INPUTS_MATCH_REVIEWED_GIT_BLOBS",
+      "EXACT_57_MIGRATION_INVENTORY_ON_FEATURE_BRANCH",
+      "DEPENDENCY_ORDER_NOT_FILENAME_ORDER",
+      "FOUR_CANONICAL_SQL_HASHES_MATCH",
+      "FOUR_EXECUTED_BODY_HASHES_UNCHANGED",
+      "UNKNOWN_PENDING_SQL_FAILS_CLOSED_WITHOUT_EXECUTION",
+      "APPLICATION_AUTH_MEDIA_BUILD_AND_DEPENDENCY_SOURCE_UNCHANGED",
+      "ORIGINAL_56_MIGRATION_BLOBS_PRESERVED",
+      "REVIEWED_TIMEOUT_CONTRACT_UNCHANGED"
+    ]
+  },
+  "syntaxChecks": "2/2_PASS",
+  "importedFilePins": {
+    "scripts/qa/release-migration-phases.mjs": "7aec3c97560b46fee67813303703b225e72d12ec7a819cda9ef6d9ede84afe7f",
+    "scripts/qa/test-release-blockers-local.mjs": "253008614519436ff879830553ed837164840f6a9201f2bdbea2497946a87dcb",
+    "supabase/migrations/20261016090712_align_comment_reaction_select_scope.sql": "70ee187d41b0fcb0d500454b7fcc8f3d743edb76e80efd771585fbfbc31992e2",
+    "docs/ops/reconciliation/PRODUCTION_MIGRATION_EXECUTION_PACKET_V1_NOT_AUTHORIZED.md": "844447fa15d6615be8ed295feb2b92653ada0ebcb48f87fe95a1e81e5c8c6c65",
+    "docs/ops/reconciliation/production-migration-packet-v1-safe.json": "f717f4205d3fbcf1df3d38391251127b053fe3c8fec1e98fb57ca792cc09e350"
+  },
+  "productionMigrationOrder": [
+    {
+      "version": "20261016090712",
+      "file": "supabase/migrations/20261016090712_align_comment_reaction_select_scope.sql",
+      "sha256": "9aa23de3d7ef0f81d235376ca963e7930007455d353a32b6e9ef475a2943bd5b",
+      "bodySha256": "e9d90003643c36729d806d97ea11ef7e0220566181d96ea8282d38c9f2ee2a2c"
+    },
+    {
+      "version": "20261015072723",
+      "file": "supabase/migrations/20261015072723_restore_comment_reaction_application_privileges.sql",
+      "sha256": "df6935f6290345421b86b6917badaa4c1ea969cbb84c8a5d6b5d29ea359ec733",
+      "bodySha256": "70ff63a74ee4b938683cf9358ee86c7e6f30593459119c6530872bcb8650ec55"
+    },
+    {
+      "version": "20261015074931",
+      "file": "supabase/migrations/20261015074931_safe_deleted_comment_placeholders.sql",
+      "sha256": "74e5d378c2cca962f5ca3ec60f2903404b514bede2644c10e230d41862b68afe",
+      "bodySha256": "1b8e2d23a8a457e30e96c554021904cb8d1c22f760bbc8ed934837cac72277ee"
+    },
+    {
+      "version": "20261016061618",
+      "file": "supabase/migrations/20261016061618_adopt_existing_forum_rate_limit_baseline.sql",
+      "sha256": "f860daa2a07ff1bf0c53a5497894208a6bba8424bd5a17f37d6849cf4d38ad8e",
+      "bodySha256": "be0304cb4d08b91700ee93ef47998ce964631dafe5dd71922206c597bfbc045a"
+    }
+  ],
+  "originalMigrationBlobsPreserved": 56,
+  "newMigrationCount": 57,
+  "noApplicationSourceChanges": true,
+  "full46RegressionRerun": false,
+  "historicalRlsR2AuthBrowserTestsRerun": false,
+  "databaseQueries": 0,
+  "productionConnections": 0,
+  "productionWrites": 0,
+  "deploymentCommands": 0,
+  "protectedMainMerged": false,
+  "recoveryReview": "PENDING_TOOL_USAGE_LIMIT",
+  "recoveryArtifactsModified": false,
+  "pushReadiness": "BLOCKED_UNVERIFIED_EXTERNAL_WORKERS_BUILD_TRIGGERS",
+  "githubRemoteMainObserved": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "cloudflareConfigurationQueried": false,
+  "decision": "LOCAL_FEATURE_INTEGRATION_PREPARED_NOT_PRODUCTION_AUTHORIZATION"
+}

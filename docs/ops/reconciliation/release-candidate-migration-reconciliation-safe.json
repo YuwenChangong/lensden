@@ -1,0 +1,102 @@
+{
+  "schema": "RELEASE_CANDIDATE_MIGRATION_RECONCILIATION_V1",
+  "inputCommit": "bf4df65f",
+  "testedCodeCommit": "9bef6e8a",
+  "migrationReview": "PASS_OFFLINE",
+  "rateLimitRpcBaseline": "READY_OFFLINE",
+  "productionOverwriteRequired": false,
+  "formalMigrationCount": 56,
+  "extraQuotaProposalSqlExecuted": false,
+  "extraCatalogFixtureDdlExecuted": false,
+  "newMigration": "20261016061618_adopt_existing_forum_rate_limit_baseline.sql",
+  "newMigrationGitBlobSha256": "f860daa2a07ff1bf0c53a5497894208a6bba8424bd5a17f37d6849cf4d38ad8e",
+  "exactLfRateLimitBodySha256": "9be186f4d6d15e18c9141ced73f7145e7fe9913c1636e22a16b8ccb25d51321b",
+  "targetedTests": {
+    "runId": "6aabb1dcc514",
+    "passed": 26,
+    "failed": 0,
+    "staticPassed": 3,
+    "originalRls16Replayed": false,
+    "originalBusiness23Replayed": false,
+    "anonymous43Replayed": false,
+    "realR2Replayed": false
+  },
+  "historicalAttempts": [
+    {
+      "runId": "c4cb83b122da",
+      "passed": 19,
+      "failed": 6,
+      "preserved": true
+    },
+    {
+      "runId": "58b67b55ee1c",
+      "passed": 26,
+      "failed": 0,
+      "extraCatalogDdlFixture": true,
+      "preserved": true
+    }
+  ],
+  "candidateFixesIncluded": 7,
+  "astroBuild": "PASS_LOCAL_ISOLATED_CONFIG",
+  "typecheckRatchet": "FAIL",
+  "typecheckBaseline": "e2f45dac135edfc10d866fc83df05c0590c1adb9",
+  "typecheckThresholdWeakened": false,
+  "typecheckEvidenceExamples": [
+    {
+      "path": "src/components/admin/AdminReportsPanel.tsx",
+      "lines": [
+        509,
+        510
+      ],
+      "code": "ts(2339)"
+    },
+    {
+      "path": "src/components/admin/AdminCirclesDashboard.tsx",
+      "lines": [
+        207
+      ],
+      "code": "ts(2783)"
+    },
+    {
+      "path": "src/components/forum/CommentForm.tsx",
+      "lines": [
+        101,
+        147,
+        150
+      ],
+      "codes": [
+        "ts(2345)",
+        "ts(2503)",
+        "ts(2604)",
+        "ts(2786)"
+      ]
+    },
+    {
+      "path": "src/pages/search/index.astro",
+      "lines": [
+        7,
+        33
+      ],
+      "codes": [
+        "ts(2307)",
+        "ts(2339)"
+      ]
+    }
+  ],
+  "mergeReadiness": "BLOCKED_TYPECHECK_GATE",
+  "productionSourceCommit": "UNKNOWN",
+  "productionMigrationExecution": "NOT_AUTHORIZED",
+  "cleanup": {
+    "ownedDatabasesAndAccountsDestroyed": true,
+    "dpapiStoresDeleted": true,
+    "activePointerAbsent": true,
+    "browserAndWorkerClosed": true,
+    "ownedPortsFree": true,
+    "unrelatedDockerResourcesPreserved": true
+  },
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "deployments": 0,
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": "NOT_AUTHORIZED"
+}

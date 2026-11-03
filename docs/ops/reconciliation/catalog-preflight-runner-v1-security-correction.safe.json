@@ -1,0 +1,71 @@
+{
+  "schema": "OGH_CATALOG_PREFLIGHT_TARGETED_SECURITY_CORRECTION_V1",
+  "recordedAtUtc": "2026-10-20T04:02:12.664Z",
+  "decision": "TARGETED_SECURITY_CORRECTION_COMPLETED_PENDING_DELTA_REVIEW",
+  "previousReview": "CHANGES_REQUIRED",
+  "originalCommit": "96f2ed4915050f99a0d255f3b74740cd0149373d",
+  "originalRunnerBinding": "0505ff02ccd311c095feb079f9eea30fe65b1d168d2f281cc33711d810a4378c",
+  "historicalReceipt": {
+    "path": "docs/ops/reconciliation/catalog-preflight-runner-v1.safe.json",
+    "sha256": "bb55fa6a636c5a29bb342c75f5051ed9f7518b44e431489ed8d2e7a64157683b",
+    "unchanged": true
+  },
+  "runnerBinding": "25823f4a8a857d098e9e327a29d6916ba0905447674cba5ccee109caad1cb375",
+  "manifest": [
+    { "name": "docs/ops/reconciliation/storage-objects-catalog-preflight.v1.NOT_AUTHORIZED.sql", "sha256": "5b06d185c924d14e6f6dc67bd5d912301909a5e1aecb432f6c671b1221e95103" },
+    { "name": "docs/ops/reconciliation/storage-objects-catalog-preflight.v1.REVIEW_PACKET_NOT_AUTHORIZED.md", "sha256": "c6dc8664b2eaae234b26bb4b9b3d5e0cda1679ec84a74fdc7f3c20c46a60d417" },
+    { "name": "scripts/qa/catalog-preflight-v1.mjs", "sha256": "8ebb372f1f362289286b37179b3aee5c3559546ef85c2f8896938ab8f2c09183" },
+    { "name": "scripts/qa/catalog-preflight-v1-native.mjs", "sha256": "6d8e6302b963f54142cc7e2d8a21bdd15b087d57eddbbdc54372b0329413734e" },
+    { "name": "C:/Temp/openglass-product-detail-main-release-v1/node_modules/pg/package.json", "sha256": "e42dd36cba6e9dd8dbb6f773a2f7be8a8c3c273e18b155e42e75961a4cb8bc28" },
+    { "name": "C:/Temp/openglass-product-detail-main-release-v1/node_modules/pg/lib/index.js", "sha256": "3fad6e6d3d976edbabe0cbc9e1d39f4340bcb719bbbb186a0d3a24f3dbd4a94c" },
+    { "name": "C:/Temp/openglass-product-detail-main-release-v1/node_modules/pg/lib/client.js", "sha256": "992c12d10cd42ece06b0b224601fa783a02ed08f3ace8bd8089cc441b6308abf" },
+    { "name": "C:/Temp/openglass-product-detail-main-release-v1/node_modules/pg/lib/connection.js", "sha256": "836b6abbfbc68744769ba499e2a79062dba5fd281af31fc5e83431514bdefd4a" },
+    { "name": "C:/Temp/openglass-product-detail-main-release-v1/node_modules/pg/lib/connection-parameters.js", "sha256": "6b6548f99acba3502663a17a180582ba8e1f1725aa9d94b5f47cac19dcb6211b" }
+  ],
+  "p1": {
+    "implementationIdentity": "NATIVE_MODULE_PRIVATE_WEAKSETS_FROZEN_INSTANCES",
+    "registrationApiExposed": false,
+    "kindStringsAuthorizeProduction": false,
+    "forgedFactoryAndSink": "REJECTED_BEFORE_SINK_OR_TRANSPORT_DISPATCH",
+    "copiesPrototypesAndProxies": "NOT_REGISTERED",
+    "nativePermitAndExclusiveConsumption": "PRESERVED",
+    "privateDestination": "NATIVE_CLOSURE_BOUND_DIRECTORY_WITH_EXISTING_PATH_ACL_AND_READBACK_GUARDS",
+    "authorizationDigest": "INTEGRITY_BINDING_ONLY_NOT_INDEPENDENT_OWNER_APPROVAL",
+    "freshOwnerApprovalAndExpectedDigest": "REQUIRED_FROM_SEPARATE_TRUSTED_OWNER_INSTRUCTION_NOT_GENERATED"
+  },
+  "p2": {
+    "closeWait": "MIN_4000_MS_AND_REMAINING_SHARED_MONOTONIC_DEADLINE",
+    "firstFailure": "PRESERVED",
+    "lateClose": "CANNOT_UPGRADE_UNCONFIRMED_CLOSE_OR_PERSISTENCE",
+    "unconfirmedClose": "LATCHED_NATIVE_SINK_STATUS_AND_BLOCKED_RESULT",
+    "timedOutCloseRetry": false,
+    "ioInjection": "PERSISTENCE_HELPER_ONLY_CANNOT_REGISTER_PRODUCTION_IMPLEMENTATIONS",
+    "uninterruptibleOsIoGuarantee": "NOT_CLAIMED"
+  },
+  "tests": {
+    "command": "node --test scripts/qa/test-catalog-preflight-v1.mjs",
+    "sourceSha256": "426a8b8f2449a6d9865d9d3b90adcf8d73defb2e8c9d9adae022088217763417",
+    "nodeVersion": "v24.14.1",
+    "passed": 61,
+    "failed": 0,
+    "skipped": 0,
+    "addedFocusedCases": 15,
+    "syntaxChecks": "3/3_PASS",
+    "nativePrivateFilesystem": "PASS_SYNTHETIC_BYTES_ONLY",
+    "syntheticCleanup": "EXACT_ALLOWLIST_FILES_AND_DIRECTORY_REMOVED",
+    "unrelatedTestsExecuted": false
+  },
+  "sqlAndPacketUnchanged": true,
+  "independentDeltaReview": "PENDING",
+  "ownerExecutionAuthorizationCreated": false,
+  "productionConnections": 0,
+  "productionWrites": 0,
+  "roleChanges": 0,
+  "mediaInventory": "NOT_EXECUTED",
+  "databaseBackupRecoverability": "NOT_VERIFIED",
+  "deployments": 0,
+  "remotePush": 0,
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "nextSingleAction": "INDEPENDENT_DELTA_REVIEW_OF_P1_P2_CORRECTION_AND_NEW_RUNNER_BINDING"
+}

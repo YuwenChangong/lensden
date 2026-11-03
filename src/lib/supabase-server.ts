@@ -8,8 +8,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 export function createSSRClient(env: {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
-}): SupabaseClient {
+}, fetchOverride?: typeof fetch): SupabaseClient {
   return createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
+    ...(fetchOverride ? { global: { fetch: fetchOverride } } : {}),
     auth: {
       persistSession: false,
       autoRefreshToken: false,
@@ -21,4 +22,6 @@ export function createSSRClient(env: {
 export interface CloudflareEnv {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
+  R2_PUBLIC_BASE_URL?: string;
+  AUTH_CAPTCHA_MODE?: string;
 }

@@ -96,7 +96,10 @@
     "test:moderation-audit": "node scripts/audit-moderation.mjs --strict --verbose",
     "test:sensitive-lexicon": "node scripts/audit-sensitive-lexicon.mjs --strict --verbose",
     "test:openai-moderation": "node scripts/audit-openai-moderation.mjs --strict --verbose",
-    "test:media-url-privacy": "node scripts/audit-media-url-privacy.mjs --strict --verbose"
+    "test:media-url-privacy": "node scripts/audit-media-url-privacy.mjs --strict --verbose",
+    "test:seo-geo": "node --test scripts/test-seo-geo.mjs scripts/test-geo-monitor.mjs",
+    "test:seo-geo:local": "node scripts/run-seo-geo-local.mjs",
+    "geo:validate": "node scripts/geo-monitor.mjs --input docs/geo/monitoring/observations.csv"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.2.6",

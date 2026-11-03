@@ -52,7 +52,7 @@ export default function CircleCoverEditor({
   const canEdit = authState.status === "signed_in" && !!authState.user;
 
   async function getSessionToken() {
-    const { data } = await supabase.auth.getSession();
+    const { data } = await client.auth.getSession();
     return data.session?.access_token ?? "";
   }
 
@@ -151,7 +151,7 @@ export default function CircleCoverEditor({
       onUpdated?.(uploadedPath, coverUrl);
     } catch (requestError) {
       if (uploadedPath) {
-        await supabase.storage.from("post-media").remove([uploadedPath]).catch(() => undefined);
+        await client.storage.from("post-media").remove([uploadedPath]).catch(() => undefined);
       }
       setError(mapCoverError(requestError instanceof Error ? requestError.message : text.coverUpdateFailed, text));
     } finally {
@@ -187,12 +187,13 @@ export default function CircleCoverEditor({
     }
   }
 
-  if (!canEdit) {
+  if (!canEdit || !supabase) {
     if (authState.status === "signed_in" && !authState.user) {
       console.warn("[circle-cover-editor] signed-in state missing user", { circleSlug, ownerId });
     }
     return null;
   }
+  const client = supabase;
 
   return (
     <div className="circle-cover-editor">

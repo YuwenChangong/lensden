@@ -1,0 +1,30 @@
+{
+  "format": "group1-native-auth-outlet-probe-offline-v1",
+  "fixtureOnly": true,
+  "credentialsUsed": false,
+  "actualChrome": true,
+  "serviceWorkersBlocked": true,
+  "nativeWorkerGlobalsUntouched": true,
+  "denyAllHttpInstalled": true,
+  "socketRouteInstalled": true,
+  "httpIntercepted": 2,
+  "socketIntercepted": 1,
+  "directHttp": 1,
+  "directAuthPosts": 1,
+  "directWebSocket": 2,
+  "dedicated": {
+    "postStopped": true,
+    "webSocketOutcome": "CLOSED"
+  },
+  "shared": {
+    "postStopped": false,
+    "webSocketOutcome": "CLOSED"
+  },
+  "profileRemoved": true,
+  "proxyDenied": 12,
+  "authBypassPrevention": "BLOCKED",
+  "rawValuesLogged": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "thirdPartyLiveRequests": 0
+}

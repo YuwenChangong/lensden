@@ -1,0 +1,20 @@
+{
+  "status": "BLOCKED",
+  "testsPassed": 11,
+  "testsTotal": 12,
+  "failedTestNames": [
+    "one private field changed; original500 preserved"
+  ],
+  "frozenFileCount": 2051,
+  "budgetAmendment": "500_TO_650_ONLY",
+  "humanGates": "5_NULL",
+  "formalTimes": "NULL",
+  "liveOAuthRead": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "claimCreated": false,
+  "go": "NOT_ISSUED",
+  "executionBindingSha256": "52ddb07a40dcfaafdd5570cd6708d372fd5e1aa04efe54233bfc52942c3e616c",
+  "packetSha256": "644255e484c4f79e4e967a562bc3c0b3b2173994a39f10ad5176a37cfe39cdd6",
+  "templateSha256": "aff750c20661e3dc63508a571ecfa0fd4525e69d4f3c959cef5df9c0cde61302"
+}

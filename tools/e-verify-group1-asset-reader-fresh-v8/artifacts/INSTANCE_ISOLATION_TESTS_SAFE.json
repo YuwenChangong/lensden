@@ -1,0 +1,11 @@
+{
+  "tests": 7,
+  "passed": 7,
+  "failed": 0,
+  "outputSha256": "6ce8b3433647207bd43dede7eb24699bff0e1b08b6551ff3469a63f3fc09096c",
+  "scope": "MECHANICAL_INSTANCE_REBINDING_ONLY",
+  "original31TestsReused": true,
+  "original31TestsRerun": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

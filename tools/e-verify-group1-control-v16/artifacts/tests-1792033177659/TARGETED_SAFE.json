@@ -1,0 +1,57 @@
+{
+  "tests": [
+    {
+      "name": "SIX_CONTEXT_FOCUS_START",
+      "status": "PASS",
+      "active": {
+        "rendered": true,
+        "handlerReady": true,
+        "windowFocused": true,
+        "readyAcknowledgements": 3,
+        "startEvents": 1,
+        "focusChecks": 2
+      },
+      "productionNavigation": false
+    },
+    {
+      "name": "OWNER_STOP",
+      "status": "PASS"
+    },
+    {
+      "name": "NO_START_DEADLINE",
+      "status": "PASS"
+    },
+    {
+      "name": "FOCUS_FAIL_CLOSED",
+      "status": "PASS"
+    },
+    {
+      "name": "LOCAL_FINISH_DELIVERY",
+      "status": "PASS"
+    },
+    {
+      "name": "NODE_GUARD_AND_JOB_CLEANUP",
+      "status": "PASS"
+    },
+    {
+      "name": "MISSING_BUTTON",
+      "status": "PASS",
+      "failureCode": "START_BUTTON_NOT_RENDERED"
+    },
+    {
+      "name": "SCRIPT_EXCEPTION",
+      "status": "PASS",
+      "failureCode": "CONTROL_PAGE_SCRIPT_FAILED"
+    },
+    {
+      "name": "MISSING_EVENT_HANDLER",
+      "status": "PASS",
+      "failureCode": "CONTROL_START_HANDLER_FAILURE"
+    }
+  ],
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "officialSdkUsed": false,
+  "realProductionAuthUsed": false,
+  "headedChrome": true
+}

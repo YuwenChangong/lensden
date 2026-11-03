@@ -1,0 +1,24 @@
+{
+  "anonymous": {
+    "documents": 0,
+    "assets": 0,
+    "assetHttpErrors": 0,
+    "failedAssets": 0,
+    "cspErrors": 0,
+    "pageErrors": 0,
+    "consoleNetworkErrors": 0,
+    "otherConsoleErrors": 0
+  },
+  "authenticated": {
+    "documents": 4,
+    "assets": 119,
+    "assetHttpErrors": 0,
+    "failedAssets": 0,
+    "cspErrors": 0,
+    "pageErrors": 0,
+    "consoleNetworkErrors": 0,
+    "otherConsoleErrors": 0
+  },
+  "rawUrlsOrMessagesSaved": false,
+  "productionRequests": 0
+}

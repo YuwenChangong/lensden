@@ -1,0 +1,11 @@
+{
+  "tests": 34,
+  "passed": 34,
+  "failed": 0,
+  "isolatedChrome": true,
+  "rawProductionHtmlExecuted": false,
+  "stdoutSha256": "0be620cdc9b1e43508d90fcbaaa4533586b25b395592e573971183fb2a6d5a40",
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "oldTestsRerun": false
+}

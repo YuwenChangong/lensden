@@ -1,0 +1,56 @@
+{
+  "format": "e-verify-group1-owner-free-plan-evidence-v1",
+  "recordedAtUTC": "2026-10-13T03:14:39.208Z",
+  "ownerEvidence": "OWNER_ATTESTED",
+  "ownerStatementSource": "Current project-owner message: Workers Free + paid add-ons None; Supabase Organization Free + paid add-ons None; Turnstile Free Widget; USD0, no paid usage",
+  "providerEvidence": "PROVIDER_DOCUMENTED",
+  "pathEvidence": "EXECUTION_PATH_VERIFIED_OFFLINE",
+  "productionOutcome": "NOT_EXECUTED",
+  "policy": {
+    "format": "e-verify-strict-zero-cost-policy-v1",
+    "MAX_ADDITIONAL_COST_USD": 0,
+    "PAID_USAGE_AUTHORIZED": false,
+    "OVERAGE_CHARGES_ACCEPTED": false,
+    "UNVERIFIED_BILLING_RISK_ACCEPTED": false,
+    "productionAuthorization": "NOT_AUTHORIZED"
+  },
+  "services": [
+    {
+      "service": "Cloudflare Workers/Static Assets",
+      "plan": "Free",
+      "paidAddons": "None"
+    },
+    {
+      "service": "Supabase Auth/PostgREST Organization",
+      "plan": "Free",
+      "paidAddons": "None"
+    },
+    {
+      "service": "Cloudflare Turnstile",
+      "plan": "Free Widget",
+      "paidAddons": "Not applicable to approved Free widget"
+    }
+  ],
+  "officialSources": [
+    "https://developers.cloudflare.com/workers/platform/pricing/",
+    "https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/",
+    "https://supabase.com/docs/guides/platform/cost-control",
+    "https://supabase.com/docs/guides/platform/billing-faq",
+    "https://developers.cloudflare.com/turnstile/plans/"
+  ],
+  "scopeSha256": "c20bb962f898f266e30b2280457c030ffcd94d3f06b3698f8bcfabd0db7e4954",
+  "excludedProviders": [
+    "R2",
+    "Images",
+    "Brevo",
+    "OpenAI",
+    "Pages Builds"
+  ],
+  "quotaExhaustion": "STOP_ON_SERVICE_RESTRICTION_NO_UPGRADE_NO_PAYMENT",
+  "historicalTestsReused": {
+    "group1": "123/123_PASS",
+    "zeroCostGate": "9/9_PASS"
+  },
+  "reboundFromProofSha256": "a49bc911937a0b069ca08d94c33cf85b04329f97d6d803118f5dd4a1d1d726b7",
+  "reboundEvidence": "DERIVED_OFFLINE_SAME_OWNER_ATTESTED_FREE_SERVICES_NO_NEW_PROVIDER_OBSERVATION"
+}

@@ -1,0 +1,1112 @@
+{
+  "format": "group1-native-manual-recovery-v19",
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-manual-recovery-v19",
+  "approvalBoundary": "2_EXPLICIT_SUBSET_ADDENDUM_REQUIRED",
+  "sourceSha": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "accountId": "dcb374166b39234a499985145c075f50",
+  "worker": "openglasshub",
+  "expectedProductionVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+  "appOrigin": "https://openglasshub.ogh.workers.dev",
+  "supabaseOrigin": "https://xcbnxzjlsvtgzixurcof.supabase.co",
+  "requiredCases": [
+    "AUTH-01",
+    "AUTH-02",
+    "AUTH-03",
+    "AUTH-04",
+    "AUTH-08:bounded-nonmail-partial",
+    "RLS-01",
+    "RLS-02",
+    "RLS-03",
+    "RLS-04",
+    "RLS-05",
+    "ADMIN-04:devices-read-partial",
+    "UI-01:core-partial",
+    "UI-02:core-partial",
+    "UI-03:core-partial"
+  ],
+  "executionLimitSeconds": 1800,
+  "workLimitSeconds": 1740,
+  "cleanupReserveSeconds": 60,
+  "authorizationValidityMaxSeconds": 3600,
+  "oauthRemainingSecondsStrictlyGreaterThan": 1860,
+  "ownerBudgets": {
+    "allBrowserHttpDispatchesMax": 650,
+    "applicationMutationDispatchesMax": 50,
+    "cleanupMutationDispatchesMax": 20,
+    "supabaseAuthDispatchesMax": 40,
+    "supabaseRestReadDispatchesMax": 80,
+    "supabaseRestWriteDispatchesMax": 20,
+    "turnstileHttpDispatchesMax": 40,
+    "mailProducingSubmissionsMax": 3,
+    "storageUploadOperationsMax": 20,
+    "storageDeleteOperationsMax": 10,
+    "mediaRangeRequestsMax": 20,
+    "mediaUploadBytesMax": 30000000,
+    "mediaReadBytesMax": 52428800,
+    "r2StoredBytesMax": 20971520,
+    "openaiModerationCallsMax": 20,
+    "openaiAndProviderCostUSDMax": 0,
+    "executionSecondsMax": 3600,
+    "ownerSessionRefreshRequestsMax": 6
+  },
+  "providerDeploymentGetMax": 2,
+  "catalogRestRequests": [
+    {
+      "id": "RLS_ANON_PUBLIC",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=slug,brand_key,name,catalog_normalized&slug=eq.xreal-air&publication_status=eq.published&limit=1",
+      "kind": "published",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_ANON_SPECS",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_SOURCES",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_EVIDENCE",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "actor": "anon",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_LEGACY",
+      "actor": "A",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_A_SPECS",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_SOURCES",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_EVIDENCE",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_AUDIT",
+      "actor": "A",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_LEGACY",
+      "actor": "B",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_SPECS",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_SOURCES",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_EVIDENCE",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_AUDIT",
+      "actor": "B",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    }
+  ],
+  "actors": [
+    "A",
+    "B",
+    "ADMIN"
+  ],
+  "loginActions": [
+    {
+      "actor": "A",
+      "kind": "success"
+    },
+    {
+      "actor": "B",
+      "kind": "success"
+    },
+    {
+      "actor": "ADMIN",
+      "kind": "success"
+    },
+    {
+      "actor": "A",
+      "kind": "invalid-captcha"
+    },
+    {
+      "actor": "A",
+      "kind": "missing-captcha"
+    },
+    {
+      "actor": "A",
+      "kind": "wrong-password"
+    }
+  ],
+  "applicationPages": [
+    "/login/?next=%2Fproducts%2F",
+    "/products/",
+    "/products/xreal/xreal-air/",
+    "/admin/devices/"
+  ],
+  "pageContentAssertions": [
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/xreal/xreal-air/",
+      "kind": "PRODUCT",
+      "expectedStatus": 200,
+      "slug": "xreal-air",
+      "brand": "xreal",
+      "assertions": [
+        "exact product identity",
+        "structured parameter data",
+        "public source links",
+        "exact canonical URL"
+      ],
+      "source": "src/pages/products/[brand]/[slug].astro"
+    },
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/",
+      "kind": "INDEX",
+      "expectedStatus": 200,
+      "source": "src/pages/products/index.astro"
+    }
+  ],
+  "staticManifest": [
+    {
+      "path": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.CtUXEG6g.js",
+      "kind": "script",
+      "bytes": 1168,
+      "sha256": "d38ccb187c70064b9bec7e27993090ade0408ca524cccef2aec7312521240902",
+      "localPath": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.DaQNT1ww.js",
+      "localSha256": "4550699f9e06afc37000e20f4dbd2c9223f0786afd03769713785325d047c0ca",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "1d0f18f79b0c73e9442bdc324b47b44f40cf7357d5444dde4aebd01cb5cabfe9",
+        "localCanonicalHash": "1d0f18f79b0c73e9442bdc324b47b44f40cf7357d5444dde4aebd01cb5cabfe9",
+        "reactFactoryPositionCanonicalized": false
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.DozvmMnE.js",
+      "kind": "script",
+      "bytes": 160,
+      "sha256": "a0a89192786b6d4391746b1f0206b3eb4306e1924d5707e29d35b300d2d6e516",
+      "localPath": "/_astro/LocalePreferenceSync.DozvmMnE.js",
+      "localSha256": "a0a89192786b6d4391746b1f0206b3eb4306e1924d5707e29d35b300d2d6e516",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/client.C9ykwJRQ.js",
+      "kind": "script",
+      "bytes": 180744,
+      "sha256": "b6b9827d0edbb0969b7f91072249e44d48dd6b36c9846980a2a684b8413fba42",
+      "localPath": "/_astro/client.C9ykwJRQ.js",
+      "localSha256": "b6b9827d0edbb0969b7f91072249e44d48dd6b36c9846980a2a684b8413fba42",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/HeaderUserMenu.BQjZAuvq.js",
+      "kind": "script",
+      "bytes": 8022,
+      "sha256": "c089c71a3eb20cf7c6a340b5c47ead959a40e2f87aa56556f7a7b5adb55400df",
+      "localPath": "/_astro/HeaderUserMenu.pbLPFX5d.js",
+      "localSha256": "0079ae4f333a8fd54c310b05c96c718a7be2450694fd4cbb9de0330098e1b629",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "f27c23dde1c05db8bd069c276db23494b0d686caae278a088eef7b04a334a0c9",
+        "localCanonicalHash": "f27c23dde1c05db8bd069c276db23494b0d686caae278a088eef7b04a334a0c9",
+        "reactFactoryPositionCanonicalized": false
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/AuthPanel.DgqtsVwn.js",
+      "kind": "script",
+      "bytes": 13837,
+      "sha256": "2678302ab24a14f6f98c385476ae41fd770628f6024e4ad89d75f1ef382a7cf6",
+      "localPath": "/_astro/AuthPanel.EZiCXg-9.js",
+      "localSha256": "5e9bc1d26ce8870c446f0f3e71ebaf298a67de2c1174aec3302ec41805ac07c0",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "9b972b65aca991a62c89941d6653f499b9564d6398be7cd48f9265afe9d9c314",
+        "localCanonicalHash": "9b972b65aca991a62c89941d6653f499b9564d6398be7cd48f9265afe9d9c314",
+        "reactFactoryPositionCanonicalized": false
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/page.Dtz6tGCc.js",
+      "kind": "script",
+      "bytes": 2536,
+      "sha256": "1c99026c0527cac05d3a172c386fdd43767eac5818e26c45ff353ad5d1f03aa9",
+      "localPath": "/_astro/page.Dtz6tGCc.js",
+      "localSha256": "1c99026c0527cac05d3a172c386fdd43767eac5818e26c45ff353ad5d1f03aa9",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/SiteHeader.BKThlVlH.css",
+      "kind": "stylesheet",
+      "bytes": 8315,
+      "sha256": "537f4d49f52b52c418399bb787f6ee9a5c1ca8badbb4c05fc47f71f07e0912cd",
+      "localPath": "/_astro/SiteHeader.BKThlVlH.css",
+      "localSha256": "537f4d49f52b52c418399bb787f6ee9a5c1ca8badbb4c05fc47f71f07e0912cd",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/GlobalSearchBox.Bl5bcP-U.js",
+      "kind": "script",
+      "bytes": 5511,
+      "sha256": "bf403b435307e8ea0521d94d3a286f13584286dead534a084407303fa2c049f9",
+      "localPath": "/_astro/GlobalSearchBox.BOIU3G-Q.js",
+      "localSha256": "bcdc1396f572ebef1ae1e122435c372bb7728142496d472546377aa91d82c9a7",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "d3e93c5b5d6563042396447911063e4d5cfdca8e16ec031270a701e57168bbb3",
+        "localCanonicalHash": "d3e93c5b5d6563042396447911063e4d5cfdca8e16ec031270a701e57168bbb3",
+        "reactFactoryPositionCanonicalized": false
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/HeaderNotifications.Dvp51m2w.js",
+      "kind": "script",
+      "bytes": 9003,
+      "sha256": "87f2cd770b3cc9e9bd026a3ec8bc6ccefaecf335885b66af71d03e1c5f434399",
+      "localPath": "/_astro/HeaderNotifications.xxochVRg.js",
+      "localSha256": "d3075d29fcf86e108a9c1b08f2bf346f95e1675b34074d25403180d62b3352a9",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "f0bd2a480b9deb4d4df8eda15825c5b68fcf097f28134d61ad31fbd22dfd4e59",
+        "localCanonicalHash": "f0bd2a480b9deb4d4df8eda15825c5b68fcf097f28134d61ad31fbd22dfd4e59",
+        "reactFactoryPositionCanonicalized": false
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/LocalePreferenceSync.C6ZrnQDj.js",
+      "kind": "script",
+      "bytes": 3931,
+      "sha256": "8309f3700026a532c6f25682edbb54054800c08893725e179810c9897cc5f5ba",
+      "localPath": "/_astro/LocalePreferenceSync.C6ZrnQDj.js",
+      "localSha256": "8309f3700026a532c6f25682edbb54054800c08893725e179810c9897cc5f5ba",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/CommunityLayout.jf1vXvaF.css",
+      "kind": "stylesheet",
+      "bytes": 125430,
+      "sha256": "43e22bcd8f713a3a205781e763909ae9e215f116509c638cfd8650db0caa4fd1",
+      "localPath": "/_astro/CommunityLayout.jf1vXvaF.css",
+      "localSha256": "43e22bcd8f713a3a205781e763909ae9e215f116509c638cfd8650db0caa4fd1",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/react.DZuxrRTg.js",
+      "kind": "script",
+      "bytes": 8088,
+      "sha256": "e9c0a21591214c6b5ed976fe40a1c45a254c4ca58b7e5cd1d151af7f14ed3b27",
+      "localPath": "/_astro/react.DZuxrRTg.js",
+      "localSha256": "e9c0a21591214c6b5ed976fe40a1c45a254c4ca58b7e5cd1d151af7f14ed3b27",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/SettingsPage.k4jTk_Qi.js",
+      "kind": "script",
+      "bytes": 5342,
+      "sha256": "2dee892acbc1d98b7dacbbe326663aaaa6db5909f0a43a0c0c96ff2cb11b8f32",
+      "localPath": "/_astro/SettingsPage.DImHgz8J.js",
+      "localSha256": "f8c3166d5073d2eba8485732bf9f6432be27216b0074710f3a8a858cd8c9fcf4",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "16836c492b5476e69bb6a583a43e5ee5e2efabe6c74097cfbf10c2ec3d12e7c3",
+        "localCanonicalHash": "16836c492b5476e69bb6a583a43e5ee5e2efabe6c74097cfbf10c2ec3d12e7c3",
+        "reactFactoryPositionCanonicalized": false
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/react-dom.BHf2gUf-.js",
+      "kind": "script",
+      "bytes": 3587,
+      "sha256": "468f9774b111a96b0ee21ceb962f1da0fcf69a90ea0a62b640ad08b4ca2dbfb5",
+      "localPath": "/_astro/react-dom.BHf2gUf-.js",
+      "localSha256": "468f9774b111a96b0ee21ceb962f1da0fcf69a90ea0a62b640ad08b4ca2dbfb5",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/supabase-browser.CbJzQpCJ.js",
+      "kind": "script",
+      "bytes": 210364,
+      "sha256": "aa677f1ee5784636ca14b697b28872d7f4882179dfdfc5a9015a039e82c0b37c",
+      "localPath": "/_astro/supabase-browser.CbJzQpCJ.js",
+      "localSha256": "aa677f1ee5784636ca14b697b28872d7f4882179dfdfc5a9015a039e82c0b37c",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/jsx-runtime.Cs_ylJLF.js",
+      "kind": "script",
+      "bytes": 5569,
+      "sha256": "c2c3692670c89dbcfb1a21e5596bb534f00f8e476448eae2eea79357d6dbfd6f",
+      "localPath": "/_astro/jsx-runtime.Cs_ylJLF.js",
+      "localSha256": "c2c3692670c89dbcfb1a21e5596bb534f00f8e476448eae2eea79357d6dbfd6f",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/useLocale.OuxaUvmK.js",
+      "kind": "script",
+      "bytes": 107578,
+      "sha256": "991ebf58bed99754cc2f4436bfafb830de70fb720a73897b1efa05fd3a32eb3c",
+      "localPath": "/_astro/useLocale.uXE5yf0C.js",
+      "localSha256": "7ef9768e2be3f702e430a9ede82666c6ffab59095f711438a7b82ba4087df8e9",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "f65d932a22d12baa0476820e217004345de5d1aaafed6ba0957f82b5d92f64d0",
+        "localCanonicalHash": "f65d932a22d12baa0476820e217004345de5d1aaafed6ba0957f82b5d92f64d0",
+        "reactFactoryPositionCanonicalized": true
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/legal-consent-adapters.hgu_dait.js",
+      "kind": "script",
+      "bytes": 309,
+      "sha256": "5188c420576b7c93a86a73f368ee9317303e31f449e006e4ccd47fe7490b5021",
+      "localPath": "/_astro/legal-consent-adapters.hgu_dait.js",
+      "localSha256": "5188c420576b7c93a86a73f368ee9317303e31f449e006e4ccd47fe7490b5021",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/useBrowserAuthState.DwB-xnWR.js",
+      "kind": "script",
+      "bytes": 1023,
+      "sha256": "20324053b51dd1cc538294305b49d56e628dc34a1f4b0c8b8faec5367e2ce664",
+      "localPath": "/_astro/useBrowserAuthState.DwB-xnWR.js",
+      "localSha256": "20324053b51dd1cc538294305b49d56e628dc34a1f4b0c8b8faec5367e2ce664",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/auth-redirect.5ZO3FMne.js",
+      "kind": "script",
+      "bytes": 1794,
+      "sha256": "aa50f4990b53a3dd8532c7617bd2bae15eaedf45c9c7c3572c1193e4cfea3386",
+      "localPath": "/_astro/auth-redirect.5ZO3FMne.js",
+      "localSha256": "aa50f4990b53a3dd8532c7617bd2bae15eaedf45c9c7c3572c1193e4cfea3386",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/auth-messages.3HE5GXRn.js",
+      "kind": "script",
+      "bytes": 7687,
+      "sha256": "15f1627e538b9e7e52140d9c17defec79959f443b61de84ff8bef2e5950f0b47",
+      "localPath": "/_astro/auth-messages.3HE5GXRn.js",
+      "localSha256": "15f1627e538b9e7e52140d9c17defec79959f443b61de84ff8bef2e5950f0b47",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/notifications.CwRuuH1z.js",
+      "kind": "script",
+      "bytes": 685,
+      "sha256": "043984dfb373bfae763570e83734299883bd8f60b1cdc91651fc798e1213e834",
+      "localPath": "/_astro/notifications.CwRuuH1z.js",
+      "localSha256": "043984dfb373bfae763570e83734299883bd8f60b1cdc91651fc798e1213e834",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/product-public-safety.BFvqNWGH.js",
+      "kind": "script",
+      "bytes": 898,
+      "sha256": "f5db8e009b4cd722b6b058875013490848da3430922c51a82adf39e67214f38a",
+      "localPath": "/_astro/product-public-safety.BFvqNWGH.js",
+      "localSha256": "f5db8e009b4cd722b6b058875013490848da3430922c51a82adf39e67214f38a",
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "contentTypeEvidence": "FROZEN_READER_VALIDATED_ALLOWED_MIME_NOT_RAW_HEADER_CAPTURE",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/index.CXX0zyC2.css",
+      "kind": "stylesheet",
+      "bytes": 12894,
+      "sha256": "1524674d0d67d5f9a516f7b3066dfcbfcf9847f94d3e390a6ae469799fc835cf",
+      "sourceVerified": true,
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "localPath": "/_astro/index.CXX0zyC2.css",
+      "localSha256": "1524674d0d67d5f9a516f7b3066dfcbfcf9847f94d3e390a6ae469799fc835cf",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/index.astro_astro_type_script_index_0_lang.BskClGKx.js",
+      "kind": "script",
+      "bytes": 6196,
+      "sha256": "4ffdb68c3751287481be1c638028d38862a971c848cfa9322a170f2eea3b93a5",
+      "sourceVerified": true,
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "localPath": "/_astro/index.astro_astro_type_script_index_0_lang.BskClGKx.js",
+      "localSha256": "4ffdb68c3751287481be1c638028d38862a971c848cfa9322a170f2eea3b93a5",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/AdminDevicesDashboard.B5iTsgyN.js",
+      "kind": "script",
+      "bytes": 33796,
+      "sha256": "5a7b0c0abb69ef9fc4851105a0e173dac9561575f7375a0e346d7378be6b6158",
+      "sourceVerified": true,
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "SCOPED_AST_REVIEW_NOT_GENERAL_SEMANTIC_EQUIVALENCE",
+        "canonicalHash": "91bedd77851e6521cc4f40fdc94c956f93b4e49c26c762063ad31231b80ec933",
+        "localCanonicalHash": "91bedd77851e6521cc4f40fdc94c956f93b4e49c26c762063ad31231b80ec933",
+        "reactFactoryPositionCanonicalized": false
+      },
+      "localPath": "/_astro/AdminDevicesDashboard.hFDGJRVO.js",
+      "localSha256": "a97a6c3a5b28f3380c3012a2c656b956e93932ad81ed187464b9e9252987b69a",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "kind": "script",
+      "bytes": 950,
+      "sha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a",
+      "sourceVerified": true,
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "localPath": "/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "localSha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/useAdminSession.B8o2Cihd.js",
+      "kind": "script",
+      "bytes": 3397,
+      "sha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83",
+      "sourceVerified": true,
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_FROZEN_BUILD_BYTES"
+      },
+      "localPath": "/_astro/useAdminSession.B8o2Cihd.js",
+      "localSha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83",
+      "buildByteEquality": true,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    },
+    {
+      "path": "/_astro/GlassConfirmDialog.D2bRRp6P.js",
+      "kind": "script",
+      "bytes": 2658,
+      "sha256": "75b21ce18323d35e842aad13673ae8c0b61dca7096c4185c383c8415aee8d84a",
+      "sourceVerified": true,
+      "provenance": "VERIFIED",
+      "sourceEvidence": {
+        "matches": true,
+        "kind": "EXACT_PINNED_DIALOG_IMPORT_ORDER_REVIEW",
+        "canonicalSha256": "4a63e9dbafbca17e01cb358fd23b8467d4c31095b15ce6160b72e098c8fbcb16"
+      },
+      "localPath": "/_astro/GlassConfirmDialog.BkjmaYBn.js",
+      "localSha256": "206a8064062d48bc7184af1b4ee55dae85a5fa2aae18339e4288aff012a32771",
+      "buildByteEquality": false,
+      "version": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+      "host": "openglasshub.ogh.workers.dev",
+      "method": "GET"
+    }
+  ],
+  "ownBackgroundGet": [
+    "/api/users/me/summary",
+    "/api/users/me/preferences",
+    "/api/users/me/notifications?limit=8&unread_only=1"
+  ],
+  "adminGet": [
+    "/api/admin/forum/me",
+    "/api/admin/devices"
+  ],
+  "authPaths": [
+    "POST /auth/v1/token?grant_type=password",
+    "POST /auth/v1/token?grant_type=refresh_token",
+    "GET /auth/v1/user",
+    "POST /auth/v1/logout?scope=global"
+  ],
+  "dynamicPrivateProfileGet": "Exact self id,role projection with limit=1; actual ID stays private",
+  "turnstileCapability": {
+    "type": "NATIVE_VENDOR_MONITOR_ONLY",
+    "host": "challenges.cloudflare.com",
+    "observationCap": 40,
+    "hiddenChannels": "UNKNOWN"
+  },
+  "proposedContractChanges": [
+    "Native Auth and browser traffic MONITOR_ONLY instead of whole-browser hard interception; same cap numbers.",
+    "Native vendor URL/redirect/retry observation instead of hard path/byte/pre-evaluation control; unknown background coverage disclosed.",
+    "Exact registered SDK storage memory snapshot replaces post-navigation response-body capture; refresh token never returned.",
+    "Native CORS preflight observation within existing Auth/global counts; SDK/cookie/CORS/server controls not bypassed.",
+    "Nine fresh owner gates, backend settings UNKNOWN until live safety tests, no valid CAPTCHA fabrication.",
+    "Node identity/RLS/admin read GET remains hard; no new business/mail/media/SQL/configuration authority."
+  ],
+  "excluded": [
+    "registration",
+    "emails",
+    "recovery links",
+    "consent writes",
+    "posts/comments/likes/circles mutation",
+    "media reads/uploads/deletes",
+    "admin writes",
+    "Realtime acceptance",
+    "full locale/mobile visual acceptance",
+    "provider config",
+    "database SQL",
+    "Catalog release"
+  ],
+  "sideEffects": [
+    "Auth sessions/security/rate-limit/vendor cookies/logs persist; global logout affects other sessions of the same bound account.",
+    "Native dispatch/retry/redirect can precede observation; soft stop does not undo requests; no new business/mail authority.",
+    "Browser instrumentation/opaque channels and trusted-host private-memory risks require independent owner acceptance."
+  ],
+  "serverModerationDependency": "NONE_FOR_SOURCE_REVIEWED_SCOPE",
+  "mutationResultAmbiguity": "STOP_NO_RETRY_NO_AUTOMATIC_CLEANUP",
+  "catalogHold": "ACTIVE",
+  "recoveryBoundary": "NO_VERSION151_DEFAULT_AFTER_HARDENING",
+  "productionAuthorization": "NOT_AUTHORIZED",
+  "fullEVerify": "INCOMPLETE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "freePlanProofSha256": "c6a86405f6c433198f45f1fb2a2538da7bfbfac5aed5a7cfb8ec7c07f4333980",
+  "freePlanScopeSha256": "c7dfd1c59775650bb3707ffea720c5276ccb65892ba24bad62342c04c3b6d288",
+  "readiness": "READY_FOR_OWNER_APPROVAL",
+  "independentGo": "GO_E_VERIFY_GROUP1_NATIVE_MANUAL_AUTH_RECOVERY_V19",
+  "executionEntry": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-manual-recovery-v19\\entry.mjs",
+  "otherBudgetsChanged": false,
+  "contractSha256": "a8695f246364d76ccb64c90d987154d2bcbf8180fe874c194533209dcd3c459b",
+  "browserNetworkBoundary": "MONITOR_ONLY",
+  "authTransport": "NATIVE_CHROME_NOT_NODE_MEDIATED",
+  "wholeBrowser650HardLimit": false,
+  "wholeBrowserAuth40HardLimit": false,
+  "wholeBrowserVendor40HardLimit": false,
+  "nodeReadBoundary": "HARD_FIXED_GET_PRE_DISPATCH",
+  "nodeRetries": 0,
+  "nodeRedirects": 0,
+  "nativeRetryAndRedirectCount": "UNKNOWN_FOR_UNOBSERVED_CHANNELS",
+  "nativeHardControlsInherited": false,
+  "serverAuthControls": {
+    "clientSource": "VERIFIED_OFFLINE",
+    "actualProductionCaptcha": "NOT_VERIFIED",
+    "actualRateLimits": "UNKNOWN",
+    "actualSessionTtlRotationRevocation": "UNKNOWN",
+    "noProductionConfigurationChanged": true
+  },
+  "sessionHandoff": "REGISTERED_SAME_ORIGIN_SDK_STORAGE_MINIMAL_PROCESS_MEMORY_SNAPSHOT",
+  "nodeRefreshTokenRetained": false,
+  "sdkStorageKeyDerivation": "sb-<fixed-supabase-host-first-label>-auth-token",
+  "noRawEvidenceExport": true,
+  "isolatedTurnstileAcceptance": "ACCEPTED_WITH_DOCUMENTED_EXCEPTION",
+  "originalIsolatedReceiptStatus": "INCOMPLETE",
+  "productionCaptchaAcceptance": "NOT_EXECUTED",
+  "caseMappings": [
+    {
+      "caseId": "AUTH-01",
+      "originalCase": "Managed Turnstile acquisition in actual owner browser without bypass; CAPTCHA-less/invalid proof fails",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "AUTH-02",
+      "originalCase": "Real ordinary account A login, session persistence and logout",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "AUTH-03",
+      "originalCase": "Real ordinary account B login for cross-user isolation",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "AUTH-04",
+      "originalCase": "Existing approved administrator login; no role promotion or privilege changes",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "AUTH-08:bounded-nonmail-partial",
+      "originalCase": "Wrong credentials, invalid/expired recovery input, safe next redirect and error rendering; no brute force",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "RLS-01",
+      "originalCase": "Anon actual public Data API permits safe published columns/projections and denies legacy JSON/private audit",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "RLS-02",
+      "originalCase": "A/B authentic JWT roles: direct devices selection exposes no legacy/unpublished rows; empty or exact permission denial as frozen role fixture requires",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "RLS-03",
+      "originalCase": "A/B cannot query anon-only invoker projections or private audit; do not treat authenticated as inheriting anon",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "RLS-04",
+      "originalCase": "Signed-in website public detail still works through anonymous SSR, not proof of authenticated direct database grants",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "RLS-05",
+      "originalCase": "Ordinary A/B denied protected admin APIs/UI; existing admin device list loads, reviewed privileges retained",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "ADMIN-04:devices-read-partial",
+      "originalCase": "Admin devices/forum/reports/media/news/users/circles pages and unauthorized denial; Catalog writes remain prohibited",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "UI-01:core-partial",
+      "originalCase": "Production Chinese and English using explicit preference; trusted country overrides Accept-Language, no forged country header",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "UI-02:core-partial",
+      "originalCase": "Production desktop 1440 and mobile 390/430 navigation/layout/form/content/media overflow, focus and accessibility",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    },
+    {
+      "caseId": "UI-03:core-partial",
+      "originalCase": "Actual assets/CSP/resource success, application console errors, key internal links and error/empty/loading/unauthorized states",
+      "executionPaths": [
+        "ORIGINAL_ORDERED_MANUAL_BROWSER_DRIVER",
+        "PRIVATE_FIXED_NODE_IDENTITY_RLS_OR_ADMIN_READ"
+      ],
+      "status": "EXECUTABLE_SCOPED_NOT_PRODUCTION_VERIFIED"
+    }
+  ],
+  "controlledReadPlan": {
+    "identityGet": 3,
+    "profileGet": 3,
+    "originalRlsGet": 16,
+    "adminGet": 6,
+    "prePostDeploymentGet": 2,
+    "total": 30
+  },
+  "iconPaths": [
+    "/gaze-icon-v6.ico",
+    "/gaze-icon-v6.svg",
+    "/gaze-icon-32-v6.png",
+    "/apple-touch-icon-v6.png"
+  ],
+  "ownerGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null,
+    "nativeAuthenticatedMonitorOnlyAndUnseenDispatchRiskAccepted": null,
+    "privateSdkStorageSnapshotAndNoRawEvidenceExportAccepted": null,
+    "serverAuthControlsUnknownAndStopRulesAccepted": null,
+    "currentZeroCostFreeServicesAndUnmeteredNetworkConfirmed": null,
+    "nativeUnenumeratedThirdPartyGetRiskAndStopRulesAccepted": null,
+    "unresolvedExternalFetchAbortContinuationAccepted": null
+  },
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "claimCreated": false,
+  "approvedNativeBoundaryDifferences": "PENDING_OWNER_FULL_CONTRACT_APPROVAL",
+  "scopedUiIsNotFullVisualAcceptance": true,
+  "observationEvidenceDoesNotGuaranteeProductionCompletion": true,
+  "noCostsAcceptedBeyondZero": true,
+  "freePlanEvidenceStatus": "REUSE_OWNER_ATTESTED_PROVIDER_DOCUMENTED_FREE_ONLY_NOT_NEW_CONSOLE_READ",
+  "scriptBytesBeforeExecutionHardValidationInherited": false,
+  "profileIsolation": "SIX_NEW_PROFILES_AND_INCOGNITO_CONTEXTS",
+  "humanAuthenticationActions": "THREE_POSITIVE_THREE_NEGATIVE_THREE_GLOBAL_LOGOUT_ZERO_MANUAL_RETRIES",
+  "originalNativeTurnstileCapabilityIsNotHardEnforced": true,
+  "previousHardTurnstileCapability": "HTTPS challenges.cloudflare.com only: GET /turnstile/v0/api.js?render=explicit; bounded GET/POST /cdn-cgi/challenge-platform/ subtree. No redirects/other origins/cookies; vendor Worker/WS/EventSource transports closed; unsupported behavior stops, never bypasses.",
+  "previousSideEffects": [
+    "login/logout/refresh and failed authentication can retain security/session/rate-limit records",
+    "SSR/application reads invoke only the attested Free services; retained Auth/security logs are not deleted. Free quota exhaustion can restrict service, never authorize upgrade or payment."
+  ],
+  "previousFreePlanScopeSha256": "c20bb962f898f266e30b2280457c030ffcd94d3f06b3698f8bcfabd0db7e4954",
+  "freePlanScopeDigestMeaning": "NEW_SCOPE_BINDING_DIGEST_NOT_A_NEW_PROVIDER_BILLING_VERIFICATION",
+  "chromeIdentity": {
+    "path": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "version": "156.0.8078.36",
+    "sha256": "fdd156b74dd997d3b15f0cdbb59ce0051f1e8b19d10822f31743abac09ec4c89",
+    "publisher": "Google LLC",
+    "beforeAfterLaunchCheck": true,
+    "futureUpdatesImpossible": false
+  },
+  "previousAuthorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-fast-track-v18",
+  "previousOwnerGatesApplied": false,
+  "previousAuthorizationConsumed": true,
+  "controlStartupReadiness": "OFFLINE_VERIFIED_DOM_HANDLER_HANDSHAKE_AND_WIN32_FOREGROUND",
+  "controlFocusBoundary": "OWNED_PROFILE_EXACT_QA_TITLE_FOCUS_EXIT_ONLY_NO_NETWORK_NO_KEYSTROKES",
+  "startupChangesDoNotExtendExecutionDeadline": true,
+  "historicalV15ExactWindowIdentity": "UNKNOWN",
+  "actualProductionStartControlVerified": false,
+  "contractPath": "C:\\Temp\\ogh-product-beta-development-20261013\\tools\\e-verify-group1-manual-recovery-v19\\artifacts\\HUMAN_GROUP1_MANUAL_RECOVERY_V19_AUTHORIZATION_NOT_AUTHORIZED.md",
+  "billingEvidenceReuse": {
+    "previousPlanAttestationBytesUnchanged": true,
+    "v16NetworkScopeUnchanged": true,
+    "legacyScopeDigestIsNewAuthorization": false,
+    "currentOwnerZeroCostReconfirmation": "PENDING"
+  },
+  "fastTrackPolicy": {
+    "browserBoundary": "MONITOR_ONLY",
+    "nodeScopeExpanded": false,
+    "browserStopPolicyRelaxed": true,
+    "eligibleUnenumeratedGetStages": [
+      "LOGIN_<actor>",
+      "LANDING_<actor>",
+      "LOGOUT_<actor>",
+      "NEGATIVE_CAPTCHA",
+      "NEGATIVE_MISSING_CAPTCHA",
+      "NEGATIVE_PASSWORD"
+    ],
+    "eligibleTypes": [
+      "fetch",
+      "xhr",
+      "script",
+      "stylesheet",
+      "document"
+    ],
+    "mainFrameNavigationAllowed": false,
+    "unknownOriginIsTrusted": false,
+    "completeTurnstileInitiatorAttributionClaimed": false,
+    "unknownGetUsesExistingVendor40SoftCap": true,
+    "wholeBrowserHardCapClaimed": false,
+    "exactPrivateOriginCollection": false,
+    "unknownExternalNonGetStops": true,
+    "knownSensitiveRequestsStop": true,
+    "fullBrowserCredentialLeakPreventionGuaranteed": false,
+    "wholeBrowserBillingHardCapGuaranteed": false,
+    "paidUsageAuthorized": false,
+    "overageRiskConsent": false,
+    "zeroCostOwnerGate": "currentZeroCostFreeServicesAndUnmeteredNetworkConfirmed",
+    "newRiskGate": "nativeUnenumeratedThirdPartyGetRiskAndStopRulesAccepted"
+  },
+  "abortContinuationPolicy": {
+    "error": "net::ERR_ABORTED",
+    "method": "GET",
+    "resourceType": "fetch",
+    "originClass": "OTHER",
+    "scope": "POSITIVE_LOGIN_ONLY",
+    "classification": "UNRESOLVED",
+    "priorSafetyChecksRequired": true,
+    "frameObservedRequired": true,
+    "startedRequired": true,
+    "originalRequestAndCurrentStageMustMatch": true,
+    "maximumEvidenceRecordsPerContext": 40,
+    "evidenceOverflowStops": true,
+    "automaticRetry": false,
+    "networkPermissionExpansion": false,
+    "independentIdentityBeforeRlsRequired": true,
+    "unknownCancellationIsBenign": false,
+    "newOwnerGate": "unresolvedExternalFetchAbortContinuationAccepted"
+  }
+}

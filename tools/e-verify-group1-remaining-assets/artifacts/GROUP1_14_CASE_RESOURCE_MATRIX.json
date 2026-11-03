@@ -1,0 +1,626 @@
+{
+  "format": "group1-original14-resource-mapping-v1",
+  "caseCount": 14,
+  "casesWithFullExecutionEvidence": 0,
+  "authenticatedRLSReads": 16,
+  "cases": [
+    {
+      "caseId": "AUTH-01",
+      "originalCase": "Managed Turnstile acquisition in actual owner browser without bypass; CAPTCHA-less/invalid proof fails",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionStages": [
+        "LOGIN_A",
+        "LOGIN_B",
+        "LOGIN_ADMIN",
+        "NEGATIVE_CAPTCHA",
+        "NEGATIVE_MISSING_CAPTCHA"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "AUTH-02",
+      "originalCase": "Real ordinary account A login, session persistence and logout",
+      "actors": [
+        "A"
+      ],
+      "executionStages": [
+        "LOGIN_A",
+        "SESSION_A",
+        "LOGOUT_A"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "AUTH-03",
+      "originalCase": "Real ordinary account B login for cross-user isolation",
+      "actors": [
+        "B"
+      ],
+      "executionStages": [
+        "LOGIN_B",
+        "SESSION_B",
+        "LOGOUT_B"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "AUTH-04",
+      "originalCase": "Existing approved administrator login; no role promotion or privilege changes",
+      "actors": [
+        "ADMIN"
+      ],
+      "executionStages": [
+        "LOGIN_ADMIN",
+        "ADMIN_IDENTITY",
+        "LOGOUT_ADMIN"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "AUTH-08:bounded-nonmail-partial",
+      "originalCase": "Wrong credentials, invalid/expired recovery input, safe next redirect and error rendering; no brute force",
+      "actors": [
+        "A"
+      ],
+      "executionStages": [
+        "NEGATIVE_PASSWORD"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "RLS-01",
+      "originalCase": "Anon actual public Data API permits safe published columns/projections and denies legacy JSON/private audit",
+      "actors": [
+        "anon"
+      ],
+      "executionStages": [
+        "CATALOG_ANON_6"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "RLS-02",
+      "originalCase": "A/B authentic JWT roles: direct devices selection exposes no legacy/unpublished rows; empty or exact permission denial as frozen role fixture requires",
+      "actors": [
+        "A",
+        "B"
+      ],
+      "executionStages": [
+        "CATALOG_A_5",
+        "CATALOG_B_5"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "RLS-03",
+      "originalCase": "A/B cannot query anon-only invoker projections or private audit; do not treat authenticated as inheriting anon",
+      "actors": [
+        "A",
+        "B"
+      ],
+      "executionStages": [
+        "CATALOG_A_5",
+        "CATALOG_B_5"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "RLS-04",
+      "originalCase": "Signed-in website public detail still works through anonymous SSR, not proof of authenticated direct database grants",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionStages": [
+        "PRODUCT_DETAIL_A",
+        "PRODUCT_DETAIL_B",
+        "PRODUCT_DETAIL_ADMIN"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "RLS-05",
+      "originalCase": "Ordinary A/B denied protected admin APIs/UI; existing admin device list loads, reviewed privileges retained",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionStages": [
+        "ADMIN_API_A_B_DENIED",
+        "ADMIN_UI_A_B_DENIED",
+        "ADMIN_API_UI_ADMIN_ALLOWED"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "ADMIN-04:devices-read-partial",
+      "originalCase": "Admin devices/forum/reports/media/news/users/circles pages and unauthorized denial; Catalog writes remain prohibited",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionStages": [
+        "ADMIN_API_A_B_DENIED",
+        "ADMIN_UI_A_B_DENIED",
+        "ADMIN_API_UI_ADMIN_ALLOWED"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "UI-01:core-partial",
+      "originalCase": "Production Chinese and English using explicit preference; trusted country overrides Accept-Language, no forged country header",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionStages": [
+        "LOGIN_A_B_ADMIN",
+        "PRODUCTS",
+        "PRODUCT_DETAIL",
+        "ADMIN_DEVICES_READ_ONLY"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "UI-02:core-partial",
+      "originalCase": "Production desktop 1440 and mobile 390/430 navigation/layout/form/content/media overflow, focus and accessibility",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionStages": [
+        "LOGIN_A_B_ADMIN",
+        "PRODUCTS",
+        "PRODUCT_DETAIL",
+        "ADMIN_DEVICES_READ_ONLY"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    },
+    {
+      "caseId": "UI-03:core-partial",
+      "originalCase": "Actual assets/CSP/resource success, application console errors, key internal links and error/empty/loading/unauthorized states",
+      "actors": [
+        "A",
+        "B",
+        "ADMIN"
+      ],
+      "executionStages": [
+        "LOGIN_A_B_ADMIN",
+        "PRODUCTS",
+        "PRODUCT_DETAIL",
+        "ADMIN_DEVICES_READ_ONLY"
+      ],
+      "subsetResidual": "Only the original explicit scoped/partial mapping; no mail/recovery/all-admin-page or complete UI acceptance implied.",
+      "loginInitialHtml": "REUSED_PROTECTED_CAPTURE",
+      "loginStaticAssets": "VERIFIED23",
+      "positivePrerequisite": "/products/",
+      "htmlStages": [
+        "/login/?next=%2Fproducts%2F",
+        "/products/",
+        "/products/xreal/xreal-air/",
+        "/admin/devices/"
+      ],
+      "css": "Reviewed common2; products page CSS not captured",
+      "jsRoots": "Reviewed login23; products index/AdminDevices roots and dependencies pending",
+      "imports": "Literal import/modulepreload/hydration edges bound in finite source graph; Production unknown nodes not executable",
+      "background": [
+        "/api/users/me/summary",
+        "/api/users/me/preferences",
+        "/api/users/me/notifications?limit=8&unread_only=1",
+        "/api/admin/forum/me",
+        "/api/admin/devices"
+      ],
+      "budgetCategories": [
+        "allBrowserHttpDispatchesMax",
+        "supabaseAuthDispatchesMax",
+        "supabaseRestReadDispatchesMax",
+        "turnstileHttpDispatchesMax",
+        "ownerSessionRefreshRequestsMax"
+      ],
+      "evidence": "Existing frozen full runner + mandatory matrix + current scope + reviewed login evidence",
+      "fullExecutionEvidence": "BLOCKED",
+      "productionResult": "NOT_EXECUTED",
+      "reason": "Whole runner success prerequisites include unverified post-login page assets; partial case resources are not full acceptance."
+    }
+  ],
+  "scopeUnaffected": true
+}

@@ -1,0 +1,16 @@
+{
+  "format": "group1-safe-script-identity-tests-v1",
+  "recordedAtUTC": "2026-10-13T05:27:16.789Z",
+  "total": 15,
+  "passed": 15,
+  "failed": 0,
+  "skipped": 0,
+  "realChromeLoopbackTests": 5,
+  "productionHtmlFixture": false,
+  "unknownBuildNamesExercised": true,
+  "finalRunnerReceiptExercised": true,
+  "stdoutSha256": "90b8e6d88fc3206732a89d8e8a2906e5dead585c591ac1ddbaf4061c59612be6",
+  "historicalTestsRerun": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

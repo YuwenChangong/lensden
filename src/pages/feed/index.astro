@@ -37,7 +37,7 @@ const [feed, { data: circles, error: circlesError }] = await Promise.all([
   }),
   supabase
     .from("circles")
-    .select("slug, name, description, status")
+    .select("id, slug, name, description, status")
     .eq("status", "active")
     .order("name", { ascending: true }),
 ]);
@@ -154,7 +154,7 @@ const buildFeedHref = (nextSort: string, nextPage = 1) =>
         </div>
       )}
 
-      {posts.length > 0 ? (
+      {posts.length > 0 || feed.has_more || page > 1 ? (
         <div class="community-feed-pagination">
           {page > 1 ? (
             <a href={buildFeedHref(sort, page - 1)} class="community-action-button community-action-button--muted">{text.previous}</a>

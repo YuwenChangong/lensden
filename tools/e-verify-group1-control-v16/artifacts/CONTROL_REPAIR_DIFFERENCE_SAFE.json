@@ -1,0 +1,30 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-control-v16",
+  "previousAuthorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-chrome-v15",
+  "rootCauseCategory": "WINDOW_FOCUS_FAILURE_PROVEN_ON_ORIGINAL_OFFLINE_PATH",
+  "historicalV15WindowIdentity": "UNKNOWN",
+  "originalControlDomAndStartHandler": "PASS_OFFLINE",
+  "exactOsForegroundWasNotProvenByPageBringToFront": true,
+  "previous278FilesUnchanged": true,
+  "budgetsCasesAuthRlsSessionNetworkBoundaryUnchanged": true,
+  "technicalChanges": [
+    "Nonblank local waiting document",
+    "UTF8 control title and visible buttons",
+    "DOM/button/binding readiness handshake",
+    "Owned exact QA HWND foreground check via hidden Job child with no network or keystrokes",
+    "Fail-closed control errors inside existing time bound"
+  ],
+  "ownerGatesMigrated": false,
+  "utcFilled": false,
+  "claimCreated": false,
+  "goIssued": false,
+  "targetedTests": "9/9_PASS",
+  "bindingSha256": "f85815750899bd5fce1891d2d42c4d653c089c23733bcbabcb60f270ff97f3a8",
+  "packetSha256": "9f2f31e471a72dd15df252b458004dcd878f3a8480fa0d3d875b65fa067b453e",
+  "contractSha256": "d26152fe7d66ee9e4923438d17ee986c24995fab1e5b8307fdb2ab21aaf1c3ad",
+  "boundFiles": 305,
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE"
+}

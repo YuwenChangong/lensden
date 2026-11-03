@@ -1,0 +1,15 @@
+docs/geo/README.md
+docs/geo/owner-actions.md
+docs/geo/phase2-changed-files.txt
+docs/geo/phase2-release-readiness.md
+docs/geo/phase2-type-diagnostics.json
+docs/ops/PUBLIC_BETA_CURRENT_STATE.md
+docs/superpowers/plans/2026-11-02-lensden-geo-phase2.md
+scripts/test-moderation.mjs
+scripts/test-news-admin-reader.mjs
+scripts/test-seo-geo.mjs
+scripts/test-seo-rendered.mjs
+src/lib/news.ts
+src/lib/seo-sitemap.ts
+src/lib/supabase-server.ts
+src/pages/sitemap.xml.ts

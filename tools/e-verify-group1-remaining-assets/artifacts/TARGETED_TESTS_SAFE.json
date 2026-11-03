@@ -1,0 +1,12 @@
+{
+  "tests": 33,
+  "passed": 33,
+  "failed": 0,
+  "outputSha256": "07af2efe564b089035b512c620a92b95645550a987c7c51c88a6dcc041c565d8",
+  "scope": "NEW_CONSOLIDATED_READER_AND_CONTRACT_ONLY",
+  "historical34TestsReused": true,
+  "historical123TestsReused": true,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "fullGroup1Browser": "BLOCKED_NOT_CLAIMED"
+}

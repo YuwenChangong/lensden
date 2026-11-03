@@ -1,0 +1,47 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-chrome-v15",
+  "recordedAtUTC": "2026-10-15T02:49:36.722Z",
+  "group1": "BLOCKED",
+  "firstFailure": "MANUAL_WAIT_DEADLINE",
+  "failedStage": "LOGIN_A",
+  "ownerObservation": {
+    "source": "DIRECT_OWNER_REPLY_DURING_EXECUTION",
+    "message": "无法正常使用窗口，白屏",
+    "observationIsNotMachineRootCauseProof": true,
+    "exactWindowAndRenderingCause": "UNKNOWN"
+  },
+  "machineEvidence": {
+    "startEventObserved": false,
+    "productionLoginNavigationObserved": false,
+    "applicationRequestObservations": 0,
+    "confirmedDeploymentGets": 1,
+    "preDeployment": "PASS",
+    "productionVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+    "productionTraffic": 100,
+    "postDeployment": "NOT_EXECUTED",
+    "globalAdmissions": 7,
+    "authDispatchesObserved": 0,
+    "authenticatedRlsCompleted": "0/16",
+    "browserUnobservedDispatches": "UNKNOWN_MONITOR_ONLY"
+  },
+  "authorizationConsumed": true,
+  "claimCreated": true,
+  "childClaimCreated": true,
+  "cleanup": "PASS",
+  "processTreeDrained": true,
+  "childReaped": true,
+  "allDedicatedProfilesClosed": true,
+  "automaticRetry": false,
+  "productionWritesConfirmed": 0,
+  "originalReceiptsUnchanged": true,
+  "originalReceiptSha256": {
+    "EXECUTION_SAFE.json": "6aa90d3d35760817be29c3cd5afae63d505048fbdea1ee10e9911d042d50cba0",
+    "FINAL_SAFE.json": "7f6bcd2b14731e508e5d0964132b78f1858496d9cb975c7fa1528a6d160e7426",
+    "SUPERVISOR_SAFE.json": "e22ad956fb83c33724e943031dd56ddb29107d032f58f56f75059a7782625ff0"
+  },
+  "catalogHold": "ACTIVE",
+  "group2": "NOT_AUTHORIZED",
+  "group3": "NOT_AUTHORIZED",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "nextMinimumAction": "Offline control-page visibility/focus review; do not repeat SDK or Production login and do not replay v15."
+}

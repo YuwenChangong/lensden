@@ -1,0 +1,106 @@
+{
+  "fixtureOnly": true,
+  "actualChrome": true,
+  "actualSupabaseSdkUsed": false,
+  "actualTurnstileUsed": false,
+  "result": {
+    "format": "e-verify-group1-safe-v1",
+    "status": "PASS",
+    "firstFailure": null,
+    "requestDiagnostics": [
+      {
+        "firstFailure": null,
+        "lastFailedRequest": null,
+        "lastRejectedRequest": null,
+        "valuesLogged": false
+      },
+      {
+        "firstFailure": null,
+        "lastFailedRequest": null,
+        "lastRejectedRequest": null,
+        "valuesLogged": false
+      },
+      {
+        "firstFailure": null,
+        "lastFailedRequest": null,
+        "lastRejectedRequest": null,
+        "valuesLogged": false
+      },
+      {
+        "firstFailure": null,
+        "lastFailedRequest": null,
+        "lastRejectedRequest": null,
+        "valuesLogged": false
+      },
+      {
+        "firstFailure": null,
+        "lastFailedRequest": null,
+        "lastRejectedRequest": null,
+        "valuesLogged": false
+      },
+      {
+        "firstFailure": null,
+        "lastFailedRequest": null,
+        "lastRejectedRequest": null,
+        "valuesLogged": false
+      }
+    ],
+    "actors": [
+      {
+        "actor": "A",
+        "identity": "PASS",
+        "catalogCases": 11,
+        "adminRead": "DENIED",
+        "logout": "PASS"
+      },
+      {
+        "actor": "B",
+        "identity": "PASS",
+        "catalogCases": 5,
+        "adminRead": "DENIED",
+        "logout": "PASS"
+      },
+      {
+        "actor": "ADMIN",
+        "identity": "PASS",
+        "catalogCases": 0,
+        "adminRead": "ALLOWED",
+        "logout": "PASS"
+      }
+    ],
+    "identitiesVerified": 3,
+    "negativeAuthPassed": 3,
+    "catalogCasesPassed": 16,
+    "catalogCasesRequired": 16,
+    "preDeployment": {
+      "deploymentId": "OFFLINE_FIXED",
+      "activeVersion": "OFFLINE_ONLY"
+    },
+    "postDeployment": {
+      "deploymentId": "OFFLINE_FIXED",
+      "activeVersion": "OFFLINE_ONLY"
+    },
+    "counts": {
+      "allBrowserHttpDispatchesMax": 63,
+      "supabaseAuthDispatchesMax": 15,
+      "applicationMutationDispatchesMax": 12,
+      "ownerSessionRefreshRequestsMax": 3,
+      "supabaseRestReadDispatchesMax": 19,
+      "turnstileHttpDispatchesMax": 0,
+      "executionSecondsMax": 0,
+      "openaiAndProviderCostUSDMax": 0
+    },
+    "nodeBypassAttemptsBlocked": 0,
+    "cleanup": "PASS",
+    "retries": 0,
+    "credentialValuesRecorded": false,
+    "fullEVerify": "INCOMPLETE",
+    "publicBetaGo": "NOT_AUTHORIZED"
+  },
+  "wireCalls": 28,
+  "refreshes": 3,
+  "readersDestroyed": true,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "thirdPartyLiveRequests": 0
+}

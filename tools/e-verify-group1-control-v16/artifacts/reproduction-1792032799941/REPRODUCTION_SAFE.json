@@ -1,0 +1,203 @@
+{
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "testsAreHeaded": true,
+  "afterSixOriginalLaunches": [
+    {
+      "index": 0,
+      "actor": "A",
+      "portal": {
+        "blank": false,
+        "readyState": "complete",
+        "startExists": true,
+        "startEnabled": false,
+        "handlerExists": true,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 241
+      },
+      "pendingPage": {
+        "blank": true,
+        "readyState": "complete",
+        "startExists": false,
+        "startEnabled": false,
+        "handlerExists": false,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 0
+      },
+      "foreground": {
+        "foregroundBelongsToProfile": false,
+        "ownedProcesses": 9
+      }
+    },
+    {
+      "index": 1,
+      "actor": "B",
+      "portal": {
+        "blank": false,
+        "readyState": "complete",
+        "startExists": true,
+        "startEnabled": false,
+        "handlerExists": true,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 241
+      },
+      "pendingPage": {
+        "blank": true,
+        "readyState": "complete",
+        "startExists": false,
+        "startEnabled": false,
+        "handlerExists": false,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 0
+      },
+      "foreground": {
+        "foregroundBelongsToProfile": false,
+        "ownedProcesses": 9
+      }
+    },
+    {
+      "index": 2,
+      "actor": "ADMIN",
+      "portal": {
+        "blank": false,
+        "readyState": "complete",
+        "startExists": true,
+        "startEnabled": false,
+        "handlerExists": true,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 245
+      },
+      "pendingPage": {
+        "blank": true,
+        "readyState": "complete",
+        "startExists": false,
+        "startEnabled": false,
+        "handlerExists": false,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 0
+      },
+      "foreground": {
+        "foregroundBelongsToProfile": false,
+        "ownedProcesses": 9
+      }
+    },
+    {
+      "index": 3,
+      "actor": "A",
+      "portal": {
+        "blank": false,
+        "readyState": "complete",
+        "startExists": true,
+        "startEnabled": false,
+        "handlerExists": true,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 241
+      },
+      "pendingPage": {
+        "blank": true,
+        "readyState": "complete",
+        "startExists": false,
+        "startEnabled": false,
+        "handlerExists": false,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 0
+      },
+      "foreground": {
+        "foregroundBelongsToProfile": false,
+        "ownedProcesses": 9
+      }
+    },
+    {
+      "index": 4,
+      "actor": "A",
+      "portal": {
+        "blank": false,
+        "readyState": "complete",
+        "startExists": true,
+        "startEnabled": false,
+        "handlerExists": true,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 241
+      },
+      "pendingPage": {
+        "blank": true,
+        "readyState": "complete",
+        "startExists": false,
+        "startEnabled": false,
+        "handlerExists": false,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 0
+      },
+      "foreground": {
+        "foregroundBelongsToProfile": false,
+        "ownedProcesses": 9
+      }
+    },
+    {
+      "index": 5,
+      "actor": "A",
+      "portal": {
+        "blank": false,
+        "readyState": "complete",
+        "startExists": true,
+        "startEnabled": false,
+        "handlerExists": true,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 241
+      },
+      "pendingPage": {
+        "blank": true,
+        "readyState": "complete",
+        "startExists": false,
+        "startEnabled": false,
+        "handlerExists": false,
+        "visible": "visible",
+        "focused": true,
+        "bodyTextLength": 0
+      },
+      "foreground": {
+        "foregroundBelongsToProfile": true,
+        "ownedProcesses": 9
+      }
+    }
+  ],
+  "afterOriginalBringToFront": {
+    "portal": {
+      "blank": false,
+      "readyState": "complete",
+      "startExists": true,
+      "startEnabled": true,
+      "handlerExists": true,
+      "visible": "visible",
+      "focused": true,
+      "bodyTextLength": 263
+    },
+    "pendingPage": {
+      "blank": true,
+      "readyState": "complete",
+      "startExists": false,
+      "startEnabled": false,
+      "handlerExists": false,
+      "visible": "visible",
+      "focused": true,
+      "bodyTextLength": 0
+    },
+    "foreground": {
+      "foregroundBelongsToProfile": false,
+      "ownedProcesses": 9
+    }
+  },
+  "originalStartDelivered": true,
+  "cleanup": true
+}

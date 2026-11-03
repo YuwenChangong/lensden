@@ -169,8 +169,8 @@ export default function EditProfileForm({ localeContext = resolveLocale({ accept
     };
   }, [avatarPending.previewUrl, bannerPending.previewUrl]);
 
-  async function getSessionToken() {
-    const { data } = await supabase.auth.getSession();
+  async function getSessionToken(client: NonNullable<typeof supabase>) {
+    const { data } = await client.auth.getSession();
     return data.session?.access_token ?? "";
   }
 
@@ -202,7 +202,7 @@ export default function EditProfileForm({ localeContext = resolveLocale({ accept
 
   async function uploadProfileImage(file: File, kind: "avatar" | "banner") {
     if (!profile || !supabase) throw new Error(text.profileLoading);
-    const token = await getSessionToken();
+    const token = await getSessionToken(supabase);
     if (!token) {
       window.location.replace(buildLoginHref("/me/edit/"));
       return null;
@@ -283,7 +283,7 @@ export default function EditProfileForm({ localeContext = resolveLocale({ accept
         avatar_url: avatarPending.path ?? profile.avatar_url ?? null,
         banner_url: bannerPending.path ?? profile.banner_url ?? null,
       };
-      const token = await getSessionToken();
+      const token = await getSessionToken(supabase);
       if (!token) {
         window.location.replace(buildLoginHref("/me/edit/"));
         return;

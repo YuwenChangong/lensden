@@ -1,0 +1,26 @@
+{
+  "scopeProposalReady": true,
+  "executableReaderReady": false,
+  "fullGroup1Ready": false,
+  "productionBytesVerified": false,
+  "packetSha256": "95fddd76f69291362eab8e6b9d1401ed4ece14dae87d89c317731eca6f7060db",
+  "offlineReadPlanBindingSha256": "2eab397cc8ca17591d6cf0aa52ef839a585b5ad452421582bfb5e9c24462bb17",
+  "templateSha256": "3833264610706c01cca84076d6be5e8ef43bd7f22cd74df62c9665f00897a8ef",
+  "tests": {
+    "scope": "OFFLINE_READ_PLAN_ADMISSION_ONLY_NOT_PRODUCTION_EXECUTOR",
+    "tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "stdoutSha256": "0f42e08e47687dee9082b0d4ea9f75d2b15a131dd6f3706cd366ca2a07d36115",
+    "historicalTestsRerun": false,
+    "productionRequests": 0
+  },
+  "oldQaAllowlistChanged": false,
+  "oldFrozenFilesUnchanged": true,
+  "privateBindingUnchanged": true,
+  "authorizationConsumed": false,
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

@@ -1,0 +1,15 @@
+{
+  "format": "owner-post-execution-observation-v1",
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-fast-track-v18",
+  "recordedAtUTC": "2026-10-15T05:05:24Z",
+  "source": "OWNER_ASYNC_REPLY_AFTER_EXECUTION",
+  "ownerObserved": {
+    "startClicked": true,
+    "loginPageVisibleAfterStart": true,
+    "windowClosedAutomatically": true
+  },
+  "notAnExecutionTimeButtonEvent": true,
+  "doesNotProveAuthenticationOrCaptchaSuccess": true,
+  "originalReceiptsModified": false,
+  "credentialsRecorded": false
+}

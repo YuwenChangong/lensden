@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import { pathToFileURL } from 'node:url';
+import { readFile } from 'node:fs/promises';
+import { classifyWorkerBranch, assessMfaRuntimeSettings } from './runtime-branch-setting-guard.mjs';
+globalThis.fetch = () => { throw new Error('OFFLINE_NETWORK_FORBIDDEN'); };
+let checks = 0;
+const entry = text => ({ name: 'CF_PAGES_BRANCH', type: 'plain_text', text });
+for (const [bindings, classification, pass] of [[[], 'ABSENT', true], [[entry('')], 'EMPTY', true], [[entry(' MAIN ')], 'MAIN', true], [[entry('master')], 'MASTER', true], [[entry('private-untrusted-branch')], 'OTHER', false], [[entry('main'), entry('main')], 'UNKNOWN', false], [[{ name: 'CF_PAGES_BRANCH', type: 'secret_text' }], 'UNKNOWN', false], [[{ name: 'CF_PAGES_BRANCH', type: 'plain_text' }], 'UNKNOWN', false], [null, 'UNKNOWN', false]]) {
+  const result = classifyWorkerBranch(bindings);
+  assert.equal(result.classification, classification); assert.equal(result.pass, pass);
+  assert.equal(JSON.stringify(result).includes('private-untrusted-branch'), false); checks++;
+}
+const root = 'C:/Users/1/.codex/worktrees/auth-a-containment-time-v2/OpenGlass Hub';
+const { unstable_readConfig } = await import(pathToFileURL(`${root}/node_modules/wrangler/wrangler-dist/cli.js`));
+const config = unstable_readConfig({ config: `${root}/wrangler.toml`, env: 'production' }, { hideWarnings: true });
+const exact = Object.entries(config.vars).map(([name, text]) => ({ name, type: 'plain_text', text }));
+const withPolicyMissing = exact.filter(b => b.name !== 'MODERATION_PROVIDER_UNAVAILABLE_POLICY');
+const safe = await assessMfaRuntimeSettings(withPolicyMissing, config.vars);
+assert.equal(safe.pass, true); assert.equal(safe.effectiveModerationPolicy, 'review_all'); checks++;
+const unsafe = await assessMfaRuntimeSettings([...withPolicyMissing, entry('private-untrusted-branch')], config.vars);
+assert.equal(unsafe.pass, false); assert.equal(unsafe.effectiveModerationPolicy, 'UNKNOWN'); checks++;
+const wrong = await assessMfaRuntimeSettings(exact.map(b => b.name === 'MODERATION_PROVIDER_UNAVAILABLE_POLICY' ? { ...b, text: 'local_only_safe' } : b), config.vars);
+assert.equal(wrong.pass, false); assert.equal(wrong.fields.MODERATION_PROVIDER_UNAVAILABLE_POLICY.reason, 'BINDING_VALUE_MISMATCH'); checks++;
+const saved = JSON.parse(await readFile('C:/Users/1/AppData/Local/OpenGlassHub/admin-mfa-activation/29f2d82b600e362be017b7f7e6aadb968c8cd4d178b6b9568e2f75ba714b4bb3/initial-management-admission.safe.json'));
+const missingNames = Object.keys(saved.publicSettingsGate.fields).filter(name => saved.publicSettingsGate.fields[name].present === false);
+const wiring = await assessMfaRuntimeSettings(exact.filter(b => !missingNames.includes(b.name)), config.vars);
+assert.equal(wiring.pass, true); assert.equal(wiring.runtimeDefaultProof.priorDefaultsReused, 12); checks++;
+const stillRequired = await assessMfaRuntimeSettings(exact.filter(b => b.name !== 'PUBLIC_R2_PUBLIC_BASE_URL'), config.vars);
+assert.equal(stillRequired.pass, false); assert.equal(stillRequired.firstFailed, 'PUBLIC_R2_PUBLIC_BASE_URL'); checks++;
+assert.equal(JSON.stringify(safe).includes(config.vars.PUBLIC_SUPPORT_EMAIL), false);
+console.log(JSON.stringify({ targetedNewBranchChecks: checks, reused12DefaultsTestsRerun: false, previous15PolicyTestsRerun: false, productionRequests: 0, builds: 0 }));

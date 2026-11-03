@@ -201,10 +201,11 @@ export default function PostSocialActions({
 
   async function handleToggleLike() {
     if (loadingLike) return;
-    if (!authState) {
+    if (!authState || !supabase) {
       requireLogin();
       return;
     }
+    const client = supabase;
 
     const nextLiked = !liked;
     const nextCount = Math.max(0, likeCount + (nextLiked ? 1 : -1));
@@ -216,7 +217,7 @@ export default function PostSocialActions({
 
     try {
       if (nextLiked) {
-        const { error } = await supabase.from("post_votes").upsert(
+        const { error } = await client.from("post_votes").upsert(
           {
             post_id: postId,
             user_id: authState.userId,
@@ -226,7 +227,7 @@ export default function PostSocialActions({
         );
         if (error) throw error;
       } else {
-        const { error } = await supabase
+        const { error } = await client
           .from("post_votes")
           .delete()
           .eq("post_id", postId)
@@ -244,10 +245,11 @@ export default function PostSocialActions({
 
   async function handleToggleBookmark() {
     if (loadingBookmark) return;
-    if (!authState) {
+    if (!authState || !supabase) {
       requireLogin();
       return;
     }
+    const client = supabase;
 
     const nextBookmarked = !bookmarked;
     setLoadingBookmark(true);
@@ -256,7 +258,7 @@ export default function PostSocialActions({
 
     try {
       if (nextBookmarked) {
-        const { error } = await supabase.from("bookmarks").upsert(
+        const { error } = await client.from("bookmarks").upsert(
           {
             post_id: postId,
             user_id: authState.userId,
@@ -265,7 +267,7 @@ export default function PostSocialActions({
         );
         if (error) throw error;
       } else {
-        const { error } = await supabase
+        const { error } = await client
           .from("bookmarks")
           .delete()
           .eq("post_id", postId)

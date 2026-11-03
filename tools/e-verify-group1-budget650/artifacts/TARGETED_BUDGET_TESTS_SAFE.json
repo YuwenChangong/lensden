@@ -1,0 +1,14 @@
+{
+  "tests": 8,
+  "passed": 8,
+  "failed": 0,
+  "testCommand": "node --test --test-concurrency=1 candidate.test.mjs browser.test.mjs",
+  "testEvidence": "Current successful observed tool invocation; immutable Chrome trace and native supervisor linked below",
+  "chromeTraceSha256": "1ddb74b54eadea5c01b23fe4fbb8db0e73f499745d426551e9b88ce38bb2ca0f",
+  "supervisorSha256": "279e64ca4a020dbed5cfc0aee9a656a6c77bc6a24ccfc02f5091d8fe357e8bee",
+  "reused25TestsSha256": "2d5b5f2366a012b315f7bacf194564c1811e1a416d176d4b86d1cca6a9ca3ac9",
+  "reusedOwner500TraceSha256": "c6d748ff85eac2336b6f24f2ab05806b13fd5fc6015456663ece5e430c08b69f",
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "oldSuitesRerun": false
+}

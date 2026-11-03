@@ -1,0 +1,49 @@
+{
+  "searchedRoots": [
+    "C:/Temp/ogh-product-beta-development-20261013",
+    "C:/Temp/ogh-a-deploy-readiness-20261010",
+    "C:/Temp/ogh-e-verify-production-acceptance-20261012",
+    "C:/Temp/ogh-e-verify-group1-free-plan-authorization-20261013",
+    "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub",
+    "C:/Users/1/.codex/worktrees/e-verify-stateful-controls/OpenGlass Hub"
+  ],
+  "examinedEntries": 5255,
+  "archiveCandidates": [],
+  "resourceCandidates": [
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/dist/client/_astro/AdminDevicesDashboard.D8NsVurO.js",
+      "sha256": "66662128b5c375ffd7a99b14021dad78f7ed489eaf822e7ee3179fb4558a7833",
+      "classification": "LOCAL_BUILD_NOT_PRODUCTION_BYTE_PROOF"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/dist/client/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "sha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a",
+      "classification": "LOCAL_BUILD_NOT_PRODUCTION_BYTE_PROOF"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/dist/client/_astro/useAdminSession.sfY9JLSP.js",
+      "sha256": "b5a75116448420137401c16639f25a0e33d5ebf47accde08361ec3af2b847d01",
+      "classification": "LOCAL_BUILD_NOT_PRODUCTION_BYTE_PROOF"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/dist/client/_astro/AdminDevicesDashboard.hFDGJRVO.js",
+      "sha256": "a97a6c3a5b28f3380c3012a2c656b956e93932ad81ed187464b9e9252987b69a",
+      "classification": "LOCAL_BUILD_NOT_PRODUCTION_BYTE_PROOF"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/dist/client/_astro/catalog-compare-dom.tKlnu0X0.js",
+      "sha256": "22542303a729a982c6f9387fb12741da0fc638abdd6c1234eac396fb2cf6da2a",
+      "classification": "LOCAL_BUILD_NOT_PRODUCTION_BYTE_PROOF"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/dist/client/_astro/useAdminSession.B8o2Cihd.js",
+      "sha256": "5cdd149c5f64e1cf9b6c500e0aabe8f14ea01065a35d30d32d07dc3ac7b8bf83",
+      "classification": "LOCAL_BUILD_NOT_PRODUCTION_BYTE_PROOF"
+    }
+  ],
+  "protectedCaptureCount": 24,
+  "protectedEvidence": "EXISTING_V8_LOGIN_PLUS23_ONLY",
+  "result": "NO_VERIFIED_PRODUCTION_ARCHIVE_FOR_REMAINING_ROOTS",
+  "productionSourceBuildLink": "REUSED_VERIFIED",
+  "sourceCommitEqualityIsNotByteEquality": true
+}

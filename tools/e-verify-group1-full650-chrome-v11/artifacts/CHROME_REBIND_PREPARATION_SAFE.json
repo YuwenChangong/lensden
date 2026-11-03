@@ -1,0 +1,19 @@
+{
+  "status": "READY_FOR_OWNER_APPROVAL",
+  "authorizationId": "e-verify-group1-openglasshub-20261014-full650-chrome-v11",
+  "other2050BindingsUnchanged": true,
+  "packetChangedFields": [
+    "authorizationId"
+  ],
+  "browserIdentityChanged": true,
+  "otherBudgetsUnchanged": true,
+  "executionBindingSha256": "c5578e592aa950764fcae09ebca458bd48aa3f16d5a07a27bb63afdda6ce8b5a",
+  "packetSha256": "a6a356005f43b92dc16625ec3109324a08c6d8dd8fa2b88eca23333ef3a54ed8",
+  "templateSha256": "65da468fc1d739c5b4e6be400d31e04c50939f7374bbc68c6b20b556fcb6cf0d",
+  "humanGates": "5_NULL",
+  "utcWindow": "NULL",
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

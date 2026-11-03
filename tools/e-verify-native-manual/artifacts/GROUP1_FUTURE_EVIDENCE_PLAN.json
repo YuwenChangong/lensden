@@ -1,0 +1,420 @@
+{
+  "format": "native-group1-future-evidence-plan-v1",
+  "status": "NOT_AUTHORIZED",
+  "requiresIsolatedRealLiveSuccess": true,
+  "requiresFreshGroup1ContractApproval": true,
+  "sourcePacketSha256": "a6a356005f43b92dc16625ec3109324a08c6d8dd8fa2b88eca23333ef3a54ed8",
+  "matrixSha256": "028ef4dba33f94f98573251c601140d6164683a6b1eb4678de7498af300924bf",
+  "productionIdentity": "LATEST_FROZEN_RECORD_NOT_CURRENT_PROVIDER_VERIFICATION",
+  "sourceSha": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "expectedVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+  "actors": [
+    "A",
+    "B",
+    "ADMIN"
+  ],
+  "loginActions": [
+    {
+      "actor": "A",
+      "kind": "success"
+    },
+    {
+      "actor": "B",
+      "kind": "success"
+    },
+    {
+      "actor": "ADMIN",
+      "kind": "success"
+    },
+    {
+      "actor": "A",
+      "kind": "invalid-captcha"
+    },
+    {
+      "actor": "A",
+      "kind": "missing-captcha"
+    },
+    {
+      "actor": "A",
+      "kind": "wrong-password"
+    }
+  ],
+  "scopedCases": [
+    {
+      "id": "AUTH-01",
+      "originalCase": "Managed Turnstile acquisition in actual owner browser without bypass; CAPTCHA-less/invalid proof fails",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "AUTH-02",
+      "originalCase": "Real ordinary account A login, session persistence and logout",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "AUTH-03",
+      "originalCase": "Real ordinary account B login for cross-user isolation",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "AUTH-04",
+      "originalCase": "Existing approved administrator login; no role promotion or privilege changes",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "originalCase": "Wrong credentials, invalid/expired recovery input, safe next redirect and error rendering; no brute force",
+      "scopeQualifier": "bounded-nonmail-partial",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "RLS-01",
+      "originalCase": "Anon actual public Data API permits safe published columns/projections and denies legacy JSON/private audit",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "RLS-02",
+      "originalCase": "A/B authentic JWT roles: direct devices selection exposes no legacy/unpublished rows; empty or exact permission denial as frozen role fixture requires",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "RLS-03",
+      "originalCase": "A/B cannot query anon-only invoker projections or private audit; do not treat authenticated as inheriting anon",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "RLS-04",
+      "originalCase": "Signed-in website public detail still works through anonymous SSR, not proof of authenticated direct database grants",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "RLS-05",
+      "originalCase": "Ordinary A/B denied protected admin APIs/UI; existing admin device list loads, reviewed privileges retained",
+      "scopeQualifier": "ORIGINAL_FROZEN_SCOPE",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "originalCase": "Admin devices/forum/reports/media/news/users/circles pages and unauthorized denial; Catalog writes remain prohibited",
+      "scopeQualifier": "devices-read-partial",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "UI-01:core-partial",
+      "originalCase": "Production Chinese and English using explicit preference; trusted country overrides Accept-Language, no forged country header",
+      "scopeQualifier": "core-partial",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "UI-02:core-partial",
+      "originalCase": "Production desktop 1440 and mobile 390/430 navigation/layout/form/content/media overflow, focus and accessibility",
+      "scopeQualifier": "core-partial",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    },
+    {
+      "id": "UI-03:core-partial",
+      "originalCase": "Actual assets/CSP/resource success, application console errors, key internal links and error/empty/loading/unauthorized states",
+      "scopeQualifier": "core-partial",
+      "status": "NOT_AUTHORIZED",
+      "requiredEvidence": [
+        "safe-case-evidence-id",
+        "actor-label",
+        "private-identity-match-boolean",
+        "expected-vs-observed",
+        "failure-category",
+        "logout-and-cleanup"
+      ],
+      "privateIdentifiersInReport": false
+    }
+  ],
+  "exactRlsSteps": [
+    {
+      "id": "RLS_ANON_PUBLIC",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=slug,brand_key,name,catalog_normalized&slug=eq.xreal-air&publication_status=eq.published&limit=1",
+      "kind": "published",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "actor": "anon",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_ANON_SPECS",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_SOURCES",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_EVIDENCE",
+      "actor": "anon",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "public"
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "actor": "anon",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_LEGACY",
+      "actor": "A",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_A_SPECS",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_SOURCES",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_EVIDENCE",
+      "actor": "A",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_A_AUDIT",
+      "actor": "A",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_LEGACY",
+      "actor": "B",
+      "path": "/rest/v1/devices?select=full_specs,key_specs&slug=eq.xreal-air&limit=1",
+      "kind": "legacy",
+      "expect": "empty-or-deny"
+    },
+    {
+      "id": "RLS_B_SPECS",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_specs?select=device_slug,key,state&device_slug=eq.xreal-air&limit=2",
+      "kind": "specs",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_SOURCES",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_sources?select=device_slug,publisher&device_slug=eq.xreal-air&limit=2",
+      "kind": "sources",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_EVIDENCE",
+      "actor": "B",
+      "path": "/rest/v1/public_device_detail_evidence?select=device_slug,key&device_slug=eq.xreal-air&limit=2",
+      "kind": "evidence",
+      "expect": "deny"
+    },
+    {
+      "id": "RLS_B_AUDIT",
+      "actor": "B",
+      "path": "/rest/v1/catalog_audit_events?select=id&limit=1",
+      "kind": "audit",
+      "expect": "empty-or-deny"
+    }
+  ],
+  "rlsRoleCounts": {
+    "anon": 6,
+    "A": 5,
+    "B": 5
+  },
+  "applicationPages": [
+    "/login/?next=%2Fproducts%2F",
+    "/products/",
+    "/products/xreal/xreal-air/",
+    "/admin/devices/"
+  ],
+  "pageContentAssertions": [
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/xreal/xreal-air/",
+      "kind": "PRODUCT",
+      "expectedStatus": 200,
+      "slug": "xreal-air",
+      "brand": "xreal",
+      "assertions": [
+        "exact product identity",
+        "structured parameter data",
+        "public source links",
+        "exact canonical URL"
+      ],
+      "source": "src/pages/products/[brand]/[slug].astro"
+    },
+    {
+      "url": "https://openglasshub.ogh.workers.dev/products/",
+      "kind": "INDEX",
+      "expectedStatus": 200,
+      "source": "src/pages/products/index.astro"
+    }
+  ],
+  "sourceIdentityAndRlsVerifiers": [
+    "../e-verify-group1-script-identity/execution/identity-rls.mjs",
+    "../e-verify-group1-script-identity/execution/group1/rls.mjs"
+  ],
+  "privateIdentityInputReused": true,
+  "privateIdentityInputReadThisTask": false,
+  "sessionToRlsAdapter": "DEFERRED_NOT_IMPLEMENTED_OR_AUTHORIZED",
+  "excluded": [
+    "registration",
+    "mail",
+    "password-recovery",
+    "forum-writes",
+    "media",
+    "admin-writes",
+    "catalog-writes",
+    "GROUP_2",
+    "GROUP_3",
+    "Public Beta"
+  ]
+}

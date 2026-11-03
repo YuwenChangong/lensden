@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "targetedBrowserTestsPassed": 6,
+  "targetedBrowserTestsTotal": 6,
+  "atomic650Test": "PASS_1000_ATTEMPTS_EXACTLY650_ADMITTED",
+  "evidence": [
+    {
+      "name": "smoke",
+      "supervisorReceiptSha256": "508d14fc2217a683193a5bdf27ce84cf191fe72e67f0a669ed39035b7a9b4b52",
+      "classification": "EXIT_ZERO",
+      "cleanup": "PASS",
+      "fixtureReceiptSha256": "301fc4212e0e02fcbbd2ac9c3efd95e998ed72d666c739073e3521cdc6272120"
+    },
+    {
+      "name": "identity",
+      "supervisorReceiptSha256": "f61c567dfac98d36753a2103e32f5867652644a3047c4e2989c99755618e0452",
+      "classification": "EXIT_ZERO",
+      "cleanup": "PASS",
+      "fixtureReceiptSha256": "d4b87afe205cb1117df0f0ab5d807ded2d54502b03cc863a985034c3ae6db878"
+    },
+    {
+      "name": "forbidden",
+      "supervisorReceiptSha256": "436413c2c1def704e6ffedb2b47ab1bebf35d9daa4e77e4ccb2439e8d8cfe7b4",
+      "classification": "EXIT_ZERO",
+      "cleanup": "PASS",
+      "fixtureReceiptSha256": "b79585730003e45790771a87a65b4de201452a0f449fc86a4c95f410c8e0b09b"
+    },
+    {
+      "name": "budget",
+      "supervisorReceiptSha256": "ca64064c0c9ebddfc9d77a16dbc13f14ed948e9acecfb70fdfce98f574b4548a",
+      "classification": "EXIT_ZERO",
+      "cleanup": "PASS",
+      "fixtureReceiptSha256": "7482f418adf814709ab5d57a8f82ffbbc67a088b4b0921e4ceb894ec7c644cda"
+    },
+    {
+      "name": "deadline",
+      "supervisorReceiptSha256": "c90a3261828f3efe2c057f99e8daa8a07ebabc7e776853be846c53b9cba6aad1",
+      "classification": "TIMEOUT",
+      "cleanup": "PASS",
+      "launchedChromeObservedByTest": true,
+      "hardDeadlineMilliseconds": 25000,
+      "elapsedMilliseconds": 20032
+    }
+  ],
+  "earlierTestResults": "PRESERVED_IN_OWNED_TEMP_DIRECTORIES; old transitive Chrome guard and test probe/field issues corrected; only affected tests repeated",
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "auth": "SYNTHETIC_LOOPBACK_ONLY",
+  "catalogReads": 0,
+  "providerGets": 0,
+  "fullGroup1SuiteRerun": false
+}

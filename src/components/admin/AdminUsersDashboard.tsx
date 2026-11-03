@@ -268,7 +268,7 @@ export default function AdminUsersDashboard({ localeContext = resolveLocale({ ac
                   <div>
                     <h3 style={{ margin: 0 }}>{userLabel(selectedUser)}</h3>
                     <div className="community-meta">
-                      <a className="community-link" href={buildProfileHref({ id: selectedUser.id, username: selectedUser.username ?? null })}>
+                      <a className="community-link" href={buildProfileHref({ id: selectedUser.id, username: selectedUser.username ?? null }) ?? undefined}>
                         {text.copy.viewPublicProfile}</a>
                     </div>
                   </div>

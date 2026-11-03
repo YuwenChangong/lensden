@@ -204,7 +204,8 @@ export default function AdminCirclesDashboard({ localeContext = resolveLocale({ 
       });
 
       if (payload.circle) {
-        const nextCircle = { status: "active", ...(payload.circle as CircleRecord) };
+        const defaults = { status: "active" };
+        const nextCircle = { ...defaults, ...payload.circle };
         setCircles((current) => [nextCircle, ...current]);
         setDrafts((current) => ({
           ...current,

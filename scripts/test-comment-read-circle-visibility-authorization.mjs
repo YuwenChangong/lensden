@@ -130,7 +130,17 @@ assert.match(source, /export async function resolveAccessibleCommentReadTarget/,
 assert.match(source, /select\("id,author_id,circle_id,status,moderation_status"\)/, "runtime derives circle_id from the server post read");
 assert.match(source, /circle\.status\?\.toLowerCase\(\) !== "active" \|\|\s+!isPublicVisibleCircle\(circle\)/, "runtime requires active canonical-visible parent circle");
 assert.match(getSource, /\.eq\("post_id", readTarget\.postId\)/, "comment list uses the resolver-derived post id");
-assert.doesNotMatch(getSource, /\.insert\(|\.update\(|\.delete\(|\.rpc\(|\.from\("forum_notifications"\)/, "GET has no mutation or notification/RPC path");
+assert.doesNotMatch(getSource, /\.insert\(|\.update\(|\.delete\(|\.from\("forum_notifications"\)/, "GET has no mutation or notification path");
+assert.deepEqual([...getSource.matchAll(/\.rpc\("([^"]+)"/g)].map(m=>m[1]), ["deleted_comment_placeholders"], "only the sanitized read-only ancestry projection is allowed");
+const placeholderSql=readFileSync(new URL('../supabase/migrations/20261015074931_safe_deleted_comment_placeholders.sql',import.meta.url),'utf8');
+assert.match(placeholderSql,/returns table \(id uuid, post_id uuid, parent_id uuid, created_at timestamptz, updated_at timestamptz\)/,"projection excludes bodies, authors and media");
+assert.match(placeholderSql,/security definer set search_path = ''/,"sanitized privileged lookup fixes its namespace");
+assert.match(placeholderSql,/cardinality\(visible_comment_ids\) between 1 and 1000/,"seed count is bounded");
+assert.match(placeholderSql,/a\.depth < 32 and not parent\.id = any\(a\.visited\)/,"walk is cycle-checked and depth-bounded");
+assert.match(placeholderSql,/public\.can_access_public_circle\(p\.circle_id\)/,"public ancestry is rechecked inside the projection");
+assert.doesNotMatch(placeholderSql,/\b(insert|update|delete)\s+(into|from|public\.)|create policy|grant select/i,"projection never grants deleted-body access or mutates data");
+assert.match(placeholderSql,/from public, service_role/ ,"public and service execution revoked");
+assert.match(getSource,/if \(myUserId\) \{\s+const \{ data: myProfile/,"role is loaded for the validated viewer");
 
 const migration = readFileSync(migrationPath, "utf8");
 for (const required of [

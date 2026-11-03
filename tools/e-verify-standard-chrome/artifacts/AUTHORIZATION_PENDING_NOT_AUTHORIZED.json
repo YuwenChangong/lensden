@@ -1,0 +1,16 @@
+{
+  "format": "standard-chrome-manual-authorization-v1",
+  "authorizationId": "e-verify-standard-chrome-turnstile-openglasshub-20261014-v1",
+  "executionBindingSha256": "57dd3c30017d7ee6d4f3f2ea2d253462ace2363114169ad9a3bb14c3e0e42587",
+  "packetSha256": "25aee8aeb35de07285c25ddde644479c62eb29af4a073aeab6163bd3fb79b1a0",
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "humanGates": {
+    "standardCapabilitiesAndMonitorOnlyRiskAccepted": null,
+    "isolatedNoCredentialsOfficialTestKeyConfirmed": null,
+    "zeroCostFreeScopeAndUnmeteredConnectionConfirmed": null,
+    "vendorEphemeralStateAndSafeEvidenceAccepted": null,
+    "trustedEnvironmentAndCleanupReady": null,
+    "operatorAvailableForEntireValidity": null
+  }
+}

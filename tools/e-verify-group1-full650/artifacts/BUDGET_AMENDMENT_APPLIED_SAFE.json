@@ -1,0 +1,20 @@
+{
+  "budgetAmendment": "APPLIED",
+  "approvedBy": "EXPLICIT_OWNER_MESSAGE",
+  "approvalScope": "BUDGET_ONLY_NOT_PRODUCTION_AUTHORIZATION",
+  "changedFieldNames": [
+    "budget.allBrowserHttpDispatchesMax"
+  ],
+  "oldGlobalMax": 500,
+  "newGlobalMax": 650,
+  "otherFieldsUnchanged": true,
+  "oldPrivateSha256": "fadbb0ffde9e4a7dcbcf232143738f547e0a70ef7750983beab6bafc44095678",
+  "newPrivateSha256": "950e185df3a3658ce990def5061cc39a63e571443292fabf141a99e5b9de98a3",
+  "oldVersionPreserved": true,
+  "originalTemplatePreserved": true,
+  "optionalCircleFields": "UNCHANGED_NULL",
+  "formalAuthorizationFields": "UNCHANGED_NULL",
+  "privateValuesPrinted": false,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

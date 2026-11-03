@@ -1,0 +1,75 @@
+{
+  "format": "group1-origin-contract-consistency-v1",
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-protected-origin-v17",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "ORIGINAL_305_AND_CONSUMED_RECEIPTS_UNCHANGED",
+      "result": "PASS"
+    },
+    {
+      "name": "NEW_BINDING_PACKET_CONTRACT_AND_ENTRY_CONSISTENT",
+      "result": "PASS"
+    },
+    {
+      "name": "ALL_UNCHANGED_NETWORK_BUSINESS_AND_BUDGET_FIELDS",
+      "result": "PASS"
+    },
+    {
+      "name": "THIRTEEN_MATERIAL_CONDITIONS_BYTE_IDENTICAL",
+      "result": "PASS"
+    },
+    {
+      "name": "TEN_UNAPPROVED_GATES_NO_UTC_AUTH_CLAIM_OR_GO",
+      "result": "PASS"
+    },
+    {
+      "name": "EXISTING_PRIVATE_650_BINDING_VALUE_BLIND_MATCH",
+      "result": "PASS"
+    },
+    {
+      "name": "EXISTING_FREE_PLAN_REFERENCE_AND_V16_NETWORK_SCOPE_UNCHANGED",
+      "result": "PASS"
+    },
+    {
+      "name": "UNCHANGED_13_TEST_DIAGNOSTIC_IMPLEMENTATION_REUSED",
+      "result": "PASS"
+    },
+    {
+      "name": "EXACT_PARENT_ENTRY_AND_ONLY_DISCLOSED_CHILD_ADAPTER_CHANGES",
+      "result": "PASS"
+    },
+    {
+      "name": "THIN_STORE_FACTORY_NO_PERMISSION_EXPANSION_OR_REAL_CAPTURE",
+      "result": "PASS"
+    },
+    {
+      "name": "OFFLINE_REVIEW_CLASSIFICATION_ONLY_AND_VERIFIED_DELETION",
+      "result": "PASS"
+    },
+    {
+      "name": "PENDING_AND_OLD_AUTHORIZATION_CANNOT_EXECUTE_OR_REPLAY",
+      "result": "PASS"
+    },
+    {
+      "name": "NEW_ENTRY_AND_HELPERS_SYNTAX_CHECK_ONLY_NO_EXECUTION",
+      "result": "PASS"
+    }
+  ],
+  "bindingSha256": "5af796fc6f5749b660ed11b214733384e58b20ce521fbf98eac17e151ada3c60",
+  "packetSha256": "f776ea658e0d4556f18f8f4d193f6275271298769addb83c746a719b27ef668a",
+  "contractSha256": "adf4511ea2edce08c055d8ba86737d5ed30b3bc0a7dca2e62af2747854ba2781",
+  "boundFiles": 340,
+  "previous305FilesUnchanged": true,
+  "realPrivateOriginCollection": false,
+  "prior13TestsReusedNotRerun": true,
+  "productionAuthorization": "NOT_AUTHORIZED",
+  "allHumanGates": "PENDING",
+  "utcWindow": "PENDING",
+  "claimCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE"
+}

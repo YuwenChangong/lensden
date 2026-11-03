@@ -1,0 +1,69 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-protected-origin-v17",
+  "status": "REVIEW_AND_DELETION_COMPLETE",
+  "stores": [
+    {
+      "evidenceStoreId": "e41f65a05e8978d990a81ed7a3202663",
+      "reviewed": [
+        {
+          "evidenceRef": "origin-89bc3bc99fdfc3f9b0e55ad82eb140d9",
+          "originClass": "UNAPPROVED_ORIGIN",
+          "networkPermissionGranted": false
+        }
+      ],
+      "readFailure": null,
+      "deleted": true,
+      "rawOriginExported": false,
+      "historicalV16Identity": "UNKNOWN",
+      "networkPermissionGranted": false
+    },
+    {
+      "evidenceStoreId": "76034b2b8fc7a752edaf5f8f09857609",
+      "reviewed": [],
+      "readFailure": null,
+      "deleted": true,
+      "rawOriginExported": false,
+      "historicalV16Identity": "UNKNOWN",
+      "networkPermissionGranted": false
+    },
+    {
+      "evidenceStoreId": "dac2d77e633b94ec2c6584cbc953b7b8",
+      "reviewed": [],
+      "readFailure": null,
+      "deleted": true,
+      "rawOriginExported": false,
+      "historicalV16Identity": "UNKNOWN",
+      "networkPermissionGranted": false
+    },
+    {
+      "evidenceStoreId": "eafa44f05b146ebe1b7401dc208189c8",
+      "reviewed": [],
+      "readFailure": null,
+      "deleted": true,
+      "rawOriginExported": false,
+      "historicalV16Identity": "UNKNOWN",
+      "networkPermissionGranted": false
+    },
+    {
+      "evidenceStoreId": "384d187965d6fefd8b98b71f41749c7a",
+      "reviewed": [],
+      "readFailure": null,
+      "deleted": true,
+      "rawOriginExported": false,
+      "historicalV16Identity": "UNKNOWN",
+      "networkPermissionGranted": false
+    },
+    {
+      "evidenceStoreId": "d38ae589b4c8d7967589f6481969bdee",
+      "reviewed": [],
+      "readFailure": null,
+      "deleted": true,
+      "rawOriginExported": false,
+      "historicalV16Identity": "UNKNOWN",
+      "networkPermissionGranted": false
+    }
+  ],
+  "rawOriginExported": false,
+  "networkRequests": 0,
+  "group1ProductionAcceptance": "NOT_CHANGED_BY_REVIEW"
+}

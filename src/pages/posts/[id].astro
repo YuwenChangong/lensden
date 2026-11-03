@@ -5,6 +5,7 @@ import { env as runtimeEnv } from "cloudflare:workers";
 import ForumLayout from "../../layouts/ForumLayout.astro";
 import { createSSRClient, type CloudflareEnv } from "../../lib/supabase-server";
 import CommentsSection from "../../components/forum/CommentsSection";
+import PublicComments from "../../components/forum/PublicComments.astro";
 import PostModerationActions from "../../components/forum/PostModerationActions";
 import PostMediaGallery from "../../components/forum/PostMediaGallery";
 import PostSocialActions from "../../components/forum/PostSocialActions";
@@ -17,26 +18,54 @@ import { buildPostLikeCountMap, safeIncrementPostViewCount } from "../../lib/pos
 import { sanitizeBodyForDisplay } from "../../lib/post-body";
 import { buildProfileHref } from "../../lib/profile-links";
 import { resolveProfileAvatarUrl } from "../../lib/profile-media";
+import { discussionSchema, serializeJsonLd } from "../../lib/seo";
+import { resolveSiteOrigin } from "../../lib/site-origin";
+import { createForumTransport, isDiscoverablePost, parsePublicCommentPage, PUBLIC_UUID, readPublicCommentPage, type PublicComment } from "../../lib/forum-discovery";
 
-const { id } = Astro.params;
+// The posts foreign keys target single profiles/circles rows; either join may be hidden by RLS.
+type PostDetailRow = {
+  id: string;
+  author_id: string;
+  title: string;
+  body: string;
+  type: string;
+  status: string;
+  moderation_status: string | null;
+  created_at: string;
+  updated_at: string;
+  profiles: { display_name: string | null; username: string | null; avatar_url: string | null } | null;
+  circles: { id?: string; slug: string; name: string; status: string } | null;
+};
+
+const id = Astro.params.id?.toLowerCase();
+const commentPage = parsePublicCommentPage(Astro.url.searchParams.get('comments_page'));
 const localeContext = Astro.locals.localeContext ?? resolveLocale({});
 const text = getUiMessages(localeContext.locale).community;
 
-if (!id) {
-  return Astro.redirect("/feed/?sort=latest");
-}
+if (!id || !PUBLIC_UUID.test(id) || commentPage === undefined) return Astro.rewrite('/404/');
 
 const env = runtimeEnv as CloudflareEnv;
 const supabase = createSSRClient(env);
 const r2PublicBaseUrl = env.R2_PUBLIC_BASE_URL || "";
 
-const { data: post, error } = await supabase
+const { data: rawPost, error } = await supabase
   .from("posts")
-  .select("id, author_id, title, body, type, status, moderation_status, created_at, updated_at, profiles:author_id(display_name,username,avatar_url), circles:circle_id(slug, name)")
+  .select("id, author_id, title, body, type, status, moderation_status, created_at, updated_at, profiles:author_id(display_name,username,avatar_url), circles:circle_id!inner(id,slug,name,status)")
   .eq("id", id)
   .eq("status", "published")
   .eq("moderation_status", "published")
-  .single();
+  .single()
+  .overrideTypes<PostDetailRow, { merge: false }>();
+const post = !error && rawPost && rawPost.id === id && isDiscoverablePost(rawPost) ? rawPost : null;
+let publicComments: PublicComment[] = [], moreComments = false, commentsUnavailable = false;
+if (post) {
+  const transport = createForumTransport(env.SUPABASE_URL, 'comments');
+  try {
+    const page = await readPublicCommentPage(createSSRClient(env, transport.fetch), post.id, commentPage);
+    publicComments = page.comments; moreComments = page.hasMore;
+  } catch { commentsUnavailable = true; }
+  finally { transport.abort(); }
+}
 
 const { data: mediaRows } = !error && post
   ? await supabase
@@ -69,7 +98,7 @@ if (error || !post) {
 const postTypeLabels: Record<string, string> = text.types;
 
 const circle = post?.circles ?? null;
-const canonicalUrl = post ? `/posts/${post.id}/` : undefined;
+const canonicalUrl = post ? `/posts/${post.id}/${commentPage > 1 ? `?comments_page=${commentPage}` : ''}` : undefined;
 const commentLoginHref = buildLoginHref(post ? `/posts/${post.id}/#comments` : "/feed/?sort=latest");
 const postMedia = await resolveSignedPostMedia(
   supabase,
@@ -90,9 +119,15 @@ const authorAvatarUrl = post
 const authorName = post
   ? post.profiles?.display_name?.trim()
     || post.profiles?.username?.trim()
-    || `${post.author_id.slice(0, 6)}…${post.author_id.slice(-4)}`
+    || text.member
   : text.anonymous;
 const authorInitial = authorName.trim().charAt(0).toUpperCase() || "U";
+const schema = post ? discussionSchema({ post, text: displayBody ?? '',
+  url: new URL(`/posts/${post.id}/`, resolveSiteOrigin(Astro.site?.origin)).href,
+  authorName: post.profiles?.display_name?.trim() || post.profiles?.username?.trim() || undefined,
+  comments: publicComments,
+  commentPage,
+}) : undefined;
 if (post) {
   await safeIncrementPostViewCount(supabase, post.id);
 }
@@ -114,6 +149,7 @@ if (post) {
     ogType="article"
     activeTab="feed"
   >
+    {schema && <script is:inline type="application/ld+json" set:html={serializeJsonLd({ '@context': 'https://schema.org', ...schema })} />}
     <nav class="community-breadcrumb" aria-label={text.breadcrumb}>
       <a href="/">{text.home}</a>
       <span class="community-breadcrumb__sep">/</span>
@@ -184,20 +220,15 @@ if (post) {
     </article>
 
     <section id="comments">
-      <CommentsSection postId={post.id} postAuthorId={post.author_id} loginHref={commentLoginHref} localeContext={localeContext} client:visible />
+      <CommentsSection postId={post.id} postAuthorId={post.author_id} loginHref={commentLoginHref} localeContext={localeContext} publicPage={commentPage} client:visible>
+        <PublicComments comments={publicComments} unavailable={commentsUnavailable} loginHref={commentLoginHref} localeContext={localeContext} />
+      </CommentsSection>
+      {(commentPage > 1 || moreComments) && <nav class="community-feed-pagination" aria-label={text.commentsArea}>
+        {commentPage > 1 && <a class="community-action-button" href={`/posts/${post.id}/${commentPage > 2 ? `?comments_page=${commentPage - 1}` : ''}#comments`}>{text.previous}</a>}
+        {moreComments && <a class="community-action-button" href={`/posts/${post.id}/?comments_page=${commentPage + 1}#comments`}>{text.next}</a>}
+      </nav>}
     </section>
 
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": post.title,
-      "description": displayBody ? displayBody.substring(0, 160).replace(/[#*\n]/g, ' ').trim() : "",
-      "author": { "@type": "Person", "name": post.profiles?.display_name || text.anonymous },
-      "datePublished": post.created_at,
-      "dateModified": post.updated_at || post.created_at,
-      "url": canonicalUrl,
-      "publisher": { "@type": "Organization", "name": "Lensden" },
-    })} />
   </ForumLayout>
 )}
 

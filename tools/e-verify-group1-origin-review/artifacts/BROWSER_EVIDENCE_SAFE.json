@@ -1,0 +1,50 @@
+{
+  "result": "PASS",
+  "safe": {
+    "eventId": "0dc80de595c11b4de8ede455",
+    "requestMatchId": "aa490fcc45a11f5f167cc196c0736cce1576990065b127b79c8787d3a8ff22df",
+    "actor": "A",
+    "stage": "LOGIN_A",
+    "method": "GET",
+    "resourceType": "fetch",
+    "protocolClass": "HTTPS",
+    "originClass": "OTHER_ORIGIN",
+    "sourceHostId": null,
+    "sourceHostIdDoesNotAuthorizeTraffic": true,
+    "originEvidence": {
+      "status": "PRIVATE_ORIGIN_CAPTURE_ACKNOWLEDGED",
+      "evidenceRef": "origin-cccccccccccccccccccccccccccccccc"
+    },
+    "captureProtection": "REQUIRES_SEPARATELY_BOUND_PROTECTED_ADAPTER",
+    "ruleMatched": false,
+    "ruleKind": null,
+    "rejectionReason": "OBSERVED_UNAPPROVED_REQUEST",
+    "frameClass": "APPLICATION_MAIN_FRAME",
+    "frameOriginClass": "APPLICATION",
+    "publicResourceId": null,
+    "publicPathname": null,
+    "queryPresent": true,
+    "fragmentPresent": false,
+    "credentialEnvelopePresent": false,
+    "redirectRelation": "NO_REDIRECT_PARENT",
+    "redirectParentEventId": null,
+    "cdpCorrelation": "SINGLE_CANDIDATE_NOT_PROVEN",
+    "cdpCandidates": [
+      {
+        "cdpEventId": "6358272ed49c7142ace4e412",
+        "initiatorType": "script",
+        "publicInitiatorId": "APP_LOGIN_DOCUMENT",
+        "redirectResponseObserved": false
+      }
+    ],
+    "networkBoundary": "MONITOR_ONLY",
+    "dispatchStatus": "UNKNOWN_OR_ALREADY_SENT"
+  },
+  "protectedSinkTested": false,
+  "captureWasMemoryOnlyFixture": true,
+  "consumedV16Changed": false,
+  "futureRunnerIntegration": "NOT_IMPLEMENTED_OR_AUTHORIZED",
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "profileRemoved": true
+}

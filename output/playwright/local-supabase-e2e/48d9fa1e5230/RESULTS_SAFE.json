@@ -1,0 +1,265 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "48d9fa1e5230",
+  "results": [
+    {
+      "id": "REAL_NODE_AUTH_A",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REAL_NODE_AUTH_B",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REAL_NODE_AUTH_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realLocalAuth": true,
+      "expectedIdentityVerified": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_PUBLIC",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "family": "original16Rls",
+      "status": "FAIL",
+      "reason": "RLS_ASSERTION_FAILED"
+    },
+    {
+      "id": "RLS_ANON_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "anon",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "family": "original16Rls",
+      "status": "FAIL",
+      "reason": "RLS_ASSERTION_FAILED"
+    },
+    {
+      "id": "RLS_A_LEGACY",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_A_AUDIT",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "A",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_LEGACY",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_SPECS",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_SOURCES",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_EVIDENCE",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 403,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_B_AUDIT",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 200,
+      "contentAndPolicyAssertion": true,
+      "actor": "B",
+      "serviceRoleUsed": false
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "PASS"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 53,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "environmentBlocker": "LOCAL_COMMAND_FAILED",
+  "summary": {
+    "results": {
+      "PASS": 17,
+      "FAIL": 2
+    },
+    "originalRls16Passed": 14,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 2
+  }
+}

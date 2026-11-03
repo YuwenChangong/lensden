@@ -1,0 +1,56 @@
+{
+  "format": "e-verify-group1-owner-free-plan-evidence-v1",
+  "recordedAtUTC": "2026-10-13T03:14:39.208Z",
+  "ownerEvidence": "OWNER_ATTESTED",
+  "ownerStatementSource": "Current project-owner message: Workers Free + paid add-ons None; Supabase Organization Free + paid add-ons None; Turnstile Free Widget; USD0, no paid usage",
+  "providerEvidence": "PROVIDER_DOCUMENTED",
+  "pathEvidence": "EXECUTION_PATH_VERIFIED_OFFLINE",
+  "productionOutcome": "NOT_EXECUTED",
+  "policy": {
+    "format": "e-verify-strict-zero-cost-policy-v1",
+    "MAX_ADDITIONAL_COST_USD": 0,
+    "PAID_USAGE_AUTHORIZED": false,
+    "OVERAGE_CHARGES_ACCEPTED": false,
+    "UNVERIFIED_BILLING_RISK_ACCEPTED": false,
+    "productionAuthorization": "NOT_AUTHORIZED"
+  },
+  "services": [
+    {
+      "service": "Cloudflare Workers/Static Assets",
+      "plan": "Free",
+      "paidAddons": "None"
+    },
+    {
+      "service": "Supabase Auth/PostgREST Organization",
+      "plan": "Free",
+      "paidAddons": "None"
+    },
+    {
+      "service": "Cloudflare Turnstile",
+      "plan": "Free Widget",
+      "paidAddons": "Not applicable to approved Free widget"
+    }
+  ],
+  "officialSources": [
+    "https://developers.cloudflare.com/workers/platform/pricing/",
+    "https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/",
+    "https://supabase.com/docs/guides/platform/cost-control",
+    "https://supabase.com/docs/guides/platform/billing-faq",
+    "https://developers.cloudflare.com/turnstile/plans/"
+  ],
+  "scopeSha256": "321191b9d0ee181e3e45236ad0181808ffba581a71ec9af6a2f04a67944bef56",
+  "excludedProviders": [
+    "R2",
+    "Images",
+    "Brevo",
+    "OpenAI",
+    "Pages Builds"
+  ],
+  "quotaExhaustion": "STOP_ON_SERVICE_RESTRICTION_NO_UPGRADE_NO_PAYMENT",
+  "historicalTestsReused": {
+    "group1": "123/123_PASS",
+    "zeroCostGate": "9/9_PASS"
+  },
+  "priorOwnerEvidenceSha256": "55194aec3a5e40a0f25bfda9819970584025ea7e5c29adae9f70d6fc47ab8d48",
+  "rebindingRecordedAtUTC": "2026-10-13T05:09:09.679Z"
+}

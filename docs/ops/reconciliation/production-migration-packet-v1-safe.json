@@ -1,0 +1,131 @@
+{
+  "schema": "PRODUCTION_MIGRATION_RELEASE_PACKET_V1_DRAFT",
+  "status": "BLOCKED_FOR_EXECUTION",
+  "ownerApproval": null,
+  "utcWindow": null,
+  "claim": "NOT_CREATED",
+  "go": "NOT_ISSUED",
+  "mainHead": "fedf5627a7cd2a28a6f5c0732c333b4e2fad56bb",
+  "candidateCommit": "1de74e199244a19a3a3aa425f51005340c2f1658",
+  "targetProjectRef": "xcbnxzjlsvtgzixurcof",
+  "packetPath": "docs/ops/reconciliation/PRODUCTION_MIGRATION_EXECUTION_PACKET_V1_NOT_AUTHORIZED.md",
+  "packetSha256": "bbc5a09336da15b648bbcc69fcc8ea2d6abaae12645aa2932a2134b3355f38a7",
+  "migrations": [
+    {
+      "version": "20261015072723",
+      "path": "supabase/migrations/20261015072723_restore_comment_reaction_application_privileges.sql",
+      "gitBlobSha256": "df6935f6290345421b86b6917badaa4c1ea969cbb84c8a5d6b5d29ea359ec733",
+      "order": 1,
+      "changed": false
+    },
+    {
+      "version": "20261015074931",
+      "path": "supabase/migrations/20261015074931_safe_deleted_comment_placeholders.sql",
+      "gitBlobSha256": "74e5d378c2cca962f5ca3ec60f2903404b514bede2644c10e230d41862b68afe",
+      "order": 2,
+      "changed": false
+    },
+    {
+      "version": "20261016061618",
+      "path": "supabase/migrations/20261016061618_adopt_existing_forum_rate_limit_baseline.sql",
+      "gitBlobSha256": "f860daa2a07ff1bf0c53a5497894208a6bba8424bd5a17f37d6849cf4d38ad8e",
+      "order": 3,
+      "changed": false
+    }
+  ],
+  "formalMigrationCount": 56,
+  "rateLimitBaseline": "NON_OVERWRITING_SQL_READY_OFFLINE_EXECUTION_GATES_PENDING",
+  "exactLfQuotaBodySha256": "9be186f4d6d15e18c9141ced73f7145e7fe9913c1636e22a16b8ccb25d51321b",
+  "historicalEvidence": {
+    "auditPath": "docs/ops/reconciliation/production-readonly-release-audit-v1-safe.json",
+    "auditSha256": "504354d53f8de0b921f5ce501aa4c5622cf10beacf38aed3aae2979236375dac",
+    "collectedAt": "2026-10-16T06:02:06Z",
+    "reactionMigration": "MISSING_AT_AUDIT",
+    "placeholderMigration": "MISSING_AT_AUDIT",
+    "quota": "NORMALIZED_FINGERPRINT_MATCH_ONLY",
+    "historyAliasEvidenceSha256": "aa066a5cc2caf69e7a376d84179a053527680e270210297713b648b3dcc14c27",
+    "reactionSelectPolicies": [
+      {
+        "name": "comment_reactions_select_accessible",
+        "roles": [
+          "anon",
+          "authenticated"
+        ],
+        "command": "r",
+        "checkHash": "d41d8cd98f00b204e9800998ecf8427e",
+        "usingHash": "fe4b726fefb7bdf6f79189b6b3ed0488",
+        "permissive": true
+      },
+      {
+        "name": "comment_reactions_select_public",
+        "roles": [
+          "anon",
+          "authenticated"
+        ],
+        "command": "r",
+        "checkHash": "d41d8cd98f00b204e9800998ecf8427e",
+        "usingHash": "b4103c7164e98bcd2a431e7a9381e00a",
+        "permissive": true
+      }
+    ]
+  },
+  "oldProductionCompatibility": "UNKNOWN",
+  "backupRecoveryReadiness": "UNKNOWN_NO_SAVED_CURRENT_BACKUP_OR_RESTORE_PERMISSION_PROOF",
+  "gates": {
+    "target": "PENDING_CURRENT_INDEPENDENT_CONFIRMATION",
+    "effectiveReactionPolicies": "BLOCKED_METADATA_SET_DIFF_NO_EXACT_PREDICATE_REVIEW",
+    "quotaSourceAndSecurity": "PENDING_EXACT_SOURCE_AND_FULL_ACL_CHECK",
+    "completeHistoryAndPhaseStageManifest": "BLOCKED_NOT_BOUND",
+    "backupAndRestore": "BLOCKED_UNVERIFIED",
+    "migrationConnectionTimeouts": "BLOCKED_RUNTIME_PROPAGATION_NOT_PROVEN",
+    "ownerAuthorization": "NOT_REQUESTED_OR_GRANTED"
+  },
+  "cli": {
+    "packageVersion": "2.115.0",
+    "wrapperSha256": "21d25b4bfb1870db0aaf0963c028b10d0b0b431485f119abd704c1396c7991e6",
+    "binaryPath": "node_modules/@supabase/cli-windows-x64/bin/supabase.exe",
+    "binarySha256": "691a3312584891204dc11893abcd12fa656dbcce186ef8d0a2782f137463f6d7",
+    "sourceMarkersVerified": {
+      "explicitTransactionDetection": "if(_.some(vf6))return yield*B(\"ROLLBACK\")",
+      "ledgerAfterStatements": "if(W.length>0)yield*A.query(dY,[W,X,_])",
+      "skipVault": "includeVault:!A.skipVault",
+      "migrationUpVault": "yield*CO(X,W.vault)",
+      "historyMismatch": "Remote migration versions not found in local migrations directory."
+    },
+    "recommendedSubcommand": "db push --linked --project-ref <exact-ref> --workdir <frozen-single-pending-phase> --skip-vault",
+    "dryRunRequired": true,
+    "rootAllPendingProhibited": true,
+    "migrationUpProhibitedInThisPacket": true,
+    "rolesSeedsVaultProhibited": true,
+    "sqlAndLedgerAtomic": false,
+    "wholeReleaseAtomic": false,
+    "ledgerInitializationNoopDdlStillLocks": true,
+    "internalNetworkDispatchCount": "UNKNOWN_NOT_HARD_BOUNDED"
+  },
+  "limitsProposedNotAuthorized": {
+    "phases": 3,
+    "dryRunProcesses": 3,
+    "applyProcesses": 3,
+    "readOnlySqlBatchesIncludingFailureReserve": 6,
+    "outerRetries": 0,
+    "statementMs": 8000,
+    "lockMs": 1000,
+    "idleInTransactionMs": 15000,
+    "perPhaseDeadlineMs": 60000
+  },
+  "testsReused": {
+    "formalRebuild": 56,
+    "targetedLocal": "26/26",
+    "static": "3/3",
+    "ratchet": "PASS_NEW0_LEGACY56",
+    "build": "PASS_LOCAL"
+  },
+  "formalMigrationsModified": false,
+  "productionReadRequests": 0,
+  "productionWrites": 0,
+  "deployments": 0,
+  "push": "NOT_EXECUTED",
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "nextSingleAction": "OWNER_APPROVES_BOUNDED_READ_ONLY_PREREQUISITE_REVIEW_NO_WRITES"
+}

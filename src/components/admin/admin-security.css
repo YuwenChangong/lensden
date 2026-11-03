@@ -1,0 +1,10 @@
+.admin-security { max-width: 680px; display: grid; gap: 20px; }
+.admin-security fieldset { border: 1px solid var(--community-border, #414747); border-radius: 8px; margin: 0; padding: 18px; min-width: 0; }
+.admin-security label, .admin-security form { display: grid; gap: 10px; margin: 14px 0; }
+.admin-security input:not([type="checkbox"]), .admin-security select { width: 100%; box-sizing: border-box; min-width: 0; padding: 10px; color: inherit; background: #171c1d; border: 1px solid #535d5d; border-radius: 6px; }
+.admin-security button { min-height: 44px; max-width: 100%; white-space: normal; }
+.admin-security code { overflow-wrap: anywhere; }
+.admin-security p { line-height: 1.6; }
+.admin-security-enrollment { margin-top: 18px; }
+.admin-security-enrollment img { background: white; max-width: 100%; height: auto; }
+.admin-security .admin-security-confirm { display: flex; align-items: center; gap: 8px; }

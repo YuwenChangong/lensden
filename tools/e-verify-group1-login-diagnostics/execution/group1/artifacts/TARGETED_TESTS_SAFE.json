@@ -1,0 +1,17 @@
+{
+  "format": "group1-login-diagnostic-targeted-test-v1",
+  "observedAtUTC": "2026-10-13T04:16:56.846Z",
+  "status": "PASS",
+  "tests": 35,
+  "passed": 35,
+  "failed": 0,
+  "skipped": 0,
+  "exitCode": 0,
+  "signal": null,
+  "outputSha256": "ef358820a9606fa8e2b91cd472b470aeaf78784138a3e2e5b9411e2db23891ea",
+  "realChromeLocalFixture": true,
+  "historical123And9Rerun": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "oauthRead": false
+}

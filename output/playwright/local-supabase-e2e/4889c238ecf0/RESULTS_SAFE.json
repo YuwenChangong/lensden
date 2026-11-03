@@ -1,0 +1,390 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "4889c238ecf0",
+  "results": [
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "COMMENT_MIGRATION_RED_GREEN",
+      "family": "migration",
+      "status": "PASS",
+      "preFix": {
+        "httpStatus": 500,
+        "messageClass": "REACTION_TABLE_PERMISSION_DENIED"
+      },
+      "postFixHttpStatus": 200,
+      "rlsPoliciesUnchanged": true,
+      "migration": "20261015072723_restore_comment_reaction_application_privileges.sql",
+      "migrationSha256": "df6935f6290345421b86b6917badaa4c1ea969cbb84c8a5d6b5d29ea359ec733"
+    },
+    {
+      "id": "REACTION_LEAST_PRIVILEGE_ACL",
+      "family": "permissions",
+      "status": "PASS",
+      "noAnonymousWrite": true,
+      "noUpdateGrant": true,
+      "noTimestampInjection": true,
+      "noServiceRoleGrant": true
+    },
+    {
+      "id": "COMMENT_LIST_A",
+      "family": "comments",
+      "status": "PASS",
+      "httpStatus": 200,
+      "actualPublishedCommentVisible": true,
+      "aggregatesOnly": true
+    },
+    {
+      "id": "COMMENT_LIST_B",
+      "family": "comments",
+      "status": "PASS",
+      "httpStatus": 200,
+      "actualPublishedCommentVisible": true,
+      "aggregatesOnly": true
+    },
+    {
+      "id": "COMMENT_LIST_ADMIN",
+      "family": "comments",
+      "status": "PASS",
+      "httpStatus": 200,
+      "actualPublishedCommentVisible": true,
+      "aggregatesOnly": true
+    },
+    {
+      "id": "COMMENT_LIST_ANON",
+      "family": "comments",
+      "status": "PASS",
+      "httpStatus": 200,
+      "publicCommentsOnly": true
+    },
+    {
+      "id": "COMMENT_CREATE_A_UI",
+      "family": "comments",
+      "status": "PASS",
+      "uiAndDatabaseVerified": true
+    },
+    {
+      "id": "COMMENT_REPLY_A_UI",
+      "family": "comments",
+      "status": "PASS",
+      "uiAndParentRelationVerified": true
+    },
+    {
+      "id": "COMMENT_REPLY_B_UI",
+      "family": "comments",
+      "status": "PASS",
+      "uiAndOtherAuthorVerified": true
+    },
+    {
+      "id": "COMMENT_LIKE_A_UI",
+      "family": "comments",
+      "status": "PASS",
+      "uiAndDatabaseVerified": true,
+      "liked": true,
+      "likeCount": 1
+    },
+    {
+      "id": "COMMENT_LIKE_B_UI",
+      "family": "comments",
+      "status": "PASS",
+      "uiAndDatabaseVerified": true,
+      "liked": true,
+      "likeCount": 2
+    },
+    {
+      "id": "REACTION_CROSS_USER_A",
+      "family": "permissions",
+      "status": "PASS",
+      "forgedInsertDenied": true,
+      "crossUserDeleteRows": 0,
+      "updateDenied": true,
+      "otherRowUnchanged": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REACTION_CROSS_USER_B",
+      "family": "permissions",
+      "status": "PASS",
+      "forgedInsertDenied": true,
+      "crossUserDeleteRows": 0,
+      "updateDenied": true,
+      "otherRowUnchanged": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REACTION_CROSS_USER_ADMIN",
+      "family": "permissions",
+      "status": "PASS",
+      "forgedInsertDenied": true,
+      "crossUserDeleteRows": 0,
+      "updateDenied": true,
+      "otherRowUnchanged": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REACTION_ANON_WRITE_DENIED",
+      "family": "permissions",
+      "status": "PASS",
+      "httpStatus": 401,
+      "code": "42501"
+    },
+    {
+      "id": "REACTION_VISIBILITY_anon",
+      "family": "permissions",
+      "status": "PASS",
+      "hiddenPendingDeletedAndHiddenPostExcluded": true,
+      "rlsEnforced": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REACTION_VISIBILITY_A",
+      "family": "permissions",
+      "status": "PASS",
+      "hiddenPendingDeletedAndHiddenPostExcluded": true,
+      "rlsEnforced": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REACTION_VISIBILITY_B",
+      "family": "permissions",
+      "status": "PASS",
+      "hiddenPendingDeletedAndHiddenPostExcluded": true,
+      "rlsEnforced": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "REACTION_VISIBILITY_ADMIN",
+      "family": "permissions",
+      "status": "PASS",
+      "hiddenPendingDeletedAndHiddenPostExcluded": true,
+      "rlsEnforced": true,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "COMMENT_UNLIKE_A_UI",
+      "family": "comments",
+      "status": "PASS",
+      "uiAndDatabaseVerified": true,
+      "liked": false,
+      "likeCount": 1
+    },
+    {
+      "id": "COMMENT_UNLIKE_B_UI",
+      "family": "comments",
+      "status": "PASS",
+      "uiAndDatabaseVerified": true,
+      "liked": false,
+      "likeCount": 0
+    },
+    {
+      "id": "COMMENT_CROSS_USER_DELETE_DENIED",
+      "family": "permissions",
+      "status": "FAIL",
+      "reason": "ASSERTION_FAILED",
+      "actual": 400,
+      "expected": 403
+    },
+    {
+      "id": "COMMENT_SOFT_DELETE_WITH_REPLY_UI",
+      "family": "comments",
+      "status": "FAIL",
+      "reason": "ASSERTION_FAILED",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "id": "ADMIN_COMMENT_DELETE_UI",
+      "family": "comments",
+      "status": "BLOCKED",
+      "reason": "UI_OR_LOCAL_OPERATION_TIMEOUT"
+    },
+    {
+      "id": "POST_DELETE_UI",
+      "family": "business",
+      "status": "PASS",
+      "realUiDeleteAndDatabaseVerified": true
+    },
+    {
+      "id": "OWN_PRIVATE_RLS_A",
+      "family": "additionalRls",
+      "status": "PASS",
+      "ownRows": 1,
+      "crossUserRows": 0,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "OWN_PRIVATE_RLS_B",
+      "family": "additionalRls",
+      "status": "PASS",
+      "ownRows": 1,
+      "crossUserRows": 0,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "ANON_PRIVATE_RLS",
+      "family": "additionalRls",
+      "status": "PASS",
+      "code": "42501",
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_LEGACY",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 401,
+      "code": "42501",
+      "hintPresent": true,
+      "rowsReturned": false,
+      "serviceRoleUsed": false
+    },
+    {
+      "id": "RLS_ANON_AUDIT",
+      "family": "original16Rls",
+      "status": "PASS",
+      "httpStatus": 401,
+      "code": "42501",
+      "hintPresent": true,
+      "rowsReturned": false,
+      "serviceRoleUsed": false
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 53,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "localRateLimitFixture": {
+    "canonicalRpcWasMissing": true,
+    "source": "10a1848e33097a9bb79e5cb1f1107a86bac6c724b352a13948665b90559011bb",
+    "productionParity": "NOT_CLAIMED"
+  },
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "moderation": "EXISTING_LOCAL_ONLY_SAFE_POLICY_NOT_EXTERNAL_PROVIDER_ACCEPTANCE",
+  "summary": {
+    "results": {
+      "PASS": 31,
+      "FAIL": 2,
+      "BLOCKED": 1
+    },
+    "originalRls16Passed": 2,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 0
+  },
+  "sensitiveValueCheck": "PASS"
+}

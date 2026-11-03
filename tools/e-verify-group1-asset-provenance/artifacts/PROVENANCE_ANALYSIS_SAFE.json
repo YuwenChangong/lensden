@@ -1,0 +1,31 @@
+{
+  "format": "group1-production-asset-provenance-analysis-v1",
+  "productionSourceCommit": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+  "sourceCommitMatch": "PASS",
+  "buildId": "d98da799-d41d-41dc-acaf-8c6675fd799a",
+  "productionVersion": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+  "sourceBuildConfigsAndLockfileCommittedUnchanged": true,
+  "buildConfigMatch": "UNKNOWN_CLOUD_BUILD_ENVIRONMENT_AND_INSTALL_RESULT_NOT_RETAINED",
+  "assetManifestMatch": "BLOCKED_OBSERVED_PATH_MISMATCH",
+  "deployedAssetBytesVerified": false,
+  "productionScriptPath": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.CtUXEG6g.js",
+  "productionScriptBytes": "UNKNOWN_NOT_READ",
+  "productionScriptSha256": "UNKNOWN_NOT_READ",
+  "localHeader": {
+    "path": "/_astro/SiteHeader.astro_astro_type_script_index_0_lang.DaQNT1ww.js",
+    "bytes": 1168,
+    "sha256": "4550699f9e06afc37000e20f4dbd2c9223f0786afd03769713785325d047c0ca"
+  },
+  "localHeaderSource": "SAME_COMMIT_OFFLINE_FROZEN_BUILD",
+  "headerSourceOperation": "IMPORT_SETTINGS_NAVIGATION_AND_REGISTER_UI_EVENT_LISTENERS;UNKNOWN_COMPILED_SCRIPT_NOT_PROVEN_EQUIVALENT",
+  "localResources": 67,
+  "localLiteralDependencyEdges": 207,
+  "productionLoginHtmlSaved": false,
+  "mismatchRootCause": "EXACT_PRODUCTION_SCRIPT_PATH_DIFFERS_FROZEN_LOCAL_MANIFEST;UNDERLYING_BUILD_INPUT_OR_CHUNK_DIFFERENCE_UNKNOWN",
+  "missingEvidence": "ACTUAL_PRODUCTION_SCRIPT_BYTES_AND_COMPLETE_REFERENCED_LOGIN_ASSET_GRAPH",
+  "minimalQaBindingFix": "BLOCKED_NO_BLIND_PATH_ALIAS",
+  "fullGroup1BudgetSufficient": "UNKNOWN",
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE"
+}

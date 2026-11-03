@@ -1,0 +1,62 @@
+{
+  "format": "isolated-turnstile-packet-v1",
+  "status": "PENDING_OWNER_APPROVAL",
+  "authorizationId": "e-verify-turnstile-isolated-openglasshub-20261014-b1",
+  "liveRequestsAuthorized": false,
+  "policy": "SDK_WIDGET_FRAME_CAPABILITY_NOT_EXHAUSTIVE_PATH_WHITELIST",
+  "sdk": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+  "sitekey": "1x00000000000000000000AA",
+  "budgets": {
+    "global": 650,
+    "thirdParty": 40,
+    "GET": 40,
+    "POST": 40,
+    "document": 40,
+    "background": 0,
+    "redirect": 0
+  },
+  "hardDeadlineSeconds": 300,
+  "workDeadlineSeconds": 220,
+  "cleanupReserveSeconds": 60,
+  "requestTimeoutSeconds": 10,
+  "maxRequestBodyBytes": 32768,
+  "maxResponseBodyBytes": 2097152,
+  "maxAdditionalCostUSD": 0,
+  "productionGetMax": 0,
+  "authMax": 0,
+  "rlsMax": 0,
+  "siteverifyMax": 0,
+  "preClearance": false,
+  "network": "EXACT_HTTPS_CHALLENGES_CLOUDFLARE_COM_443_ONLY",
+  "requestSources": "SDK_ROOTED_CDP_STACK_OR_VALIDATED_REGISTERED_FRAME",
+  "frameGetMax": 40,
+  "combinedGetPostFrameMax": 40,
+  "backgroundForwardMax": 0,
+  "redirectMax": 0,
+  "methods": [
+    "GET",
+    "POST"
+  ],
+  "tokenHandling": "CALLBACK_ARGUMENT_IGNORED_NO_STORAGE_NO_BUSINESS_HANDOFF",
+  "cookies": "NO_INPUT_NO_FORWARD_SET_COOKIE_RESPONSE_DENIED",
+  "mediation": "FRESH_NODE_STRICT_TLS_BYTES_FULFILLED_AT_ORIGINAL_BROWSER_URL_NOT_NATIVE_CHROME_TLS",
+  "compatibility": "VENDOR_RECOMMENDS_DIRECT_SDK_LOADING_MEDIATION_COMPATIBILITY_NOT_VERIFIED_ONLINE",
+  "residual": "AUTOMATION_VENDOR_UPDATES_COOKIE_OR_WORKER_REQUIREMENTS_AND_UNKNOWN_INITIATORS_MAY_BLOCK_COMPLETION",
+  "sideEffects": [
+    "VENDOR_IP_USER_AGENT_DEVICE_CHALLENGE_SECURITY_LOGS",
+    "EPHEMERAL_SUPPLIER_REQUEST_DATA"
+  ],
+  "humanGates": {
+    "boundedVendorTrustAndResidualRiskAccepted": null,
+    "isolatedOfficialTestKeyOnlyConfirmed": null,
+    "freeOnlyZeroAdditionalCostConfirmed": null,
+    "diagnosticLogsAndPrivacyBoundaryAccepted": null,
+    "operatorAvailableForEntireValidity": null
+  },
+  "independentGo": "GO_E_VERIFY_TURNSTILE_ISOLATED_TEST_V1",
+  "group1ProductionAuthorized": false,
+  "group2": false,
+  "group3": false,
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": false
+}

@@ -1,0 +1,8 @@
+{
+  "databaseContainersRemoved": true,
+  "ephemeralAccountsAndRowsRemoved": true,
+  "dpapiCredentialsDeleted": true,
+  "browserAndWorkerCleanupRequested": true,
+  "productionRequests": 0,
+  "productionWrites": 0
+}

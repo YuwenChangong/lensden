@@ -1,0 +1,13 @@
+---
+export const prerender = false;
+import CommunityLayout from "../../../layouts/CommunityLayout.astro";
+import AdminSecurityPanel from "../../../components/admin/AdminSecurityPanel";
+Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set("Referrer-Policy", "no-referrer");
+---
+<CommunityLayout title="Admin Security" noindex={true} activeSection="forum">
+  <section class="community-section" style="padding-top: 1rem;">
+    <h1 class="community-page-title">Admin Security</h1>
+    <AdminSecurityPanel client:load />
+  </section>
+</CommunityLayout>

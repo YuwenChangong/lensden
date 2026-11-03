@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import type { ReactNode } from "react";
 import GlassConfirmDialog from "../common/GlassConfirmDialog";
 import { createBrowserSupabaseClient, syncBrowserRealtimeAuth } from "../../lib/supabase-browser";
 import CommentForm from "./CommentForm";
@@ -17,7 +18,7 @@ interface Author {
 interface Comment {
   id: string;
   post_id: string;
-  author_id: string;
+  author_id: string | null;
   parent_id: string | null;
   body: string;
   status: string;
@@ -26,8 +27,9 @@ interface Comment {
   author: Author | null;
   like_count: number;
   liked_by_me: boolean;
-  reply_count: number;
+  reply_count: number | null;
   can_delete: boolean;
+  delete_as_staff?: boolean;
 }
 
 interface CommentsSectionProps {
@@ -36,6 +38,8 @@ interface CommentsSectionProps {
   postAuthorId?: string;
   refreshKey?: number;
   loginHref?: string;
+  publicPage?: number;
+  children?: ReactNode;
 }
 
 const LIKE_ANIMATION_MS = 240;
@@ -58,7 +62,7 @@ function authorDisplayName(author: Author | null, fallback: string): string {
   return author?.display_name || author?.username || fallback;
 }
 
-export default function CommentsSection({ postId, postAuthorId, refreshKey, loginHref, localeContext = resolveLocale({ acceptLanguage: "zh-CN" }) }: CommentsSectionProps) {
+export default function CommentsSection({ postId, postAuthorId, refreshKey, loginHref, publicPage, children, localeContext = resolveLocale({ acceptLanguage: "zh-CN" }) }: CommentsSectionProps) {
   const { context, messages } = useLocale(localeContext);
   const text = messages.community;
   const supabase = useMemo(() => createBrowserSupabaseClient(), []);
@@ -70,6 +74,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState("");
+  const [deleteNotice, setDeleteNotice] = useState("");
   const [likeAnimatingById, setLikeAnimatingById] = useState<Record<string, boolean>>({});
   const [commentErrors, setCommentErrors] = useState<Record<string, string>>({});
   const [likePendingById, setLikePendingById] = useState<Record<string, boolean>>({});
@@ -96,7 +101,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
           headers.authorization = `Bearer ${data.session.access_token}`;
         }
       }
-      const res = await fetch(`/api/forum/comments?post_id=${encodeURIComponent(postId)}`, { headers });
+      const res = await fetch(`/api/forum/comments?post_id=${encodeURIComponent(postId)}${publicPage ? `&public_page=${publicPage}` : ''}`, { headers });
       const data = (await res.json().catch(() => null)) as { comments?: Comment[]; error?: string } | null;
       if (!res.ok) {
         if (data?.error === "COMMENTS_INTERACTIONS_MIGRATION_REQUIRED") {
@@ -117,7 +122,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
     } finally {
       setLoading(false);
     }
-  }, [hasLoadedOnce, postId, supabase]);
+  }, [hasLoadedOnce, postId, publicPage, supabase]);
 
   useEffect(() => {
     let cancelled = false;
@@ -288,6 +293,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
 
   const openDeleteModal = useCallback((commentId: string) => {
     setDeleteError("");
+    setDeleteNotice("");
     clearCommentError(commentId);
     setDeleteTargetId(commentId);
   }, [clearCommentError]);
@@ -328,13 +334,14 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
 
       setReplyingTo((current) => (current === deleteTargetId ? null : current));
       setDeleteTargetId(null);
+      setDeleteNotice(text.commentRemoved);
       if (!commentBeforeDelete) return;
 
       if (hasPublishedReplies) {
         setComments((prev) =>
           prev.map((comment) =>
             comment.id === deleteTargetId
-              ? { ...comment, status: "deleted", liked_by_me: false, like_count: 0 }
+              ? { ...comment, status: "deleted", body: "", author: null, author_id: null, can_delete: false, delete_as_staff: false, liked_by_me: false, like_count: 0 }
               : comment,
           ),
         );
@@ -346,12 +353,13 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
     } finally {
       setDeletingId(null);
     }
-  }, [comments, deleteTargetId, supabase]);
+  }, [comments, deleteTargetId, supabase, text.commentRemoved]);
 
-  const topLevelComments = comments.filter((c) => !c.parent_id || c.status === "deleted");
+  const commentIds = new Set(comments.map((c) => c.id));
+  const topLevelComments = comments.filter((c) => !c.parent_id || !commentIds.has(c.parent_id));
   const repliesByParent = new Map<string, Comment[]>();
   for (const c of comments) {
-    if (c.parent_id && c.status !== "deleted") {
+    if (c.parent_id) {
       const list = repliesByParent.get(c.parent_id) ?? [];
       list.push(c);
       repliesByParent.set(c.parent_id, list);
@@ -360,11 +368,14 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
 
   const totalCount = comments.filter((c) => c.status !== "deleted").length;
 
-  const renderComment = (comment: Comment, isReply: boolean) => {
+  const renderComment = (comment: Comment, isReply: boolean, ancestors: ReadonlySet<string> = new Set()) => {
+    // The API bounds the returned set; never revisit a node in malformed cycles.
+    if (ancestors.has(comment.id) || ancestors.size >= commentIds.size) return null;
+    const path = new Set([...ancestors, comment.id]);
     const isDeleted = comment.status === "deleted";
     const replies = repliesByParent.get(comment.id) ?? [];
     const authorName = isDeleted ? text.anonymous : authorDisplayName(comment.author, text.member);
-    const authorHref = !isDeleted
+    const authorHref = !isDeleted && comment.author_id
       ? buildProfileHref({ id: comment.author_id, username: comment.author?.username ?? null })
       : null;
     const showReplyForm = replyingTo === comment.id;
@@ -468,7 +479,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
                       <path d="M14 11v6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </span>
-                    <span>{text.delete}</span>
+                    <span>{comment.delete_as_staff ? text.moderateDeleteComment : text.delete}</span>
                   </button>
                 ) : null}
               </div>
@@ -480,7 +491,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
 
         {replies.length > 0 ? (
           <div className="comment-replies">
-            {replies.map((reply) => renderComment(reply, true))}
+            {replies.map((reply) => renderComment(reply, true, path))}
           </div>
         ) : null}
 
@@ -502,6 +513,9 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
     );
   };
 
+  // The anonymous server snapshot remains visible until the existing island
+  // hydrates and obtains interaction permissions. No invented reaction counts.
+  if (loading && children) return <div data-public-comment-snapshot>{children}</div>;
   return (
     <section className="comment-shell" aria-label={text.commentsArea}>
       <CommentForm
@@ -515,6 +529,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
         {text.comments}
         {!loading ? <span className="comment-count">{totalCount}</span> : null}
       </h2>
+      {deleteNotice ? <div role="status">{deleteNotice}</div> : null}
 
       {loading ? <div className="comment-empty">{text.loadingComments}</div> : null}
 
@@ -538,7 +553,7 @@ export default function CommentsSection({ postId, postAuthorId, refreshKey, logi
         open={Boolean(deleteTargetId)}
         localeContext={context}
         title={text.deleteComment}
-        description={text.deleteCommentDetail}
+        description={comments.find((c) => c.id === deleteTargetId)?.delete_as_staff ? text.moderateDeleteCommentDetail : text.deleteCommentDetail}
         detail={text.irreversible}
         confirmLabel={text.confirmDelete}
         cancelLabel={text.cancel}

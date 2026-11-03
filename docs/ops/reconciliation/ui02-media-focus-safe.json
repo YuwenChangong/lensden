@@ -1,0 +1,291 @@
+{
+  "task": "PUBLIC_BETA_CRITICAL_PATH_SPRINT",
+  "recordedUTC": "2026-10-19T04:47:34.351Z",
+  "baseCommit": "2dcb3bb5e808aada74dc498dd9622f5e52075cfa",
+  "branch": "codex/public-beta-ui02-media-focus-20261019",
+  "recovery": {
+    "newReviewerAttempts": 1,
+    "newReviewersStarted": 0,
+    "originalReviewerInvoked": false,
+    "availability": "AGENT_THREAD_LIMIT_REACHED",
+    "independentDecision": "PENDING_NOT_APPROVED",
+    "candidateIntegrity": "11/11_MATCH",
+    "completionSha256": "d4d54ecfb6fb835c837acf47fde3e1e7f0b2c262483df5acbda59c74ce3581b8",
+    "pendingReviewSha256": "d20160e0b6440f76650c1fcfbb713eaa374dc13d462ff0ff0b7917d3ecea82fc",
+    "productionGate": "NOT_AUTHORIZED"
+  },
+  "originalUi02Contract": "Production desktop1440/mobile390/430 navigation/layout/form/content/media overflow, focus and accessibility",
+  "targetedScope": "ACTUAL_POST_MEDIA_GALLERY_IMAGE_MODAL_NOT_FULL_APP_AUTH_OR_VIDEO",
+  "redEvidence": {
+    "path": "output/playwright/ui02-media-focus/682d4033-406f-4d63-b5e7-f91943ffc843/RESULTS_SAFE.json",
+    "sha256": "e23b8778135a0dcef34aeb7a4fbe4de8f91b2ef63fe66787e9705f1ce0abdc36",
+    "passed": 3,
+    "failed": 9,
+    "localWebsocketMisclassificationRetained": true
+  },
+  "greenEvidence": {
+    "path": "output/playwright/ui02-media-focus/b292a59a-ddb1-419f-8d0b-6c0a59dcd6ad/RESULTS_SAFE.json",
+    "sha256": "676b997fcfe3787d77739aec2dbac99e131be454b31563ac87d59ba19e48b004",
+    "passed": 27,
+    "failed": 0,
+    "pageErrors": 0,
+    "externalRequestsBlocked": 0,
+    "localWebSocketsBlocked": 6,
+    "results": [
+      {
+        "width": 1440,
+        "id": "NAMED_MODAL_DIALOG",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "INITIAL_FOCUS_INSIDE_MEDIA",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "SHIFT_TAB_CONTAINMENT",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "TAB_CONTAINMENT",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "BACKGROUND_FOCUS_BLOCKED",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "ARROW_MEDIA_NAVIGATION",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "MEDIA_DIMENSIONS",
+        "result": "DIAGNOSTIC",
+        "scrollWidth": 1440,
+        "viewport": 1440,
+        "dialog": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 932
+        },
+        "imageBox": {
+          "x": 624,
+          "y": 370,
+          "width": 192,
+          "height": 192
+        }
+      },
+      {
+        "width": 1440,
+        "id": "MEDIA_FITS_VIEWPORT",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "ESCAPE_CLOSE_AND_RESTORE_FOCUS",
+        "result": "PASS"
+      },
+      {
+        "width": 1440,
+        "id": "CLOSE_BUTTON_RESTORES_FOCUS",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "NAMED_MODAL_DIALOG",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "INITIAL_FOCUS_INSIDE_MEDIA",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "SHIFT_TAB_CONTAINMENT",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "TAB_CONTAINMENT",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "BACKGROUND_FOCUS_BLOCKED",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "ARROW_MEDIA_NAVIGATION",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "MEDIA_DIMENSIONS",
+        "result": "DIAGNOSTIC",
+        "scrollWidth": 390,
+        "viewport": 390,
+        "dialog": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 932
+        },
+        "imageBox": {
+          "x": 99,
+          "y": 370,
+          "width": 192,
+          "height": 192
+        }
+      },
+      {
+        "width": 390,
+        "id": "MEDIA_FITS_VIEWPORT",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "ESCAPE_CLOSE_AND_RESTORE_FOCUS",
+        "result": "PASS"
+      },
+      {
+        "width": 390,
+        "id": "CLOSE_BUTTON_RESTORES_FOCUS",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "NAMED_MODAL_DIALOG",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "INITIAL_FOCUS_INSIDE_MEDIA",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "SHIFT_TAB_CONTAINMENT",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "TAB_CONTAINMENT",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "BACKGROUND_FOCUS_BLOCKED",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "ARROW_MEDIA_NAVIGATION",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "MEDIA_DIMENSIONS",
+        "result": "DIAGNOSTIC",
+        "scrollWidth": 430,
+        "viewport": 430,
+        "dialog": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 932
+        },
+        "imageBox": {
+          "x": 119,
+          "y": 370,
+          "width": 192,
+          "height": 192
+        }
+      },
+      {
+        "width": 430,
+        "id": "MEDIA_FITS_VIEWPORT",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "ESCAPE_CLOSE_AND_RESTORE_FOCUS",
+        "result": "PASS"
+      },
+      {
+        "width": 430,
+        "id": "CLOSE_BUTTON_RESTORES_FOCUS",
+        "result": "PASS"
+      }
+    ]
+  },
+  "build": {
+    "command": "node scripts/build-workers.mjs --local-config <ignored-loopback-only-config>",
+    "exitCode": 0,
+    "productionConfigurationUsed": false,
+    "liveDatabaseUsed": false,
+    "typecheckNotClaimed": true
+  },
+  "screenshots": [
+    {
+      "path": "output/playwright/ui02-media-focus/b292a59a-ddb1-419f-8d0b-6c0a59dcd6ad/media-open-1440.png",
+      "sha256": "2d509a153700b7127585fbc1722eba71472e040825324e41d1f322972a60fc37"
+    },
+    {
+      "path": "output/playwright/ui02-media-focus/b292a59a-ddb1-419f-8d0b-6c0a59dcd6ad/media-open-390.png",
+      "sha256": "0caf5c9efb0db9102f4b2bea395962274abc9ef49770380ca64514cdcc8336fa"
+    },
+    {
+      "path": "output/playwright/ui02-media-focus/b292a59a-ddb1-419f-8d0b-6c0a59dcd6ad/media-open-430.png",
+      "sha256": "c3d91a1b39709f221993df13f715a9cfde63da4ae2d335908c85caac50a44fac"
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "viteClosed": true,
+    "databaseCreated": false,
+    "testCredentialsCreated": false
+  },
+  "ui02FullCase": "LOCAL_PARTIAL_PASS_NOT_CLOSED",
+  "group1LocalCases": "10/14_RETAINED",
+  "ui03": "BLOCKED_UNCHANGED",
+  "productionConnections": 0,
+  "productionWrites": 0,
+  "deployments": 0,
+  "remotePush": 0,
+  "mainModified": false,
+  "databaseBackupRecoverability": "NOT_VERIFIED",
+  "catalogHold": "ACTIVE",
+  "publicBetaGo": "NOT_AUTHORIZED",
+  "sourcePins": {
+    "src/components/forum/PostMediaGallery.tsx": "5008b08b09097adebd36e461328b0b8970a32160adbc51a702a8889d00aca8da",
+    "src/styles/community.css": "c14c451a7472a37d9cd4d00721610476f35d5dd593efd5e6450ac6dbe355b271",
+    "scripts/test-post-media-gallery-accessibility.mjs": "587abee93b70ee02483cf013b7ae6638c9a138ead315378bc88067538f8a5969",
+    "tests/visual/legal-consent-harness/post-media.html": "81ad3fc157ea2539d68e77cee62ef169e8d4222e196a2429271c01a8ebc9ff9d",
+    "tests/visual/legal-consent-harness/post-media.tsx": "a612945dc1ad6da6b8789fee18ab0d18566939881ad9d07d32601025e3658313"
+  },
+  "harnessCorrections": {
+    "bodyReset": "MATCHES_COMMUNITY_LAYOUT_NOT_AN_APPLICATION_FIX",
+    "localWebsocketClassification": "LOOPBACK_HOSTS_BLOCKED_NOT_EXTERNAL_ATTEMPTS",
+    "assetUrlType": "BUILTIN_URL_STRING_NO_TYPE_SUPPRESSION"
+  },
+  "typecheckRatchet": {
+    "status": "PASS",
+    "baselineErrors": 177,
+    "currentErrors": 56,
+    "removedErrors": 121,
+    "newErrors": 0,
+    "changedDiagnosticSourceLines": 0,
+    "unparsedChangedDiagnosticPaths": 0,
+    "gateUnmodified": true,
+    "initialFixtureDiagnostic": "ts(2322)_IMAGE_METADATA_FIXED_WITH_STANDARD_URL_STRING"
+  },
+  "sourcePinEncoding": "UTF8_CANONICAL_LF"
+}

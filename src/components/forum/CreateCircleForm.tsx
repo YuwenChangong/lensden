@@ -221,7 +221,7 @@ export default function CreateCircleForm({ mode = "inline", localeContext = reso
     let uploadedPath = "";
 
     try {
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      const { data: sessionData, error: sessionError } = await client.auth.getSession();
       const session = sessionData.session;
       if (sessionError || !session?.access_token || !session.user) {
         throw new Error("NOT_AUTHENTICATED");
@@ -302,7 +302,7 @@ export default function CreateCircleForm({ mode = "inline", localeContext = reso
       window.location.assign(`/circles/${payload.circle.slug}/`);
     } catch (submitError) {
       if (uploadedPath) {
-        await supabase.storage.from("post-media").remove([uploadedPath]).catch(() => undefined);
+        await client.storage.from("post-media").remove([uploadedPath]).catch(() => undefined);
       }
 
       const nextMessage = submitError instanceof Error ? submitError.message : "CIRCLE_CREATE_FAILED";
@@ -338,7 +338,7 @@ export default function CreateCircleForm({ mode = "inline", localeContext = reso
     );
   }
 
-  if (authState.status !== "signed_in") {
+  if (authState.status !== "signed_in" || !supabase) {
     return (
       <section className="create-circle-form create-circle-form--page-state">
         <p className="community-meta">{text.signInCreateCircle}</p>
@@ -350,6 +350,8 @@ export default function CreateCircleForm({ mode = "inline", localeContext = reso
       </section>
     );
   }
+
+  const client = supabase;
 
   return (
     <form className="create-circle-form create-circle-form--page" onSubmit={handleSubmit}>

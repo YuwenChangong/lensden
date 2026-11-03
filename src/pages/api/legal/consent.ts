@@ -5,6 +5,7 @@ import {
   handleLegalConsentGet,
   handleLegalConsentPost,
   legalConsentJson,
+  type LegalConsentApiDependencies,
 } from "../../../lib/server/legal-consent-api.server";
 import {
   createLegalConsentReadRepository,
@@ -27,7 +28,7 @@ async function authenticate(request: Request, env: RuntimeEnv) {
   };
 }
 
-function dependenciesFor(request: Request, env: RuntimeEnv) {
+function dependenciesFor(request: Request, env: RuntimeEnv): LegalConsentApiDependencies {
   return {
     authenticate: () => authenticate(request, env),
     createWriteRepository: (verifiedUserId) => createLegalConsentWriteRepository(env, verifiedUserId),

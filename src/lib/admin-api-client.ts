@@ -64,6 +64,9 @@ export async function adminFetch<T = JsonObject>(path: string, options: AdminFet
     }
 
     if (response.status === 403) {
+      if (payload?.code === "ADMIN_AAL2_REQUIRED") {
+        throw new AdminApiError("Verify your authenticator at /admin/security/ before continuing.", 403);
+      }
       const forbiddenMessage =
         payloadError && payloadError !== "Forbidden"
           ? payloadError

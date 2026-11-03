@@ -1,0 +1,83 @@
+{
+  "format": "offline-origin-integration-v1",
+  "authorizationStatus": "NOT_AUTHORIZED",
+  "historicalV16RequestIdentity": "UNKNOWN",
+  "diagnosticIntegration": "PASS",
+  "protectedOriginEvidence": "PASS",
+  "cdpRequestCorrelation": "PARTIAL_CANDIDATES_ONLY",
+  "redirectAndFrameEvidence": "PARTIAL_MAIN_PAGE_OBSERVATIONS",
+  "sensitiveDataProtection": "PASS",
+  "browserNetworkBoundary": "MONITOR_ONLY",
+  "securityBoundaryUnchanged": true,
+  "fullGroup1": "BLOCKED",
+  "nextGroup1AuthorizationPreparation": "READY_FOR_OWNER_DIRECTED_PREPARATION_ONLY",
+  "newAuthorizationOrPacketCreated": false,
+  "tests": {
+    "passed": 13,
+    "total": 13,
+    "historicalSuitesReplayed": false,
+    "command": "node --test --test-reporter=tap --test-concurrency=1 tools/e-verify-group1-origin-integration/private-origin.test.mjs tools/e-verify-group1-origin-integration/integration.test.mjs"
+  },
+  "evidenceRoot": "artifacts/integration-1792035898096",
+  "supervisedChildExit": "EXIT_ZERO",
+  "processTreeReaped": true,
+  "originalV16FrozenFiles": {
+    "matches": 305,
+    "total": 305
+  },
+  "originalV16ReceiptSha256": {
+    "execution": "2af6a22e0a1943500bf067b4e798f739fc6355cf973f3fc5317a55fb808b2d85",
+    "final": "0f28d243505975df40b84c28fda5f71f91464d0c93744131996e8b510f09ebe7",
+    "supervisor": "2428da64affb61f478dfe02db18d028454b09b0578f8f67736623141f3f32e6e"
+  },
+  "files": [
+    {
+      "file": ".gitattributes",
+      "sha256": "4106c95c5ce7dfde30f96b65d0cbac14a332bb1b8f08cef6c8232341618be31f"
+    },
+    {
+      "file": "browser.mjs",
+      "sha256": "19e18df9652fb96687dc458f65ac0c73fd60ff3d4601dc28e2c85d582b848a99"
+    },
+    {
+      "file": "diagnostic.mjs",
+      "sha256": "d0cef9d4f76b4036aec52ad3d7193a40b3f8840523f788e2c401dfeec18d3a16"
+    },
+    {
+      "file": "guard-check.mjs",
+      "sha256": "3bed97ae10aad02bc581e7e32f545d3a3d0fc90339239da122c4df6c2cdfd70b"
+    },
+    {
+      "file": "integration.mjs",
+      "sha256": "635e4bda9a4974b7f916c75e77f92a5caa7f635061d34050fddb3dad1da4529d"
+    },
+    {
+      "file": "integration.test.mjs",
+      "sha256": "01965e54fdc5af87b7edeae143da047dd254871f3788b1ad58c6dea3eb959be4"
+    },
+    {
+      "file": "private-origin.mjs",
+      "sha256": "5eeb3a4faae9bdf362c5429413f616669bc0f4072958e133a02f74752151e428"
+    },
+    {
+      "file": "private-origin.test.mjs",
+      "sha256": "d4f859e007ac69ea60b9c1c0965e631c855ddd53effb8b81170acaf5d230be41"
+    },
+    {
+      "file": "protected-origin.ps1",
+      "sha256": "b29bd8ed8942c0420a65d5d037afa18c3acc3e9a9f6ab434b282c4de269b2e82"
+    },
+    {
+      "file": "README.md",
+      "sha256": "9ee7e2a2735000b4e345e8a21e773cbc9d895aef4544c915143ed3976078224c"
+    }
+  ],
+  "productionRequests": 0,
+  "thirdPartyLiveRequests": 0,
+  "productionWrites": 0,
+  "maxAdditionalCostUSD": 0,
+  "catalogHold": "ACTIVE",
+  "group2": "NOT_AUTHORIZED",
+  "group3": "NOT_AUTHORIZED",
+  "publicBetaGo": "NOT_AUTHORIZED"
+}

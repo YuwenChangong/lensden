@@ -2,6 +2,7 @@ export type NavKey = "home" | "forum" | "news" | "products" | "launcher";
 import { isGazeLauncherPublicEnabled } from "./gaze-launcher-visibility.ts";
 import type { ResolvedLocale } from "./i18n/locale.ts";
 import { getUiMessages } from "./i18n/catalog.ts";
+import { isDiscoveryExcluded } from "./discovery-exclusions";
 
 const navigation = [
   { key: "home", label: "首页", href: "/" },
@@ -10,7 +11,7 @@ const navigation = [
   { key: "products", label: "产品", href: "/products/" },
 ] as const;
 export const mainNav = isGazeLauncherPublicEnabled()
-  ? [...navigation, { key: "launcher", label: "Gaze Launcher", href: "/gaze-launcher/" }]
+  ? [...navigation, { key: "launcher", label: "Gaze Launcher", href: "/gaze-launcher/" } as const]
   : navigation;
 
 export function getMainNav(locale: ResolvedLocale) {
@@ -39,12 +40,14 @@ export const forumTabs = [
 
 export const hiddenPublicCircleSlugs = new Set(["rls-test-circle", "rls-test", "test-circle"]);
 
-export function isPublicVisibleCircle(input: { slug?: string | null; name?: string | null; status?: string | null }) {
+export function isPublicVisibleCircle(input: { id?: string | null; slug?: string | null; name?: string | null; status?: string | null }) {
   const slug = input.slug?.toLowerCase() ?? "";
   const name = input.name?.toLowerCase() ?? "";
   const status = input.status?.toLowerCase() ?? "active";
   if (status !== "active") return false;
   if (hiddenPublicCircleSlugs.has(slug)) return false;
+  if (isDiscoveryExcluded('circles', slug)) return false;
+  if (input.id && isDiscoveryExcluded('circles', input.id)) return false;
   if (name.includes("rls test")) return false;
   return true;
 }

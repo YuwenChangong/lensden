@@ -1,0 +1,346 @@
+{
+  "environment": "DISPOSABLE_LOCAL_SUPABASE_REAL_ASTRO_REAL_AUTH",
+  "runId": "a16768d45aed",
+  "results": [
+    {
+      "id": "BROWSER_LOGIN_A",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_B",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "BROWSER_LOGIN_ADMIN",
+      "family": "auth",
+      "status": "PASS",
+      "realUiFormSubmitted": true,
+      "serverIdentityVerified": true,
+      "captcha": "LOCAL_OFF_NOT_PRODUCTION"
+    },
+    {
+      "id": "THREE_CONTEXT_ISOLATION",
+      "family": "auth",
+      "status": "PASS",
+      "independentContexts": 3,
+      "expectedIdentities": 3
+    },
+    {
+      "id": "REAL_R2_LIVE_PRECHECK",
+      "family": "realR2",
+      "status": "PASS",
+      "signedBucketHead200": true,
+      "consumesCurrentBudget": true
+    },
+    {
+      "id": "REAL_R2_SYNTHETIC_MP4",
+      "family": "realR2",
+      "status": "PASS",
+      "bytes": 2028,
+      "sha256": "180b0869efaeec43569d9dae6c2acc9ade569b601fbb4b69ca30e97b1cd6eec0",
+      "mime": "video/mp4;codecs=avc1.42001E",
+      "synthetic": true,
+      "realR2": false
+    },
+    {
+      "id": "REAL_R2_VIDEO_UPLOAD",
+      "family": "realR2",
+      "status": "PASS",
+      "presignedPut": true,
+      "realR2": true,
+      "sizeVerified": true,
+      "localMediaLinked": true
+    },
+    {
+      "id": "REAL_R2_VIDEO_PLAYBACK",
+      "family": "realR2",
+      "status": "PASS",
+      "realBrowserDecoded": true,
+      "time": 0.1167,
+      "readyState": 4,
+      "width": 160,
+      "height": 90,
+      "error": null
+    },
+    {
+      "id": "REAL_R2_RANGE",
+      "family": "realR2",
+      "status": "PASS",
+      "bucketRange206": true,
+      "applicationStatus": 200,
+      "applicationRange": "FULL_200_RANGE_NOT_FORWARDED"
+    },
+    {
+      "id": "REAL_R2_OTHER_USER_DELETE_DENIED",
+      "family": "realR2",
+      "status": "PASS",
+      "httpStatus": 403,
+      "r2Dispatches": 0
+    },
+    {
+      "id": "REAL_R2_APPLICATION_DELETE",
+      "family": "realR2",
+      "status": "PASS",
+      "appCleanupOk": true,
+      "authenticatedHead404": true,
+      "mediaRows": 0
+    },
+    {
+      "id": "REAL_R2_IDEMPOTENT_DELETE",
+      "family": "realR2",
+      "status": "PASS",
+      "secondApplicationDeleteOk": true,
+      "authenticatedHead404": true
+    }
+  ],
+  "group1": [
+    {
+      "id": "AUTH-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "REAL_PRODUCTION_CAPTCHA_NOT_TESTED"
+    },
+    {
+      "id": "AUTH-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "AUTH-08:bounded-nonmail-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "RLS-01",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-02",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-03",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-04",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "RLS-05",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "ADMIN-04:devices-read-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-01:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED",
+      "reason": "CASE_EVIDENCE_NOT_COMPLETE"
+    },
+    {
+      "id": "UI-02:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "UI-03:core-partial",
+      "scope": "LOCAL_ANALOGUE_ONLY_NOT_PRODUCTION_ACCEPTANCE",
+      "status": "BLOCKED"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "productionAuthOperations": 0,
+  "productionDeployments": 0,
+  "externalRequestsBlocked": 0,
+  "captcha": "LOCAL_OFF_ONLY_NOT_PRODUCTION_CAPTCHA",
+  "databaseIsolation": "PASS",
+  "migrationCount": 55,
+  "cleanup": "BROWSERS_AND_WORKER_CLOSED_DATABASE_CLEANUP_BY_CALLER",
+  "localRateLimitFixture": {
+    "canonicalRpcWasMissing": true,
+    "source": "10a1848e33097a9bb79e5cb1f1107a86bac6c724b352a13948665b90559011bb",
+    "productionParity": "NOT_CLAIMED"
+  },
+  "realR2": {
+    "bucketScope": "OWNER_APPROVED_TEST_BUCKET_ONLY",
+    "ownerCredentialProvenance": true,
+    "independentKeyIdentifierMatch": "UNVERIFIED",
+    "bucketExclusiveCredentialScopeIndependentlyProven": false,
+    "costEvidence": "REVIEWED_OCTOBER16_ACCOUNT_SNAPSHOT_NOT_REALTIME",
+    "costHardGuarantee": false,
+    "requestBudget": {
+      "max": 30,
+      "workMax": 22,
+      "cleanupReserved": 8,
+      "work": 8,
+      "cleanup": 3,
+      "denied": 0,
+      "byMethod": {
+        "HEAD": 4,
+        "OPTIONS": 1,
+        "PUT": 1,
+        "GET": 4,
+        "DELETE": 1
+      }
+    },
+    "browserWholeNetworkHardCap": false,
+    "attempts": [
+      {
+        "sequence": 1,
+        "phase": "WORK",
+        "method": "HEAD",
+        "status": 200,
+        "locationPresent": false
+      },
+      {
+        "sequence": 2,
+        "phase": "WORK",
+        "method": "OPTIONS",
+        "status": 204,
+        "locationPresent": false
+      },
+      {
+        "sequence": 3,
+        "phase": "WORK",
+        "method": "PUT",
+        "status": 200,
+        "locationPresent": false
+      },
+      {
+        "sequence": 4,
+        "phase": "WORK",
+        "method": "GET",
+        "status": 206,
+        "locationPresent": false
+      },
+      {
+        "sequence": 5,
+        "phase": "WORK",
+        "method": "HEAD",
+        "status": 200,
+        "locationPresent": false
+      },
+      {
+        "sequence": 6,
+        "phase": "WORK",
+        "method": "GET",
+        "status": 206,
+        "locationPresent": false
+      },
+      {
+        "sequence": 7,
+        "phase": "WORK",
+        "method": "GET",
+        "status": 206,
+        "locationPresent": false
+      },
+      {
+        "sequence": 8,
+        "phase": "WORK",
+        "method": "GET",
+        "status": 200,
+        "locationPresent": false
+      },
+      {
+        "sequence": 9,
+        "phase": "CLEANUP",
+        "method": "DELETE",
+        "status": 204,
+        "locationPresent": false
+      },
+      {
+        "sequence": 10,
+        "phase": "CLEANUP",
+        "method": "HEAD",
+        "status": 404,
+        "locationPresent": false
+      },
+      {
+        "sequence": 11,
+        "phase": "CLEANUP",
+        "method": "HEAD",
+        "status": 404,
+        "locationPresent": false
+      }
+    ],
+    "upload": "PASS",
+    "playback": "PASS",
+    "bucketRange": "PASS",
+    "applicationRange": "FULL_200_RANGE_NOT_FORWARDED",
+    "delete": "PASS",
+    "objectNonexistence": "PASS",
+    "cleanup": "PASS",
+    "offlineNoCloudDispatch": false,
+    "livePrecheck": {
+      "signedHeadStatus": 200,
+      "corsResponse": {
+        "status": 204,
+        "originMatched": true,
+        "putAllowed": true,
+        "contentTypeAllowed": true
+      },
+      "corsOriginAndPutMatched": true
+    },
+    "fixture": {
+      "bytes": 2028,
+      "sha256": "180b0869efaeec43569d9dae6c2acc9ade569b601fbb4b69ca30e97b1cd6eec0",
+      "mime": "video/mp4;codecs=avc1.42001E",
+      "synthetic": true
+    },
+    "ticket": {
+      "stage": "COMPLETE",
+      "requestObserved": true,
+      "httpStatus": 200
+    },
+    "ownedObjectReference": "a623b713714ebb8a510d",
+    "createdObjectSizeVerified": true
+  },
+  "fixtureScope": {
+    "oneOwnedCircle": true,
+    "onePublishedPost": true,
+    "productionDataCopied": false,
+    "legalAcknowledgementsSeededNotUiTested": true
+  },
+  "moderation": "EXISTING_LOCAL_ONLY_SAFE_POLICY_NOT_EXTERNAL_PROVIDER_ACCEPTANCE",
+  "summary": {
+    "results": {
+      "PASS": 12
+    },
+    "originalRls16Passed": 0,
+    "originalRlsPlan": {
+      "anonymous": 6,
+      "authenticatedAandB": 10
+    },
+    "group1LocalAnaloguesPassed": 0
+  },
+  "sensitiveValueCheck": "PASS"
+}

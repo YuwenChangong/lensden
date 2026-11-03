@@ -6,6 +6,7 @@ type PublicationStatus = (typeof DEVICE_PUBLICATION_STATUSES)[number];
 
 type JsonObject = Record<string, unknown>;
 type DeviceInput = Record<string, unknown>;
+type ParseResult<T> = { error: Response } | { value: T };
 type DeviceRecord = DeviceInput & { id: string; slug: string; publicationStatus: PublicationStatus; slugLocked: boolean };
 
 const contentFields = [
@@ -43,7 +44,7 @@ function validateNested(value: DeviceInput) {
   return null;
 }
 
-function validateFields(payload: unknown, allowed: Set<string>, mediaPublicBaseUrl?: string) {
+function validateFields(payload: unknown, allowed: Set<string>, mediaPublicBaseUrl?: string): ParseResult<DeviceInput> {
   if (!isObject(payload)) return { error: failure("INVALID_PAYLOAD", "请求内容无效。") } as const;
   const unknown = Object.keys(payload).find((field) => !allowed.has(field));
   if (unknown) return { error: failure("UNKNOWN_FIELD", "请求包含不允许的字段。") } as const;
@@ -74,7 +75,7 @@ function validateFields(payload: unknown, allowed: Set<string>, mediaPublicBaseU
   return { value: payload } as const;
 }
 
-function parseCreate(payload: unknown, mediaPublicBaseUrl?: string) {
+function parseCreate(payload: unknown, mediaPublicBaseUrl?: string): ParseResult<DeviceInput> {
   const parsed = validateFields(payload, createFields, mediaPublicBaseUrl); if ("error" in parsed) return parsed;
   const value = { ...parsed.value };
   for (const field of requiredText) if (typeof value[field] !== "string" || !value[field].trim()) return { error: failure("MISSING_REQUIRED_FIELD", "缺少必填设备字段。") } as const;
@@ -85,7 +86,7 @@ function parseCreate(payload: unknown, mediaPublicBaseUrl?: string) {
   return { value } as const;
 }
 
-function parseUpdate(payload: unknown, mediaPublicBaseUrl?: string) {
+function parseUpdate(payload: unknown, mediaPublicBaseUrl?: string): ParseResult<{ id: string; changes: DeviceInput }> {
   const parsed = validateFields(payload, updateFields, mediaPublicBaseUrl); if ("error" in parsed) return parsed;
   if (typeof parsed.value.id !== "string" || !uuidPattern.test(parsed.value.id)) return { error: failure("MISSING_ID", "缺少有效设备 ID。") } as const;
   const { id, ...changes } = parsed.value;

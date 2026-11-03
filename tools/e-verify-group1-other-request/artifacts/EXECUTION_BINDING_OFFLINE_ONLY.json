@@ -1,0 +1,133 @@
+{
+  "format": "group1-other-request-local-engineering-binding-v1",
+  "status": "OFFLINE_ONLY_NOT_A_PRODUCTION_EXECUTION_BINDING",
+  "sourceBindingSha256": "c5578e592aa950764fcae09ebca458bd48aa3f16d5a07a27bb63afdda6ce8b5a",
+  "fullGroup1Authorization": "BLOCKED",
+  "productionEntryFrozen": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "artifacts/observed-2-local.safe.json",
+      "sha256": "2b0c66db5c8a80de8f04947e309d98d69fc7537a785ec68edce1de3b444a5612"
+    },
+    {
+      "path": "artifacts/observed-2-supervisor.safe.json",
+      "sha256": "a2b506450813a4b7a5b2d771e77b62d4bcbd788665e613ade8873b86ecd054c3"
+    },
+    {
+      "path": "artifacts/observed-3-local.safe.json",
+      "sha256": "fda19d3c77940ecaf715822c9202f363f4607c313e80ae7afef78e19379fa641"
+    },
+    {
+      "path": "artifacts/observed-3-supervisor.safe.json",
+      "sha256": "f14648c78929de54178276de8d9322de43ade73b2323f9e09094787ac762926b"
+    },
+    {
+      "path": "artifacts/observed-4-local.safe.json",
+      "sha256": "4d0a6ba7ec5eecc4e440a19a55e1957d78e8be6dc52e85599ce946379be7e4ab"
+    },
+    {
+      "path": "artifacts/observed-4-supervisor.safe.json",
+      "sha256": "1592bd2da6857e703da8a22aca4c5ddd2cfab73462bbedd5c5da884bbefcab01"
+    },
+    {
+      "path": "artifacts/observed-local.safe.json",
+      "sha256": "48818ef2e315cf4a2fd0d7cf1eea2b7971cfb3d0034347d4ddb136d7ef1198dc"
+    },
+    {
+      "path": "artifacts/observed-supervisor.safe.json",
+      "sha256": "fc878919f2322e2120f271ca44f0e239bf7eb2798d3626a60d2d41e795d1c09a"
+    },
+    {
+      "path": "artifacts/OFFLINE_CLOSURE_SAFE.json",
+      "sha256": "9f3c9bf1a4d553f202deb2e638a1522d43a6434a8c5f780dcba07699813f8224"
+    },
+    {
+      "path": "artifacts/original-local.safe.json",
+      "sha256": "74e8e1efce3c2a012b241c8ba0d48ca6b6b6d9263ab508dec42bc877f3fdaabd"
+    },
+    {
+      "path": "artifacts/original-supervisor.safe.json",
+      "sha256": "dd7872e240a59ef59bda337d7696ba3274903ecf75ca9a6e856f734ca1a548f4"
+    },
+    {
+      "path": "artifacts/unknown-2-local.safe.json",
+      "sha256": "11d6cb55e103d7c23d854631d03ef8120c6a2e606e03f472885a1ad8f83eb663"
+    },
+    {
+      "path": "artifacts/unknown-2-supervisor.safe.json",
+      "sha256": "2f0e9f78176f0e334646ce801de8b6a256b23bf3e36af769320c7d1966b24dc3"
+    },
+    {
+      "path": "artifacts/unknown-3-local.safe.json",
+      "sha256": "a4d13b6e62632e5f735aeef0a04506c7c8a018d1c74f2dc5fb2c64bfd87c0eb7"
+    },
+    {
+      "path": "artifacts/unknown-3-supervisor.safe.json",
+      "sha256": "809487bc3f7433d7e2cf8bea5cb7b0125d3302c28ff1d7cd4215fb8325716b81"
+    },
+    {
+      "path": "artifacts/unknown-local.safe.json",
+      "sha256": "c791ce452d560a7b15536c3d64d9076ea8a81b46719b79847c69131345ff6fdc"
+    },
+    {
+      "path": "artifacts/unknown-supervisor.safe.json",
+      "sha256": "69e55a2e438c6aee99a7b130985aba81c8ef26eddebb93f6559d61eb4de7da0e"
+    },
+    {
+      "path": "browser-observed-private.mjs",
+      "sha256": "907d9937632342c702ad064d6a476347d3c17bb90362e786f0f60deb70116aa7"
+    },
+    {
+      "path": "browser-observed.mjs",
+      "sha256": "c0c4f3044debf540d6585ed817200c8ea2ecbb4548714d85d7cfcd8cc46a9e56"
+    },
+    {
+      "path": "browser.test.mjs",
+      "sha256": "a46857beef849e48a5b01542289192eb3622a7c1ccabfc48ca69ab4bc3f7b79d"
+    },
+    {
+      "path": "diagnostics.mjs",
+      "sha256": "a5b9b525854a893b5466b5f97cfa3a975970b1afeed0f5108fd2365a47e5ed0b"
+    },
+    {
+      "path": "freeze-engineering.mjs",
+      "sha256": "aca6f45c423fef92ee7ebf6d768fc24576a607ed2800e74286f252f4b022b740"
+    },
+    {
+      "path": "local-child.mjs",
+      "sha256": "1f3d5d384919c1cdc718c65deba116698f927d43b1bef5564ca85aa553c791e8"
+    },
+    {
+      "path": "MINIMUM_OTHER_REQUEST_DIAGNOSTIC_SCOPE_NOT_AUTHORIZED.md",
+      "sha256": "b0ee11819fa7b3bdfeb2ea7a3b865763cd98e47369884bf76accf4295f9b84f4"
+    },
+    {
+      "path": "OFFLINE_CLOSURE.md",
+      "sha256": "1f5141a6a7df5dd3be63e100dbe382a203c2298647e7c8df88cd009e0ce2a5fc"
+    },
+    {
+      "path": "policy.test.mjs",
+      "sha256": "fba85af7eb88a9eae4c38a9c72a809355d64492f19adb689431ca2f09b84e3ef"
+    },
+    {
+      "path": "prepare-browser-copy.mjs",
+      "sha256": "af9a8a3f1c48f4603b89a2fb5fc05d1e1fb17ecfc36e726dd57ce7db9526bf04"
+    },
+    {
+      "path": "private-correlation.mjs",
+      "sha256": "37f1227ba6cf0418bd86191d4f622feba73fad0ee5e0fadcbfb28bd942a01ff7"
+    },
+    {
+      "path": "public-resources.mjs",
+      "sha256": "d1dc3b6902fc814cb39724c3f03cf7087097d91aba2404deb64143de6a847d60"
+    }
+  ],
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "goIssued": false,
+  "claimCreated": false
+}

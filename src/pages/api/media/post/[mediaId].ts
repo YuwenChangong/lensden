@@ -3,6 +3,7 @@ import { env as runtimeEnv } from "cloudflare:workers";
 import { createSSRClient, type CloudflareEnv } from "../../../../lib/supabase-server";
 import { streamStorageObjectViaSignedUrl, streamTrustedMediaUrl } from "../../../../lib/media-proxy";
 import { isPublicVisibleCircle } from "../../../../lib/site-navigation";
+import { isR2VideoPath } from "../../../../lib/r2-media-path";
 
 export const prerender = false;
 
@@ -28,6 +29,7 @@ type PublicPostMediaRow = {
   url?: string | null;
   storage_path?: string | null;
   thumbnail_url?: string | null;
+  unavailable_at?: string | null;
   posts?: {
     id?: string | null;
     status?: string | null;
@@ -76,7 +78,7 @@ export async function resolvePublicPostMediaTarget(
 
   const { data, error } = await supabase
     .from("post_media")
-    .select("id,post_id,user_id,kind,url,storage_path,thumbnail_url,posts:post_id(id,status,moderation_status,circle_id,circles:circle_id(id,slug,name,status))")
+    .select("id,post_id,user_id,kind,url,storage_path,thumbnail_url,unavailable_at,posts:post_id(id,status,moderation_status,circle_id,circles:circle_id(id,slug,name,status))")
     .eq("id", normalizedMediaId)
     .maybeSingle();
   const media = data as PublicPostMediaRow | null;
@@ -84,6 +86,7 @@ export async function resolvePublicPostMediaTarget(
   const circle = post && !Array.isArray(post.circles) ? post.circles : null;
 
   if (error || !media || media.id !== normalizedMediaId || !isMediaId(media.post_id) || !isMediaId(media.user_id)) return null;
+  if (media.unavailable_at) return null;
   if (!post || post.id !== media.post_id || !isMediaId(post.circle_id) || post.status !== "published" || post.moderation_status !== "published") return null;
   if (!circle || circle.id !== post.circle_id || circle.status?.toLowerCase() !== "active" || !isPublicVisibleCircle(circle)) return null;
   if (String(media.url ?? "").trim()) return null;
@@ -95,7 +98,7 @@ export async function resolvePublicPostMediaTarget(
   if (thumbnailPath && !isCanonicalPostMediaObjectPath(thumbnailPath, media.user_id, media.post_id, false)) return null;
 
   const path = variant === "thumb" && thumbnailPath ? thumbnailPath : storagePath;
-  return { path, delivery: path.startsWith("tmp/") ? "r2" : "supabase" };
+  return { path, delivery: media.kind === "video" && path === storagePath && isR2VideoPath(path) ? "r2" : "supabase" };
 }
 
 function buildTrustedR2ObjectUrl(baseUrl: string | undefined, objectPath: string): string | null {

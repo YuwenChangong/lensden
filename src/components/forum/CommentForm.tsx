@@ -36,7 +36,7 @@ export default function CommentForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(text.commentPublished);
+  const [successMessage, setSuccessMessage] = useState<string>(text.commentPublished);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -143,8 +143,7 @@ export default function CommentForm({
   const panelClass = inline
     ? "glass-card comment-panel comment-panel--inline comment-reply-form__panel"
     : "glass-panel comment-panel";
-  const shellTag = inline ? "div" : "section";
-  const Shell = shellTag as keyof JSX.IntrinsicElements;
+  const Shell = inline ? "div" : "section";
 
   return (
     <Shell className={inline ? "comment-reply-form" : "comment-shell"}>

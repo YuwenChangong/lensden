@@ -5,6 +5,7 @@ import cloudflare from "@astrojs/cloudflare";
 import { chromium } from "playwright";
 import { getUiMessages, formatUiMessage } from "../src/lib/i18n/catalog.ts";
 import { serializePreferenceCookie } from "../src/lib/i18n/preference-cookie.ts";
+process.env.ASTRO_DISABLE_UPDATE_CHECK = "true";
 for (const file of ["pages/index.astro", "pages/products/index.astro", "pages/products/[brand].astro", "pages/search/index.astro", "pages/news/index.astro", "pages/news/[slug].astro", "components/community/ProductCard.astro", "components/community/NewsCard.astro", "components/devices/DeviceLibraryExplorer.tsx", "components/news/NewsPagination.tsx", "components/CommunityCTA.astro", "components/LatestUpdates.astro"]) {
   const source = await readFile(new URL(`../src/${file}`, import.meta.url), "utf8");
   assert.match(source, /localeContext/, `${file} must use the selected locale`);
@@ -66,6 +67,7 @@ try {
     await page.locator("#products-search").fill("原始");
     await page.locator("[data-compare-button]").first().waitFor();
     for (const product of products.slice(0, 3)) {
+      await page.locator("#products-search").fill(product.name);
       await page.locator(`[data-compare-button][data-product-slug="${product.slug}"]`).click();
     }
     await page.getByText(formatUiMessage(text.compareSelected, { count: 3 }), { exact: true }).waitFor();

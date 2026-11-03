@@ -1,0 +1,12 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-manual-recovery-v19",
+  "source": "OWNER_EXPLICIT_ASYNC_CLARIFICATION_AFTER_STOP",
+  "ownerSawQaWindow": false,
+  "ownerClickedStart": false,
+  "ownerClickedAnyControl": false,
+  "preciseReport": "OWNER_SAW_NOTHING_AND_CLICKED_NOTHING",
+  "doesNotProveBrowserWasNotLaunched": true,
+  "windowVisibilityRootCause": "UNKNOWN",
+  "originalExecutionReceiptModified": false,
+  "credentialsRecorded": false
+}

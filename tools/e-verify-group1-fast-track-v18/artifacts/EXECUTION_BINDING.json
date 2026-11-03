@@ -1,0 +1,1474 @@
+{
+  "authorizationId": "e-verify-group1-native-manual-auth-openglasshub-20261015-fast-track-v18",
+  "packetSha256": "106ba518ece42834a1e435cbb34976914772954a4771bbfcc0b11d60a48a4c76",
+  "sourceRoot": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub",
+  "nodePath": "C:\\Users\\1\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+  "privateBindingPath": "C:\\Users\\1\\AppData\\Local\\OpenGlassHub\\acceptance-input\\e-verify-20261012\\STATEFUL_PRIVATE_BINDING_GROUP1_650_V1.json",
+  "privateBindingSha256": "950e185df3a3658ce990def5061cc39a63e571443292fabf141a99e5b9de98a3",
+  "files": [
+    {
+      "path": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+      "sha256": "fdd156b74dd997d3b15f0cdbb59ce0051f1e8b19d10822f31743abac09ec4c89"
+    },
+    {
+      "path": "C:/Temp/ogh-e-verify-production-acceptance-20261012/final-read-only/MANDATORY_ACCEPTANCE_MATRIX.json",
+      "sha256": "028ef4dba33f94f98573251c601140d6164683a6b1eb4678de7498af300924bf"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/node_modules/@supabase/supabase-js/src/SupabaseClient.ts",
+      "sha256": "d1cee3e7206eca3443c03e9ce868b24c3d3e0e15a2f96683b8ebf173dda941f1"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/artifacts/auth-outlet-1791972013493/BYPASS_PROBE_SAFE.json",
+      "sha256": "4015a8a3b9d109082236f010ff94374836eac697cdc09cb0b69eb73fba2063c3"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/artifacts/auth-outlet-1791972013493/SUPERVISOR_SAFE.json",
+      "sha256": "a299f94ccb6803835476b68e734ea933620cee17b38db9eef4996a5041c31ea4"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/artifacts/EXECUTION_BINDING_OFFLINE_BLOCKED.json",
+      "sha256": "02801f0f62a0434d44d435a3315a935f092bd266c2b3923f5a1c81bc14701158"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/artifacts/OFFLINE_CLOSURE_SAFE.json",
+      "sha256": "08d1919545959d12f75bfa6e00b458e493b2ab2849c87ede3c98af1054ced19d"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/browser-bypass.test.mjs",
+      "sha256": "addae61f0e67ee54373d464b9a1bd5bf86e30ca76dac5a0832723e88662fdc13"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/controlled-auth.mjs",
+      "sha256": "065aae46412ea0ee131f869918626ce44ea214ec6b78bf3497e846ea93ecc892"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/controlled-auth.test.mjs",
+      "sha256": "9aaab2a5315fa99fbf05bafb902f4522e3de6489807617d04156936f4b1c79cd"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/freeze-offline.mjs",
+      "sha256": "344a2114b1b3a823684df9945680e795a7f0230b385b66724cd73d4a835594aa"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-auth-integration/OFFLINE_BOUNDARY_DECISION.md",
+      "sha256": "06bcf0ec1870ab5cff49b3846d23c61a99a0bd80e8f0d9cff7cab638cfc49e92"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/CHILD_ONCE.claim",
+      "sha256": "0435ec5de56b06425073398c6e2830f26687533bdbdfa4cb7a6bdb1baaa81bbc"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/CHROME_PROVENANCE_SAFE.json",
+      "sha256": "ce39d3bf847a559657bd0c1b96af0f10f110f60d202bcba4b2a62efb96f0b23a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/CHROME_TARGETED_SAFE_1792031580909.json",
+      "sha256": "9ff0410e0beefe69272e2930b94f76cb2c76bdf521efccc63c67a2b56556f646"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/EXECUTION_BINDING.json",
+      "sha256": "241476de1ad5594501c537a660891222f044e4a1b8192804997343436aa7d699"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/EXECUTION_SAFE.json",
+      "sha256": "6aa90d3d35760817be29c3cd5afae63d505048fbdea1ee10e9911d042d50cba0"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/FINAL_SAFE.json",
+      "sha256": "7f6bcd2b14731e508e5d0964132b78f1858496d9cb975c7fa1528a6d160e7426"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/GO_CLOSURE_SAFE.json",
+      "sha256": "0cd4c22bcae93b1580602586cef3edb60acbde0e8d2b6ac0c76382bac0bd4ed1"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/HUMAN_GROUP1_CHROME_V15_AUTHORIZATION_NOT_AUTHORIZED.md",
+      "sha256": "5d750371331325fce4e6a09e4229ff062c05b13cf554cf054f2f94e363fae585"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/ONCE.claim",
+      "sha256": "0435ec5de56b06425073398c6e2830f26687533bdbdfa4cb7a6bdb1baaa81bbc"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/PACKET_NOT_AUTHORIZED.json",
+      "sha256": "ced74f08a28ba5f14d97b21c177d9f0ca2a2d71887b65cf095cd6fd8824325c2"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/artifacts/SUPERVISOR_SAFE.json",
+      "sha256": "e22ad956fb83c33724e943031dd56ddb29107d032f58f56f75059a7782625ff0"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/authorization.mjs",
+      "sha256": "3352c0228f674dffe001e285fe54a9822aadc712ebf0fe0aa61926fa037b6f82"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/child.mjs",
+      "sha256": "1ccbc7812b88cd826f2a777421a34075d551fe0bfbd99600b35606281a46b4f8"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/chrome-identity.mjs",
+      "sha256": "2c9921c62c8d6cb6916bfc915c2ee5d2485d7461e3a41d781b15e35dd5d9b207"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/chrome.test.mjs",
+      "sha256": "ad659818e2cc9d59daae4f669222cb6966a4baa862c72bb99e982e1b076a04e6"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/CONTRACT_NOT_AUTHORIZED.md",
+      "sha256": "5d750371331325fce4e6a09e4229ff062c05b13cf554cf054f2f94e363fae585"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/entry.mjs",
+      "sha256": "d4afef6d9e5b1cd6bafd84f33fa1f675d5aa5c4687aefb42dfae42e2ff4cf3b7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-chrome-v15/freeze.mjs",
+      "sha256": "b52bd3be38284ae8a3509d42463ceb70366922705b5c93c3d3f0f0ab8aba747c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/CHILD_ONCE.claim",
+      "sha256": "a3a1952f232355afddab24dc46c21a942a4bcbad83849f2d526b96010879cfe5"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/EXECUTION_BINDING.json",
+      "sha256": "f85815750899bd5fce1891d2d42c4d653c089c23733bcbabcb60f270ff97f3a8"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/EXECUTION_SAFE.json",
+      "sha256": "2af6a22e0a1943500bf067b4e798f739fc6355cf973f3fc5317a55fb808b2d85"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/FINAL_SAFE.json",
+      "sha256": "0f28d243505975df40b84c28fda5f71f91464d0c93744131996e8b510f09ebe7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/GO_CLOSURE_SAFE.json",
+      "sha256": "34504a19216106368ecd45327c07a8ef86616187cdf83e9730625990fa515bff"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/HUMAN_GROUP1_CONTROL_V16_AUTHORIZATION_NOT_AUTHORIZED.md",
+      "sha256": "d26152fe7d66ee9e4923438d17ee986c24995fab1e5b8307fdb2ab21aaf1c3ad"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/ONCE.claim",
+      "sha256": "a3a1952f232355afddab24dc46c21a942a4bcbad83849f2d526b96010879cfe5"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/PACKET_NOT_AUTHORIZED.json",
+      "sha256": "9f2f31e471a72dd15df252b458004dcd878f3a8480fa0d3d875b65fa067b453e"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/reproduction-1792032799941/original-control.png",
+      "sha256": "281b0403c1f6a11727d5b55dc6a96afe780b7545d6b575cfad343d4c5ed84bb6"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/reproduction-1792032799941/original-selected-blank.png",
+      "sha256": "3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/reproduction-1792032799941/REPRODUCTION_SAFE.json",
+      "sha256": "3469d9d2f7c844fbb6ec81b9530bafce35c697f6ed5787f54c710987164bb2c9"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/SUPERVISOR_SAFE.json",
+      "sha256": "2428da64affb61f478dfe02db18d028454b09b0578f8f67736623141f3f32e6e"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/tests-1792033177659/active-A-control.png",
+      "sha256": "677936ffc8fdabba6fb36c1cf17f2689973419c596e3aa7d1a9f6629a198695e"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/tests-1792033177659/GUARD_CHILD_SAFE.json",
+      "sha256": "96446f2f76476249c5881a6ab2e6899f7b5774b73cf8b6b41d4702507fe72a2f"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/tests-1792033177659/GUARD_SUPERVISOR_SAFE.json",
+      "sha256": "d4bd78a551eec552289859b2b8430bc29a8d609b5b41a57cd2eb5493ceb0f853"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/artifacts/tests-1792033177659/TARGETED_SAFE.json",
+      "sha256": "0213e5428f5b2acefcd11b4fe4af623c3bf55cd6cb6c32388dccbc694269d0c4"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/authorization.mjs",
+      "sha256": "360a7067a069b5a55315ab22dcf07b97fd437c78b9d8e21569b0a235ae5b6f03"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/browser.mjs",
+      "sha256": "65877e121b922e995ce926fb064bd451b3bfe8508949232170b00ea31a7cd645"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/child.mjs",
+      "sha256": "ce2cb9d88e69214cf007abe0a5629363ecca0ed649c92587e1e4e14ef07d7add"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/CONTRACT_NOT_AUTHORIZED.md",
+      "sha256": "d26152fe7d66ee9e4923438d17ee986c24995fab1e5b8307fdb2ab21aaf1c3ad"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/control.mjs",
+      "sha256": "dac2850544a9a870ec8aa75b57f3ce5feb811008fae1fc7c9a6fe48be2405c7d"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/control.test.mjs",
+      "sha256": "09b28cf79237b39a967fbaa9aff11c9917ef19d51d71cf01ad4751aaa15ede38"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/entry.mjs",
+      "sha256": "d4afef6d9e5b1cd6bafd84f33fa1f675d5aa5c4687aefb42dfae42e2ff4cf3b7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/focus.ps1",
+      "sha256": "08f8ec6b2aeef9cc5d321133c86ece3ae67e951b1e551dee00d07d194f05028c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/freeze.mjs",
+      "sha256": "0b4625f5387893edc4781e6a082ca2e333c9e83017c452a8ed278044fde71ab5"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/guard-check.mjs",
+      "sha256": "6a3db99deead4a4f1c4c4d786e52d1075ffab2c3c2cf0cf655918461bd61e852"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-control-v16/reproduce.mjs",
+      "sha256": "2bea38a874c6e3e110face49f460d918a61f72fb66b7531f713e3d9e81004c8d"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/.gitattributes",
+      "sha256": "217c7bd1388aa7e875e60356a4fc6b51c13a2c99a90ee95501ed7fba120fe5f3"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/artifacts/HUMAN_GROUP1_FAST_TRACK_V18_AUTHORIZATION_NOT_AUTHORIZED.md",
+      "sha256": "9ff7ebbcd9925edf5a59ec776113e6d46ebfc2285816a763424f175c93b19584"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/authorization.mjs",
+      "sha256": "e76527958be17b871da9a1e7b94f290b0602a1448d69d6a16b97ef1a2f992431"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/browser.mjs",
+      "sha256": "05e300a688c61bc2fb4ee90ffc3262d9a2e299c91f138530b924e17c733921c9"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/browser.test.mjs",
+      "sha256": "50d0e0ead457d04d80649d5c0e54b3d12a57591533b653653484d570ec9334bb"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/child.mjs",
+      "sha256": "7a4938c02f8aea149f201e4a4a886b981bddffe7ef8ae4df08e6252ccc8e3247"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/CONTRACT_NOT_AUTHORIZED.md",
+      "sha256": "9ff7ebbcd9925edf5a59ec776113e6d46ebfc2285816a763424f175c93b19584"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/entry.mjs",
+      "sha256": "d4afef6d9e5b1cd6bafd84f33fa1f675d5aa5c4687aefb42dfae42e2ff4cf3b7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/freeze.mjs",
+      "sha256": "39547e0cce456b4093823c4a45f16d4430fdb714f2824111f12fe580bae5f5da"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/MATERIAL_DIFFERENCE.md",
+      "sha256": "45a6dc6e41f2ca3bddc63018aafa0a584a704c9b74bc6f3113d3e2774e7c0782"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/monitor.mjs",
+      "sha256": "f77f971280bc2cdeb272ec96d9c7e66eaa1e985d5f4e1a81a45fd6f47cac456c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-fast-track-v18/policy.test.mjs",
+      "sha256": "aad535b1df355503824257eab1d4c8ffdc0fba3b1023429c188d8ff16515f881"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-full650-chrome-v11/artifacts/EXECUTION_BINDING_GROUP1.json",
+      "sha256": "c5578e592aa950764fcae09ebca458bd48aa3f16d5a07a27bb63afdda6ce8b5a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-full650-chrome-v11/artifacts/GROUP1_PACKET_NOT_AUTHORIZED.json",
+      "sha256": "a6a356005f43b92dc16625ec3109324a08c6d8dd8fa2b88eca23333ef3a54ed8"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-full650-chrome-v11/artifacts/OWNER_FREE_PLAN_EVIDENCE.json",
+      "sha256": "c6a86405f6c433198f45f1fb2a2538da7bfbfac5aed5a7cfb8ec7c07f4333980"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/artifacts/EXECUTION_BINDING.json",
+      "sha256": "0f6d87fa9d6872988ddcefeceed642a7320e5f36d2da2d60b3cfad2987480f8b"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/artifacts/flow-1791976859804/FLOW_SAFE.json",
+      "sha256": "fddf110825834b9b80c13d37cf6b092c5ebc8f0b09eb5b21a3b85b299da50f76"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/artifacts/flow-1791976859804/SUPERVISOR_SAFE.json",
+      "sha256": "beed8a6d94f0fc801851990e7d823406abe5847058a6546a617fb1fa10dacd9a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/artifacts/HUMAN_GROUP1_NATIVE_MANUAL_AUTH_NOT_AUTHORIZED.md",
+      "sha256": "c9bfa49ee26b9e8d395fe9930fbea0aca7721dad902e5a88e3518383284da8f6"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/artifacts/PACKET_NOT_AUTHORIZED.json",
+      "sha256": "f8ff67e51ad73cd84a5abb4d3841036b51101fbbfceb86885b7ac007e1c428fc"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/authorization.mjs",
+      "sha256": "567e4b2085f13663db9d1b0e27c20d24f56786cc4039fb08e67075df2af60ed0"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/authorization.test.mjs",
+      "sha256": "e14b1290d9cd9bffeaea475d804702e8a4be8dd9cca56f742bc9fa6b713caded"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/browser.mjs",
+      "sha256": "768c8cd55983aec3b1d8cc431fc15fc722dc5204eacac748cb4d45cc55145de1"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/channel.mjs",
+      "sha256": "d712c6f1a1238cf796abb34269ca50a536c8206a95b5b42be5056fd1c5d21150"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/child.mjs",
+      "sha256": "e052ca1b81efae5869ebbb2d0b8a37202bf97182cc188e2494a47870e2493873"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/CONTRACT_NOT_AUTHORIZED.md",
+      "sha256": "c9bfa49ee26b9e8d395fe9930fbea0aca7721dad902e5a88e3518383284da8f6"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/entry.mjs",
+      "sha256": "d4afef6d9e5b1cd6bafd84f33fa1f675d5aa5c4687aefb42dfae42e2ff4cf3b7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/flow.test.mjs",
+      "sha256": "7a6584846df1296773814c6078ebfd22e211aa231144021d7453e214c5119d1e"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/freeze.mjs",
+      "sha256": "dc0e1bdf08c7db3d3480c066e9d0e0caed5f0a922352935a30c87f535ee8b493"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/monitor.mjs",
+      "sha256": "90e5c5393d3cbb56d09269d44786ed6b7251c06b86503c9269def20826fcf790"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-manual-auth/policy.test.mjs",
+      "sha256": "e0b389ccf397eff4558f9d8e4cba8b9a8ae153817b4b5841149acc771b4fed15"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/.gitattributes",
+      "sha256": "4106c95c5ce7dfde30f96b65d0cbac14a332bb1b8f08cef6c8232341618be31f"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/artifacts/integration-1792035898096/GUARD_CHILD_SAFE.json",
+      "sha256": "d6950fcb96c1abcaa32eb90fa0cc5d2eb0a62423c45a2f72760d5c324656b5e7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/artifacts/integration-1792035898096/GUARD_SUPERVISOR_SAFE.json",
+      "sha256": "f8b173d47ea8dfb16fbb25e087f27632dbeb35e387c955e4ae08a9a68e9e5a7b"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/artifacts/integration-1792035898096/TARGETED_SAFE.json",
+      "sha256": "9862a9745eb1cbeaabe4e8a9c5cc23494ff58858b5a907cf4172d0973f203229"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/artifacts/OFFLINE_INTEGRATION_SAFE.json",
+      "sha256": "ebe1b1aab81eb046a8f29237ccebc10aac8ae8a8ddb610edd93d2d5fc7aca73b"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/browser.mjs",
+      "sha256": "19e18df9652fb96687dc458f65ac0c73fd60ff3d4601dc28e2c85d582b848a99"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/diagnostic.mjs",
+      "sha256": "d0cef9d4f76b4036aec52ad3d7193a40b3f8840523f788e2c401dfeec18d3a16"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/guard-check.mjs",
+      "sha256": "3bed97ae10aad02bc581e7e32f545d3a3d0fc90339239da122c4df6c2cdfd70b"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/integration.mjs",
+      "sha256": "635e4bda9a4974b7f916c75e77f92a5caa7f635061d34050fddb3dad1da4529d"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/integration.test.mjs",
+      "sha256": "01965e54fdc5af87b7edeae143da047dd254871f3788b1ad58c6dea3eb959be4"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/private-origin.mjs",
+      "sha256": "5eeb3a4faae9bdf362c5429413f616669bc0f4072958e133a02f74752151e428"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/private-origin.test.mjs",
+      "sha256": "d4f859e007ac69ea60b9c1c0965e631c855ddd53effb8b81170acaf5d230be41"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/protected-origin.ps1",
+      "sha256": "b29bd8ed8942c0420a65d5d037afa18c3acc3e9a9f6ab434b282c4de269b2e82"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-origin-integration/README.md",
+      "sha256": "9ee7e2a2735000b4e345e8a21e773cbc9d895aef4544c915143ed3976078224c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/.gitattributes",
+      "sha256": "f4e2c9c76f9f93dee650faed399fd5eea35e7fa3adc23bd2f05a20454fa81d6b"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/CHILD_ONCE.claim",
+      "sha256": "0f2e3dfc2aef953a587c4cef7c6af6dfa6c9eb0f42fbaea2c245ba20bf0feb71"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/EXECUTION_BINDING.json",
+      "sha256": "5af796fc6f5749b660ed11b214733384e58b20ce521fbf98eac17e151ada3c60"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/EXECUTION_SAFE.json",
+      "sha256": "eb511836093c45a6a6596fb9a5ff10af4b56ab1f13bd0c9e6d2a03dd620a153c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/FINAL_SAFE.json",
+      "sha256": "f5906f7063d654e7fd2c412fe98ceae1d7370560702cf68db0ae5f9be7ab1bd9"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/GO_CLOSURE_SAFE.json",
+      "sha256": "0c716cfcd8866d7f682432104e030bd1ca4c537e9aca803fe068ef96a722c30c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/HUMAN_GROUP1_PROTECTED_ORIGIN_V17_AUTHORIZATION_NOT_AUTHORIZED.md",
+      "sha256": "adf4511ea2edce08c055d8ba86737d5ed30b3bc0a7dca2e62af2747854ba2781"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/ONCE.claim",
+      "sha256": "0f2e3dfc2aef953a587c4cef7c6af6dfa6c9eb0f42fbaea2c245ba20bf0feb71"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/PACKET_NOT_AUTHORIZED.json",
+      "sha256": "f776ea658e0d4556f18f8f4d193f6275271298769addb83c746a719b27ef668a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/PREFLIGHT_ONCE_SAFE.json",
+      "sha256": "452ba2138b1371f411dbc5394f52c1153ee8b0b74043593af9ce3fcbb1765ae7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/PRIVATE_ORIGIN_REVIEW_SAFE.json",
+      "sha256": "a949c34e214af4d4d73e654b34c46444387a7826b5929dddfb49b48a0a5ca425"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/artifacts/SUPERVISOR_SAFE.json",
+      "sha256": "75155164a6a30fd2dbc2f1a65c4cf50bba57591bcdfee8ec83cb017398562107"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/authorization.mjs",
+      "sha256": "956e534abfa5426009cc1b4a888edd96dbdf299b21026d700a7f8213ecd40307"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/browser-factory.mjs",
+      "sha256": "883d67289093f00d99cf27411334a4324a53a3e87bb2a9dbe47511f9512ed7eb"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/child.mjs",
+      "sha256": "815b1b40eb935e062810103235847d6df430a86da2b823a95957feb9b4578490"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/consistency.mjs",
+      "sha256": "dc26acd52de1b3de9a51aba2dc0a8d97e690d55c2bb6a9090fa46d64bbd7c603"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/CONTRACT_NOT_AUTHORIZED.md",
+      "sha256": "adf4511ea2edce08c055d8ba86737d5ed30b3bc0a7dca2e62af2747854ba2781"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/entry.mjs",
+      "sha256": "d4afef6d9e5b1cd6bafd84f33fa1f675d5aa5c4687aefb42dfae42e2ff4cf3b7"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/evidence-review.mjs",
+      "sha256": "8f09261f68504ebbfddc5d2acb075a347a85b6527d752e305a86c89e68fb10f2"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/freeze.mjs",
+      "sha256": "8bff5c3e590b631f2596955618104556b57e4913787baa9fdea23df6a9ff69fa"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-protected-origin-v17/MATERIAL_DIFFERENCE.md",
+      "sha256": "b9c3d8748355f909ca86be4a1414747dc55269d8d4515f73212b58d3873b7378"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-remaining-assets/bootstrap.mjs",
+      "sha256": "e704ac6c7416f3a514fed42d229ee30b21d055349eafc77f65320d8423e3d1a8"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-remaining-assets/job-broker.ps1",
+      "sha256": "3a6ee9483fe8896100e76a6a9406012f4745fead9ad6cb09af3aca7c1ee92cfa"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-remaining-assets/private-evidence.mjs",
+      "sha256": "623d42c6e6888d97e2bcb852fd62776822aafb76db8cff9b22ec6be730128914"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-remaining-assets/protect-evidence.ps1",
+      "sha256": "28bbd635c54b92be5dc53aeac9ca12645d3a37876b5273ae058c56dbeed57ccd"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-remaining-assets/supervisor.mjs",
+      "sha256": "d201ed32dc87b6c3b294f9b72dbb0f7a7d2ff2bbe2e80ec18a89ebad9d126d3e"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-script-binding/execution/wire.mjs",
+      "sha256": "182973fc8f5045858fc8d7786c1352d03a910f6ad507e9f4c1354f78260f6862"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-script-identity/execution/group1/rls.mjs",
+      "sha256": "94be0296690bb6caf9cb6ea023f83655a07daae82e037677f6e15ea96dd0fd89"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-script-identity/execution/identity-rls.mjs",
+      "sha256": "6918040c9803c83794f0d684a9cfc88e82817bc9b98ee30526c9831a5d65669e"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-script-identity/execution/node-guard.mjs",
+      "sha256": "d081812a0ace7fe0dedc273aa0f74c7d5d89eb2fe99e6b527f663b7f48965ef5"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/artifacts/EXECUTION_BINDING_OFFLINE_BLOCKED.json",
+      "sha256": "85b5dad5f548bfad29a26de1f61b26d9d167297c1555cd3c5e47383e71396e88"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/artifacts/handoff-1791970258127/HANDOFF_SAFE.json",
+      "sha256": "647b044641e201473a8e58ab1736b07db65e0118d43efdddd7fb8e4eb5a4be81"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/artifacts/handoff-1791970258127/SUPERVISOR_SAFE.json",
+      "sha256": "9b8e62feaec778a2af7f7fb744b9340eec793bdd3b3f436c4d5c1b92b9312eba"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/artifacts/PACKET_OFFLINE_BLOCKED.json",
+      "sha256": "8b61e1eb2fd62c5f460291e064ff20b2081dd7b2e06096b797851e1a629c1d12"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/browser-handoff.test.mjs",
+      "sha256": "513a9b2c762de686996de62b83ea364d2fb005ec42cb48e5a89ffadde0070a7c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/capture.mjs",
+      "sha256": "344954bbc0ec78513bc7db13e162ff53cc927c29facb31d4c470d29b4e26f86a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/CONTRACT_PENDING_BOUNDARY_DECISION.md",
+      "sha256": "1cef17d2f37492eb7a5b4069bdc4c9b15b481ca0f62ae5700684b2b106cf19ee"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/freeze-blocked.mjs",
+      "sha256": "a08d4bcaccfd4e85b09d211bb7fed8c8823a39d246ff9a21baf3c22b732ecae8"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/session-reader.mjs",
+      "sha256": "69abe0e358fc755f358ed6e99d1af81f2e1a7837b0dc006826bb608086d5f8f2"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-standard-hybrid/session-reader.test.mjs",
+      "sha256": "dc939b4251ceba3ccc87168b15e52cee498b1ab116fce6718633a02014ce0fa1"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-group1-v9-closure/gate.mjs",
+      "sha256": "ac7a63724997a7b37a134b1e7c90a750f9f44d651a2edeb23d422979c30221f1"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/artifacts/GROUP1_FUTURE_EVIDENCE_PLAN.json",
+      "sha256": "ed7db193235f3507dce17607e3390cb32bca53c9cd967c2d532eb7b49aefe051"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/artifacts/OWNER_HUMAN_CONFIRMATION_PENDING_WINDOW_SAFE.json",
+      "sha256": "404f9ea0d0e50afcf8761508d1342676cec8d36290169ff8a3da79d8ab4568e2"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/authorization.mjs",
+      "sha256": "ddf89ce25cdca8686649ba78d2a9964378b736b3c9596180705af4f503549a1c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/authorization.test.mjs",
+      "sha256": "f3e116ae79055af02042ad866338362e4f44c0c659ddc97233641af7c346859d"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/binding.mjs",
+      "sha256": "9a4743c663c8ae1abfa6a41924ebaef96f29e07f3e4fcc3d8c8ff6b29213b45d"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/consistency.test.mjs",
+      "sha256": "c93b0113600b2681fcbf1856faae9816b0ae0cbb8f0d42ef08b70195ada0f755"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/evidence.mjs",
+      "sha256": "48c2109ea3c2912b2ad33f64977f4f0afc2838c62459b089d687786f8a744758"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/freeze.mjs",
+      "sha256": "d0698ffbf98d480393b531e1821c386cdd553ee299f246cdaf202ea204ada6c0"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/harness.mjs",
+      "sha256": "98a2ae79989509a4f600179ce55b234b6ae37bdeeb3c78f4052f66ce735b2af4"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/live-child.mjs",
+      "sha256": "80782dcfb52c1ddf33588068a2860a540395eb841dec9d14d3321a1b1f18d725"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/MANUAL_ACCEPTANCE_PLAN.md",
+      "sha256": "381f0918a92f3a4b6f5b85651d870331543baed8c0113b492a124b05a4c2d089"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/manual.test.mjs",
+      "sha256": "1258b2ef44d08ceab8ff538a8e9f213c7abfdc0af7a2657643582109302976ad"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/native-browser.mjs",
+      "sha256": "1fb511aba39a1ae4e1aa73f7feed14b0f4fa21d7302d102d99cca17806e5c41a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/native.test.mjs",
+      "sha256": "25d9b7d5de8568341e818fae629bc628d315027056b4072faac82c5bfe163a5e"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/offline-child.mjs",
+      "sha256": "2a73a9a9984f1f120a8eceb0c94c98b82caea284c3e62d728d31e3bc6ee76956"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/profile.mjs",
+      "sha256": "9ee458c6649de589178c96d5eebfe42fe1db4d58dff525b3d8fbc9d90e9ca95a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/run-manual.mjs",
+      "sha256": "f82d3b65fa2b8e56234d442ee8ff42ce170e2e3c8c666098927e8fe4f701496f"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-native-manual-fresh-v2/scope.mjs",
+      "sha256": "f74a8cbde9798b8722e303f3701bcd95ff30aef213df11329cdcc601521de31c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/abort-supervisor.json",
+      "sha256": "7438ec09ddfa1cd3b8664e161ff88108fec40e6748017dfe5b23d8776d6bb280"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/abort.json",
+      "sha256": "116653c6938e8bd8951f6e9d2b242e270328b390b0dd42a59294d3e7e7c077f9"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/idle-supervisor.json",
+      "sha256": "983d2333a17bdee028a7258c39efdbfb18fcde139a12ed18a3b095469087a41a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/idle.json",
+      "sha256": "6b3d1e589a2db87c03727bcba99b1f74c19fa24d4bce768f166d79bc912b259c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/no-callback-supervisor.json",
+      "sha256": "b32e4b0f06025e533c1cbd3277d50ee3b5bb5c53b7350f8110a2f9125754cb2c"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/no-callback.json",
+      "sha256": "1c47e95a8a2b8730b9fda5f43dd5d00a1f62bfecfc37528cde6cb293b53134e5"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/sdk-error-supervisor.json",
+      "sha256": "60b038a223c29e34b8ae0a70c4d8153caa4e5d17f9fd1da9b0759ee7a0962dab"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/sdk-error.json",
+      "sha256": "ebdeb78d78ba6b51a06df131838497dfe2e05aef269231d5b047d363dd0f93f4"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/success-supervisor.json",
+      "sha256": "a48d4e5198d6f9dfc39bf4c56c91507165f82ae2c968d94dc2b07b89d59162c8"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/success.json",
+      "sha256": "ed9a0f236221dc349ea3eb8b7f41c546358b40360741c9a85f656bc0688bf8d6"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/unknown-supervisor.json",
+      "sha256": "2a2ae11837cb6faa46ea7d3c23d179b9a620a8e77ce16fe8b2269ceb5ed6331a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/offline-1791967895832/unknown.json",
+      "sha256": "130d63593e41dd54d3939fcba9cd4f678c27a338bd2252bc9dc5efa643421fbf"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/artifacts/OWNER_SINGLE_EXECUTION_EVIDENCE_EXCEPTION_ACCEPTANCE_SAFE.json",
+      "sha256": "04fb6d9fda132f69a49492b6367a8ac65ed88d1e75785d5ef89651f0ed43b8fe"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/authorization.mjs",
+      "sha256": "ebf8660d522fcd8f065f4a807671b3250e1215f918dffc079e83adb465e51548"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/binding.mjs",
+      "sha256": "5e6c3296b3acde4dd279938d075c86c434cf263e50df6ded0b71662f0da888ea"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/browser.mjs",
+      "sha256": "c9c5c3b3fc0554b29002643345e6c9f1ddbfbebd97d93c8e65df4a4b5d8bbff0"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/browser.test.mjs",
+      "sha256": "c28804017014ba90087f0ba7b662ebeb1db3f2c5285b8a2ba76eac11df55fdbf"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/CONTRACT_NOT_AUTHORIZED.md",
+      "sha256": "faabbd1f44356b98a74bb1048393146268180c1bb1faf3ccf858a55b141fb4df"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/freeze.mjs",
+      "sha256": "582ca66ffdc3e25df3b5180c3a387321e3fbf70238c713c9be1b629aa734b351"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/harness.mjs",
+      "sha256": "157af5a4cc9b2e06d0428223838fd076ec988a116d9709e9903d15adddee85ac"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/live-child.mjs",
+      "sha256": "575d2cd35ff14a0fc444ac3181fde79fbde2d9a01e47bf321979335dc9afd57a"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/observation.mjs",
+      "sha256": "9af1bed055cb161cb08e84237e87fb8a54079358bebea6cdf5dd774df3951f89"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/offline-child.mjs",
+      "sha256": "2070b7b9ca10e5de3469eb153b9f7764d2a11e3ba81a0d0543d922625d32fbc6"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/run-manual.mjs",
+      "sha256": "d1081f8b5d6a338eb878f86667217ff74bc2132182800a5610245080a4ebd4ad"
+    },
+    {
+      "path": "C:/Temp/ogh-product-beta-development-20261013/tools/e-verify-standard-chrome/standard.test.mjs",
+      "sha256": "483a14e385151610fd60421d15a6bfb66e7e37560c9411705d84139e2885b4de"
+    },
+    {
+      "path": "C:/Users/1/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe",
+      "sha256": "3602f2bb1a10f2cbab4c36886218a33c1ab3db87290e73b033c46c77147d0237"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/install_media_pack.ps1",
+      "sha256": "bc20f049badf021e3a53bdb4156603caa5ef482c9a9a251f927605e676a44171"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/install_webkit_wsl.ps1",
+      "sha256": "bc61beda37a808eef27d39ce684baa792f6d17737a25a432b1a84d3b591ab815"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_chrome_beta_linux.sh",
+      "sha256": "dc8c22b9dde76583cece2857575b88094299615f3136a3c598149710c45dee3a"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_chrome_beta_mac.sh",
+      "sha256": "a92eaeb4ebcf5633a4e9c981481e14c80764fc81b6fcbc0565398e50ff319433"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_chrome_beta_win.ps1",
+      "sha256": "b6d9e44742feafb98d5edc56fa20042949973cf30d141a1c5b4fb384096967c5"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_chrome_stable_linux.sh",
+      "sha256": "dc72ab3567a4ce43bd8353d4ecf41f1d9c03e870169367cd3ed9043aabf67dd1"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_chrome_stable_mac.sh",
+      "sha256": "bb43a96c192a6cc81524ade0264686fff7809c019a89f7db0a9849635879c3be"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_chrome_stable_win.ps1",
+      "sha256": "3d96c4e2f4ebbb3fad44cf3ba58d9cf90af1c9fb3073e3b27d45a74cf005515b"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_beta_linux.sh",
+      "sha256": "10b26f35dbc2000b94edf1172d803a29c5873a4eb8d523afbc687997b642767e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_beta_mac.sh",
+      "sha256": "0036d738bc90d686100d81f328ba0003bf07863f5500b792c8da391d149750fa"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_beta_win.ps1",
+      "sha256": "b173c378a59f0cc38033cee702de1f44f09276c9b2270d1a650ebe66ee312433"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_dev_linux.sh",
+      "sha256": "00e4947e7a4f8339c6db09c87976d808583c07f9179e4aa7694d88614b82fe95"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_dev_mac.sh",
+      "sha256": "6f899e3b311f742c24ca37ff9e32298e8290514ffc14bf588cc51556a29da4c0"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_dev_win.ps1",
+      "sha256": "46f7f98c81cb0abe687d7f4a5afea9b897a38d2a6dd6f6662fbd847f7a22bd51"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_stable_linux.sh",
+      "sha256": "ec0a31a5f09c565e108473a1850895a4458ab00c713ac1de3aa2001912e4668f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_stable_mac.sh",
+      "sha256": "3af1e893527ff2257aa2dbc3b259a053b92f45c3eadb13e38eba46e87902655d"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/bin/reinstall_msedge_stable_win.ps1",
+      "sha256": "40bb5fcbfcebbbe2ce43c6e736e7c5deefc5be03b6e9c6914423c06ec1f591be"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/browsers.json",
+      "sha256": "f306eed529599b1eaf2f8a85db9de2b23e1a3fe36c2b66434b7c9434fb627a99"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/cli.js",
+      "sha256": "f1c4075aef116c766092250d7f37b3249a7cee6465d953207fc38c8f6145becd"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/index.d.ts",
+      "sha256": "7a8ec10b0834eb7183e4bfcd929838ac77583828e343211bb73676d1e47f6f01"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/index.js",
+      "sha256": "a58fb2cec4293e7dcf73c58a179898a4f3986666451a19da4e731fa3af63265b"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/index.mjs",
+      "sha256": "3d36e2132d3c8b62397d23f0bb4177336aaee503203ae2a2c90fbeb5bf3317dd"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/bootstrap.js",
+      "sha256": "4637f4dbfef9cfc01baeb5f5d2cb63fa0901522c96915ea2227290558d27123e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/coreBundle.js",
+      "sha256": "9393fa79e1c67c74edc26b610d65a4f7ed73d345a762465cc88340a33a2454ac"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/entry/cliDaemon.js",
+      "sha256": "062f256fb29a7bf91793a014b9c3f1f9cf2dc6b12e40a8a2ebba88a630ae16a0"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/entry/dashboardApp.js",
+      "sha256": "209962c6eaeef11629f226d6a2ab33ec7a2480754242b6e19590a9e6eb71d126"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/entry/mcp.js",
+      "sha256": "cc87dc0020cb41caebbf04f50e42bc7835b033a6d80e9c3f0a3d0b3dbdf341c7"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/entry/oopBrowserDownload.js",
+      "sha256": "87567cdbd67dd2f50bb232d47d3784701ece7c81e39c0287bb7d1b466b68cf06"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/package.js",
+      "sha256": "9f938e1d44a0dd231b1660ca62f7dae964859b79cbdc370b8542c5d375ca3c05"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/server/chromium/appIcon.png",
+      "sha256": "6ba994f05c5cf18e22d9b6bef9898fbdec6ad4d4d77f5187d0609cb42d72d01e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/server/electron/loader.js",
+      "sha256": "8f4f2c20933e7bef2bbed9a1b455278ad1461aa919b0386f360aee5b2580149d"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/serverRegistry.js",
+      "sha256": "e9db9d4eaa8c3690f700ea3047af7b0b6e0b16937a969589678c51db92272ae9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/serverRegistry.js.LICENSE",
+      "sha256": "5cf540fe55a2ba9bcf0eb76e739b454faa8581e2f1a0f777602ef0855534302e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/channelSessions.js",
+      "sha256": "6b9c613e87340f48ad7182addd7495a8ff3fbe55feb1bbd0ce04f59f1552e126"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/cli.js",
+      "sha256": "dfde8e9dfde30c4b3914eb25ba1c5a8524ec64651d866171d75cd7b41a827180"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/help.json",
+      "sha256": "d63f1c7e006b1bdfbe656e6bea2b4dca9e1b6c17f8c806fdaca656fef71d234d"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/minimist.js",
+      "sha256": "1d200627373a367e0097f1abeaaa4d67cde2c33f2e5efca5cb55222c7667adc3"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/output.js",
+      "sha256": "2eace914547a487b2aa1dc34af787fe92168f0b7b3dde24f2b127e817cc9b2b4"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/program.js",
+      "sha256": "4a3ece6f75a707e6af71c1dde8650080e7819421594f251b9397e2e45e89cbb8"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/registry.js",
+      "sha256": "c11d278e05542808ba37bdb032018eccf9dc78377f8025bd74fa906ae009ca30"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/cli-client/session.js",
+      "sha256": "716e87fc77251129adf8c66374cccc6788f76a02b4b33692c7e63a01a659cb5c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/dashboard/appIcon.png",
+      "sha256": "38037bcf18c7f9b950da2e1a2d8800d38fb27637ccda293d38368a3704b67f18"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/element-attributes.md",
+      "sha256": "bf19aa4671e0a50a0fefa9c790f39124e803060eefe395042b723c29fcb7faa2"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/playwright-tests.md",
+      "sha256": "c5b0719fef2cfdff50bd744051b2f9afc119775db4b48e9b2882c1cf3886797c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/request-mocking.md",
+      "sha256": "54e801c9663fc2b6d68ceb058cb1c360724c2499f42acc7852a68e83e5b5f37c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/running-code.md",
+      "sha256": "d95c539a5990b71d02d8bdf1d9414df16191eb6cff95b0063820518b7a13dcb2"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/session-management.md",
+      "sha256": "cd3e261b8763bf952f1e371b876cb78d054379afec85482f9250633e1b7e6c44"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/storage-state.md",
+      "sha256": "9ac47f9ae4a1aedcd2077f8ac9ab1ba6bee1962cb83ff51adcd36fb6d83b5ec6"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/test-generation.md",
+      "sha256": "12f54cfa718d9e559bad918120a4ca4f11c933167713d1b9c5f99872eddaf749"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/tracing.md",
+      "sha256": "792e0ac7705e56ac48df84c0f5400221ce86107897c671590a64a4ea6a82508e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/video-recording.md",
+      "sha256": "8555ab5400df0d90e66318aacc0a8a4418fbf872e7463824d55d5c41615abd83"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-cli/SKILL.md",
+      "sha256": "29c0b669a524d42b51934d7db9144c1c07a566d0549ae6fb6ccd810e5a3cf61b"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/gallery-spec.md",
+      "sha256": "0ca25dde6112eb379f56eb618585b64dc2dfd13c2f7f956ac7eabbd76a68912b"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/migration.md",
+      "sha256": "0afda2e933235ad5c538c914e75c2469c160cd3be7650bd4ec86bef9efae8d63"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/react.md",
+      "sha256": "2a9661c3bff8d12064d50aa71c4e0fe120bcf6e9f243f2506a1ad90b0edf2f90"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/vue.md",
+      "sha256": "5a01334a5521d6728f7d0e87751efb0723d6a7e3f715f994fdf96b88853966c1"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/SKILL.md",
+      "sha256": "77bc6f8d1de57ac8f8996ae860c1cfc446f18f48e78cc643b43389e5a97d5c66"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/skills/playwright-trace/SKILL.md",
+      "sha256": "df85506bfa8a445c961efa1ac244cca733667b717711bcc99c1f93994c29d5dc"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/utils/extension.js",
+      "sha256": "ed1a56cb9a6b4643a6a1dea604c541a4e3a4be8d8971edcfe53c7dc9cceefe98"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/tools/utils/socketConnection.js",
+      "sha256": "973c2bea70a1f1445f4673f99e9fa351e50a2ec9fd93d7381b2c41bb4de764dd"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/utilsBundle.js",
+      "sha256": "580f571bf063e2256b51b3946a035bc452fc0e22808d5547b198baea39923a32"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/utilsBundle.js.LICENSE",
+      "sha256": "57945338cba4878e373646733528017fbe3db1503ec2b431fd30d2a390c70c33"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/assets/codicon-DCmgc-ay.ttf",
+      "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/assets/firefox-1bWoP6pv.svg",
+      "sha256": "3f3742d1e78c0db6c2d3531250f70c30675ee5310de32fa89befaf738c54efd0"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/assets/firefox-beta-k3eOH_eK.svg",
+      "sha256": "7eab5ffdc25903ba33a7202f7fffa1999f119c7be45a39e9e703c118904f917a"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/assets/firefox-nightly-Cp5nfeDT.svg",
+      "sha256": "f311c074b0fa999fcd6b73441301fb54ee87a48ff3bf05f318647928110476da"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/assets/index-CyWAfh-p.js",
+      "sha256": "33abc7596e49d241e5b397141073e73bb2fb7eec9880bb1e0e2e6d0f673a150e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/assets/index-DhC616m4.css",
+      "sha256": "b4adaf3c09a3a3a4d17d0268255113d0bbacd2045cfab47ed69a78e0b9bdbd78"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/assets/safari-na3_-uQk.svg",
+      "sha256": "80fd72ca5eb8545f1981277b31f4f92951d469d4efebd078e4086b676fe517dc"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/index.html",
+      "sha256": "3c127919b93d9a2a621ec5aa5be8565680edc6e961e62d028914549d22bcb218"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/dashboard/playwright-logo.svg",
+      "sha256": "511524a1c145819303a18fb71870a4307c3e740f9e9722f7686a2b42b0995b6c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/htmlReport/index.html",
+      "sha256": "ce7c098020a0eb9ce10edd416245ea6da50dfeaab18dfd0a2176979d22643be6"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/htmlReport/report.css",
+      "sha256": "afa5c8f204098c79eb093e9354d82488a2ccaa771b45453cd4d1e9a075779cb8"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/htmlReport/report.js",
+      "sha256": "f0941744b2ef35b91eafb3d6099f5d4acb342ddbb3000ff293b6e3abf80d29ac"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/recorder/assets/codeMirrorModule--QdMvsKi.css",
+      "sha256": "20be824a82832b62cc04642d31da3c609fd280b23f1cdcb1e622c4f40aac5ab8"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/recorder/assets/codeMirrorModule-CwYYHbcZ.js",
+      "sha256": "b673acf747a1667bbd90b96d9de583d69905b0bd78a196b2a7979a573f5171fd"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/recorder/assets/codicon-DCmgc-ay.ttf",
+      "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/recorder/assets/index-DYjdXIbE.js",
+      "sha256": "f3c0288840bedb5739649f7fe938a30f57469d46d6ca1e56ee885a0860b98df9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/recorder/assets/index-l_lX622x.css",
+      "sha256": "01eecbef954379cb99bf36502849ff6e503887bd8a131a5d02dd5d8c23b6106f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/recorder/index.html",
+      "sha256": "d8a974540383c01c031dd7f317d4276675ecc562747986e6d70234751127e891"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg",
+      "sha256": "6b0a4367bdeab10995bc239278f04c68c10e48adbec15e799e01909a0d66dcb9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/assets/codeMirrorModule-rXmQmLUY.js",
+      "sha256": "bb0f7c41f9889e4195c2504878e38061288881f426498434c9955479828f7e66"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/assets/defaultSettingsView-B-dXF5JN.js",
+      "sha256": "2ce8be133fe21a4abd7d8330d9b443092dc2ce28826f191442c14989f9d55b15"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/assets/urlMatch-L3liM589.js",
+      "sha256": "1bc6321e32d11c31a452bc75896f0b344e6153321854d9f1658818be7f845c16"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/assets/xtermModule-BuZfJS5v.js",
+      "sha256": "17584c22ad7d49f3c3c9e07e8b2655203cd33e60c1cb527356eabfda6a59c830"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/codeMirrorModule.-QdMvsKi.css",
+      "sha256": "20be824a82832b62cc04642d31da3c609fd280b23f1cdcb1e622c4f40aac5ab8"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/codicon.DCmgc-ay.ttf",
+      "sha256": "0f1d5219934e96e83b8db162d60b4d8c09b5de1e7d38031cbafe4a3c0f2889c9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/defaultSettingsView.BLFoOugd.css",
+      "sha256": "72241b3112ab609ca0e06195e85e02cb373799217cd5f24a07d61d9273c4ad3e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/index.B_TqY17P.css",
+      "sha256": "08a212fcacae1866f44f065654afcc4c7d03409c68c74b3315c5bda17a0ca003"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/index.html",
+      "sha256": "e2218af9284b6e1c2ec3b547320857778a323fd1473d90620153e967223c5721"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/index.KZ4wOW1K.js",
+      "sha256": "53e2227532161670bc601e241a7a9af00ac54826a9dd2ef9c15b8c1f77e92e63"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/manifest.webmanifest",
+      "sha256": "d8540500603a32a39fe7e5a0375dc0f9ebafd11118e06a846db7efc608223ab9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg",
+      "sha256": "6b0a4367bdeab10995bc239278f04c68c10e48adbec15e799e01909a0d66dcb9"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/snapshot.B_Jk1wbt.js",
+      "sha256": "d4d09e05451d107d8e1a6bbd041405fe518b9fd2833890e4ebaaad83b7f554f5"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/snapshot.html",
+      "sha256": "c608c8899c95c5a74d3f556e20146c3d852b9df85ae2854c659a7cc773c9b727"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/sw.bundle.js",
+      "sha256": "cfd6662a71914516efe90a5a6f3da2bbe5db6e442939b868ca465f765d33723f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/uiMode.C7UW1sC9.css",
+      "sha256": "c194e703ad4697e31c5e9b8d1e4f75f201a1fbe9940620fa6319dfa5543707b4"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/uiMode.Dzuouizj.js",
+      "sha256": "a584f96f0797144552430d7a04f7e3b84b1baaa0b781a664b1512339ec1c760b"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/uiMode.html",
+      "sha256": "32b260f173708fe088834efe8eff0f9d92af0c7e2e6c987cd8e197f0a066742f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/vite/traceViewer/xtermModule.kHJ-D0s7.css",
+      "sha256": "0dd60056134e6a2994a86b59a1e9789b9f04e92924da109aef8c923acaf08ce5"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/webp_codec.LICENSE",
+      "sha256": "995c7ee35aceb7666829b7a501ca89c0864e12b493c1174b155774ab1e03d831"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/webp_codec.wasm",
+      "sha256": "164cd9583a3e4d081f767d3b41ff0a730443dc7535fcc5caff83561463384b79"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/lib/xdg-open",
+      "sha256": "7d759d54f0d4ce1beeb34ee62c587985b5042374e8de237b0dcb8cd47aa698cf"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/LICENSE",
+      "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/NOTICE",
+      "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/package.json",
+      "sha256": "07c47543631fef9508760365dee9fbe958c562093ec8d122543949ed231f233f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/README.md",
+      "sha256": "d16ff7f8e38fa1fc954f695ad551cdc118d9c9bdd5f3d83203901f4c317d7d7e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/ThirdPartyNotices.txt",
+      "sha256": "a549d329bad8806fe279f0ecae0fc0270dec7e7c2dc8ec10f90e394f7c32b144"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/types/protocol.d.ts",
+      "sha256": "b836eed98b79fabb54f1df73252a0ce178b8df4a89794251ade2fa0c5e52b678"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/types/structs.d.ts",
+      "sha256": "c9b9179b7291c8562eb0fb781219ddbdcf36149ebd7bd355e5b4a553d6b60b81"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright-core/types/types.d.ts",
+      "sha256": "6c688250f2b7061cec3a17ab8797671137b653f8c4e81a6df3190cb112a7579a"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/cli.js",
+      "sha256": "5e79302a6aad7d835d92d5ae6b4244c91cf61b28e94d7917279090e6c231f7a1"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/index.d.ts",
+      "sha256": "b07f64ff6ec710998a62b07377fbda0ab4c313ba1f0055bfe9faa22cffedd47c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/index.js",
+      "sha256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/index.mjs",
+      "sha256": "a0f5715ea22354f922791a9c53dc012d5d5c067ff9cc4cd35ffb7cd272071a9f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/jsx-runtime.js",
+      "sha256": "2fefb7ec3a42dcf1cea35ca7e3eb107507c4d80821b1d6abf6cfc9bca36498f0"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/jsx-runtime.mjs",
+      "sha256": "a6ae8df3a36f154f433b01fe1592170500f5fbe7798f6dacdfea5b492f31d1a6"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/agentParser.js",
+      "sha256": "a2f630c1c2c9eafa0a3ca9cdbeaa26e74801615bc572e3fce226acb662ceb0eb"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/copilot-setup-steps.yml",
+      "sha256": "7483c252e2225d90cf7b66b461772a9e16e189cd45f689f48519872571e1a345"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/generateAgents.js",
+      "sha256": "3bae7bde1d05c0fbaaa1a82ce7a39732ff52904de575fe88e69c391a6c41478e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/playwright-test-coverage.prompt.md",
+      "sha256": "8e8a32e98c7069c8af29a088a91999c81dafbeb09a144b143ebe888b48b94355"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/playwright-test-generate.prompt.md",
+      "sha256": "6031c3eacf1e55d527a0397066b64d134d9f925fd7286bcc78646e714611da10"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/playwright-test-generator.agent.md",
+      "sha256": "0a61b313ff2573198fc89c7ab5b7e7db1c557193a470104ac90b2d6a0332be80"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/playwright-test-heal.prompt.md",
+      "sha256": "19f2bea9648ddac89b90b40a3f87b50c276d416677f8bb2fbcdac894cdb6946b"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/playwright-test-healer.agent.md",
+      "sha256": "b3e1d85219df5ead7e3ef0dc69959b0263cc16e885f71d5b64bafdf97e6f9215"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/playwright-test-plan.prompt.md",
+      "sha256": "6ce2c51b356b4e89ac1e3c2b8b3ff0a390c7b518c1d4d24f019f9eb179cd6669"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/agents/playwright-test-planner.agent.md",
+      "sha256": "bf4baa68205aa04c4512a80bcc6a5362d3aaa76ae9165f05a9d5a29e1d34c0fd"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/cli/reportActions.js",
+      "sha256": "4eeceedf9588d69a153f018aa548e00b73e5f61cb39bb05f0fc87c06131af2b3"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/cli/testActions.js",
+      "sha256": "44a4770714406134d1135b77d3b4388b557a7decb7f24094e637b6a5d517dd48"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/common/index.js",
+      "sha256": "8f2588ccdb7ce2d245fdbe3222ba67817293799dff1ba2e58303f0d558b6526f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/common/index.js.txt",
+      "sha256": "8527825c8efc985a83f7a2b9baaac44d20c39aa19ead2cc6d574cdedb758aa91"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/errorContext.js",
+      "sha256": "ffc1843cebb3e90e1674c07ee2607a4a63152eff609e5f9865bbb2f9eb02e9a1"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/globals.js",
+      "sha256": "f5922eb1fb6051900157492eb9c218e62d07378eed135bca4b2f173ed1184d1c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/index.js",
+      "sha256": "cb793062d359fd495f10e0916523f52c76a47fd0b6c4195451dabcd48638e862"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/isomorphic.js",
+      "sha256": "3d61508f951aa9518adb4bf6594d61dfd1099c95a1a4f0af809a58ccebc59025"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/isomorphic.js.txt",
+      "sha256": "36c16ae5721dfe8ac2555e84d26b5895b7ca113e7304bd3735a16d56b5a71b3c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/loader/loaderProcessEntry.js",
+      "sha256": "45681332f4178770c204b33e5b8dcbba940baf3bc6fc86506bab24027cb513f3"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/loader/loaderProcessEntry.js.txt",
+      "sha256": "0fc4ad550d17a23e9f1cbc78f646e57461f4feb22253dd5220034ef44091005c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/matchers/expect.js",
+      "sha256": "b22e4f194830dceb0eb67ceb44523f49bbf49f96fba50cc097b677e94ef360d7"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/matchers/expect.js.LICENSE",
+      "sha256": "78b2f60563d28cb3f9ea17e4cdc0657681e641e2f72766771d9e2da9ca94c065"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/matchers/expect.js.txt",
+      "sha256": "33ffab6ebe6e66e7c056060f80e50e517efabeabd39d092f5d3497f02a28cf44"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/browserBackend.js",
+      "sha256": "7143473e53c8b76720e42efab95f55227807590d2818104223d5df6ac46b681e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/generatorTools.js",
+      "sha256": "3c53feaeb9fc2ff728f334cb31f9b7211e65b20c692c7585459c3c97bdd13a12"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/plannerTools.js",
+      "sha256": "715abc888d9ea30b532b75c6f09aa34101ab15c1eeb959c50cf9dedcf3a459ac"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/seed.js",
+      "sha256": "f36f7fb76d4ed33225e80be208cccc9757d363a9d1527cf560736c0f1e5edd31"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/streams.js",
+      "sha256": "8affc240a6a90ee2dbdedcde9927018efe426ec0d390bcd1ee4f0464e75adc0f"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/testBackend.js",
+      "sha256": "dcd8d09366617f13213ce544efb5fe47df5a87258ae93545d4d0738623f43ad1"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/testContext.js",
+      "sha256": "74ff4273ea12e6353d4860c9452387b643d7d8899fbd4951389ba94d18df5e37"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/testTool.js",
+      "sha256": "2a8f17d0a61ccb8a4ca9c52a3255d624deca989c0b06281d579629c664f8cc8e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/mcp/test/testTools.js",
+      "sha256": "14710b5f34246005d974762b83a2a50e5cc17130af841cd3bc447811d69c6af7"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/package.js",
+      "sha256": "544a18417ea51dd4c8a9f3dbc4e2b47e46c80f452e0cd23d55e9b3680bc6241e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/program.js",
+      "sha256": "d453e49272d33d592cac3c55e06536e5451bec135fa8d80d6b134fd5e072c88b"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/runner/index.js",
+      "sha256": "6dcf135a144b0f243848128bb68e0a25898b8ad764a34326f36ab45d9a9e1685"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/runner/index.js.txt",
+      "sha256": "26875e6a0ad15371cb3c5dc79a8b1cb5a3388ca6d70458f2d44f6a52b105558c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/transform/babelBundle.js",
+      "sha256": "01511e45db7646e2a12890de8d7866caa0754c8799db6407a6345236f4bed0c4"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/transform/babelBundle.js.LICENSE",
+      "sha256": "6e396aded640f0bd2671d57442575ce8172aa1371b2dece6c5d4048f2f38f34c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/transform/babelBundle.js.txt",
+      "sha256": "558b7f01e0e090114e1e0aee9a5b913cd22185add68c508b3ea8234e129dd7c8"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/transform/esmLoader.js",
+      "sha256": "f4e708ea08083676777a7699c82417d16fa08113f197fbc070ccffb9e8db2beb"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/transform/esmLoader.js.LICENSE",
+      "sha256": "3cec0c446526a449e4613b0defee0adb585f88f1d7fdba919421226d69be078e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/transform/esmLoader.js.txt",
+      "sha256": "94d16740d422f0b5a7c99fe7f38d6f6a5b35348ef6903ef662f1e019e42a4557"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/util.js",
+      "sha256": "874c55495773da8c5a2ec46551c2265937bf08446231c09a8b5966e8bea2b1f7"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/worker/workerProcessEntry.js",
+      "sha256": "cc8274565200e5f5aeecc80aef9518526ff82a32c36e2a2b06e445c238cebcc6"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/lib/worker/workerProcessEntry.js.txt",
+      "sha256": "8503383c20eca96b7f79a65c33f2cf8c08a739c5e67ca10e3f04a6b53b31ea47"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/LICENSE",
+      "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/NOTICE",
+      "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/package.json",
+      "sha256": "ca170ec143a88ed3043ac953eb3b2377b2b97304104f4e1e23316684ce2c35af"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/README.md",
+      "sha256": "b141b40be2abbbb6b111c5c270c674ac11af9122b8c438abb34484f5e8614c98"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/test.d.ts",
+      "sha256": "3f00324f263189b385c3a9383b1f4dae6237697bcf0801f96aa35c340512d79c"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/test.js",
+      "sha256": "b97fa53a6ab864f51c9c48b5e4647d0acae45ba2948c5d78e38bfeb56755d974"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/test.mjs",
+      "sha256": "1deb265617d0e87b6d05bf8b3d5bf73cd4b788665c249c609a01b94ceff2eea1"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/ThirdPartyNotices.txt",
+      "sha256": "b17ac0bd6f4b8207e440639cc8e0ba1bf1d9eaf9b12236764ab93b346c7abd8e"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/types/test.d.ts",
+      "sha256": "138c4489023da880e7219a31b8049ef9cba13d90c5d7cf9538148001d7066f50"
+    },
+    {
+      "path": "C:/Users/1/.codex/worktrees/a-deploy-release-readiness/OpenGlass Hub/node_modules/playwright/types/testReporter.d.ts",
+      "sha256": "cc31504f31abcd7263a1daed018ef8109fa255464b0c0b962f39ab3548787f9e"
+    },
+    {
+      "path": "C:/Users/1/AppData/Local/OpenGlassHub/acceptance-input/e-verify-20261012/STATEFUL_PRIVATE_BINDING_GROUP1_650_V1.json",
+      "sha256": "950e185df3a3658ce990def5061cc39a63e571443292fabf141a99e5b9de98a3"
+    },
+    {
+      "path": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+      "sha256": "3247bcfd60f6dd25f34cb74b5889ab10ef1b3ec72b4d4b3d95b5b25b534560b8"
+    }
+  ],
+  "readyButNotAuthorized": true,
+  "oldAuthorizationReused": false,
+  "previousBindingSha256": "5af796fc6f5749b660ed11b214733384e58b20ce521fbf98eac17e151ada3c60",
+  "other265BindingsUnchanged": true,
+  "chromeIdentity": {
+    "path": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "version": "156.0.8078.36",
+    "sha256": "fdd156b74dd997d3b15f0cdbb59ce0051f1e8b19d10822f31743abac09ec4c89",
+    "publisher": "Google LLC",
+    "beforeAfterLaunchCheck": true,
+    "futureUpdatesImpossible": false
+  },
+  "previous278FrozenFilesUnchanged": true,
+  "previousAuthorizationConsumed": true,
+  "previous305FrozenFilesUnchanged": true,
+  "previous340FrozenFilesUnchanged": true
+}

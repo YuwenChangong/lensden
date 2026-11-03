@@ -1,0 +1,23 @@
+{
+  "status": "READY_FOR_FRESH_OWNER_APPROVAL",
+  "authorizationId": "e-verify-group1-openglasshub-20261013-production-asset-reader-fresh-v8",
+  "executionBindingSha256": "036172b39d01ad036a5b3c2ec060f1c1d7752bc18d73d669a8049b2030554497",
+  "packetSha256": "41ae34c6e074e8deb6425b2bf1cfe40bd0f715ab8e5b8547cd81f592a7d84cb5",
+  "templateSha256": "0fb49b853ba1fcea6d767ad7de6e513d7a80bc4935354daa0650c96c85746eab",
+  "oldFrozenFilesUnchanged": true,
+  "originalTests": "31/31_PASS_REUSED_NOT_RERUN",
+  "isolationTests": "7/7_PASS",
+  "thirteenConditions": "UNCHANGED",
+  "budgetsAndTargetsUnchanged": true,
+  "localOAuthCheck": "PASS",
+  "oauthExpiresUTC": "2026-10-13T08:41:40.553Z",
+  "oauthRemainingSeconds": 3102,
+  "observedAtUTC": "2026-10-13T07:49:57.920Z",
+  "claimCreated": false,
+  "effectiveAuthorizationCreated": false,
+  "goIssued": false,
+  "productionRequests": 0,
+  "productionWrites": 0,
+  "catalogHold": "ACTIVE",
+  "fullGroup1Ready": false
+}

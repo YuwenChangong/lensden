@@ -51,6 +51,7 @@ function createSearchClient() {
       return posts;
     }
     if (table === "post_votes" || table === "comments") return [];
+    if (table === "devices") return [];
     throw new Error(`unexpected search table ${table}`);
   }
 
@@ -100,7 +101,7 @@ async function main() {
   assert(searchSource.includes(".eq(\"status\", \"active\")"), "circle and owner-circle reads require active state");
   assert(searchSource.includes("replace(/[^\\p{L}\\p{N}\\s-]+/gu, \" \")"), "query text excludes PostgREST filter grammar");
   assert(!searchSource.includes("isMissingCircleStatusError"), "missing visibility columns fail closed instead of using a public fallback");
-  assert(mediaSource.includes("const storagePaths = options?.publicProxy\n    ? []"), "public search proxies do not create storage signed URLs");
+  assert(mediaSource.replace(/\r\n/g, "\n").includes("const storagePaths = options?.publicProxy\n    ? []"), "public search proxies do not create storage signed URLs");
   assert(/create policy "posts_select_published_public"[\s\S]*?moderation_status = 'published'[\s\S]*?public\.can_access_public_circle\(circle_id\)/.test(forwardRls), "authored forward post SELECT RLS matches the runtime ancestor predicate");
 
   const vite = await createServer({ root, logLevel: "error", server: { middlewareMode: true }, appType: "custom" });

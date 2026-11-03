@@ -1,0 +1,451 @@
+{
+  "schema": "PRODUCTION_READ_ONLY_RELEASE_AUDIT_V1",
+  "evidenceCollectedAtUtc": "2026-10-16T06:02:06Z",
+  "auditedCandidateCommit": "f1b36c85",
+  "productionDatabaseTarget": "xcbnxzjlsvtgzixurcof",
+  "ownerApprovalReference": "OWNER_MESSAGE_PRODUCTION_READ_ONLY_RELEASE_AUDIT_V1",
+  "status": "COMPLETE_WITH_CONFIG_METADATA_LIMITATIONS",
+  "budget": {
+    "databaseRequestsMax": 2,
+    "cloudflareGetsMax": 3,
+    "databaseStatementTimeoutMs": 8000,
+    "databaseLockTimeoutMs": 1000,
+    "cloudflareTimeoutMs": 10000,
+    "retries": 0
+  },
+  "requests": [
+    {
+      "sequence": 1,
+      "id": "DB_CATALOG",
+      "completed": true,
+      "readOnlyConfirmed": true,
+      "queryFile": "production-readonly-release-audit-v1-catalog.sql"
+    },
+    {
+      "sequence": 2,
+      "id": "DB_LEDGER",
+      "completed": true,
+      "readOnlyConfirmed": true,
+      "queryFile": "production-readonly-release-audit-v1-ledger.sql"
+    },
+    {
+      "sequence": 3,
+      "kind": "DEPLOYMENTS",
+      "method": "GET",
+      "status": 200,
+      "completed": true
+    },
+    {
+      "sequence": 4,
+      "kind": "VERSION_SUMMARIES",
+      "method": "GET",
+      "status": 200,
+      "completed": true
+    },
+    {
+      "sequence": 5,
+      "kind": "SECRET_NAMES",
+      "method": "GET",
+      "status": 200,
+      "completed": true
+    }
+  ],
+  "metadata": {
+    "tables": [
+      {
+        "name": "comment_reactions",
+        "owner": "postgres",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid"
+          },
+          {
+            "name": "comment_id",
+            "type": "uuid"
+          },
+          {
+            "name": "user_id",
+            "type": "uuid"
+          },
+          {
+            "name": "reaction_type",
+            "type": "text"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone"
+          }
+        ],
+        "forceRls": false,
+        "policies": [
+          {
+            "name": "comment_reactions_delete_self",
+            "roles": [
+              "authenticated"
+            ],
+            "command": "d",
+            "checkHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "usingHash": "5bdab8ff50edfeac260a7197bfd75ec2",
+            "permissive": true
+          },
+          {
+            "name": "comment_reactions_insert_self",
+            "roles": [
+              "authenticated"
+            ],
+            "command": "a",
+            "checkHash": "5bdab8ff50edfeac260a7197bfd75ec2",
+            "usingHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "permissive": true
+          },
+          {
+            "name": "comment_reactions_select_accessible",
+            "roles": [
+              "anon",
+              "authenticated"
+            ],
+            "command": "r",
+            "checkHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "usingHash": "fe4b726fefb7bdf6f79189b6b3ed0488",
+            "permissive": true
+          },
+          {
+            "name": "comment_reactions_select_public",
+            "roles": [
+              "anon",
+              "authenticated"
+            ],
+            "command": "r",
+            "checkHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "usingHash": "b4103c7164e98bcd2a431e7a9381e00a",
+            "permissive": true
+          },
+          {
+            "name": "comment_reactions_update_self",
+            "roles": [
+              "authenticated"
+            ],
+            "command": "w",
+            "checkHash": "5bdab8ff50edfeac260a7197bfd75ec2",
+            "usingHash": "5bdab8ff50edfeac260a7197bfd75ec2",
+            "permissive": true
+          }
+        ],
+        "rlsEnabled": true
+      },
+      {
+        "name": "forum_upload_attempts",
+        "owner": "postgres",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "type": "uuid"
+          },
+          {
+            "name": "user_id",
+            "type": "uuid"
+          },
+          {
+            "name": "ip_hash",
+            "type": "text"
+          },
+          {
+            "name": "bytes",
+            "type": "bigint"
+          },
+          {
+            "name": "purpose",
+            "type": "text"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp with time zone"
+          }
+        ],
+        "forceRls": false,
+        "policies": [
+          {
+            "name": "forum_upload_attempts_insert_authenticated",
+            "roles": [
+              "authenticated"
+            ],
+            "command": "a",
+            "checkHash": "b31990ba9cea63150332e7acffbedfbb",
+            "usingHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "permissive": true
+          },
+          {
+            "name": "forum_upload_attempts_insert_self",
+            "roles": [
+              "authenticated"
+            ],
+            "command": "a",
+            "checkHash": "5569614ec5a79a10c368e78219600a62",
+            "usingHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "permissive": true
+          },
+          {
+            "name": "forum_upload_attempts_select_authenticated",
+            "roles": [
+              "authenticated"
+            ],
+            "command": "r",
+            "checkHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "usingHash": "b326b5062b2f0e69046810717534cb09",
+            "permissive": true
+          },
+          {
+            "name": "forum_upload_attempts_select_self",
+            "roles": [
+              "authenticated"
+            ],
+            "command": "r",
+            "checkHash": "d41d8cd98f00b204e9800998ecf8427e",
+            "usingHash": "b31990ba9cea63150332e7acffbedfbb",
+            "permissive": true
+          }
+        ],
+        "rlsEnabled": true
+      }
+    ],
+    "functions": [
+      {
+        "name": "can_access_public_circle",
+        "owner": "postgres",
+        "result": "boolean",
+        "schema": "public",
+        "language": "sql",
+        "parallel": "u",
+        "settings": [
+          "search_path=public"
+        ],
+        "volatility": "s",
+        "executeAnon": true,
+        "publicExecute": false,
+        "securityDefiner": true,
+        "identityArguments": "target_circle_id uuid",
+        "normalizedBodyMd5": "64d7113cc5b03f4ca129f2aecb48e970",
+        "executeServiceRole": false,
+        "executeAuthenticated": true
+      },
+      {
+        "name": "consume_forum_rate_limit",
+        "owner": "postgres",
+        "result": "TABLE(allowed boolean, decision text)",
+        "schema": "public",
+        "language": "plpgsql",
+        "parallel": "u",
+        "settings": [
+          "search_path=pg_catalog, public, pg_temp",
+          "lock_timeout=1s",
+          "statement_timeout=3s"
+        ],
+        "volatility": "v",
+        "executeAnon": false,
+        "publicExecute": false,
+        "securityDefiner": true,
+        "identityArguments": "p_user_id uuid, p_ip_hash text, p_purpose text, p_bytes bigint",
+        "normalizedBodyMd5": "397369321f2d78b27bdd46bdb81fb2b0",
+        "executeServiceRole": true,
+        "executeAuthenticated": false
+      }
+    ],
+    "ledgerExists": true,
+    "reactionPrivileges": [
+      {
+        "role": "anon",
+        "columns": [
+          {
+            "name": "id",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "comment_id",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "user_id",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "reaction_type",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "created_at",
+            "insert": false,
+            "select": false,
+            "update": false
+          }
+        ],
+        "deleteTable": false,
+        "insertTable": false,
+        "selectTable": false,
+        "updateTable": false
+      },
+      {
+        "role": "authenticated",
+        "columns": [
+          {
+            "name": "id",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "comment_id",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "user_id",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "reaction_type",
+            "insert": false,
+            "select": false,
+            "update": false
+          },
+          {
+            "name": "created_at",
+            "insert": false,
+            "select": false,
+            "update": false
+          }
+        ],
+        "deleteTable": false,
+        "insertTable": false,
+        "selectTable": false,
+        "updateTable": false
+      }
+    ],
+    "transactionReadOnly": "on"
+  },
+  "migrationLedger": {
+    "transaction_read_only": "on",
+    "migrations": []
+  },
+  "decisions": {
+    "reactionMigration": "MISSING",
+    "commentDeleteRpcMigration": "MISSING",
+    "rateLimitRpcProduction": "COMPATIBLE_STATIC_CONTRACT",
+    "rateLimitNormalizedBodyMatchesReviewedLocalProposal": true,
+    "rateLimitCreationProvenance": "NOT_ESTABLISHED",
+    "localReplayNoncanonicalSqlDependency": "public.consume_forum_rate_limit(uuid,text,text,bigint)",
+    "newProductionRateLimitCreateOrReplaceNeeded": false,
+    "formalMigrationBaselineAdoptionReviewRequired": true,
+    "candidateReleaseParity": "BLOCKED",
+    "productionConfigMetadata": "PARTIAL",
+    "workerDeploymentIdentity": "VERIFIED_CURRENT_WORKER_VERSION",
+    "sourceCommitIdentity": "HISTORICAL_SOURCE_BINDING_REUSED_NO_LIVE_COMMIT_ANNOTATION"
+  },
+  "cloudflare": {
+    "worker": "openglasshub",
+    "activeDeployment": {
+      "id": "e8481d68-d2d5-473b-8b0c-b82b8fa33fc3",
+      "createdOn": "2026-10-11T08:20:59.472892Z",
+      "strategy": "percentage",
+      "versions": [
+        {
+          "id": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+          "percentage": 100
+        }
+      ]
+    },
+    "selectedVersionSummaries": [
+      {
+        "id": "b2b62ec9-bb8d-4159-ac99-08fca5740134",
+        "number": 152,
+        "createdOn": "2026-10-11T08:20:57.756768Z",
+        "source": "wrangler",
+        "tagIsHistoricalBuild": false,
+        "sourceCommits": []
+      },
+      {
+        "id": "1b327fed-be4b-4873-9fcd-6514e014916c",
+        "number": 151,
+        "createdOn": "2026-10-11T04:59:47.644171Z",
+        "source": "wrangler",
+        "tagIsHistoricalBuild": false,
+        "sourceCommits": []
+      }
+    ],
+    "secretNames": [
+      {
+        "name": "OPENAI_API_KEY",
+        "type": "secret_text"
+      },
+      {
+        "name": "R2_ACCESS_KEY_ID",
+        "type": "secret_text"
+      },
+      {
+        "name": "R2_SECRET_ACCESS_KEY",
+        "type": "secret_text"
+      },
+      {
+        "name": "RATE_LIMIT_SALT",
+        "type": "secret_text"
+      },
+      {
+        "name": "SUPABASE_ANON_KEY",
+        "type": "secret_text"
+      },
+      {
+        "name": "SUPABASE_SECRET_KEY",
+        "type": "secret_text"
+      },
+      {
+        "name": "SUPABASE_SERVICE_ROLE_KEY",
+        "type": "secret_text"
+      },
+      {
+        "name": "TURNSTILE_SECRET_KEY",
+        "type": "secret_text"
+      }
+    ],
+    "requiredSecretNamesPresent": true,
+    "secretValuesRead": false,
+    "variableValueEndpointsQueried": false,
+    "plainVariableNamesAndTargets": "NOT_FRESHLY_VERIFIED",
+    "historicalSourceCommit": "88680a6eaab8de4123199f16b325ec0a430b0b86",
+    "recoveryVersion": "1b327fed-be4b-4873-9fcd-6514e014916c",
+    "recoveryClassification": "HISTORICAL_PRE_HARDENING_ONLY_NOT_APPROVED_DEFAULT_ROLLBACK",
+    "postHardeningRecoveryReadiness": "UNKNOWN",
+    "legacyPagesState": "NOT_QUERIED_NOT_CURRENT_RELEASE_TARGET",
+    "catalogHoldLiveEnforcement": "NOT_NEWLY_OBSERVED_OWNER_INSTRUCTION_RETAINED"
+  },
+  "counters": {
+    "productionReadRequests": 5,
+    "databaseMetadataRequests": 2,
+    "databaseTopLevelSelectStatements": 2,
+    "cloudflareMetadataGets": 3,
+    "applicationRequests": 0,
+    "productionR2Requests": 0,
+    "businessRowsRead": 0,
+    "applicationRpcInvocations": 0,
+    "productionWrites": 0,
+    "deployments": 0,
+    "retries": 0,
+    "providerInternalRequests": "CONNECTOR_INTERNAL_TRANSPORT_NOT_INDEPENDENTLY_OBSERVED"
+  },
+  "catalogHold": "ACTIVE",
+  "group2": "NOT_AUTHORIZED",
+  "group3": "NOT_AUTHORIZED",
+  "publicBetaGo": "NOT_AUTHORIZED"
+}

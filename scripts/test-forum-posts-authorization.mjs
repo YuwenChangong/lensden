@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { createServer } from "vite";
+import { cloudflareWorkersTestPlugin } from "./lib/cloudflare-workers-test-plugin.mjs";
 
 const root = process.cwd();
 const POST_ID = "00000000-0000-0000-0000-000000000001";
@@ -68,7 +69,7 @@ async function main() {
   assert(/create policy "posts_delete_self_or_staff"[\s\S]*?can_access_public_circle\(circle_id\)[\s\S]*?author_id = auth\.uid\(\)/.test(forwardMigration));
   assert(/increment_post_view_count[\s\S]*?moderation_status = 'published'[\s\S]*?can_access_public_circle\(post_ref\.circle_id\)/.test(forwardMigration));
 
-  const vite = await createServer({ root, logLevel: "error", server: { middlewareMode: true }, appType: "custom" });
+  const vite = await createServer({ root, logLevel: "error", plugins: [cloudflareWorkersTestPlugin()], server: { middlewareMode: true }, appType: "custom", optimizeDeps: { noDiscovery: true } });
   try {
     const { resolveAccessibleForumPostTarget } = await vite.ssrLoadModule("/src/pages/api/forum/posts.ts");
     const { filterPublicVisibleFeedPosts } = await vite.ssrLoadModule("/src/lib/forum-feed.ts");
@@ -77,6 +78,12 @@ async function main() {
 
     const allowed = await resolveAccessibleForumPostTarget(makeTargetClient({ post: publishedPost, circle: publicCircle }), POST_ID);
     assert.deepEqual(allowed, { ok: true, target: { id: POST_ID, authorId: AUTHOR_ID, circleId: CIRCLE_ID } });
+    const retry = await resolveAccessibleForumPostTarget(makeTargetClient({ post: { ...publishedPost, status: "deleted" }, circle: publicCircle }), POST_ID, true);
+    assert.equal(retry.ok, true, "explicit DELETE retry can resolve an owned deleted target; caller still enforces actor");
+    for (const circle of [{...publicCircle,status:"deleted"},{...publicCircle,slug:"rls-test-circle"}]) {
+      const deniedRetry = await resolveAccessibleForumPostTarget(makeTargetClient({post:{...publishedPost,status:"deleted"},circle}),POST_ID,true);
+      assert.equal(deniedRetry.ok,false,"DELETE retry must not bypass circle visibility");
+    }
 
     const deniedTargets = await Promise.all([
       resolveAccessibleForumPostTarget(makeTargetClient({ post: { ...publishedPost, status: "deleted" }, circle: publicCircle }), POST_ID),

@@ -1,0 +1,10 @@
+import fs from 'node:fs';import path from 'node:path';import http from 'node:http';
+import {waitForStart} from './supervisor.mjs';import {loopbackTransport} from './wire.mjs';import {runAssetRead} from './reader.mjs';import {createPrivateCapture} from './private-evidence.mjs';
+await waitForStart();const [mode,root]=process.argv.slice(2);
+if(mode==='timeout'){setInterval(()=>{},1000)}else if(mode==='missing'){if(process.connected)process.disconnect()}else{
+ const origin='https://qa.example.invalid',target='/_astro/SiteHeader.ABCDEFGH.js';
+ const dep={deploymentId:'SYNTHETIC_DEPLOYMENT',activeVersion:'SYNTHETIC_VERSION',activeTraffic:100,recoveryTraffic:0};
+ const server=http.createServer((q,r)=>{if(q.url==='/deployments'){r.setHeader('content-type','application/json');r.end(JSON.stringify(dep))}else if(q.url==='/login/'){r.setHeader('content-type','text/html');r.end(`<script src="${target}"></script>`)}else if(q.url===target){r.setHeader('content-type','application/javascript');r.end('export const marker="SYNTHETIC_SOURCE";')}else{r.writeHead(404);r.end()}});
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));const transport=loopbackTransport('http://127.0.0.1:'+server.address().port);
+ try{const result=await runAssetRead({origin,deploymentURL:origin+'/deployments',loginURL:origin+'/login/',requiredTarget:target,manifest:[{path:target}],budgets:{totalGETMax:4,providerDeploymentGETMax:2,assetGETMax:1,htmlGETMax:1,concurrencyMax:4,maxAssetBytes:2097152,anonymousAggregateBytesMax:16777216,perRequestSeconds:1,workSeconds:240},transport,providerHeaders:{accept:'application/json'},capture:createPrivateCapture(path.join(root,'protected'),'e-verify-group1-contained-offline-test'),assertDeployment:r=>JSON.parse(r.body)});fs.writeFileSync(path.join(root,'result.json'),JSON.stringify(result),{flag:'wx'});if(result.status!=='CONTENT_EVIDENCE_COLLECTED')process.exitCode=1;await new Promise(r=>process.send({type:'receipt',status:'complete'},r))}finally{server.closeAllConnections();await new Promise(r=>server.close(r));if(process.connected)process.disconnect()}
+}

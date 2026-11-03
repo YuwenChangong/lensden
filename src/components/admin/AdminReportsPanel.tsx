@@ -506,8 +506,8 @@ export default function AdminReportsPanel({ localeContext = resolveLocale({ acce
       profileLabel(report.target?.author_profile ?? null, ""),
       report.target?.title ?? "",
       report.target?.excerpt ?? "",
-      report.target?.circle?.name ?? "",
-      report.target?.post?.title ?? "",
+      report.target && "circle" in report.target ? report.target.circle?.name ?? "" : "",
+      report.target && "post" in report.target ? report.target.post?.title ?? "" : "",
     ]
       .join(" ")
       .toLowerCase();
@@ -645,6 +645,8 @@ export default function AdminReportsPanel({ localeContext = resolveLocale({ acce
   }
 
   const adminSession = useAdminSession();
+  // The hook wrapper changes on every render; list reads follow stable auth fields.
+  const { session: reportSession, state: { status: reportSessionStatus }, setState: setReportSessionState } = adminSession;
   const [dataState, setDataState] = useState<DataState>("idle");
   const [error, setError] = useState("");
   const [reports, setReports] = useState<AdminReportQueueItem[]>([]);
@@ -737,8 +739,9 @@ export default function AdminReportsPanel({ localeContext = resolveLocale({ acce
   }, [filteredReports]);
 
   useEffect(() => {
-    if (adminSession.state.status !== "ready" || !adminSession.session) return;
+    if (reportSessionStatus !== "ready" || !reportSession) return;
     let cancelled = false;
+    const controller = new AbortController();
 
     async function loadReports() {
       const showFullLoadingState = reports.length === 0 && dataState !== "ready";
@@ -751,7 +754,8 @@ export default function AdminReportsPanel({ localeContext = resolveLocale({ acce
       try {
         const payload = await adminFetch<ReportsPayload>(`/api/admin/reports?${queryString}`, {
           method: "GET",
-          session: adminSession.session,
+          session: reportSession,
+          signal: controller.signal,
         });
         if (cancelled) return;
         const nextReports = payload.reports ?? [];
@@ -764,7 +768,7 @@ export default function AdminReportsPanel({ localeContext = resolveLocale({ acce
       } catch (requestError) {
         if (cancelled) return;
         if (requestError instanceof AdminApiError && requestError.status === 401) {
-          adminSession.setState({
+          setReportSessionState({
             status: "signed_out",
             message: text.copy.yourSessionExpiredSignInAgain,
             details: `api status code: 401 | error message: ${requestError.message}`,
@@ -772,7 +776,7 @@ export default function AdminReportsPanel({ localeContext = resolveLocale({ acce
           return;
         }
         if (requestError instanceof AdminApiError && requestError.status === 403) {
-          adminSession.setState({
+          setReportSessionState({
             status: "forbidden",
             message: text.copy.thisAccountDoesNotHaveAdministratorAccess,
             details:
@@ -794,8 +798,9 @@ export default function AdminReportsPanel({ localeContext = resolveLocale({ acce
     void loadReports();
     return () => {
       cancelled = true;
+      controller.abort();
     };
-  }, [adminSession, queryString, refreshNonce]);
+  }, [reportSession, reportSessionStatus, setReportSessionState, queryString, refreshNonce]);
 
   useEffect(() => {
     if (!selectedId || adminSession.state.status !== "ready" || !adminSession.session) {

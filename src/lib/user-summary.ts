@@ -4,7 +4,7 @@ export type UserSummarySuccess = {
     id: string;
     username: string | null;
     display_name: string | null;
-    profile_href: string;
+    profile_href: string | null;
     avatar_resolved_url: string | null;
   };
   stats: { post_count: number | null; received_like_count: number | null };

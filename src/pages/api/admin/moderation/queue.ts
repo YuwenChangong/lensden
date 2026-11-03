@@ -1,4 +1,5 @@
 import { env as runtimeEnv } from "cloudflare:workers";
+import { joinedRecord } from "../../../../lib/server/joined-record";
 import type { APIRoute } from "astro";
 import { jsonResponse, requireModerator, type RuntimeEnv } from "../../../../lib/server/admin-auth";
 import { sanitizeBodyForDisplay } from "../../../../lib/post-body";
@@ -62,37 +63,40 @@ export const GET: APIRoute = async ({ request, locals }) => {
       created_at: post.created_at,
       updated_at: post.updated_at,
       author_id: post.author_id,
-      author_profile: post.profiles ?? null,
+      author_profile: joinedRecord(post.profiles),
       parent: null,
       post: null,
-      circle: post.circles ?? null,
+      circle: joinedRecord(post.circles),
     }));
 
-    const comments = (commentsResult.data ?? []).map((comment) => ({
-      id: comment.id,
-      target_type: "comment",
-      title: comment.posts?.title ?? "评论",
-      excerpt: excerpt(comment.body),
-      body: comment.body,
-      status: comment.status,
-      moderation_status: comment.moderation_status,
-      moderation_reason: comment.moderation_reason,
-      moderation_score: Number(comment.moderation_score ?? 0),
-      moderation_provider: comment.moderation_provider ?? "local",
-      created_at: comment.created_at,
-      updated_at: comment.updated_at,
-      author_id: comment.author_id,
-      author_profile: comment.profiles ?? null,
-      parent: comment.parent_id ? { id: comment.parent_id } : null,
-      post: comment.posts
-        ? {
-            id: comment.posts.id,
-            title: comment.posts.title ?? null,
-            status: comment.posts.status ?? null,
-          }
-        : null,
-      circle: comment.posts?.circles ?? null,
-    }));
+    const comments = (commentsResult.data ?? []).map((comment) => {
+      const post = joinedRecord(comment.posts);
+      return {
+        id: comment.id,
+        target_type: "comment",
+        title: post?.title ?? "评论",
+        excerpt: excerpt(comment.body),
+        body: comment.body,
+        status: comment.status,
+        moderation_status: comment.moderation_status,
+        moderation_reason: comment.moderation_reason,
+        moderation_score: Number(comment.moderation_score ?? 0),
+        moderation_provider: comment.moderation_provider ?? "local",
+        created_at: comment.created_at,
+        updated_at: comment.updated_at,
+        author_id: comment.author_id,
+        author_profile: joinedRecord(comment.profiles),
+        parent: comment.parent_id ? { id: comment.parent_id } : null,
+        post: post
+          ? {
+              id: post.id,
+              title: post.title ?? null,
+              status: post.status ?? null,
+            }
+          : null,
+        circle: joinedRecord(post?.circles),
+      };
+    });
 
     const items = [...posts, ...comments].sort((left, right) => {
       const leftPriority = left.moderation_status === "pending_review" ? 0 : 1;

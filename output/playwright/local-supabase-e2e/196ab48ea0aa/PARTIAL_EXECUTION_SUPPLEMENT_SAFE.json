@@ -1,0 +1,22 @@
+{
+  "kind": "ANALYST_TRANSCRIPTION_OF_CAPTURED_TOOL_STDOUT_NOT_RUNNER_RECEIPT",
+  "runId": "196ab48ea0aa",
+  "source": "exec session 75860, captured output before unhandled Playwright response waiter timeout",
+  "originalAttemptCompleted": false,
+  "originalTermination": "TEST_WAITER_UNHANDLED_REJECTION",
+  "completedAssertions": [
+    {"id":"POST_CREATE_UI","status":"PASS","evidence":"UI POST 201 and exact owned database row count"},
+    {"id":"COMMENT_UI","status":"PASS","evidence":"UI submission and exact owned database row count, NOT comment-list success"},
+    {"id":"LIKE_UI","status":"PASS","evidence":"UI aria-pressed and real post_votes row"},
+    {"id":"CIRCLE_CREATE_UI","status":"PASS","evidence":"UI create and database owner verification"},
+    {"id":"CIRCLE_EDIT_UI","status":"PASS","evidence":"UI edit and database name verification"},
+    {"id":"OTHER_USER_POST_DELETE_DENIED","status":"PASS","evidence":"403 and original published row unchanged"},
+    {"id":"NOTIFICATIONS_UI","status":"PASS","evidence":"Page plus actual notification API read, NOT cross-user delivery"},
+    {"id":"REPORT_UI","status":"PASS","evidence":"UI report and database reporter/target verification"},
+    {"id":"ADMIN_HIDE_POST_UI","status":"PASS","evidence":"UI moderation and real hidden database status"}
+  ],
+  "notInferred": ["reply success", "owner deletion success", "unexecuted assertions", "Production success"],
+  "followup": "RESULTS_SAFE.json records the bounded reply/delete followup and references unchanged earlier evidence",
+  "productionRequests": 0,
+  "productionWrites": 0
+}

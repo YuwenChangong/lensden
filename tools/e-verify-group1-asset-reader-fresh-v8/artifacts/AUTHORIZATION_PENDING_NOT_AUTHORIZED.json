@@ -1,0 +1,15 @@
+{
+  "format": "e-verify-group1-authorization-v1",
+  "authorizationId": "e-verify-group1-openglasshub-20261013-production-asset-reader-fresh-v8",
+  "packetSha256": "41ae34c6e074e8deb6425b2bf1cfe40bd0f715ab8e5b8547cd81f592a7d84cb5",
+  "executionBindingSha256": "036172b39d01ad036a5b3c2ec060f1c1d7752bc18d73d669a8049b2030554497",
+  "authorizedAtUTC": null,
+  "authorizationExpiresUTC": null,
+  "humanGates": {
+    "subsetBoundary2AndResidualCasesAccepted": null,
+    "authSecurityLogSideEffectsAccepted": null,
+    "manualTurnstileAndPrivateIdentityReady": null,
+    "catalogHoldAndPostHardeningRecoveryAccepted": null,
+    "operatorAvailableForEntireValidity": null
+  }
+}
